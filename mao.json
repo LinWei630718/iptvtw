@@ -1,5 +1,5 @@
 {
-    "spider": "http://linwei.serv00.net/fm.jar",
+    "spider": "https://github.com/gaotianliuyun/gao/raw/refs/heads/master/jar/custom_spider.jar",
     "wallpaper": "http://饭太硬.top/深色壁纸/api.php",
     "sites": [
         {
@@ -1052,31 +1052,15 @@
     ],
         "lives": [
         {
-            "name": "四季",
-            "url": "http://linwei.serv00.net/4gtv.m3u"
-        },
-        {
-            "name": "IPTV",
-            "url": "http://linwei.serv00.net/iptvtw.m3u"
-        },
-        {
-            "name": "MOD",
-            "url": "http://linwei.serv00.net/mod2.m3u"
-        },
-        {
-            "name": "中華Hami",
-            "url": "https://djhami.8899779.xyz/hami.m3u"
-        },
-        {
-            "name": "LITV(py)",
+            "name": "LITV立視(py)",
             "type": 3,
             "api": "https://gh-proxy.com/https://raw.githubusercontent.com/LinWei630718/iptvtw/refs/heads/main/litv.py",
             "ext": {}
         },
                 {
-            "name": "LITV立視(py)",
+            "name": "LITV(py)",
             "type": 3,
-            "api": "https://linwei0718.serv00.net/litv.py",
+            "api": "https://gh-proxy.com/https://raw.githubusercontent.com/doube-ba/Sub/refs/heads/main/live/live_litv.py",
             "ext": {}
         }
     ],
