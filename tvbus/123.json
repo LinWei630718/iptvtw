@@ -32,11 +32,10 @@
             "epg": "http://iptv.52sw.top:668/?ch={name}&date={date}"
         },
         {
-            "name": "LiTV[台灣節點]",
-            "type": 0,
-            "url": "https://gh-proxy.com/https://raw.githubusercontent.com/LinWei630718/iptvtw/refs/heads/main/litv.py",
-            "ua": "okhttp/3.15",
-            "epg": "http://iptv.52sw.top:668/?ch={name}&date={date}"
+            "name": "LITV(py台灣節點)",
+            "type": 3,
+            "api": "https://gh-proxy.com/https://raw.githubusercontent.com/LinWei630718/iptvtw/refs/heads/main/litv.py",
+            "ext": {}
         },
         {
             "name": "ofiii[台灣節點]",
