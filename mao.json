@@ -1,5 +1,5 @@
 {
-    "spider": "https://github.com/gaotianliuyun/gao/raw/refs/heads/master/jar/custom_spider.jar",
+    "spider": "http://linwei.serv00.net/fm.jar",
     "wallpaper": "http://饭太硬.top/深色壁纸/api.php",
     "sites": [
         {
@@ -1052,39 +1052,32 @@
     ],
         "lives": [
         {
+            "name": "四季",
+            "url": "http://linwei.serv00.net/4gtv.m3u"
+        },
+        {
+            "name": "IPTV",
+            "url": "http://linwei.serv00.net/iptvtw.m3u"
+        },
+        {
+            "name": "MOD",
+            "url": "http://linwei.serv00.net/mod2.m3u"
+        },
+        {
+            "name": "中華Hami",
+            "url": "https://djhami.8899779.xyz/hami.m3u"
+        },
+        {
             "name": "LITV(py)",
             "type": 3,
-            "api": "https://gh-proxy.com/https://raw.githubusercontent.com/doube-ba/Sub/refs/heads/main/live/live_litv.py",
-            "epg": "http://iptv.52sw.top:668/?ch={name}&date={date}"
+            "api": "https://gh-proxy.com/https://raw.githubusercontent.com/LinWei630718/iptvtw/refs/heads/main/litv.py",
             "ext": {}
         },
                 {
             "name": "LITV立視(py)",
             "type": 3,
-            "api": "https://gh-proxy.com/https://raw.githubusercontent.com/LinWei630718/iptvtw/refs/heads/main/litv.py",
-            "epg": "http://iptv.52sw.top:668/?ch={name}&date={date}"
+            "api": "https://linwei0718.serv00.net/litv.py",
             "ext": {}
-        },
-        {
-            "name": "ofiii[台灣節點]",
-            "type": 0,
-            "url": "https://raw.githubusercontent.com/LinWei630718/iptvtw/refs/heads/main/tvbus/ofiii.m3u",
-            "ua": "okhttp/3.15",
-            "epg": ""
-        }
-    ],
-    "hosts": [
-        "cache.ott.*.itv.cmvideo.cn=itv.dns.52top.com.cn"
-    ],
-    "rules": [
-        {
-            "name": "ofiii[台灣節點]",
-            "hosts": [
-                "www.ofiii.com"
-            ],
-            "script": [
-                "const play=document.getElementsByClassName(\"play_icon\")[0];const event=new MouseEvent(\"click\",{bubbles:!0,cancelable:!0,view:window,screenX:100,screenY:100,clientX:50,clientY:50,button:0,shiftKey:!1,ctrlKey:!1,altKey:!1,metaKey:!1,modifierState:0});play.dispatchEvent(event);"
-            ]
         }
     ],
     "ads": [
