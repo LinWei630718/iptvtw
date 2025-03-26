@@ -1,5 +1,5 @@
 {
-    "spider": "http://linwei.serv00.net/fm.jar",
+    "spider": "https://github.com/gaotianliuyun/gao/raw/refs/heads/master/jar/custom_spider.jar",
     "wallpaper": "http://饭太硬.top/深色壁纸/api.php",
     "sites": [
         {
