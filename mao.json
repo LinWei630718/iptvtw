@@ -1,5 +1,5 @@
 {
-    "spider": "https://github.com/gaotianliuyun/gao/raw/refs/heads/master/jar/custom_spider.jar",
+    "spider": "http://fmys.top/lib/fm.jar",
     "wallpaper": "http://饭太硬.top/深色壁纸/api.php",
     "sites": [
         {
@@ -118,19 +118,8 @@
             "changeable": 0
         },
         {
-            "key": "hm",
-            "name": "黑木耳 | 無廣告",
-            "type": 4,
-            "api": "https://tang.hz.cz/power/hme",
-            "playUrl": "json:https://4tvbox.ggff.net/noad_v5.php?url=",
-            "searchable": 1,
-            "quickSearch": 0,
-            "filterable": 0,
-            "jar": "https://4tvbox.ggff.net/custom_spider.jar"
-        },
-        {
             "key": "hms",
-            "name": "黑木耳資源",
+            "name": "♣️黑木耳資源",
             "type": 1,
             "api": "https://json.heimuer.xyz/api.php/provide/vod",
             "searchable": 1,
@@ -345,17 +334,6 @@
             ]
         },
         {
-      "key": "黑木耳",
-      "name": "♣️黑木耳",
-      "type": 3,
-      "api": "csp_XBPQ",
-      "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 1,
-      "ext": "http://linwei.serv00.net/heimuer.json",
-      "jar": "http://linwei.serv00.net/xyqxbpq.jar"
-        },
-        {
             "key": "OK資源",
             "name": "🌈OK資源",
             "type": 2,
@@ -394,57 +372,6 @@
                 "犯罪片",
                 "科幻片",
                 "纪录片",
-                "经典片"
-            ]
-        },
-        {
-            "key": "kuaikanzy",
-            "name": "🕊️快看",
-            "type": 2,
-            "api": "https://kuaikan-api.com/api.php/provide/vod",
-            "searchable": 1,
-            "changeable": 1,
-            "categories": [
-                "日本动漫",
-                "国产动漫",
-                "韩国动漫",
-                "欧美动漫",
-                "港台动漫",
-                "国产剧",
-                "韩国剧",
-                "日本剧",
-                "港台剧",
-                "泰剧",
-                "海外剧",
-                "欧美剧",
-                "新马剧",
-                "其他剧",
-                "动画电影",
-                "韩国综艺",
-                "国产综艺",
-                "港台综艺",  
-                "日本综艺",
-                "欧美综艺",
-                "新马泰综艺",
-                "其他综艺",
-                "热门短剧",
-                "冒险片",
-                "剧情片",
-                "动作片",
-                "同性片",
-                "喜剧片",
-                "奇幻片",
-                "恐怖片",
-                "悬疑片",
-                "惊悚片",
-                "战争片",
-                "歌舞片",
-                "灾难片",
-                "爱情片",
-                "犯罪片",
-                "科幻片",
-                "纪录片",
-                "动画电影",
                 "经典片"
             ]
         },
@@ -582,63 +509,156 @@
                 "经典片"
             ]
         },
-                  {
-            "key": "PTT",
-            "name": "🎞️PTT",
-            "type": 3,
-            "api": "csp_PTT",
-            "jar":"https://linwei.serv00.net/custom_spider.jar",
-            "searchable": 1,
-            "changeable":1,
-            "quickSearch":1,
-            "filterable":1
-        },
-        {
-            "key": "星星",
-            "name": "🌟星星",
-            "type": 3,
-            "api": "csp_Star",
-            "searchable": 1,
-            "changeable": 1
-        },
-        {
-            "key": "玩偶",
-            "name": "👽玩偶",
-            "type": 3,
-            "api": "csp_Wogg",
-            "searchable": 1,
-            "changeable": 0,
-            "ext": {
-                "token": "影視天下第一",
-                "filter": "https://mirror.ghproxy.com/raw.githubusercontent.com/gaotianliuyun/gao/master/json/wogg.json"
-            }
-        },
-        {
-            "key": "賤賤",
-            "name": "🐭賤賤",
-            "type": 3,
-            "api": "csp_Jianpian",
-            "searchable": 1,
-            "changeable": 1,
-            "ext": "https://mirror.ghproxy.com/raw.githubusercontent.com/gaotianliuyun/gao/master/json/jianpian.json"
-        },
-        {
-            "key": "獨播",
-            "name": "🚝獨播🈲",
-            "type": 3,
-            "api": "csp_XPathMacFilter",
-            "searchable": 1,
-            "changeable": 1,
-            "ext": "https://mirror.ghproxy.com/raw.githubusercontent.com/gaotianliuyun/gao/master/json/duboku.json"
-        },
         {
             "key": "豆瓣",
-            "name": "🌕豆瓣",
+            "name": "👒豆瓣推薦❤",
             "type": 3,
             "api": "csp_Douban",
             "searchable": 0,
             "changeable": 1,
-            "ext": "https://mirror.ghproxy.com/raw.githubusercontent.com/gaotianliuyun/gao/master/json/douban.json"
+            "ext": "http://fmys.top/lib/douban.json"
+        },
+        {
+            "key": "樱花动漫jar",
+            "name": "🌺樱花動漫",
+            "type": 3,
+            "api": "csp_Yhdm",
+            "searchable": 1,
+            "quickSearch": 1,
+            "changeable": 1
+        },
+        {
+            "key": "py_三号动漫",
+            "name": "3️⃣三號動漫",
+            "type": 3,
+            "api": "http://fmys.top/py/sanhao.py",
+            "searchable": 0,
+            "quickSearch": 0,
+            "changeable": 0,
+            "filterable": 1
+        },
+        {
+            "key": "多多影音",
+            "name": "🤴多多影音",
+            "type": 3,
+            "api": "csp_Ddyy",
+            "searchable": 1,
+            "quickSearch": 1,
+            "changeable": 1,
+            "timeout": 30
+        },
+        {
+            "key": "优视频",
+            "name": "💯優優視頻",
+            "type": 3,
+            "api": "csp_Uvod",
+            "searchable": 1,
+            "quickSearch": 1,
+            "changeable": 1
+        },
+        {
+            "key": "低端影视",
+            "name": "🔅低端影視",
+            "type": 3,
+            "api": "csp_Ddys",
+            "playerType": 2,
+            "searchable": 1,
+            "quickSearch": 1,
+            "filterable": 1,
+            "ext": {
+                "site": "https://ddys.pro"
+            }
+        },
+        {
+            "key": "湾湾频道",
+            "name": "🌀PTT",
+            "type": 3,
+            "api": "csp_Ptt",
+            "searchable": 1,
+            "quickSearch": 1,
+            "changeable": 1
+        },
+        {
+            "key": "py_apple",
+            "name": "🍎小蘋果",
+            "type": 3,
+            "api": "http://fmys.top/py/apple.py",
+            "searchable": 0,
+            "quickSearch": 0,
+            "changeable": 0,
+            "filterable": 1
+        },
+        {
+            "key": "py_娃娃",
+            "name": "🎊娃娃影視",
+            "type": 3,
+            "api": "http://fmys.top/py/wawa.py",
+            "searchable": 0,
+            "quickSearch": 0,
+            "changeable": 0,
+            "filterable": 1
+        },
+        {
+            "key": "木耳",
+            "name": "🎠木耳影視",
+            "type": 3,
+            "api": "csp_Hmer",
+            "searchable": 1,
+            "filterable": 1,
+            "changeable": 1,
+            "timeout": 30
+        },
+        {
+            "key": "荐片",
+            "name": "⏳薦片影視",
+            "type": 3,
+            "api": "http://fmys.top/lib/drpy2.min.js",
+            "quickSearch": 1,
+            "changeable": 1,
+            "playerType": 1,
+            "ext": "http://fmys.top/lib/jp.js"
+        },
+        {
+            "key": "py_悠悠",
+            "name": "🪀悠悠影視",
+            "type": 3,
+            "api": "http://fmys.top/py/youyou.py",
+            "searchable": 0,
+            "quickSearch": 0,
+            "changeable": 0,
+            "filterable": 1
+        },
+        {
+            "key": "py_追剧",
+            "name": "☄️ 追劇影視",
+            "type": 3,
+            "api": "http://fmys.top/py/LREEOK.py",
+            "searchable": 0,
+            "quickSearch": 0,
+            "changeable": 0,
+            "filterable": 1
+        },
+        {
+            "key": "py_hitv",
+            "name": "☀️晴天影視",
+            "type": 3,
+            "api": "http://fmys.top/py/hitv.py",
+            "searchable": 0,
+            "quickSearch": 0,
+            "changeable": 0,
+            "filterable": 1
+        },
+        {
+            "key": "木偶哥哥",
+            "name": "🧸木偶哥哥",
+            "type": 3,
+            "api": "csp_Mogg",
+            "searchable": 1,
+            "quickSearch": 1,
+            "changeable": 1,
+            "ext": {
+                "site": "https://mo.666291.xyz"
+            }
         },
         {
             "key": "新6V",
@@ -648,17 +668,6 @@
             "searchable": 1,
             "changeable": 0,
             "timeout": 60
-        },
-        {
-            "key": "看球",
-            "name": "⚽看球",
-            "type": 3,
-            "api": "csp_Kanqiu",
-            "searchable": 1,
-            "changeable": 0,
-            "style": {
-                "type": "list"
-            }
         },
         {
             "key": "暴風",
@@ -677,14 +686,6 @@
             "changeable": 1
         },
         {
-            "key": "快帆",
-            "name": "⛵快帆🈲",
-            "type": 1,
-            "api": "https://api.kuaifan.tv/api.php/provide/vod",
-            "searchable": 1,
-            "changeable": 1
-        },
-        {
             "key": "量子",
             "name": "🥑量子",
             "type": 1,
@@ -697,14 +698,6 @@
             "name": "💫非凡",
             "type": 1,
             "api": "http://cj.ffzyapi.com/api.php/provide/vod",
-            "searchable": 1,
-            "changeable": 1
-        },
-        {
-            "key": "櫻花",
-            "name": "💮櫻花🈲",
-            "type": 3,
-            "api": "csp_Ying",
             "searchable": 1,
             "changeable": 1
         },
@@ -742,128 +735,12 @@
             }
         },
         {
-            "key": "bili_open",
-            "name": "🐱哔哩貓🈲",
-            "type": 3,
-            "api": "https://mirror.ghproxy.com/https://raw.githubusercontent.com/FongMi/CatVodOpen/main/open/bili_open.js",
-            "searchable": 1,
-            "changeable": 0,
-            "ext": {
-                "categories": "短剧#沙雕动画#沙雕穿越#沙雕",
-                "cookie": ""
-            }
-        },
-        {
-            "key": "酷狗",
-            "name": "🐶酷狗",
-            "type": 3,
-            "api": "csp_Kugou",
-            "searchable": 0,
-            "changeable": 0
-        },
-            {
-            "key": "php_madou",
-            "name": "🔞麻豆",
-            "type": 4,
-            "api": "https://demobe.serv00.net/madou.php",
-            "searchable": 1,
-            "quickSearch":0,
-            "filterable":0,
-            "style":{
-              "type":"rect",
-              "ratio":1.33
-              }
-        },
-        {
             "key": "本地",
             "name": "本地",
             "type": 3,
             "api": "csp_Local",
             "searchable": 0,
             "changeable": 0
-        },
-        {
-            "key": "AList",
-            "name": "AList",
-            "type": 3,
-            "api": "csp_AList",
-            "searchable": 1,
-            "changeable": 0,
-            "ext": "./json/alist.json"
-        },
-        {
-            "key": "WebDAV",
-            "name": "WebDAV",
-            "type": 3,
-            "api": "csp_WebDAV",
-            "searchable": 0,
-            "changeable": 0,
-            "ext": "./json/webdav.json"
-        },
-        {
-            "key": "JustLive",
-            "name": "JustLive",
-            "type": 3,
-            "api": "csp_JustLive",
-            "searchable": 1,
-            "changeable": 0
-        },
-        {
-            "key": "七夜",
-            "name": "🌉七夜🈲",
-            "type": 3,
-            "api": "csp_Dovx",
-            "searchable": 1,
-            "changeable": 0
-        },
-        {
-            "key": "易搜",
-            "name": "易搜",
-            "type": 3,
-            "api": "csp_YiSo",
-            "searchable": 1,
-            "changeable": 0
-        },
-        {
-            "key": "雲搜",
-            "name": "雲搜",
-            "type": 3,
-            "api": "csp_UpYun",
-            "searchable": 1,
-            "changeable": 0
-        },
-        {
-            "key": "盤搜",
-            "name": "盤搜",
-            "type": 3,
-            "api": "csp_PanSou",
-            "searchable": 1,
-            "changeable": 0
-        },
-        {
-            "key": "紙條搜",
-            "name": "紙條搜",
-            "type": 3,
-            "api": "csp_XiaoZhiTiao",
-            "searchable": 1,
-            "changeable": 0
-        },
-        {
-            "key": "盤搜索",
-            "name": "盤搜索",
-            "type": 3,
-            "api": "csp_PanSearch",
-            "searchable": 1,
-            "changeable": 0
-        },
-        {
-            "key": "找資源",
-            "name": "找資源",
-            "type": 3,
-            "api": "csp_Zhaozy",
-            "searchable": 1,
-            "changeable": 0,
-            "ext": "影視天下第一$$$test2$$$test2"
         },
         {
             "key": "push_agent",
