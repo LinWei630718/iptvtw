@@ -940,9 +940,10 @@
         "lives": [
         {
             "name": "直播嗅探",
-            "type": 3,
-            "api": "https://gh-proxy.com/https://raw.githubusercontent.com/LinWei630718/iptvtw/refs/heads/main/xt.txt",
-            "ext": {}
+            "type": 0,
+            "url": "https://gh-proxy.com/https://raw.githubusercontent.com/LinWei630718/iptvtw/refs/heads/main/xt.txt",
+            "ua": "okhttp/3.15",
+            "epg": "http://iptv.52sw.top:668/?ch={name}&date={date}"
         },
         {
             "name": "LITV立視(py)",
