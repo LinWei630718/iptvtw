@@ -939,6 +939,12 @@
     ],
         "lives": [
         {
+            "name": "直播嗅探",
+            "type": 3,
+            "api": "https://gh-proxy.com/https://raw.githubusercontent.com/LinWei630718/iptvtw/refs/heads/main/xt.txt",
+            "ext": {}
+        },
+        {
             "name": "LITV立視(py)",
             "type": 3,
             "api": "https://gh-proxy.com/https://raw.githubusercontent.com/LinWei630718/iptvtw/refs/heads/main/litv.py",
