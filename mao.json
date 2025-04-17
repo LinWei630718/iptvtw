@@ -3,13 +3,13 @@
     "wallpaper": "http://饭太硬.top/深色壁纸/api.php",
     "sites": [
         {
-            "key": "商店",
-            "name": "🏪商店",
-            "type": 3,
-            "api": "csp_Market",
-            "searchable": 0,
-            "changeable": 0,
-            "ext": "https://raw.githubusercontent.com/gaotianliuyun/gao/master/json/market.json"
+         "key":"黑木影视",
+         "name":"黑木影視",
+         "type":1,
+         "api":"https://heimuer.ggff.net/api.php/tvbox",
+         "searchable":1,
+         "quickSearch":1,
+         "filterable":0
         },
         {
             "key":"py_UpFuHn",
@@ -127,6 +127,75 @@
             "filterable": 1,
             "changeable": 0
         },
+        {
+         "key":"Qile优视频",
+         "name":"Qile優視頻",
+         "type":3,
+         "searchable":1,
+         "changeable":1,
+         "api":"csp_Uvod",
+         "playerType":2,
+         "filterable":1
+      },
+        {
+         "key":"Cori爱壹帆",
+         "name":"Cori愛壹帆",
+         "type":3,
+         "searchable":1,
+         "changeable":1,
+         "quickSearch":0,
+         "style":{
+            "type":"rect",
+            "ratio":0.75
+         },
+         "api":"csp_GM",
+         "ext":{
+            "userScript":"https://github.com/CatVodSpider-GM/SFW-Spiders/raw/refs/heads/main/userScripts/ysfp.user.js",
+            "debug":false,
+            "webViewSettings":{
+               "blockNetworkImage":true,
+               "blockList":[
+                  "*.png*",
+                  "*.mp3*",
+                  "*.css*",
+                  "https://*.googletagmanager.com/*",
+                  "https://*.google-analytics.com/*"
+               ]
+            },
+            "spider":{
+               "homeContent":{
+                  "loadUrl":"https://m.yfsp.tv/"
+               },
+               "categoryContent":{
+                  "loadUrl":"https://m.yfsp.tv/list/${tid}?type=${index-0:-0}${index-1:-,0}${index-2:-,0}${index-3:-,0}${index-4:-,0}${index-5:-}"
+               },
+               "detailContent":{
+                  "loadUrl":"https://m.yfsp.tv/play/${id}"
+               },
+               "playerContent":{
+                  "loadUrl":"https://m.yfsp.tv/play/${mediaKey}?id=${episodeKey}"
+               },
+               "searchContent":{
+                  "loadUrl":"https://m.yfsp.tv/search"
+               }
+            }
+         },
+         "jar":"https://github.com/CatVodSpider-GM/SFW-Spiders/raw/refs/heads/main/Spiders-Lib/GM.jar"
+      },
+      {
+         "key":"huarenoktv",
+         "name":"華人直播️",
+         "type":1,
+         "api":"https://huaren.live/api.php/tvbox",
+         "playUrl":"json:https://parse.okhuaren.com/?url=",
+         "searchable":1,
+         "quickSearch":1,
+         "filterable":1,
+         "header":{
+            "User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+            "Referer":"test"
+         }
+      },
         {
             "key": "hms",
             "name": "♣️黑木耳資源",
@@ -743,6 +812,15 @@
                 "type": "帕梅拉#太极拳#广场舞#演唱会",
                 "cookie": ""
             }
+        },
+        {
+            "key": "商店",
+            "name": "🏪商店",
+            "type": 3,
+            "api": "csp_Market",
+            "searchable": 0,
+            "changeable": 0,
+            "ext": "https://raw.githubusercontent.com/gaotianliuyun/gao/master/json/market.json"
         },
         {
             "key": "本地",
