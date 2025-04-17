@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>老師超慢跑</title>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --danger-color: #e74c3c;
+            --warning-color: #f39c12;
+            --dark-color: #34495e;
+            --light-color: #ecf0f1;
+            --text-color: #2c3e50;
+            --bg-color: white;
+            --container-bg: white;
+            --control-panel-bg: rgba(236, 240, 241, 0.5);
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #4dabf7;
+            --secondary-color: #69db7c;
+            --danger-color: #ff6b6b;
+            --warning-color: #fcc419;
+            --dark-color: #212529;
+            --light-color: #343a40;
+            --text-color: #e9ecef;
+            --bg-color: #212529;
+            --container-bg: #343a40;
+            --control-panel-bg: rgba(52, 58, 64, 0.5);
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Microsoft JhengHei', 'Noto Sans TC', 'Heiti TC', Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 1rem;
+            line-height: 1.6;
+            transition: background-color 0.3s;
+        }
+
+        .container {
+            background-color: var(--container-bg);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+        h1 {
+            margin: 0 0 1.5rem 0;
+            color: var(--primary-color);
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .control-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            background-color: var(--control-panel-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+            transition: background-color 0.3s;
+        }
+
+        .control-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 420px) {
+            .control-group {
+                flex-direction: column;
+                gap: 0.5rem;
+                align-items: flex-start;
+            }
+
+            .control-group > div {
+                align-self: flex-end;
+            }
+        }
+
+        .control-label {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--text-color);
+        }
+
+        .control-buttons {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        button {
+            border: none;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: var(--transition);
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+        }
+
+        button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        button:active:not(:disabled) {
+            transform: translateY(1px);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        button.control-btn {
+            font-size: 1.25rem;
+            width: 40px;
+            height: 40px;
+            padding: 0;
+            line-height: 40px;
+            background-color: var(--primary-color);
+        }
+
+        .value-display {
+            font-size: 1.3rem;
+            font-weight: bold;
+            min-width: 60px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        #timer-display {
+            font-size: 4rem;
+            margin: 1.5rem 0;
+            font-weight: bold;
+            color: var(--text-color);
+            font-variant-numeric: tabular-nums;
+            line-height: 1;
+            background-color: var(--bg-color);
+            padding: 1rem;
+            border-radius: 12px;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .milestone-alert {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--warning-color);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            box-shadow: var(--shadow);
+            z-index: 100;
+            opacity: 0;
+            transition: opacity 0.3s, top 0.3s;
+            text-align: center;
+            pointer-events: none;
+        }
+
+        .milestone-alert.show {
+            opacity: 1;
+            top: 30px;
+            animation: alertPulse 1.5s;
+        }
+
+        @keyframes alertPulse {
+            0% { transform: translateX(-50%) scale(0.95); }
+            50% { transform: translateX(-50%) scale(1.05); }
+            100% { transform: translateX(-50%) scale(1); }
+        }
+
+        .metronome-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 1rem 0;
+        }
+
+        .metronome-indicator {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: #ddd;
+            transition: background-color 0.1s;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .metronome-indicator.active {
+            background-color: var(--danger-color);
+            box-shadow: 0 0 12px var(--danger-color);
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .action-button {
+            min-width: 110px;
+            font-size: 1.1rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+        }
+
+        #start-button {
+            background-color: var(--secondary-color);
+        }
+
+        #reset-button {
+            background-color: var(--danger-color);
+        }
+
+        #pause-button {
+            background-color: var(--warning-color);
+        }
+
+        #countdown-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            color: white;
+            font-size: 8rem;
+            font-weight: bold;
+            display: none;
+        }
+
+        #countdown-number {
+            animation: pulse 1s infinite;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
+        }
+
+        .completion-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(46, 204, 113, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            color: white;
+            font-size: 2.5rem;
+            font-weight: bold;
+            flex-direction: column;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .completion-overlay .check-icon {
+            font-size: 5rem;
+            margin-bottom: 1rem;
+            animation: bounceIn 1s;
+        }
+
+        .completion-overlay .completion-text {
+            animation: fadeInUp 1s;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .status-label {
+            font-size: 0.9rem;
+            color: #777;
+            margin-top: 0.5rem;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(0.95);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* 作者資訊固定在底部樣式 */
+        .footer {
+            margin-top: 2rem;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            font-size: 0.9rem;
+            text-align: center;
+            width: 100%;
+            max-width: 500px;
+            transition: background-color 0.3s;
+        }
+
+        .footer a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            border-bottom: 1px dotted white;
+        }
+
+        .footer a:hover {
+            border-bottom: 1px solid white;
+        }
+
+        /* 主題切換按鈕 */
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: var(--dark-color);
+            color: white;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            z-index: 10;
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(30deg);
+        }
+
+        .theme-toggle .icon {
+            font-size: 1.5rem;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 1.5rem;
+            }
+            
+            #timer-display {
+                font-size: 3rem;
+            }
+            
+            #countdown-overlay {
+                font-size: 6rem;
+            }
+            
+            .action-button {
+                min-width: 100px;
+                padding: 0.6rem 1.2rem;
+            }
+            
+            h1 {
+                font-size: 1.75rem;
+            }
+
+            .completion-overlay {
+                font-size: 2rem;
+            }
+
+            .completion-overlay .check-icon {
+                font-size: 4rem;
+            }
+
+            .theme-toggle {
+                top: 10px;
+                right: 10px;
+                width: 40px;
+                height: 40px;
+            }
+            
+            .footer {
+                font-size: 0.8rem;
+                padding: 8px 12px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .control-panel {
+                padding: 1rem;
+            }
+            
+            #timer-display {
+                font-size: 2.5rem;
+                padding: 0.75rem;
+            }
+            
+            #countdown-overlay {
+                font-size: 5rem;
+            }
+
+            .completion-overlay {
+                font-size: 1.75rem;
+            }
+
+            .completion-overlay .check-icon {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 主題切換按鈕 -->
+    <div class="theme-toggle" id="theme-toggle">
+        <div class="icon">🌓</div>
+    </div>
+
+    <div class="container">
+        <h1>老師超慢跑</h1>
+        
+        <div class="control-panel">
+            <div class="control-group">
+                <span class="control-label">倒數時間 (分鐘):</span>
+                <div class="control-buttons">
+                    <button class="control-btn" id="decrease-time">-</button>
+                    <span class="value-display" id="time-value">30</span>
+                    <button class="control-btn" id="increase-time">+</button>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <span class="control-label">節拍速度 (BPM):</span>
+                <div class="control-buttons">
+                    <button class="control-btn" id="decrease-bpm">-</button>
+                    <span class="value-display" id="bpm-value">170</span>
+                    <button class="control-btn" id="increase-bpm">+</button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="timer-display">30:00</div>
+        
+        <div class="metronome-container">
+            <div class="metronome-indicator" id="metronome-indicator"></div>
+            <div class="status-label" id="status-label">準備就緒</div>
+        </div>
+        
+        <div class="action-buttons">
+            <button class="action-button" id="start-button">開始</button>
+            <button class="action-button" id="pause-button" disabled>暫停</button>
+            <button class="action-button" id="reset-button">重置</button>
+        </div>
+    </div>
+
+    <!-- 固定在底部的作者資訊 -->
+    <div class="footer">
+        Made by <a href="https://linwei0718.serv00.net/" target="_blank">LinWei老師</a>
+    </div>
+
+    <div id="countdown-overlay">
+        <span id="countdown-number">3</span>
+    </div>
+
+    <div class="completion-overlay" id="completion-overlay">
+        <div class="check-icon">✓</div>
+        <div class="completion-text">完成！恭喜您！</div>
+    </div>
+
+    <div class="milestone-alert" id="milestone-alert"></div>
+
+    <script>
+        // 主題切換功能
+        const themeToggle = document.getElementById('theme-toggle');
+        const htmlElement = document.documentElement;
+        
+        themeToggle.addEventListener('click', () => {
+            if (htmlElement.getAttribute('data-theme') === 'light') {
+                htmlElement.setAttribute('data-theme', 'dark');
+                themeToggle.querySelector('.icon').textContent = '☀️';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                htmlElement.setAttribute('data-theme', 'light');
+                themeToggle.querySelector('.icon').textContent = '🌙';
+                localStorage.setItem('theme', 'light');
+            }
+        });
+        
+        // 檢查本地存儲中的主題設置
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            htmlElement.setAttribute('data-theme', savedTheme);
+            if (savedTheme === 'dark') {
+                themeToggle.querySelector('.icon').textContent = '☀️';
+            } else {
+                themeToggle.querySelector('.icon').textContent = '🌙';
+            }
+        }
+        
+        // 確保在不同設備上能正常運行所需的變數和功能
+        let audioContext = null;
+        let audioInitialized = false;
+        
+        // 嘗試初始化音頻（在用戶互動後）
+        function initializeAudio() {
+            if (!audioInitialized) {
+                try {
+                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    audioInitialized = true;
+                    return true;
+                } catch (e) {
+                    console.error('無法初始化音頻上下文：', e);
+                    alert('您的瀏覽器可能不支持音頻功能。節拍器將無聲運行。');
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        // 初始化參數
+        let timeInMinutes = 30;
+        let bpm = 170;
+        let isRunning = false;
+        let isPaused = false;
+        let timerInterval;
+        let metronomeInterval;
+        let timeLeft;
+        let isCountingDown = false;
+        let lastMilestoneMinute = null;
+
+        // DOM 元素
+        const timeDisplay = document.getElementById('timer-display');
+        const timeValue = document.getElementById('time-value');
+        const bpmValue = document.getElementById('bpm-value');
+        const startButton = document.getElementById('start-button');
+        const pauseButton = document.getElementById('pause-button');
+        const resetButton = document.getElementById('reset-button');
+        const increaseTimeButton = document.getElementById('increase-time');
+        const decreaseTimeButton = document.getElementById('decrease-time');
+        const increaseBpmButton = document.getElementById('increase-bpm');
+        const decreaseBpmButton = document.getElementById('decrease-bpm');
+        const metronomeIndicator = document.getElementById('metronome-indicator');
+        const countdownOverlay = document.getElementById('countdown-overlay');
+        const countdownNumber = document.getElementById('countdown-number');
+        const statusLabel = document.getElementById('status-label');
+        const completionOverlay = document.getElementById('completion-overlay');
+        const milestoneAlert = document.getElementById('milestone-alert');
+
+        // 初始化顯示
+        updateTimeDisplay(timeInMinutes * 60);
+        
+        // 事件監聽器
+        increaseTimeButton.addEventListener('click', () => {
+            if (!isRunning && timeInMinutes < 90) {
+                timeInMinutes += 10;
+                timeValue.textContent = timeInMinutes;
+                updateTimeDisplay(timeInMinutes * 60);
+            }
+        });
+
+        decreaseTimeButton.addEventListener('click', () => {
+            if (!isRunning && timeInMinutes > 10) {
+                timeInMinutes -= 10;
+                timeValue.textContent = timeInMinutes;
+                updateTimeDisplay(timeInMinutes * 60);
+            }
+        });
+
+        increaseBpmButton.addEventListener('click', () => {
+            if (bpm < 210) {
+                bpm += 10;
+                bpmValue.textContent = bpm;
+                
+                if (isRunning && !isPaused) {
+                    clearInterval(metronomeInterval);
+                    startMetronome();
+                }
+            }
+        });
+
+        decreaseBpmButton.addEventListener('click', () => {
+            if (bpm > 170) {
+                bpm -= 10;
+                bpmValue.textContent = bpm;
+                
+                if (isRunning && !isPaused) {
+                    clearInterval(metronomeInterval);
+                    startMetronome();
+                }
+            }
+        });
+
+        // 確保在所有設備上的點擊/觸摸事件都能正常工作
+        startButton.addEventListener('click', handleStart);
+        pauseButton.addEventListener('click', handlePause);
+        resetButton.addEventListener('click', handleReset);
+        
+        // 點擊完成覆蓋層關閉它
+        completionOverlay.addEventListener('click', () => {
+            completionOverlay.style.display = 'none';
+        });
+        
+        // 啟用音頻和其他行動設備相關兼容性
+        document.addEventListener('touchstart', function() {
+            // 在用戶首次交互時初始化音頻（為了行動設備）
+            if (!audioInitialized) {
+                initializeAudio();
+            }
+        }, { once: true });
+
+        function handleStart() {
+            if (isCountingDown) return;
+            
+            // 確保首次交互時初始化音頻（解決行動設備音頻限制）
+            initializeAudio();
+            
+            if (!isRunning) {
+                startCountdownBeforeStart();
+            } else if (isPaused) {
+                startCountdownBeforeResume();
+            }
+        }
+
+        function handlePause() {
+            if (isRunning && !isPaused && !isCountingDown) {
+                isPaused = true;
+                clearInterval(timerInterval);
+                clearInterval(metronomeInterval);
+                
+                startButton.disabled = false;
+                startButton.textContent = '繼續';
+                pauseButton.disabled = true;
+                statusLabel.textContent = '已暫停';
+            }
+        }
+
+        function handleReset() {
+            if (isCountingDown) {
+                isCountingDown = false;
+                countdownOverlay.style.display = 'none';
+            }
+            
+            isRunning = false;
+            isPaused = false;
+            clearInterval(timerInterval);
+            clearInterval(metronomeInterval);
+            
+            updateTimeDisplay(timeInMinutes * 60);
+            
+            startButton.disabled = false;
+            startButton.textContent = '開始';
+            pauseButton.disabled = true;
+            increaseTimeButton.disabled = false;
+            decreaseTimeButton.disabled = false;
+            statusLabel.textContent = '準備就緒';
+            
+            // 重置里程碑記錄
+            lastMilestoneMinute = null;
+            
+            // 確保完成覆蓋層是隱藏的
+            completionOverlay.style.display = 'none';
+        }
+
+        // 開始前倒數
+        function startCountdownBeforeStart() {
+            if (isCountingDown) return;
+            
+            isCountingDown = true;
+            countdownOverlay.style.display = 'flex';
+            countdownNumber.textContent = '3';
+            
+            // 初始化Audio Context (防止用戶互動限制)
+            initializeAudio();
+            
+            // 播放倒數3的聲音
+            createBeep(880, 0.3);  // A5音
+            
+            setTimeout(() => {
+                countdownNumber.textContent = '2';
+                createBeep(880, 0.3);  // A5音
+                
+                setTimeout(() => {
+                    countdownNumber.textContent = '1';
+                    createBeep(880, 0.3);  // A5音
+                    
+                    setTimeout(() => {
+                        countdownNumber.textContent = '0';
+                        createBeep(988, 0.5);  // B5音（比之前的音高一些）
+                        
+                        setTimeout(() => {
+                            countdownOverlay.style.display = 'none';
+                            isCountingDown = false;
+                            
+                            // 真正開始計時器
+                            isRunning = true;
+                            isPaused = false;
+                            timeLeft = timeInMinutes * 60;
+                            lastMilestoneMinute = Math.floor(timeLeft / 60); // 設置初始里程碑
+                            startTimer();
+                            startMetronome();
+                            
+                            startButton.disabled = true;
+                            pauseButton.disabled = false;
+                            increaseTimeButton.disabled = true;
+                            decreaseTimeButton.disabled = true;
+                            statusLabel.textContent = '運行中';
+                        }, 1000);
+                    }, 1000);
+                }, 1000);
+            }, 1000);
+        }
+
+        // 暫停後繼續前倒數
+        function startCountdownBeforeResume() {
+            if (isCountingDown) return;
+            
+            isCountingDown = true;
+            countdownOverlay.style.display = 'flex';
+            countdownNumber.textContent = '3';
+            
+            // 播放倒數3的聲音
+            createBeep(880, 0.3);  // A5音
+            
+            setTimeout(() => {
+                countdownNumber.textContent = '2';
+                createBeep(880, 0.3);  // A5音
+                
+                setTimeout(() => {
+                    countdownNumber.textContent = '1';
+                    createBeep(880, 0.3);  // A5音
+                    
+                    setTimeout(() => {
+                        countdownNumber.textContent = '0';
+                        createBeep(988, 0.5);  // B5音（比之前的音高一些）
+                        
+                        setTimeout(() => {
+                            countdownOverlay.style.display = 'none';
+                            isCountingDown = false;
+                            
+                            // 真正繼續計時器
+                            isPaused = false;
+                            startTimer();
+                            startMetronome();
+                            
+                            startButton.textContent = '開始';
+                            startButton.disabled = true;
+                            pauseButton.disabled = false;
+                            statusLabel.textContent = '運行中';
+                        }, 1000);
+                    }, 1000);
+                }, 1000);
+            }, 1000);
+        }
+
+        // 顯示里程碑提示
+        function showMilestoneAlert(minutes) {
+            milestoneAlert.textContent = `剩餘 ${minutes} 分鐘`;
+            milestoneAlert.classList.add('show');
+            
+            setTimeout(() => {
+                milestoneAlert.classList.remove('show');
+            }, 3000);
+        }
+
+        // 播放10分鐘里程碑提示音
+        function playMilestoneSound() {
+            // 播放三個上升的音調
+            createBeep(659.25, 0.15); // E5
+            setTimeout(() => {
+                createBeep(783.99, 0.15); // G5
+            }, 200);
+            setTimeout(() => {
+                createBeep(987.77, 0.3); // B5
+            }, 400);
+        }
+
+        // 更新時間顯示
+        function updateTimeDisplay(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = seconds % 60;
+            timeDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+        }
+
+        // 開始倒數計時器
+        function startTimer() {
+            clearInterval(timerInterval);
+            updateTimeDisplay(timeLeft);
+            
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimeDisplay(timeLeft);
+                
+                // 檢查10分鐘里程碑 - 修正的部分
+                const currentMinute = Math.floor(timeLeft / 60);
+                // 在整10分鐘時觸發提示，且確保每個里程碑只觸發一次
+                if (currentMinute > 0 && currentMinute % 10 === 0 && timeLeft % 60 === 0 && currentMinute !== lastMilestoneMinute) {
+                    lastMilestoneMinute = currentMinute;
+                    playMilestoneSound();
+                    showMilestoneAlert(currentMinute);
+                }
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    clearInterval(metronomeInterval);
+                    isRunning = false;
+                    
+                    startButton.disabled = false;
+                    pauseButton.disabled = true;
+                    increaseTimeButton.disabled = false;
+                    decreaseTimeButton.disabled = false;
+                    statusLabel.textContent = '時間到！';
+                    
+                    // 播放結束提示音
+                    playCompletionSound();
+                    
+                    // 顯示完成覆蓋層
+                    completionOverlay.style.display = 'flex';
+                    
+                    // 3秒後自動關閉完成覆蓋層
+                    setTimeout(() => {
+                        completionOverlay.style.display = 'none';
+                    }, 5000);
+                }
+            }, 1000);
+        }
+
+        // 創建節拍聲音（加入錯誤處理以提高兼容性）
+        function createBeep(frequency = 1000, duration = 0.1) {
+            if (!audioContext && !initializeAudio()) {
+                return; // 如果無法初始化音頻，則退出
+            }
+            
+            try {
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.type = 'sine';
+                oscillator.frequency.value = frequency;
+                
+                gainNode.gain.value = 0.5;
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.start();
+                
+                // 淡出效果
+                gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + duration);
+                
+                setTimeout(() => {
+                    try {
+                        oscillator.stop();
+                    } catch (e) {
+                        console.warn('停止聲音時出錯', e);
+                    }
+                }, duration * 1000);
+            } catch (e) {
+                console.error('無法創建音頻', e);
+            }
+        }
+
+        // 閃爍指示器
+        function flashIndicator() {
+            metronomeIndicator.classList.add('active');
+            setTimeout(() => {
+                metronomeIndicator.classList.remove('active');
+            }, 100);
+        }
+
+        // 開始節拍器（加入錯誤處理）
+        function startMetronome() {
+            try {
+                const interval = 60000 / bpm; // 毫秒間隔
+                
+                metronomeInterval = setInterval(() => {
+                    createBeep();
+                    flashIndicator();
+                }, interval);
+            } catch (e) {
+                console.error('啟動節拍器時出錯', e);
+                statusLabel.textContent = '節拍器錯誤';
+            }
+        }
+
+        // 完成音效（更長更悅耳的音樂旋律）
+        function playCompletionSound() {
+            try {
+                // 用和諧的音階播放完成旋律
+                const notes = [
+                    { freq: 523.25, dur: 0.2 },  // C5
+                    { freq: 587.33, dur: 0.2 },  // D5
+                    { freq: 659.25, dur: 0.2 },  // E5
+                    { freq: 698.46, dur: 0.2 },  // F5
+                    { freq: 783.99, dur: 0.3 },  // G5
+                    { freq: 880.00, dur: 0.3 },  // A5
+                    { freq: 987.77, dur: 0.4 },  // B5
+                    { freq: 1046.50, dur: 0.5 }  // C6 (結束音)
+                ];
+                
+                let delay = 0;
+                notes.forEach(note => {
+                    setTimeout(() => {
+                        createBeep(note.freq, note.dur);
+                    }, delay * 1000);
+                    delay += note.dur + 0.1; // 音符間隔
+                });
+            } catch (e) {
+                console.error('播放完成聲音時出錯', e);
+            }
+        }
+
+        // 監聽窗口大小變化，確保響應式設計
+        window.addEventListener('resize', function() {
+            // 根據設備寬度調整倒數數字大小
+            const width = window.innerWidth;
+            if (width < 400) {
+                countdownNumber.style.fontSize = '5rem';
+            } else if (width < 600) {
+                countdownNumber.style.fontSize = '6rem';
+            } else {
+                countdownNumber.style.fontSize = '8rem';
+            }
+        });
+
+        // 初次調用以設置初始大小
+        window.dispatchEvent(new Event('resize'));
+    </script>
+</body>
+</html>
