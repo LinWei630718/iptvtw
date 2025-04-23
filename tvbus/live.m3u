@@ -1,203 +1,203 @@
 #EXTM3U x-tvg-url="https://assets.livednow.com/epg.xml,http://mg.52sw.top:668/epg,https://epg.v1.mk/fy.xml"
-#EXTINF:-1 group-title="台灣頻道",台視
+#EXTINF:-1 group-title="綜合頻道",台視
 http://www.insurancegogogo.com/4987/ttv_taiwan/playlist.m3u8
-#EXTINF:-1 group-title="台灣頻道",中視
+#EXTINF:-1 group-title="綜合頻道",中視
 http://122.117.71.103:8502/.m3u8
-#EXTINF:-1 group-title="台灣頻道",華視
+#EXTINF:-1 group-title="綜合頻道",華視
 http://122.117.71.103:8503/.m3u8
-#EXTINF:-1 group-title="台灣頻道",民視
+#EXTINF:-1 group-title="綜合頻道",民視
 http://122.117.71.103:8504/.m3u8
-#EXTINF:-1 group-title="台灣頻道",公視
+#EXTINF:-1 group-title="綜合頻道",公視
 http://122.117.71.103:8505/.m3u8
-#EXTINF:-1 group-title="台灣頻道",公視台語
+#EXTINF:-1 group-title="綜合頻道",公視台語
 http://www.insurancegogogo.com/4987/ctv2_twn/playlist.m3u8
-#EXTINF:-1 group-title="台灣頻道",人間衛視
-http://122.117.71.103:8506/.m3u8
-#EXTINF:-1 group-title="台灣頻道",大愛
-http://122.117.71.103:8507/.m3u8
-#EXTINF:-1 group-title="台灣頻道",大愛
-http://www.insurancegogogo.com/4987/daai_twn/playlist.m3u8
-#EXTINF:-1 group-title="台灣頻道",大愛2
-http://www.insurancegogogo.com/4987/daai2_twn/playlist.m3u8
-#EXTINF:-1 group-title="台灣頻道",好消息
-http://122.117.71.103:8508/.m3u8
-#EXTINF:-1 group-title="台灣頻道",CI罪犯偵緝
-http://www.insurancegogogo.com/4987/ci_twn/playlist.m3u8
-#EXTINF:-1 group-title="台灣頻道",DMAX頻道
-http://www.insurancegogogo.com/4987/natgeohd_twn/playlist.m3u8
-#EXTINF:-1 group-title="台灣頻道",Trace Sport Stars
-http://122.117.71.103:8509/.m3u8
-#EXTINF:-1 group-title="台灣頻道",DISCOVERY
-http://mytv.cdn.com.mp/live/d/stream.m3u8
-#EXTINF:-1 group-title="台灣頻道",DISCOVERY
-http://www.insurancegogogo.com/4987/discoverytwn_twn/playlist.m3u8
-#EXTINF:-1 group-title="台灣頻道",DISCOVERY
-http://122.117.71.103:8510/.m3u8
-#EXTINF:-1 group-title="台灣頻道",BBC EARTH
-http://www.insurancegogogo.com/4987/bbcearth_twn/playlist.m3u8
-#EXTINF:-1 group-title="台灣頻道",TLC旅遊生活
-http://122.117.71.103:8511/.m3u8
-#EXTINF:-1 group-title="台灣頻道",TLC旅遊生活
-http://www.insurancegogogo.com/4987/tlc_twn/playlist.m3u8
-#EXTINF:-1 group-title="台灣頻道",EYE TV旅遊
-http://www.insurancegogogo.com/4987/eyetvtravel_twn/playlist.m3u8
-#EXTINF:-1 group-title="台灣頻道",EYE TV戲劇
-http://www.insurancegogogo.com/4987/eyetvxiju_twn/playlist.m3u8
-#EXTINF:-1 group-title="台灣頻道",動物星球
-http://122.117.71.103:8512/.m3u8
-#EXTINF:-1 group-title="台灣頻道",動物星球
-http://www.insurancegogogo.com/4987/animalplanet_twn/playlist.m3u8
-#EXTINF:-1 group-title="台灣頻道",美食星球
-http://www.insurancegogogo.com/4987/foodplanet_twn/playlist.m3u8
-#EXTINF:-1 group-title="台灣頻道",momo親子台
-http://122.117.71.103:8514/.m3u8
-#EXTINF:-1 group-title="台灣頻道",東森幼幼
-http://122.117.71.103:8515/.m3u8
-#EXTINF:-1 group-title="台灣頻道",靖天卡通
-http://www.insurancegogogo.com/4987/jingtiancartoon_twn/playlist.m3u8
-#EXTINF:-1 group-title="台灣頻道",龍華卡通
-http://122.117.71.103:8516/.m3u8
-#EXTINF:-1 group-title="台灣頻道",緯來綜合
-http://122.117.71.103:8517/.m3u8
-#EXTINF:-1 group-title="台灣頻道",八大第一
-http://122.117.71.103:8518/.m3u8
-#EXTINF:-1 group-title="台灣頻道",八大綜合
-http://122.117.71.103:8519/.m3u8
-#EXTINF:-1 group-title="台灣頻道",三立台灣
-http://122.117.71.103:8520/.m3u8
-#EXTINF:-1 group-title="台灣頻道",三立綜合
-http://www.insurancegogogo.com/4987/sanlizhonghe/playlist.m3u8
-#EXTINF:-1 group-title="台灣頻道",韓國娛樂
-http://122.117.71.103:8522/.m3u8
-#EXTINF:-1 group-title="台灣頻道",中天綜合
-http://122.117.71.103:8525/.m3u8
-#EXTINF:-1 group-title="台灣頻道",中天娛樂
-http://122.117.71.103:8526/.m3u8
-#EXTINF:-1 group-title="台灣頻道",東風衛視
-http://122.117.71.103:8527/.m3u8
-#EXTINF:-1 group-title="台灣頻道",華藝中文
-http://www.insurancegogogo.com/4987/weishichinese_twn/playlist.m3u8
-#EXTINF:-1 group-title="台灣頻道",TVBS新聞
-http://122.117.71.103:8528/.m3u8
-#EXTINF:-1 group-title="台灣頻道",東森戲劇
-http://122.117.71.103:8529/.m3u8
-#EXTINF:-1 group-title="台灣頻道",東森戲劇
-http://122.117.71.103:8521/.m3u8
-#EXTINF:-1 group-title="台灣頻道",東森戲劇
-http://122.117.71.103:8560/.m3u8
-#EXTINF:-1 group-title="台灣頻道",東森戲劇
-http://122.117.71.103:8566/.m3u8
-#EXTINF:-1 group-title="台灣頻道",東森綜合
-http://www.insurancegogogo.com/4987/ettvzhonghe/playlist.m3u8
-#EXTINF:-1 group-title="台灣頻道",八大戲劇
-http://122.117.71.103:8530/.m3u8
-#EXTINF:-1 group-title="台灣頻道",八大戲劇
-http://www.insurancegogogo.com/4987/badadrama/playlist.m3u8
-#EXTINF:-1 group-title="台灣頻道",TVBS新聞
-http://122.117.71.103:8531/.m3u8
-#EXTINF:-1 group-title="台灣頻道",緯來戲劇
-http://122.117.71.103:8532/.m3u8
-#EXTINF:-1 group-title="台灣頻道",龍華戲劇
-http://122.117.71.103:8533/.m3u8
-#EXTINF:-1 group-title="台灣頻道",Taiwan Plus
-http://122.117.71.103:8537/.m3u8
-#EXTINF:-1 group-title="台灣頻道",東森新聞
-http://122.117.71.103:8539/.m3u8
-#EXTINF:-1 group-title="台灣頻道",東森財經新聞
-http://www.insurancegogogo.com/4987/ettvcaijing_twn/playlist.m3u8
-#EXTINF:-1 group-title="台灣頻道",中天新聞
-http://122.117.71.103:8540/.m3u8
-#EXTINF:-1 group-title="台灣頻道",寰宇新聞
-http://www.insurancegogogo.com/4987/huanyuxinwen_twn/playlist.m3u8
-#EXTINF:-1 group-title="台灣頻道",TVBS新聞
-http://122.117.71.103:8538/.m3u8
-#EXTINF:-1 group-title="台灣頻道",TVBS新聞
-http://122.117.71.103:8534/.m3u8
-#EXTINF:-1 group-title="台灣頻道",TVBS新聞
-http://122.117.71.103:8536/.m3u8
-#EXTINF:-1 group-title="台灣頻道",TVBS新聞
-http://122.117.71.103:8541/.m3u8
-#EXTINF:-1 group-title="台灣頻道",TVBS新聞
-http://122.117.71.103:8542/.m3u8
-#EXTINF:-1 group-title="台灣頻道",TVBS新聞
-http://122.117.71.103:8543/.m3u8
-#EXTINF:-1 group-title="台灣頻道",TVBS新聞
-http://122.117.71.103:8548/.m3u8
-#EXTINF:-1 group-title="台灣頻道",TVBS新聞
-http://122.117.71.103:8553/.m3u8
-#EXTINF:-1 group-title="台灣頻道",TVBS新聞
-http://122.117.71.103:8561/.m3u8
-#EXTINF:-1 group-title="台灣頻道",TVBS新聞
-http://122.117.71.103:8562/.m3u8
-#EXTINF:-1 group-title="台灣頻道",TVBS
+#EXTINF:-1 group-title="綜合頻道",TVBS
 http://122.117.71.103:8544/.m3u8
-#EXTINF:-1 group-title="台灣頻道",TVBS歡樂
-http://www.insurancegogogo.com/4987/tvbshuanle_twn/playlist.m3u8
-#EXTINF:-1 group-title="台灣頻道",非凡新聞
-http://122.117.71.103:8575/.m3u8
-#EXTINF:-1 group-title="台灣頻道",非凡新聞
-http://www.insurancegogogo.com/4987/feifannews_twn/playlist.m3u8
-#EXTINF:-1 group-title="台灣頻道",非凡商業
-http://122.117.71.103:8576/.m3u8
-#EXTINF:-1 group-title="台灣頻道",緯來電影
-http://122.117.71.103:8554/.m3u8
-#EXTINF:-1 group-title="台灣頻道",緯來日本
-http://www.insurancegogogo.com/4987/videolandjapan/playlist.m3u8
-#EXTINF:-1 group-title="台灣頻道",緯來綜合
-http://www.insurancegogogo.com/4987/videolandzonghe/playlist.m3u8
-#EXTINF:-1 group-title="台灣頻道",龍華電影
-http://122.117.71.103:8555/.m3u8
-#EXTINF:-1 group-title="台灣頻道",龍華電影
-http://www.insurancegogogo.com/4987/xingwei_movie/playlist.m3u8
-#EXTINF:-1 group-title="台灣頻道",龍華洋片
-http://www.insurancegogogo.com/4987/lunghuajingdian_twn/playlist.m3u8
-#EXTINF:-1 group-title="台灣頻道",HBO
-http://122.117.71.103:8556/.m3u8
-#EXTINF:-1 group-title="台灣頻道",HBO
-http://www.insurancegogogo.com/4987/hbohd_twn/playlist.m3u8
-#EXTINF:-1 group-title="台灣頻道",AXN
-http://www.insurancegogogo.com/4987/axn_twn/playlist.m3u8
-#EXTINF:-1 group-title="台灣頻道",AXN
-http://122.117.71.103:8557/.m3u8
-#EXTINF:-1 group-title="台灣頻道",CINEMAX
-http://122.117.71.103:8558/.m3u8
-#EXTINF:-1 group-title="台灣頻道",CINEMAX
-http://www.insurancegogogo.com/4987/cinemax_twn/playlist.m3u8
-#EXTINF:-1 group-title="台灣頻道",AMC電影
-http://122.117.71.103:8559/.m3u8
-#EXTINF:-1 group-title="台灣頻道",東森電影
-http://www.insurancegogogo.com/4987/ettvmovie/playlist.m3u8
-#EXTINF:-1 group-title="台灣頻道",東森電影
-http://mytv.cdn.com.mp/live/dsdy/stream.m3u8
-#EXTINF:-1 group-title="台灣頻道",東森洋片
-http://www.insurancegogogo.com/4987/ettvwestern/playlist.m3u8
-#EXTINF:-1 group-title="台灣頻道",龍祥時代
-http://mytv.cdn.com.mp/live/lxsd/stream.m3u8
-#EXTINF:-1 group-title="台灣頻道",龍祥時代
-http://www.insurancegogogo.com/4987/lungxiangtime_twn/playlist.m3u8
-#EXTINF:-1 group-title="台灣頻道",緯來電影
-http://mytv.cdn.com.mp/live/wldy/stream.m3u8
-#EXTINF:-1 group-title="台灣頻道",美亞電影
-http://www.insurancegogogo.com/4987/meiyamovie_twn/playlist.m3u8
-#EXTINF:-1 group-title="台灣頻道",好萊塢電影
-http://mytv.cdn.com.mp/live/hlwdy/stream.m3u8
-#EXTINF:-1 group-title="台灣頻道",好萊塢電影
-http://www.insurancegogogo.com/4987/hollywoodmovies_twn/playlist.m3u8
-#EXTINF:-1 group-title="台灣頻道",ELTA影劇
-http://www.insurancegogogo.com/4987/eltayingju_twn/playlist.m3u8
-#EXTINF:-1 group-title="台灣頻道",天映經典
-http://www.insurancegogogo.com/4987/Celestial2/playlist.m3u8
-#EXTINF:-1 group-title="台灣頻道",天映頻道
-http://www.insurancegogogo.com/4987/Celestialindo/playlist.m3u8
-#EXTINF:-1 group-title="台灣頻道",Animax
+#EXTINF:-1 group-title="教育宗教",人間衛視
+http://122.117.71.103:8506/.m3u8
+#EXTINF:-1 group-title="教育宗教",大愛
+http://122.117.71.103:8507/.m3u8
+#EXTINF:-1 group-title="教育宗教",大愛
+http://www.insurancegogogo.com/4987/daai_twn/playlist.m3u8
+#EXTINF:-1 group-title="教育宗教",大愛2
+http://www.insurancegogogo.com/4987/daai2_twn/playlist.m3u8
+#EXTINF:-1 group-title="教育宗教",好消息
+http://122.117.71.103:8508/.m3u8
+#EXTINF:-1 group-title="知識旅遊",CI罪犯偵緝
+http://www.insurancegogogo.com/4987/ci_twn/playlist.m3u8
+#EXTINF:-1 group-title="知識旅遊",DMAX頻道
+http://www.insurancegogogo.com/4987/natgeohd_twn/playlist.m3u8
+#EXTINF:-1 group-title="知識旅遊",Trace Sport Stars
+http://122.117.71.103:8509/.m3u8
+#EXTINF:-1 group-title="知識旅遊",DISCOVERY
+http://mytv.cdn.com.mp/live/d/stream.m3u8
+#EXTINF:-1 group-title="知識旅遊",DISCOVERY
+http://www.insurancegogogo.com/4987/discoverytwn_twn/playlist.m3u8
+#EXTINF:-1 group-title="知識旅遊",DISCOVERY
+http://122.117.71.103:8510/.m3u8
+#EXTINF:-1 group-title="知識旅遊",BBC EARTH
+http://www.insurancegogogo.com/4987/bbcearth_twn/playlist.m3u8
+#EXTINF:-1 group-title="知識旅遊",TLC旅遊生活
+http://122.117.71.103:8511/.m3u8
+#EXTINF:-1 group-title="知識旅遊",TLC旅遊生活
+http://www.insurancegogogo.com/4987/tlc_twn/playlist.m3u8
+#EXTINF:-1 group-title="知識旅遊",EYE TV旅遊
+http://www.insurancegogogo.com/4987/eyetvtravel_twn/playlist.m3u8
+#EXTINF:-1 group-title="知識旅遊",EYE TV戲劇
+http://www.insurancegogogo.com/4987/eyetvxiju_twn/playlist.m3u8
+#EXTINF:-1 group-title="知識旅遊",動物星球
+http://122.117.71.103:8512/.m3u8
+#EXTINF:-1 group-title="知識旅遊",動物星球
+http://www.insurancegogogo.com/4987/animalplanet_twn/playlist.m3u8
+#EXTINF:-1 group-title="知識旅遊",美食星球
+http://www.insurancegogogo.com/4987/foodplanet_twn/playlist.m3u8
+#EXTINF:-1 group-title="兒童卡通",momo親子台
+http://122.117.71.103:8514/.m3u8
+#EXTINF:-1 group-title="兒童卡通",東森幼幼
+http://122.117.71.103:8515/.m3u8
+#EXTINF:-1 group-title="兒童卡通",靖天卡通
+http://www.insurancegogogo.com/4987/jingtiancartoon_twn/playlist.m3u8
+#EXTINF:-1 group-title="兒童卡通",龍華卡通
+http://122.117.71.103:8516/.m3u8
+#EXTINF:-1 group-title="兒童卡通",Animax
 http://www.insurancegogogo.com/4987/Animax/playlist.m3u8
-#EXTINF:-1 group-title="台灣頻道",緯來體育
+#EXTINF:-1 group-title="娛樂綜藝",緯來綜合
+http://122.117.71.103:8517/.m3u8
+#EXTINF:-1 group-title="娛樂綜藝",八大第一
+http://122.117.71.103:8518/.m3u8
+#EXTINF:-1 group-title="娛樂綜藝",八大綜合
+http://122.117.71.103:8519/.m3u8
+#EXTINF:-1 group-title="娛樂綜藝",三立台灣
+http://122.117.71.103:8520/.m3u8
+#EXTINF:-1 group-title="娛樂綜藝",韓國娛樂
+http://122.117.71.103:8522/.m3u8
+#EXTINF:-1 group-title="娛樂綜藝",中天綜合
+http://122.117.71.103:8525/.m3u8
+#EXTINF:-1 group-title="娛樂綜藝",中天娛樂
+http://122.117.71.103:8526/.m3u8
+#EXTINF:-1 group-title="娛樂綜藝",東風衛視
+http://122.117.71.103:8527/.m3u8
+#EXTINF:-1 group-title="娛樂綜藝",華藝中文
+http://www.insurancegogogo.com/4987/weishichinese_twn/playlist.m3u8
+#EXTINF:-1 group-title="娛樂綜藝",東森綜合
+http://www.insurancegogogo.com/4987/ettvzhonghe/playlist.m3u8
+#EXTINF:-1 group-title="娛樂綜藝",TVBS歡樂
+http://www.insurancegogogo.com/4987/tvbshuanle_twn/playlist.m3u8
+#EXTINF:-1 group-title="娛樂綜藝",緯來日本
+http://www.insurancegogogo.com/4987/videolandjapan/playlist.m3u8
+#EXTINF:-1 group-title="娛樂綜藝",緯來綜合
+http://www.insurancegogogo.com/4987/videolandzonghe/playlist.m3u8
+#EXTINF:-1 group-title="娛樂綜藝",三立綜合
+http://www.insurancegogogo.com/4987/sanlizhonghe/playlist.m3u8
+#EXTINF:-1 group-title="財經新聞",Taiwan Plus
+http://122.117.71.103:8537/.m3u8
+#EXTINF:-1 group-title="財經新聞",東森新聞
+http://122.117.71.103:8539/.m3u8
+#EXTINF:-1 group-title="財經新聞",東森財經新聞
+http://www.insurancegogogo.com/4987/ettvcaijing_twn/playlist.m3u8
+#EXTINF:-1 group-title="財經新聞",中天新聞
+http://122.117.71.103:8540/.m3u8
+#EXTINF:-1 group-title="財經新聞",寰宇新聞
+http://www.insurancegogogo.com/4987/huanyuxinwen_twn/playlist.m3u8
+#EXTINF:-1 group-title="財經新聞",TVBS新聞
+http://122.117.71.103:8531/.m3u8
+#EXTINF:-1 group-title="財經新聞",TVBS新聞
+http://122.117.71.103:8528/.m3u8
+#EXTINF:-1 group-title="財經新聞",TVBS新聞
+http://122.117.71.103:8538/.m3u8
+#EXTINF:-1 group-title="財經新聞",TVBS新聞
+http://122.117.71.103:8534/.m3u8
+#EXTINF:-1 group-title="財經新聞",TVBS新聞
+http://122.117.71.103:8536/.m3u8
+#EXTINF:-1 group-title="財經新聞",TVBS新聞
+http://122.117.71.103:8541/.m3u8
+#EXTINF:-1 group-title="財經新聞",TVBS新聞
+http://122.117.71.103:8542/.m3u8
+#EXTINF:-1 group-title="財經新聞",TVBS新聞
+http://122.117.71.103:8543/.m3u8
+#EXTINF:-1 group-title="財經新聞",TVBS新聞
+http://122.117.71.103:8548/.m3u8
+#EXTINF:-1 group-title="財經新聞",TVBS新聞
+http://122.117.71.103:8553/.m3u8
+#EXTINF:-1 group-title="財經新聞",TVBS新聞
+http://122.117.71.103:8561/.m3u8
+#EXTINF:-1 group-title="財經新聞",TVBS新聞
+http://122.117.71.103:8562/.m3u8
+#EXTINF:-1 group-title="財經新聞",非凡新聞
+http://122.117.71.103:8575/.m3u8
+#EXTINF:-1 group-title="財經新聞",非凡新聞
+http://www.insurancegogogo.com/4987/feifannews_twn/playlist.m3u8
+#EXTINF:-1 group-title="財經新聞",非凡商業
+http://122.117.71.103:8576/.m3u8
+#EXTINF:-1 group-title="電影頻道",緯來電影
+http://122.117.71.103:8554/.m3u8
+#EXTINF:-1 group-title="電影頻道",龍華電影
+http://122.117.71.103:8555/.m3u8
+#EXTINF:-1 group-title="電影頻道",龍華電影
+http://www.insurancegogogo.com/4987/xingwei_movie/playlist.m3u8
+#EXTINF:-1 group-title="電影頻道",龍華洋片
+http://www.insurancegogogo.com/4987/lunghuajingdian_twn/playlist.m3u8
+#EXTINF:-1 group-title="電影頻道",HBO
+http://122.117.71.103:8556/.m3u8
+#EXTINF:-1 group-title="電影頻道",HBO
+http://www.insurancegogogo.com/4987/hbohd_twn/playlist.m3u8
+#EXTINF:-1 group-title="電影頻道",AXN
+http://www.insurancegogogo.com/4987/axn_twn/playlist.m3u8
+#EXTINF:-1 group-title="電影頻道",AXN
+http://122.117.71.103:8557/.m3u8
+#EXTINF:-1 group-title="電影頻道",CINEMAX
+http://122.117.71.103:8558/.m3u8
+#EXTINF:-1 group-title="電影頻道",CINEMAX
+http://www.insurancegogogo.com/4987/cinemax_twn/playlist.m3u8
+#EXTINF:-1 group-title="電影頻道",AMC電影
+http://122.117.71.103:8559/.m3u8
+#EXTINF:-1 group-title="電影頻道",東森電影
+http://www.insurancegogogo.com/4987/ettvmovie/playlist.m3u8
+#EXTINF:-1 group-title="電影頻道",東森電影
+http://mytv.cdn.com.mp/live/dsdy/stream.m3u8
+#EXTINF:-1 group-title="電影頻道",東森洋片
+http://www.insurancegogogo.com/4987/ettvwestern/playlist.m3u8
+#EXTINF:-1 group-title="電影頻道",龍祥時代
+http://mytv.cdn.com.mp/live/lxsd/stream.m3u8
+#EXTINF:-1 group-title="電影頻道",龍祥時代
+http://www.insurancegogogo.com/4987/lungxiangtime_twn/playlist.m3u8
+#EXTINF:-1 group-title="電影頻道",緯來電影
+http://mytv.cdn.com.mp/live/wldy/stream.m3u8
+#EXTINF:-1 group-title="電影頻道",美亞電影
+http://www.insurancegogogo.com/4987/meiyamovie_twn/playlist.m3u8
+#EXTINF:-1 group-title="電影頻道",好萊塢電影
+http://mytv.cdn.com.mp/live/hlwdy/stream.m3u8
+#EXTINF:-1 group-title="電影頻道",好萊塢電影
+http://www.insurancegogogo.com/4987/hollywoodmovies_twn/playlist.m3u8
+#EXTINF:-1 group-title="電影頻道",天映經典
+http://www.insurancegogogo.com/4987/Celestial2/playlist.m3u8
+#EXTINF:-1 group-title="電影頻道",天映頻道
+http://www.insurancegogogo.com/4987/Celestialindo/playlist.m3u8
+#EXTINF:-1 group-title="戲劇頻道",東森戲劇
+http://122.117.71.103:8529/.m3u8
+#EXTINF:-1 group-title="戲劇頻道",東森戲劇
+http://122.117.71.103:8521/.m3u8
+#EXTINF:-1 group-title="戲劇頻道",東森戲劇
+http://122.117.71.103:8560/.m3u8
+#EXTINF:-1 group-title="戲劇頻道",東森戲劇
+http://122.117.71.103:8566/.m3u8
+#EXTINF:-1 group-title="戲劇頻道",八大戲劇
+http://122.117.71.103:8530/.m3u8
+#EXTINF:-1 group-title="戲劇頻道",八大戲劇
+http://www.insurancegogogo.com/4987/badadrama/playlist.m3u8
+#EXTINF:-1 group-title="戲劇頻道",緯來戲劇
+http://122.117.71.103:8532/.m3u8
+#EXTINF:-1 group-title="戲劇頻道",龍華戲劇
+http://122.117.71.103:8533/.m3u8
+#EXTINF:-1 group-title="戲劇頻道",ELTA影劇
+http://www.insurancegogogo.com/4987/eltayingju_twn/playlist.m3u8
+#EXTINF:-1 group-title="體育頻道",緯來體育
 http://www.insurancegogogo.com/4987/videolandsport/playlist.m3u8
-#EXTINF:-1 group-title="台灣頻道",ELTA體育1
+#EXTINF:-1 group-title="體育頻道",ELTA體育1
 http://www.insurancegogogo.com/4987/eltasport1_twn/playlist.m3u8
-#EXTINF:-1 group-title="台灣頻道",ELTA體育2
+#EXTINF:-1 group-title="體育頻道",ELTA體育2
 http://www.insurancegogogo.com/4987/eltasport2_twn/playlist.m3u8
-#EXTINF:-1 group-title="台灣頻道",ELTA體育3
+#EXTINF:-1 group-title="體育頻道",ELTA體育3
 http://www.insurancegogogo.com/4987/eltasport3_twn/playlist.m3u8
-#EXTINF:-1 group-title="台灣頻道",ELTA體育4
+#EXTINF:-1 group-title="體育頻道",ELTA體育4
 http://www.insurancegogogo.com/4987/natgeowild_twn/playlist.m3u8
