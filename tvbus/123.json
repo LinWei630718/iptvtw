@@ -52,6 +52,10 @@
             "epg": "http://iptv.52sw.top:668/?ch={name}&date={date}"
         },
         {
+            "name": "LIVE台灣電視",
+            "url": "https://gh-proxy.com/https://raw.githubusercontent.com/LinWei630718/iptvtw/refs/heads/main/tvbus/live.m3u",
+        },
+        {
             "name": "LITV(py台灣節點)",
             "type": 3,
             "api": "https://gh-proxy.com/https://raw.githubusercontent.com/LinWei630718/iptvtw/refs/heads/main/litv.py",
