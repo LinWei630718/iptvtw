@@ -56,6 +56,10 @@
             "url": "https://gh-proxy.com/https://raw.githubusercontent.com/LinWei630718/iptvtw/refs/heads/main/tvbus/live.m3u"
         },
         {
+            "name": "ofiii點播",
+            "url": "https://gh-proxy.com/https://raw.githubusercontent.com/LinWei630718/iptvtw/refs/heads/main/tvbus/drama.m3u"
+        },
+        {
             "name": "LITV(py台灣節點)",
             "type": 3,
             "api": "https://gh-proxy.com/https://raw.githubusercontent.com/LinWei630718/iptvtw/refs/heads/main/litv.py",
