@@ -67,6 +67,15 @@
             "changeable": 0
         },
         {
+            "key": "js_youyou",
+            "name": "悠悠視頻(T3)",
+            "type": 3,
+            "api": "https://raw.githubusercontent.com/LinWei630718/iptvtw/refs/heads/main/js/youyou.js",
+            "searchable": 1,
+            "filterable": 0,
+            "changeable": 0
+        },
+        {
          "key":"Qile优视频",
          "name":"Qile優視頻",
          "type":3,
