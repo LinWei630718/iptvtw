@@ -55,7 +55,7 @@
             "key": "py_jieyingshi",
             "name": "界影視(T3)",
             "type": 3,
-            "api": "https://json.doube.eu.org/python/py_jieyingshi.py",
+            "api": "https://d.kstore.dev/download/14756/python/vod_jieyingshi.py",
             "searchable": 1,
             "filterable": 0,
             "changeable": 0
@@ -64,7 +64,7 @@
             "key": "py_jianpian",
             "name": "薦片(T3)",
             "type": 3,
-            "api": "https://json.doube.eu.org/python/py_jianpian.py",
+            "api": "https://raw.githubusercontent.com/LinWei630718/iptvtw/refs/heads/main/python/py_jianpian.py",
             "searchable": 1,
             "filterable": 0,
             "changeable": 0
@@ -73,7 +73,7 @@
             "key": "py_aigua",
             "name": "愛瓜TV(T3)",
             "type": 3,
-            "api": "https://json.doube.eu.org/python/py_aigua.py",
+            "api": "https://raw.githubusercontent.com/LinWei630718/iptvtw/refs/heads/main/python/py_aigua.py",
             "searchable": 1,
             "filterable": 0,
             "changeable": 0
