@@ -4,7 +4,7 @@
     "sites": [
         {
             "key":"py_OleVod",
-            "name":"🍉歐樂影院(T4)",
+            "name":"🍋‍🟩歐樂影院(T4)",
             "type":4,
             "api":"https://py.doube.eu.org/spider?site=OleVod",
             "searchable":1,
@@ -14,7 +14,7 @@
         },
         {
             "key":"py_Dm84",
-            "name":"🍋‍🟩動漫巴士(T4)",
+            "name":"🚐動漫巴士(T4)",
             "type":4,
             "api":"https://py.doube.eu.org/spider?site=Dm84",
             "searchable":1,
@@ -24,7 +24,7 @@
         },
         {
             "key": "py_jieyingshi",
-            "name": "界影視(T3)",
+            "name": "📽️界影視(T3)",
             "type": 3,
             "api": "https://d.kstore.dev/download/14756/python/vod_jieyingshi.py",
             "searchable": 1,
@@ -33,7 +33,7 @@
         },
         {
             "key": "py_jianpian",
-            "name": "薦片(T3)",
+            "name": "🖖薦片(T3)",
             "type": 3,
             "api": "https://iptvtw.endl.site/python/py_jianpian.py",
             "searchable": 1,
@@ -42,7 +42,7 @@
         },
         {
             "key": "py_aigua",
-            "name": "愛瓜TV(T3)",
+            "name": "🍉愛瓜TV(T3)",
             "type": 3,
             "api": "https://iptvtw.endl.site/python/py_aigua.py",
             "searchable": 1,
@@ -51,7 +51,7 @@
         },
         {
          "key":"黑木影视",
-         "name":"天堂影視",
+         "name":"🌈天堂影視",
          "type":1,
          "api":"https://heimuer.ggff.net/api.php/tvbox",
          "searchable":1,
@@ -60,14 +60,14 @@
         },
         {
          "key":"瓜子影视",
-         "name":"瓜子影視",
+         "name":"🍈瓜子影視",
          "type":3,
          "api":"https://tvbot.dpdns.org/api/drpy2.min.js",
          "ext":"https://tvbot.dpdns.org/js/瓜子.js"
         },
         {
          "key":"嗷呜小苹果",
-         "name":"小蘋果",
+         "name":"🍏小蘋果",
          "type":3,
          "api":"https://iptvtw.endl.site/python/py_pingguo.py",
          "searchable":1,
@@ -76,7 +76,7 @@
         },
         {
          "key":"嗷呜金牌",
-         "name":"金牌",
+         "name":"🥇金牌",
          "type":3,
          "api":"https://iptvtw.endl.site/python/py_jinpai.py",
          "searchable":1,
@@ -85,7 +85,7 @@
         },
         {
          "key":"嗷呜剧爸爸",
-         "name":"劇爸爸",
+         "name":"🎭劇爸爸",
          "type":3,
          "api":"https://iptvtw.endl.site/python/py_jubaba.py",
          "searchable":1,
@@ -94,7 +94,7 @@
         },
         {
             "key": "csp_CZSPP",
-            "name": "廠長直連",
+            "name": "🏭廠長直連",
             "type": 3,
             "api": "csp_Czsapp",
             "searchable": 1,
@@ -106,7 +106,7 @@
         },
         {
             "key": "柠檬",
-            "name": "檸檬",
+            "name": "🍋檸檬",
             "type": 3,
             "api": "csp_Nmvod",
             "playerType": 2,
@@ -115,7 +115,7 @@
         },
         {
             "key": "Dygang",
-            "name": "電影港[邊下邊播]",
+            "name": "🚢電影港[邊下邊播]",
             "type": 3,
             "api": "csp_Dygang",
             "searchable": 1,
