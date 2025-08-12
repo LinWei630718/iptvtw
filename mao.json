@@ -1039,8 +1039,7 @@
                 {
             "name": "LITV(php)",
             "type": 3,
-            "api": "http://xtvantsc.xyz/litv_ts.php",
-            "ext": {}
+            "url": "http://xtvantsc.xyz/litv_ts.php"
         }
     ],
     "ads": [
