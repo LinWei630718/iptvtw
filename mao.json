@@ -61,7 +61,7 @@
         },
         {
       "key": "csp_NIVODvip",
-      "name": "🥈｜泥視頻｜藍光◎順播(無廣告+VIP)",
+      "name": "🥈泥視頻｜藍光順播(無廣告+VIP)",
       "type": 3,
       "api": "csp_XBPQ",
       "jar": "http://linwei.endl.site/xyqxbpq.jar;md5;fd3cefc7302f3a39a442682f802b11e5",
@@ -72,7 +72,7 @@
     },
     {
       "key": "py_NIVOD.CC",
-      "name": "🥈｜泥視頻｜高清◎秒播(浮水印廣告+PY)",
+      "name": "🥈泥視頻｜高清秒播(浮水印廣告+PY)",
       "type": 3,
       "api": "https://raw.githubusercontent.com/LinWei630718/iptvtw/refs/heads/main/python/py_nivod_cc.py",
       "searchable": 1,
@@ -82,7 +82,7 @@
     },
     {
       "key": "csp_NIVODapp",
-      "name": "🥈｜泥視頻｜藍光◎順播(跑馬燈廣告+APP)",
+      "name": "🥈泥視頻｜藍光順播(跑馬燈廣告+APP)",
       "type": 3,
       "api": "csp_XBPQ",
       "jar": "http://linwei.endl.site/xyqxbpq.jar;md5;fd3cefc7302f3a39a442682f802b11e5",
@@ -102,7 +102,7 @@
     },
         {
       "key": "csp_小鴨影音TV",
-      "name": "🥈｜小鴨｜高清◎秒播(跑馬燈廣告)",
+      "name": "🥈小鴨｜高清秒播(跑馬燈廣告)",
       "type": 3,
       "api": "csp_XBPQ",
       "jar": "http://linwei.endl.site/xyqxbpq.jar;md5;fd3cefc7302f3a39a442682f802b11e5",
@@ -117,7 +117,7 @@
     },
         {
     "key": "csp_Imaple8TV",
-    "name": "🎥｜楓林網.TV｜首頁成人",
+    "name": "🎥楓林網.TV",
     "type": 3,
     "api": "csp_XBPQ",
     "jar": "http://linwei.endl.site/xyqxbpq.jar;md5;fd3cefc7302f3a39a442682f802b11e5",
