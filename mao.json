@@ -60,6 +60,47 @@
             "changeable": 0
         },
         {
+      "key": "csp_NIVODvip",
+      "name": "🥈｜泥視頻｜藍光◎順播(無廣告+VIP)",
+      "type": 3,
+      "api": "csp_XBPQ",
+      "jar": "http://linwei.endl.site/xyqxbpq.jar;md5;fd3cefc7302f3a39a442682f802b11e5",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "ext": "https://raw.githubusercontent.com/LinWei630718/iptvtw/refs/heads/main/nivod_VIP.json"
+    },
+    {
+      "key": "py_NIVOD.CC",
+      "name": "🥈｜泥視頻｜高清◎秒播(浮水印廣告+PY)",
+      "type": 3,
+      "api": "https://raw.githubusercontent.com/LinWei630718/iptvtw/refs/heads/main/python/py_nivod_cc.py",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "changeable": 1
+    },
+    {
+      "key": "csp_NIVODapp",
+      "name": "🥈｜泥視頻｜藍光◎順播(跑馬燈廣告+APP)",
+      "type": 3,
+      "api": "csp_XBPQ",
+      "jar": "http://linwei.endl.site/xyqxbpq.jar;md5;fd3cefc7302f3a39a442682f802b11e5",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "ext": {
+        "线路数组": "class=\"playlist-mobile playlist layout-box clearfix&&</ul>",
+        "线路标题": ">&&</a>",
+        "简介": "details-content-all\">&&</span>",
+        "搜索url": "https://www.nivod.app/vod-search/page/{pg}/wd/{wd}.html",
+        "分类url": "https://www.nivod.app/vod-show-{cateId}/area/{area}/by/{by}/page/{catePg}/year/{year}.html",
+        "分类": "電視劇$1#電影$2#綜藝$3#動漫$4#動畫電影$215",
+        "地区": "中国大陆&中国香港&中国台湾&欧美&法国&英国&日本&韩国&泰国&新加坡&马来西亚&印度&西班牙&加拿大&俄罗斯&其它",
+        "排序": "更新$time#週人氣$hits_week#總人氣$hits"
+      }
+    },
+        {
          "key":"黑木影视",
          "name":"🌈天堂影視",
          "type":1,
