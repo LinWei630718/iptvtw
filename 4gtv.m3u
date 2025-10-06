@@ -1753,7 +1753,7 @@ http://61.221.81.93:8589/http/192.168.1.10:8088/hls/74/816/ch56.m3u8
 #EXTINF:-1 group-title="台灣酒店",非凡商業
 http://hk.mushui.tk/mqlive/live.php?ip=211.23.114.106&url=http://211.23.114.106:5003/live1012.m3u8
 #EXTINF:-1 group-title="台灣酒店",非凡新聞
-http://220.134.196.147:8571/http/61.219.99.20:8081/hls/75/817/ch57.m3u8
+http://hk.mushui.tk/mqlive/live.php?ip=61.216.180.81&url=http://61.216.180.81:5003/live1013.m3u8
 #EXTINF:-1 group-title="台灣酒店",非凡新聞
 http://61.221.81.93:8586/http/192.168.1.10:8088/hls/75/817/ch57.m3u8
 #EXTINF:-1 group-title="台灣酒店",非凡新聞
