@@ -61,7 +61,7 @@
         },
         {
          "key":"嗷呜小苹果",
-         "name":"嗷嗚小蘋果",
+         "name":"🍎嗷嗚小蘋果",
          "type":3,
          "api":"./python/py_pingguo.py",
          "searchable":1,
@@ -70,7 +70,7 @@
       },
       {
          "key":"aidianying",
-         "name":"愛電影",
+         "name":"🎞️愛電影",
          "type":3,
          "api":"./python/aidianying.py",
          "searchable":1,
@@ -147,7 +147,7 @@
     },
         {
       "key": "csp_小鴨影音TV",
-      "name": "🥈小鴨｜高清秒播(跑馬燈廣告)",
+      "name": "🦆小鴨｜高清秒播(跑馬燈廣告)",
       "type": 3,
       "api": "csp_XBPQ",
       "jar": "./jar/xyqxbpq.jar;md5;fd3cefc7302f3a39a442682f802b11e5",
