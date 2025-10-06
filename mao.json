@@ -69,6 +69,15 @@
          "changeable":1
       },
       {
+         "key":"aidianying",
+         "name":"愛電影",
+         "type":3,
+         "api":"./python/aidianying.py",
+         "searchable":1,
+         "filterable":0,
+         "changeable":1
+      }, 
+      {
       "key": "独播库1",
       "name": "🏆｜獨播｜藍光◎秒播(無廣告)",
       "type": 4,
@@ -548,17 +557,6 @@
             "name": "🎊娃娃影視",
             "type": 3,
             "api": "./python/wawa.py",
-            "searchable": 0,
-            "quickSearch": 0,
-            "changeable": 0,
-            "filterable": 1
-        },
-
-        {
-            "key": "py_追剧",
-            "name": "☄️ 追劇影視",
-            "type": 3,
-            "api": "./python/LREEOK.py",
             "searchable": 0,
             "quickSearch": 0,
             "changeable": 0,
