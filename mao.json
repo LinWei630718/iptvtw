@@ -71,6 +71,15 @@
             "changeable": 1
         },
         {
+         "key":"嗷呜小苹果",
+         "name":"嗷嗚小蘋果",
+         "type":3,
+         "api":"https://raw.githubusercontent.com/LinWei630718/iptvtw/refs/heads/main/python/py_pingguo.py",
+         "searchable":1,
+         "filterable":0,
+         "changeable":1
+      },
+        {
       "key": "csp_NIVODvip",
       "name": "🥈泥視頻｜藍光順播(無廣告+VIP)",
       "type": 3,
