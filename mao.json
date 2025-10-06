@@ -60,6 +60,17 @@
             "changeable": 0
         },
         {
+            "key": "小苹果",
+            "name": "小蘋果",
+            "type": 4,
+            "api": "http://zhangqun1818.serv00.net/pingguo.php",
+            "style": {
+                "type": "rect",
+                "ratio": 1.33
+            },
+            "changeable": 1
+        },
+        {
       "key": "csp_NIVODvip",
       "name": "🥈泥視頻｜藍光順播(無廣告+VIP)",
       "type": 3,
