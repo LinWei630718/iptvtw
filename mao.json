@@ -59,17 +59,13 @@
             "filterable": 0,
             "changeable": 0
         },
-        {
-            "key": "小苹果",
-            "name": "小蘋果",
-            "type": 4,
-            "api": "http://zhangqun1818.serv00.net/pingguo.php",
-            "style": {
-                "type": "rect",
-                "ratio": 1.33
-            },
-            "changeable": 1
-        },
+    {
+      "key": "独播库1",
+      "name": "🏆｜獨播｜藍光◎秒播(無廣告)",
+      "type": 4,
+      "jar": "./jar/獨播庫.jar",
+      "api": "https://tvbot.ggff.net/duboku"
+    },
         {
          "key":"嗷呜小苹果",
          "name":"嗷嗚小蘋果",
