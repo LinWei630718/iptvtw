@@ -59,13 +59,6 @@
             "filterable": 0,
             "changeable": 0
         },
-    {
-      "key": "独播库1",
-      "name": "🏆｜獨播｜藍光◎秒播(無廣告)",
-      "type": 4,
-      "jar": "./jar/獨播庫.jar",
-      "api": "https://tvbot.ggff.net/duboku"
-    },
         {
          "key":"嗷呜小苹果",
          "name":"嗷嗚小蘋果",
@@ -75,6 +68,23 @@
          "filterable":0,
          "changeable":1
       },
+      {
+      "key": "独播库1",
+      "name": "🏆｜獨播｜藍光◎秒播(無廣告)",
+      "type": 4,
+      "jar": "./jar/獨播庫.jar",
+      "api": "https://tvbot.ggff.net/duboku"
+      },
+      {
+      "key": "瓜子影视",
+      "name": "🏆｜瓜子｜特清◎秒播(無廣告)",
+      "type": 3,
+      "jar": "./gua.jar",
+      "api": "csp_Gz360",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1
+       }, 
         {
       "key": "csp_NIVODvip",
       "name": "🥈泥視頻｜藍光順播(無廣告+VIP)",
