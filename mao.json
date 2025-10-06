@@ -174,14 +174,14 @@
     }
   },
         {
-         "key":"瓜子影视",
+         "key":"瓜子影视2",
          "name":"🍈瓜子影視",
          "type":3,
          "api":"https://tvbot.dpdns.org/api/drpy2.min.js",
          "ext":"https://tvbot.dpdns.org/js/瓜子.js"
         },
         {
-         "key":"嗷呜小苹果",
+         "key":"嗷呜小苹果1",
          "name":"🍏小蘋果",
          "type":3,
          "api":"https://iptvtw.endl.site/python/py_pingguo.py",
