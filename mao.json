@@ -45,7 +45,7 @@
             "key": "py_jianpian",
             "name": "🖖薦片(T3)",
             "type": 3,
-            "api": "https://iptvtw.endl.site/python/py_jianpian.py",
+            "api": "./python/py_jianpian.py",
             "searchable": 1,
             "filterable": 0,
             "changeable": 0
@@ -54,7 +54,7 @@
             "key": "py_aigua",
             "name": "🍉愛瓜TV(T3)",
             "type": 3,
-            "api": "https://iptvtw.endl.site/python/py_aigua.py",
+            "api": "./python/py_aigua.py",
             "searchable": 1,
             "filterable": 0,
             "changeable": 0
@@ -63,7 +63,7 @@
          "key":"嗷呜小苹果",
          "name":"嗷嗚小蘋果",
          "type":3,
-         "api":"https://raw.githubusercontent.com/LinWei630718/iptvtw/refs/heads/main/python/py_pingguo.py",
+         "api":"./python/py_pingguo.py",
          "searchable":1,
          "filterable":0,
          "changeable":1
@@ -79,7 +79,7 @@
       "key": "瓜子影视",
       "name": "🏆｜瓜子｜特清◎秒播(無廣告)",
       "type": 3,
-      "jar": "./gua.jar",
+      "jar": "./jar/gua.jar",
       "api": "csp_Gz360",
       "searchable": 1,
       "quickSearch": 1,
@@ -174,26 +174,10 @@
     }
   },
         {
-         "key":"瓜子影视2",
-         "name":"🍈瓜子影視",
-         "type":3,
-         "api":"https://tvbot.dpdns.org/api/drpy2.min.js",
-         "ext":"https://tvbot.dpdns.org/js/瓜子.js"
-        },
-        {
-         "key":"嗷呜小苹果1",
-         "name":"🍏小蘋果",
-         "type":3,
-         "api":"https://iptvtw.endl.site/python/py_pingguo.py",
-         "searchable":1,
-         "filterable":0,
-         "changeable":1
-        },
-        {
          "key":"嗷呜金牌",
          "name":"🥇金牌",
          "type":3,
-         "api":"https://iptvtw.endl.site/python/py_jinpai.py",
+         "api":"./python/py_jinpai.py",
          "searchable":1,
          "filterable":0,
          "changeable":1
@@ -202,7 +186,7 @@
          "key":"嗷呜剧爸爸",
          "name":"🎭劇爸爸",
          "type":3,
-         "api":"https://iptvtw.endl.site/python/py_jubaba.py",
+         "api":"./python/py_jubaba.py",
          "searchable":1,
          "filterable":0,
          "changeable":1
