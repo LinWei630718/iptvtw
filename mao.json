@@ -658,6 +658,16 @@
             "timeout": 60
         }
     ],
+    {
+      "key": "应用商店",
+      "name": "🤡商店市場",
+      "type": 3,
+      "api": "csp_Market",
+      "searchable": 0,
+      "changeable": 0,
+     "ext": "https://000.hfr1107.top/tool/yc/yc2fm.php?code=11aa,bb1d&url=http://000.hfr1107.top/tool/yc/market.json",
+      "jar": "http://000.hfr1107.top/tool/yc/fm.jar"
+    },
     "doh": [
         {
             "name": "Google",
