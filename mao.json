@@ -3,14 +3,6 @@
     "wallpaper": "http://饭太硬.top/深色壁纸/api.php",
     "sites": [
         {
-         "key":"豆瓣首页",
-         "name":"豆瓣首頁",
-         "type":4,
-         "api":"https://newtv.ggff.net/douban",
-         "quickserch":0,
-         "searchable":0
-        },
-        {
             "key": "py_DianYingTanTang",
             "name": "🫐電影天堂(T4)",
             "type": 4,
@@ -30,12 +22,6 @@
             "filterable":0,
             "changeable":0
         },
-      {
-         "key":"欧乐影院",
-         "name":"🍋‍🟩歐樂影院",
-         "type":4,
-         "api":"https://newtv.ggff.net/oule"
-      },
         {
             "key":"py_Dm84",
             "name":"🚐動漫巴士(T4)",
@@ -268,12 +254,6 @@
             "type":"rect",
             "ratio":0.75
          },
-        {
-         "key":"恰逢永乐",
-         "name":"恰逢永樂",
-         "type":4,
-         "api":"https://newtv.ggff.net/yongle"
-        },
          "api":"csp_GM",
          "ext":{
             "userScript":"https://github.com/CatVodSpider-GM/SFW-Spiders/raw/refs/heads/main/userScripts/ysfp.user.js",
@@ -658,16 +638,6 @@
             "timeout": 60
         }
     ],
-    {
-      "key": "应用商店",
-      "name": "🤡商店市場",
-      "type": 3,
-      "api": "csp_Market",
-      "searchable": 0,
-      "changeable": 0,
-     "ext": "https://000.hfr1107.top/tool/yc/yc2fm.php?code=11aa,bb1d&url=http://000.hfr1107.top/tool/yc/market.json",
-      "jar": "http://000.hfr1107.top/tool/yc/fm.jar"
-    },
     "doh": [
         {
             "name": "Google",
