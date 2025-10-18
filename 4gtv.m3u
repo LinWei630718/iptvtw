@@ -6468,6 +6468,1023 @@ http://211.23.95.147:18881/live/102_h265.ts
 http://211.23.95.147:18881/live/104_h265.ts
 
 #EXTINF:-1 tvg-id="翡翠台" tvg-name="翡翠台" tvg-logo="" group-title="GPT-香港",翡翠台
+http://34.80.180.91:5050/smart.php?id=jade_twn
+#EXTINF:-1 tvg-id="翡翠台" tvg-name="翡翠台" tvg-logo="" group-title="GPT-香港",翡翠台
+http://34.80.180.91:5050/smart.php?id=Jade_xue
+#EXTINF:-1 tvg-id="明珠台" tvg-name="明珠台" tvg-logo="" group-title="GPT-香港",明珠台
+http://34.80.180.91:5050/smart.php?id=pearl_twn
+#EXTINF:-1 tvg-id="无线新闻" tvg-name="无线新闻" tvg-logo="" group-title="GPT-香港",無線新聞
+http://34.80.180.91:5050/smart.php?id=inews_twn
+#EXTINF:-1 tvg-id="TVBPLUS" tvg-name="TVBPLUS" tvg-logo="" group-title="GPT-香港",TVBPLUS
+http://34.80.180.91:5050/smart.php?id=j2_twn
+#EXTINF:-1 tvg-id="ViuTV" tvg-name="ViuTV" tvg-logo="" group-title="GPT-香港",ViuTV
+http://34.80.180.91:5050/smart.php?id=viu1_twn
+#EXTINF:-1 tvg-id="ViuTV 6" tvg-name="ViuTV 6" tvg-logo="" group-title="GPT-香港",ViuTV 6
+http://34.80.180.91:5050/smart.php?id=viusix_twn
+#EXTINF:-1 tvg-id="RTHK 31" tvg-name="RTHK 31" tvg-logo="" group-title="GPT-香港",RTHK 31
+http://34.80.180.91:5050/smart.php?id=rhk31_twn
+#EXTINF:-1 tvg-id="RTHK 32" tvg-name="RTHK 32" tvg-logo="" group-title="GPT-香港",RTHK 32
+http://34.80.180.91:5050/smart.php?id=rhk32_twn
+#EXTINF:-1 tvg-id="HOY TV" tvg-name="HOY TV" tvg-logo="" group-title="GPT-香港",HOY TV
+http://34.80.180.91:5050/smart.php?id=hoycaijing_twn
+#EXTINF:-1 tvg-id="凤凰中文" tvg-name="凤凰中文" tvg-logo="" group-title="GPT-香港",鳳凰中文
+http://34.80.180.91:5050/smart.php?id=phoenixtv_hd
+#EXTINF:-1 tvg-id="凤凰资讯" tvg-name="凤凰资讯" tvg-logo="" group-title="GPT-香港",鳳凰资讯
+http://34.80.180.91:5050/smart.php?id=phoenixinfo_hd
+#EXTINF:-1 tvg-id="凤凰香港" tvg-name="凤凰香港" tvg-logo="" group-title="GPT-香港",鳳凰香港
+http://34.80.180.91:5050/smart.php?id=hkphoenix_twn
+#EXTINF:-1 tvg-id="台视 HD" tvg-name="台视 HD" tvg-logo="" group-title="GPT-台灣",台視 HD
+http://34.80.180.91:5050/smart.php?id=ttv_taiwan
+#EXTINF:-1 tvg-id="台视新闻" tvg-name="台视新闻" tvg-logo="" group-title="GPT-台灣",台視新聞
+http://34.80.180.91:5050/smart.php?id=ttvnews_twn
+#EXTINF:-1 tvg-id="台视综合" tvg-name="台视综合" tvg-logo="" group-title="GPT-台灣",台視综合
+http://34.80.180.91:5050/smart.php?id=ttvzhonghe
+#EXTINF:-1 tvg-id="中视 HD" tvg-name="中视 HD" tvg-logo="" group-title="GPT-台灣",中視 HD
+http://34.80.180.91:5050/smart.php?id=zhongshihd_twn
+#EXTINF:-1 tvg-id="中视新闻" tvg-name="中视新闻" tvg-logo="" group-title="GPT-台灣",中視新聞
+http://34.80.180.91:5050/smart.php?id=zhongshinews_twn
+#EXTINF:-1 tvg-id="中视经典" tvg-name="中视经典" tvg-logo="" group-title="GPT-台灣",中視經典
+http://34.80.180.91:5050/smart.php?id=zhongshi_twn
+#EXTINF:-1 tvg-id="华视 HD" tvg-name="华视 HD" tvg-logo="" group-title="GPT-台灣",華視 HD
+http://34.80.180.91:5050/smart.php?id=ctshd_twn
+#EXTINF:-1 tvg-id="公视 HD" tvg-name="公视 HD" tvg-logo="" group-title="GPT-台灣",公視 HD
+http://34.80.180.91:5050/smart.php?id=ctv_taiwan
+#EXTINF:-1 tvg-id="小公视 HD" tvg-name="小公视 HD" tvg-logo="" group-title="GPT-台灣",小公視 HD
+http://34.80.180.91:5050/smart.php?id=pts3_twn
+#EXTINF:-1 tvg-id="公视台语台" tvg-name="公视台语台" tvg-logo="" group-title="GPT-台灣",公視台語台
+http://34.80.180.91:5050/smart.php?id=ctv2_twn
+#EXTINF:-1 tvg-id="霹雳台湾台" tvg-name="霹雳台湾台" tvg-logo="" group-title="GPT-台灣",霹靂台灣台
+http://34.80.180.91:5050/smart.php?id=pilitw_twn
+#EXTINF:-1 tvg-id="三立台湾台" tvg-name="三立台湾台" tvg-logo="" group-title="GPT-台灣",三立台灣台
+http://34.80.180.91:5050/smart.php?id=sanlitaiwan
+#EXTINF:-1 tvg-id="三立都会台" tvg-name="三立都会台" tvg-logo="" group-title="GPT-台灣",三立都會台
+http://34.80.180.91:5050/smart.php?id=sanlidouhui
+#EXTINF:-1 tvg-id="三立综合台" tvg-name="三立综合台" tvg-logo="" group-title="GPT-台灣",三立綜合台
+http://34.80.180.91:5050/smart.php?id=sanlizhonghe
+#EXTINF:-1 tvg-id="三立戏剧台" tvg-name="三立戏剧台" tvg-logo="" group-title="GPT-台灣",三立戲劇台
+http://34.80.180.91:5050/smart.php?id=sanlixiju_twn
+#EXTINF:-1 tvg-id="东森新闻台" tvg-name="东森新闻台" tvg-logo="" group-title="GPT-台灣",東森新聞台
+http://34.80.180.91:5050/smart.php?id=ettvnews
+#EXTINF:-1 tvg-id="东森财经新闻台" tvg-name="东森财经新闻台" tvg-logo="" group-title="GPT-台灣",東森財經新聞台
+http://34.80.180.91:5050/smart.php?id=ettvcaijing_twn
+#EXTINF:-1 tvg-id="东森综合台" tvg-name="东森综合台" tvg-logo="" group-title="GPT-台灣",東森综合台
+http://34.80.180.91:5050/smart.php?id=ettvzhonghe
+#EXTINF:-1 tvg-id="东森戏剧台" tvg-name="东森戏剧台" tvg-logo="" group-title="GPT-台灣",東森戲劇台
+http://34.80.180.91:5050/smart.php?id=ettvdrama
+#EXTINF:-1 tvg-id="东森电影台" tvg-name="东森电影台" tvg-logo="" group-title="GPT-台灣",東森電影台
+http://34.80.180.91:5050/smart.php?id=ettvmovie
+#EXTINF:-1 tvg-id="东森洋片台" tvg-name="东森洋片台" tvg-logo="" group-title="GPT-台灣",東森洋片台
+http://34.80.180.91:5050/smart.php?id=ettvwestern
+#EXTINF:-1 tvg-id="东森幼幼台" tvg-name="东森幼幼台" tvg-logo="" group-title="GPT-台灣",東森幼幼台
+http://34.80.180.91:5050/smart.php?id=yoyo_twn
+#EXTINF:-1 tvg-id="东森超视" tvg-name="东森超视" tvg-logo="" group-title="GPT-台灣",東森超視
+http://34.80.180.91:5050/smart.php?id=ettvsuper
+#EXTINF:-1 tvg-id="TVBS HD" tvg-name="TVBS HD" tvg-logo="" group-title="GPT-台灣",TVBS HD
+http://34.80.180.91:5050/smart.php?id=tvbs
+#EXTINF:-1 tvg-id="TVBS 新闻台" tvg-name="TVBS 新闻台" tvg-logo="" group-title="GPT-台灣",TVBS 新聞台
+http://34.80.180.91:5050/smart.php?id=tvbs_n
+#EXTINF:-1 tvg-id="TVBS 欢乐台" tvg-name="TVBS 欢乐台" tvg-logo="" group-title="GPT-台灣",TVBS 歡樂台
+http://34.80.180.91:5050/smart.php?id=tvbshuanle_twn
+#EXTINF:-1 tvg-id="民视 HD" tvg-name="民视 HD" tvg-logo="" group-title="GPT-台灣",民視 HD
+http://34.80.180.91:5050/smart.php?id=ftvhd_taiwan
+#EXTINF:-1 tvg-id="民视新闻台" tvg-name="民视新闻台" tvg-logo="" group-title="GPT-台灣",民視新聞台
+http://34.80.180.91:5050/smart.php?id=ftvnew_taiwan
+#EXTINF:-1 tvg-id="民视台湾台" tvg-name="民视台湾台" tvg-logo="" group-title="GPT-台灣",民視台灣台
+http://34.80.180.91:5050/smart.php?id=ftvtaiwan_twn
+#EXTINF:-1 tvg-id="中天综合" tvg-name="中天综合" tvg-logo="" group-title="GPT-台灣",中天綜合
+http://34.80.180.91:5050/smart.php?id=ctizhonghe
+#EXTINF:-1 tvg-id="中天娱乐" tvg-name="中天娱乐" tvg-logo="" group-title="GPT-台灣",中天娛樂
+http://34.80.180.91:5050/smart.php?id=ctient
+#EXTINF:-1 tvg-id="中天亚洲" tvg-name="中天亚洲" tvg-logo="" group-title="GPT-台灣",中天亞洲
+http://34.80.180.91:5050/smart.php?id=ctiasia_twn
+#EXTINF:-1 tvg-id="中天新闻" tvg-name="中天新闻" tvg-logo="" group-title="GPT-台灣",中天新聞
+http://34.80.180.91:5050/smart.php?id=ctinews
+#EXTINF:-1 tvg-id="寰宇新闻台" tvg-name="寰宇新闻台" tvg-logo="" group-title="GPT-台灣",寰宇新聞台
+http://34.80.180.91:5050/smart.php?id=huanyuxinwen_twn
+#EXTINF:-1 tvg-id="寰宇财经台" tvg-name="寰宇财经台" tvg-logo="" group-title="GPT-台灣",寰宇財經台
+http://34.80.180.91:5050/smart.php?id=huanyutaiwan_twn
+#EXTINF:-1 tvg-id="年代MUCH" tvg-name="年代MUCH" tvg-logo="" group-title="GPT-台灣",年代MUCH
+http://34.80.180.91:5050/smart.php?id=niandaitv_twn
+#EXTINF:-1 tvg-id="八大第一台" tvg-name="八大第一台" tvg-logo="" group-title="GPT-台灣",八大第一台
+http://34.80.180.91:5050/smart.php?id=badafirst
+#EXTINF:-1 tvg-id="八大综合台" tvg-name="八大综合台" tvg-logo="" group-title="GPT-台灣",八大綜合台
+http://34.80.180.91:5050/smart.php?id=badazhonghe
+#EXTINF:-1 tvg-id="八大戏剧台" tvg-name="八大戏剧台" tvg-logo="" group-title="GPT-台灣",八大戲劇台
+http://34.80.180.91:5050/smart.php?id=badadrama
+#EXTINF:-1 tvg-id="八大娱乐台" tvg-name="八大娱乐台" tvg-logo="" group-title="GPT-台灣",八大娛樂台
+http://34.80.180.91:5050/smart.php?id=badaentertain
+#EXTINF:-1 tvg-id="JET综合" tvg-name="JET综合" tvg-logo="" group-title="GPT-台灣",JET綜合
+http://34.80.180.91:5050/smart.php?id=jet
+#EXTINF:-1 tvg-id="纬来体育" tvg-name="纬来体育" tvg-logo="" group-title="GPT-台灣",緯來體育
+http://34.80.180.91:5050/smart.php?id=videolandsport
+#EXTINF:-1 tvg-id="纬来精彩" tvg-name="纬来精彩" tvg-logo="" group-title="GPT-台灣",緯來精彩
+http://34.80.180.91:5050/smart.php?id=videolandspecial_twn
+#EXTINF:-1 tvg-id="纬来日本" tvg-name="纬来日本" tvg-logo="" group-title="GPT-台灣",緯來日本
+http://34.80.180.91:5050/smart.php?id=videolandjapan
+#EXTINF:-1 tvg-id="纬来电影" tvg-name="纬来电影" tvg-logo="" group-title="GPT-台灣",緯來電影
+http://34.80.180.91:5050/smart.php?id=videolandmovie
+#EXTINF:-1 tvg-id="纬来综合" tvg-name="纬来综合" tvg-logo="" group-title="GPT-台灣",緯來综合
+http://34.80.180.91:5050/smart.php?id=videolandzonghe
+#EXTINF:-1 tvg-id="纬来育乐" tvg-name="纬来育乐" tvg-logo="" group-title="GPT-台灣",緯來育樂
+http://34.80.180.91:5050/smart.php?id=videolandmax
+#EXTINF:-1 tvg-id="纬来戏剧" tvg-name="纬来戏剧" tvg-logo="" group-title="GPT-台灣",緯來戲劇
+http://34.80.180.91:5050/smart.php?id=videolandtv
+#EXTINF:-1 tvg-id="爱尔达综合台" tvg-name="爱尔达综合台" tvg-logo="" group-title="GPT-台灣",愛爾達綜合台
+http://34.80.180.91:5050/smart.php?id=eltazonghe_twn
+#EXTINF:-1 tvg-id="爱尔达影剧台" tvg-name="爱尔达影剧台" tvg-logo="" group-title="GPT-台灣",愛爾達影劇台
+http://34.80.180.91:5050/smart.php?id=eltayingju_twn
+#EXTINF:-1 tvg-id="爱尔达体育1台" tvg-name="爱尔达体育1台" tvg-logo="" group-title="GPT-台灣",愛爾達體育1台
+http://34.80.180.91:5050/smart.php?id=eltasport_twn
+#EXTINF:-1 tvg-id="爱尔达体育2台" tvg-name="爱尔达体育2台" tvg-logo="" group-title="GPT-台灣",愛爾達體育2台
+http://34.80.180.91:5050/smart.php?id=eltasport2_twn
+#EXTINF:-1 tvg-id="爱尔达体育3台" tvg-name="爱尔达体育3台" tvg-logo="" group-title="GPT-台灣",愛爾達體育3台
+http://34.80.180.91:5050/smart.php?id=eltasport3_twn
+#EXTINF:-1 tvg-id="爱尔达体育4台" tvg-name="爱尔达体育4台" tvg-logo="" group-title="GPT-台灣",愛爾達體育4台
+http://34.80.180.91:5050/smart.php?id=eltasports4_twn
+#EXTINF:-1 tvg-id="DAZN 1" tvg-name="DAZN 1" tvg-logo="" group-title="GPT-台灣",DAZN 1
+http://34.80.180.91:5050/smart.php?id=dazn1_twn
+#EXTINF:-1 tvg-id="DAZN 2" tvg-name="DAZN 2" tvg-logo="" group-title="GPT-台灣",DAZN 2
+http://34.80.180.91:5050/smart.php?id=dazn2_twn
+#EXTINF:-1 tvg-id="壹新闻" tvg-name="壹新闻" tvg-logo="" group-title="GPT-台灣",壹新聞
+http://34.80.180.91:5050/smart.php?id=yinews
+#EXTINF:-1 tvg-id="非凡新闻" tvg-name="非凡新闻" tvg-logo="" group-title="GPT-台灣",非凡新聞
+http://34.80.180.91:5050/smart.php?id=feifannews_twn
+#EXTINF:-1 tvg-id="年代新闻" tvg-name="年代新闻" tvg-logo="" group-title="GPT-台灣",年代新聞
+http://34.80.180.91:5050/smart.php?id=niandainews_twn
+#EXTINF:-1 tvg-id="龙华戏剧" tvg-name="龙华戏剧" tvg-logo="" group-title="GPT-台灣",龍華戲劇
+http://34.80.180.91:5050/smart.php?id=lunghuaxiju_twn
+#EXTINF:-1 tvg-id="龙华偶像" tvg-name="龙华偶像" tvg-logo="" group-title="GPT-台灣",龍華偶像
+http://34.80.180.91:5050/smart.php?id=lunghuaidol_twn
+#EXTINF:-1 tvg-id="龙华电影" tvg-name="龙华电影" tvg-logo="" group-title="GPT-台灣",龍華電影
+http://34.80.180.91:5050/smart.php?id=xingwei_movie
+#EXTINF:-1 tvg-id="龙华洋片" tvg-name="龙华洋片" tvg-logo="" group-title="GPT-台灣",龍華洋片
+http://34.80.180.91:5050/smart.php?id=lunghuawestern_twn
+#EXTINF:-1 tvg-id="龙华经典" tvg-name="龙华经典" tvg-logo="" group-title="GPT-台灣",龍華經典
+http://34.80.180.91:5050/smart.php?id=lunghuajingdian_twn
+#EXTINF:-1 tvg-id="靖天国际" tvg-name="靖天国际" tvg-logo="" group-title="GPT-台灣",靖天國際
+http://34.80.180.91:5050/smart.php?id=jingtianintl_twn
+#EXTINF:-1 tvg-id="靖天卡通" tvg-name="靖天卡通" tvg-logo="" group-title="GPT-台灣",靖天卡通
+http://34.80.180.91:5050/smart.php?id=jingtiancartoon_twn
+#EXTINF:-1 tvg-id="大愛電視" tvg-name="大愛電視" tvg-logo="" group-title="GPT-台灣",大愛電視
+http://34.80.180.91:5050/smart.php?id=daai_twn
+#EXTINF:-1 tvg-id="大愛二台" tvg-name="大愛二台" tvg-logo="" group-title="GPT-台灣",大愛二台
+http://34.80.180.91:5050/smart.php?id=daai2_twn
+#EXTINF:-1 tvg-id="EYE 旅游台" tvg-name="EYE 旅游台" tvg-logo="" group-title="GPT-台灣",EYE 旅游台
+http://34.80.180.91:5050/smart.php?id=eyetvtravel_twn
+#EXTINF:-1 tvg-id="EYE 戏剧台" tvg-name="EYE 戏剧台" tvg-logo="" group-title="GPT-台灣",EYE 戲劇台
+http://34.80.180.91:5050/smart.php?id=eyetvxiju_twn
+#EXTINF:-1 tvg-id="亚洲美食" tvg-name="亚洲美食" tvg-logo="" group-title="GPT-台灣",亞洲美食
+http://34.80.180.91:5050/smart.php?id=afc_twn
+#EXTINF:-1 tvg-id="美食星球" tvg-name="美食星球" tvg-logo="" group-title="GPT-台灣",美食星球
+http://34.80.180.91:5050/smart.php?id=foodplanet_twn
+#EXTINF:-1 tvg-id="TLC旅遊生活" tvg-name="TLC旅遊生活" tvg-logo="" group-title="GPT-台灣",TLC旅遊生活
+http://34.80.180.91:5050/smart.php?id=tlc_twn
+#EXTINF:-1 tvg-id="亚洲旅游台" tvg-name="亚洲旅游台" tvg-logo="" group-title="GPT-台灣",亞洲旅游台
+http://34.80.180.91:5050/smart.php?id=asiatravel_twn
+#EXTINF:-1 tvg-id="Arirang" tvg-name="Arirang" tvg-logo="" group-title="GPT-台灣",Arirang
+http://34.80.180.91:5050/smart.php?id=arirang_twn
+#EXTINF:-1 tvg-id="AXN Taiwan" tvg-name="AXN Taiwan" tvg-logo="" group-title="GPT-台灣",AXN Taiwan
+http://34.80.180.91:5050/smart.php?id=axn_twn
+#EXTINF:-1 tvg-id="MTV Live" tvg-name="MTV Live" tvg-logo="" group-title="GPT-台灣",MTV Live
+http://34.80.180.91:5050/smart.php?id=mtvhd_twn
+#EXTINF:-1 tvg-id="HBO_HD" tvg-name="HBO_HD" tvg-logo="" group-title="GPT-台灣",HBO_HD
+http://34.80.180.91:5050/smart.php?id=hbohd_twn
+#EXTINF:-1 tvg-id="HBO_HITS" tvg-name="HBO_HITS" tvg-logo="" group-title="GPT-台灣",HBO_HITS
+http://34.80.180.91:5050/smart.php?id=hbohit_twn
+#EXTINF:-1 tvg-id="CINEMAX" tvg-name="CINEMAX" tvg-logo="" group-title="GPT-台灣",CINEMAX
+http://34.80.180.91:5050/smart.php?id=cinemax_twn
+#EXTINF:-1 tvg-id="好萊塢電影台" tvg-name="好萊塢電影台" tvg-logo="" group-title="GPT-台灣",好萊塢電影台
+http://34.80.180.91:5050/smart.php?id=hollywoodmovies_twn
+#EXTINF:-1 tvg-id="amc电影台" tvg-name="amc电影台" tvg-logo="" group-title="GPT-台灣",amc電影台
+http://34.80.180.91:5050/smart.php?id=starmoviesgold_twn
+#EXTINF:-1 tvg-id="龙祥时代" tvg-name="龙祥时代" tvg-logo="" group-title="GPT-台灣",龍祥時代
+http://34.80.180.91:5050/smart.php?id=lungxiangtime_twn
+#EXTINF:-1 tvg-id="美亚电影" tvg-name="美亚电影" tvg-logo="" group-title="GPT-台灣",美亞電影
+http://34.80.180.91:5050/smart.php?id=meiyamovie_twn
+#EXTINF:-1 tvg-id="華藝綜合" tvg-name="華藝綜合" tvg-logo="" group-title="GPT-台灣",華藝綜合
+http://34.80.180.91:5050/smart.php?id=weishichinese_twn
+#EXTINF:-1 tvg-id="博斯运动一台" tvg-name="博斯运动一台" tvg-logo="" group-title="GPT-台灣",博斯運動一台
+http://34.80.180.91:5050/smart.php?id=bosisport1_twn
+#EXTINF:-1 tvg-id="博斯运动二台" tvg-name="博斯运动二台" tvg-logo="" group-title="GPT-台灣",博斯運動二台
+http://34.80.180.91:5050/smart.php?id=bosisport2_twn
+#EXTINF:-1 tvg-id="博斯高球一台" tvg-name="博斯高球一台" tvg-logo="" group-title="GPT-台灣",博斯高球一台
+http://34.80.180.91:5050/smart.php?id=bosigolf1_twn
+#EXTINF:-1 tvg-id="博斯高球二台" tvg-name="博斯高球二台" tvg-logo="" group-title="GPT-台灣",博斯高球二台
+http://34.80.180.91:5050/smart.php?id=bosigolf2_twn
+#EXTINF:-1 tvg-id="博斯网球台" tvg-name="博斯网球台" tvg-logo="" group-title="GPT-台灣",博斯網球台
+http://34.80.180.91:5050/smart.php?id=bositennis_twn
+#EXTINF:-1 tvg-id="博斯无限台" tvg-name="博斯无限台" tvg-logo="" group-title="GPT-台灣",博斯無限台
+http://34.80.180.91:5050/smart.php?id=bosiunlimited_twn
+#EXTINF:-1 tvg-id="好消息 2" tvg-name="好消息 2" tvg-logo="" group-title="GPT-台灣",好消息 2
+http://34.80.180.91:5050/smart.php?id=good2_twn
+#EXTINF:-1 tvg-id="CCTV-1 综合" tvg-name="CCTV-1 综合" tvg-logo="" group-title="GPT-央視",CCTV-1 綜合
+http://34.80.180.91:5050/smart.php?id=cctv1
+#EXTINF:-1 tvg-id="CCTV-2 财经" tvg-name="CCTV-2 财经" tvg-logo="" group-title="GPT-央視",CCTV-2 財經
+http://34.80.180.91:5050/smart.php?id=cctv2
+#EXTINF:-1 tvg-id="CCTV-3 综艺" tvg-name="CCTV-3 综艺" tvg-logo="" group-title="GPT-央視",CCTV-3 綜藝
+http://34.80.180.91:5050/smart.php?id=cctv3
+#EXTINF:-1 tvg-id="CCTV-4 中文国际" tvg-name="CCTV-4 中文国际" tvg-logo="" group-title="GPT-央視",CCTV-4 中文國際
+http://34.80.180.91:5050/smart.php?id=Cctv4
+#EXTINF:-1 tvg-id="CCTV-4 中文国际" tvg-name="CCTV-4 中文国际" tvg-logo="" group-title="GPT-央視",CCTV-4 中文國際
+http://34.80.180.91:5050/smart.php?id=cctv4
+#EXTINF:-1 tvg-id="CCTV-5 体育" tvg-name="CCTV-5 体育" tvg-logo="" group-title="GPT-央視",CCTV-5 體育
+http://34.80.180.91:5050/smart.php?id=cctv5
+#EXTINF:-1 tvg-id="CCTV-6 电影" tvg-name="CCTV-6 电影" tvg-logo="" group-title="GPT-央視",CCTV-6 電影
+http://34.80.180.91:5050/smart.php?id=cctv6
+#EXTINF:-1 tvg-id="CCTV-7 国防军事" tvg-name="CCTV-7 国防军事" tvg-logo="" group-title="GPT-央視",CCTV-7 國防軍事
+http://34.80.180.91:5050/smart.php?id=cctv7
+#EXTINF:-1 tvg-id="CCTV-8 电视剧" tvg-name="CCTV-8 电视剧" tvg-logo="" group-title="GPT-央視",CCTV-8 電視劇
+http://34.80.180.91:5050/smart.php?id=cctv8hd
+#EXTINF:-1 tvg-id="CCTV-9 记录" tvg-name="CCTV-9 记录" tvg-logo="" group-title="GPT-央視",CCTV-9 紀錄
+http://34.80.180.91:5050/smart.php?id=cctv9hd
+#EXTINF:-1 tvg-id="CCTV-10 科教" tvg-name="CCTV-10 科教" tvg-logo="" group-title="GPT-央視",CCTV-10 科教
+http://34.80.180.91:5050/smart.php?id=cctv10hd
+#EXTINF:-1 tvg-id="CCTV-11 戏曲" tvg-name="CCTV-11 戏曲" tvg-logo="" group-title="GPT-央視",CCTV-11 戲曲
+http://34.80.180.91:5050/smart.php?id=cctv11
+#EXTINF:-1 tvg-id="CCTV-12 社会与法" tvg-name="CCTV-12 社会与法" tvg-logo="" group-title="GPT-央視",CCTV-12 社會與法
+http://34.80.180.91:5050/smart.php?id=cctv12
+#EXTINF:-1 tvg-id="CCTV-13 新闻" tvg-name="CCTV-13 新闻" tvg-logo="" group-title="GPT-央視",CCTV-13 新聞
+http://34.80.180.91:5050/smart.php?id=cctv13
+#EXTINF:-1 tvg-id="CCTV-14 少儿" tvg-name="CCTV-14 少儿" tvg-logo="" group-title="GPT-央視",CCTV-14 少兒
+http://34.80.180.91:5050/smart.php?id=cctv14
+#EXTINF:-1 tvg-id="CCTV-15 音乐" tvg-name="CCTV-15 音乐" tvg-logo="" group-title="GPT-央視",CCTV-15 音樂
+http://34.80.180.91:5050/smart.php?id=cctv15
+#EXTINF:-1 tvg-id="CCTV-16 奥林匹克" tvg-name="CCTV-16 奥林匹克" tvg-logo="" group-title="GPT-央視",CCTV-16 奥林匹克
+http://34.80.180.91:5050/smart.php?id=cctv16
+#EXTINF:-1 tvg-id="CCTV-17 农业农村" tvg-name="CCTV-17 农业农村" tvg-logo="" group-title="GPT-央視",CCTV-17 農業農村
+http://34.80.180.91:5050/smart.php?id=cctv17
+#EXTINF:-1 tvg-id="CCTV-5+ 体育赛事" tvg-name="CCTV-5+ 体育赛事" tvg-logo="" group-title="GPT-央視",CCTV-5+ 體育賽事
+http://34.80.180.91:5050/smart.php?id=cctv5plus
+#EXTINF:-1 tvg-id="湖南卫视" tvg-name="湖南卫视" tvg-logo="" group-title="GPT-央視",湖南衛視
+http://34.80.180.91:5050/smart.php?id=hunan_twn
+#EXTINF:-1 tvg-id="浙江卫视" tvg-name="浙江卫视" tvg-logo="" group-title="GPT-央視",浙江衛視
+http://34.80.180.91:5050/smart.php?id=zhejiang_twn
+#EXTINF:-1 tvg-id="江苏卫视" tvg-name="江苏卫视" tvg-logo="" group-title="GPT-央視",江蘇衛視
+http://34.80.180.91:5050/smart.php?id=jiangsu_twn
+#EXTINF:-1 tvg-id="东方卫视" tvg-name="东方卫视" tvg-logo="" group-title="GPT-央視",東方衛視
+http://34.80.180.91:5050/smart.php?id=dongfangweishi_twn
+#EXTINF:-1 tvg-id="北京卫视" tvg-name="北京卫视" tvg-logo="" group-title="GPT-央視",北京衛視
+http://34.80.180.91:5050/smart.php?id=beijing
+#EXTINF:-1 tvg-id="深圳卫视" tvg-name="深圳卫视" tvg-logo="" group-title="GPT-央視",深圳衛視
+http://34.80.180.91:5050/smart.php?id=shenzhen
+#EXTINF:-1 tvg-id="广东卫视" tvg-name="广东卫视" tvg-logo="" group-title="GPT-央視",廣東衛視
+http://34.80.180.91:5050/smart.php?id=guangdongweishi_twn
+#EXTINF:-1 tvg-id="大湾区卫视" tvg-name="大湾区卫视" tvg-logo="" group-title="GPT-央視",大灣區衛視
+http://34.80.180.91:5050/smart.php?id=nanfang_twn
+#EXTINF:-1 tvg-id="珠江台" tvg-name="珠江台" tvg-logo="" group-title="GPT-央視",珠江台
+http://34.80.180.91:5050/smart.php?id=zhujiang
+#EXTINF:-1 tvg-id="东南卫视" tvg-name="东南卫视" tvg-logo="" group-title="GPT-央視",東南衛視
+http://34.80.180.91:5050/smart.php?id=fujian
+#EXTINF:-1 tvg-id="广西卫视" tvg-name="广西卫视" tvg-logo="" group-title="GPT-央視",廣西衛視
+http://34.80.180.91:5050/smart.php?id=guangxi
+#EXTINF:-1 tvg-id="湖北卫视" tvg-name="湖北卫视" tvg-logo="" group-title="GPT-央視",湖北衛視
+http://34.80.180.91:5050/smart.php?id=hubei
+#EXTINF:-1 tvg-id="四川卫视" tvg-name="四川卫视" tvg-logo="" group-title="GPT-央視",四川衛視
+http://34.80.180.91:5050/smart.php?id=sichuan_twn
+#EXTINF:-1 tvg-id="CGTN" tvg-name="CGTN" tvg-logo="" group-title="GPT-央視",CGTN
+http://34.80.180.91:5050/smart.php?id=CGTN
+#EXTINF:-1 tvg-id="CCTV-6" tvg-name="CCTV-6" tvg-logo="" group-title="GPT-電影",CCTV-6
+http://34.80.180.91:5050/smart.php?id=cctv6
+#EXTINF:-1 tvg-id="AXN Taiwan" tvg-name="AXN Taiwan" tvg-logo="" group-title="GPT-電影",AXN Taiwan
+http://34.80.180.91:5050/smart.php?id=axn_twn
+#EXTINF:-1 tvg-id="HBO_HD" tvg-name="HBO_HD" tvg-logo="" group-title="GPT-電影",HBO_HD
+http://34.80.180.91:5050/smart.php?id=hbohd_twn
+#EXTINF:-1 tvg-id="HBO_HITS" tvg-name="HBO_HITS" tvg-logo="" group-title="GPT-電影",HBO_HITS
+http://34.80.180.91:5050/smart.php?id=hbohit_twn
+#EXTINF:-1 tvg-id="CINEMAX" tvg-name="CINEMAX" tvg-logo="" group-title="GPT-電影",CINEMAX
+http://34.80.180.91:5050/smart.php?id=cinemax_twn
+#EXTINF:-1 tvg-id="好萊塢電影台" tvg-name="好萊塢電影台" tvg-logo="" group-title="GPT-電影",好萊塢電影台
+http://34.80.180.91:5050/smart.php?id=hollywoodmovies_twn
+#EXTINF:-1 tvg-id="东森电影" tvg-name="东森电影" tvg-logo="" group-title="GPT-電影",東森電影
+http://34.80.180.91:5050/smart.php?id=ettvmovie
+#EXTINF:-1 tvg-id="东森洋片" tvg-name="东森洋片" tvg-logo="" group-title="GPT-電影",東森洋片
+http://34.80.180.91:5050/smart.php?id=ettvwestern
+#EXTINF:-1 tvg-id="龙华电影" tvg-name="龙华电影" tvg-logo="" group-title="GPT-電影",龍華電影
+http://34.80.180.91:5050/smart.php?id=xingwei_movie
+#EXTINF:-1 tvg-id="龙华洋片" tvg-name="龙华洋片" tvg-logo="" group-title="GPT-電影",龍華洋片
+http://34.80.180.91:5050/smart.php?id=lunghuawestern_twn
+#EXTINF:-1 tvg-id="龙祥时代" tvg-name="龙祥时代" tvg-logo="" group-title="GPT-電影",龍祥時代
+http://34.80.180.91:5050/smart.php?id=lungxiangtime_twn
+#EXTINF:-1 tvg-id="美亚电影" tvg-name="美亚电影" tvg-logo="" group-title="GPT-電影",美亞電影
+http://34.80.180.91:5050/smart.php?id=meiyamovie_twn
+#EXTINF:-1 tvg-id="amc电影台" tvg-name="amc电影台" tvg-logo="" group-title="GPT-電影",amc電影台
+http://34.80.180.91:5050/smart.php?id=starmoviesgold_twn
+#EXTINF:-1 tvg-id="天映频道" tvg-name="天映频道" tvg-logo="" group-title="GPT-電影",天映頻道
+http://34.80.180.91:5050/smart.php?id=Celestial
+#EXTINF:-1 tvg-id="天映频道" tvg-name="天映频道" tvg-logo="" group-title="GPT-電影",天映頻道
+http://34.80.180.91:5050/smart.php?id=Celestialindo
+#EXTINF:-1 tvg-id="天映经典" tvg-name="天映经典" tvg-logo="" group-title="GPT-電影",天映經典
+http://34.80.180.91:5050/smart.php?id=Celestial2
+#EXTINF:-1 tvg-id="Animax" tvg-name="Animax" tvg-logo="" group-title="GPT-電影",Animax
+http://34.80.180.91:5050/smart.php?id=Animax
+#EXTINF:-1 tvg-id="Movies Now HD" tvg-name="Movies Now HD" tvg-logo="" group-title="GPT-電影",Movies Now HD
+http://34.80.180.91:5050/smart.php?id=moviesnow_raj
+#EXTINF:-1 tvg-id="Star Movies HD" tvg-name="Star Movies HD" tvg-logo="" group-title="GPT-電影",Star Movies HD
+http://34.80.180.91:5050/smart.php?id=starmovies_raj
+#EXTINF:-1 tvg-id="Hits" tvg-name="Hits" tvg-logo="" group-title="GPT-電影",Hits
+http://34.80.180.91:5050/smart.php?id=Hits
+#EXTINF:-1 tvg-id="Warner TV" tvg-name="Warner TV" tvg-logo="" group-title="GPT-電影",Warner TV
+http://34.80.180.91:5050/smart.php?id=WarnerTV
+#EXTINF:-1 tvg-id="HBO HD" tvg-name="HBO HD" tvg-logo="" group-title="GPT-電影",HBO HD
+http://34.80.180.91:5050/smart.php?id=Hbo
+#EXTINF:-1 tvg-id="HBO Signature" tvg-name="HBO Signature" tvg-logo="" group-title="GPT-電影",HBO Signature
+http://34.80.180.91:5050/smart.php?id=Hbosignature
+#EXTINF:-1 tvg-id="HBO Family" tvg-name="HBO Family" tvg-logo="" group-title="GPT-電影",HBO Family
+http://34.80.180.91:5050/smart.php?id=Hbofamily
+#EXTINF:-1 tvg-id="HBO Hits" tvg-name="HBO Hits" tvg-logo="" group-title="GPT-電影",HBO Hits
+http://34.80.180.91:5050/smart.php?id=Hbohitshd
+#EXTINF:-1 tvg-id="Cinemax" tvg-name="Cinemax" tvg-logo="" group-title="GPT-電影",Cinemax
+http://34.80.180.91:5050/smart.php?id=Cinemax
+#EXTINF:-1 tvg-id="Dreamworks" tvg-name="Dreamworks" tvg-logo="" group-title="GPT-電影",Dreamworks
+http://34.80.180.91:5050/smart.php?id=Dreamworks
+#EXTINF:-1 tvg-id="SCM" tvg-name="SCM" tvg-logo="" group-title="GPT-電影",SCM
+http://34.80.180.91:5050/smart.php?id=Weishimovie
+#EXTINF:-1 tvg-id="Thrill" tvg-name="Thrill" tvg-logo="" group-title="GPT-電影",Thrill
+http://34.80.180.91:5050/smart.php?id=Thrill
+#EXTINF:-1 tvg-id="Hits Movie" tvg-name="Hits Movie" tvg-logo="" group-title="GPT-電影",Hits Movie
+http://34.80.180.91:5050/smart.php?id=Hitsmovie
+#EXTINF:-1 tvg-id="One" tvg-name="One" tvg-logo="" group-title="GPT-電影",One
+http://34.80.180.91:5050/smart.php?id=One
+#EXTINF:-1 tvg-id="tvN Movie" tvg-name="tvN Movie" tvg-logo="" group-title="GPT-電影",tvN Movie
+http://34.80.180.91:5050/smart.php?id=Tvnmovie
+#EXTINF:-1 tvg-id="Axn HD" tvg-name="Axn HD" tvg-logo="" group-title="GPT-電影",Axn HD
+http://34.80.180.91:5050/smart.php?id=Axn
+#EXTINF:-1 tvg-id="Paramount Network" tvg-name="Paramount Network" tvg-logo="" group-title="GPT-電影",Paramount Network
+http://34.80.180.91:5050/smart.php?id=Paramountnetwork
+#EXTINF:-1 tvg-id="Astrol Kplus" tvg-name="Astrol Kplus" tvg-logo="" group-title="GPT-電影",Astrol Kplus
+http://34.80.180.91:5050/smart.php?id=Kplus
+#EXTINF:-1 tvg-id="Rock Actions" tvg-name="Rock Actions" tvg-logo="" group-title="GPT-電影",Rock Actions
+http://34.80.180.91:5050/smart.php?id=Rockaction
+#EXTINF:-1 tvg-id="Rock Entertainment" tvg-name="Rock Entertainment" tvg-logo="" group-title="GPT-電影",Rock Entertainment
+http://34.80.180.91:5050/smart.php?id=Rockentertain
+#EXTINF:-1 tvg-id="Natgeo_HD" tvg-name="Natgeo_HD" tvg-logo="" group-title="GPT-紀錄",Natgeo_HD
+http://34.80.180.91:5050/smart.php?id=natgeohd_twn
+#EXTINF:-1 tvg-id="NatGeo_Wild HD" tvg-name="NatGeo_Wild HD" tvg-logo="" group-title="GPT-紀錄",NatGeo_Wild HD
+http://34.80.180.91:5050/smart.php?id=natgeowild_twn
+#EXTINF:-1 tvg-id="Animal_Planet" tvg-name="Animal_Planet" tvg-logo="" group-title="GPT-紀錄",Animal_Planet
+http://34.80.180.91:5050/smart.php?id=animalplanet_twn
+#EXTINF:-1 tvg-id="Discovery Asia" tvg-name="Discovery Asia" tvg-logo="" group-title="GPT-紀錄",Discovery Asia
+http://34.80.180.91:5050/smart.php?id=discoverytwn_twn
+#EXTINF:-1 tvg-id="CI" tvg-name="CI" tvg-logo="" group-title="GPT-紀錄",CI
+http://34.80.180.91:5050/smart.php?id=ci_twn
+#EXTINF:-1 tvg-id="Asia Travel" tvg-name="Asia Travel" tvg-logo="" group-title="GPT-紀錄",Asia Travel
+http://34.80.180.91:5050/smart.php?id=asiatravel_twn
+#EXTINF:-1 tvg-id="Discovery HD" tvg-name="Discovery HD" tvg-logo="" group-title="GPT-紀錄",Discovery HD
+http://34.80.180.91:5050/smart.php?id=discoveryhd_twn
+#EXTINF:-1 tvg-id="亚洲美食" tvg-name="亚洲美食" tvg-logo="" group-title="GPT-紀錄",亞洲美食
+http://34.80.180.91:5050/smart.php?id=afc_twn
+#EXTINF:-1 tvg-id="美食星球" tvg-name="美食星球" tvg-logo="" group-title="GPT-紀錄",美食星球
+http://34.80.180.91:5050/smart.php?id=foodplanet_twn
+#EXTINF:-1 tvg-id="亚洲TLC" tvg-name="亚洲TLC" tvg-logo="" group-title="GPT-紀錄",亞洲TLC
+http://34.80.180.91:5050/smart.php?id=tlc_twn
+#EXTINF:-1 tvg-id="NatGeo HD" tvg-name="NatGeo HD" tvg-logo="" group-title="GPT-紀錄",NatGeo HD
+http://34.80.180.91:5050/smart.php?id=Natgeo
+#EXTINF:-1 tvg-id="Fashion TV" tvg-name="Fashion TV" tvg-logo="" group-title="GPT-紀錄",Fashion TV
+http://34.80.180.91:5050/smart.php?id=fashiontv_twn
+#EXTINF:-1 tvg-id="History" tvg-name="History" tvg-logo="" group-title="GPT-紀錄",History
+http://34.80.180.91:5050/smart.php?id=History
+#EXTINF:-1 tvg-id="BBC Earth HD" tvg-name="BBC Earth HD" tvg-logo="" group-title="GPT-紀錄",BBC Earth HD
+http://34.80.180.91:5050/smart.php?id=bbcearth_twn
+#EXTINF:-1 tvg-id="BBC Earth Lifestyle" tvg-name="BBC Earth Lifestyle" tvg-logo="" group-title="GPT-紀錄",BBC Earth Lifestyle
+http://34.80.180.91:5050/smart.php?id=bbclifestyle_twn
+#EXTINF:-1 tvg-id="MTV Live" tvg-name="MTV Live" tvg-logo="" group-title="GPT-紀錄",MTV Live
+http://34.80.180.91:5050/smart.php?id=mtvhd_twn
+#EXTINF:-1 tvg-id="NatGeo Wild HD" tvg-name="NatGeo Wild HD" tvg-logo="" group-title="GPT-紀錄",NatGeo Wild HD
+http://34.80.180.91:5050/smart.php?id=Natgeowild
+#EXTINF:-1 tvg-id="Animal Planet (Eng)" tvg-name="Animal Planet (Eng)" tvg-logo="" group-title="GPT-紀錄",Animal Planet (Eng)
+http://34.80.180.91:5050/smart.php?id=AnimalPlanet
+#EXTINF:-1 tvg-id="TLC" tvg-name="TLC" tvg-logo="" group-title="GPT-紀錄",TLC
+http://34.80.180.91:5050/smart.php?id=Tlc
+#EXTINF:-1 tvg-id="Foodnetwork Hd" tvg-name="Foodnetwork Hd" tvg-logo="" group-title="GPT-紀錄",Foodnetwork Hd
+http://34.80.180.91:5050/smart.php?id=Foodnetwork
+#EXTINF:-1 tvg-id="HGTV" tvg-name="HGTV" tvg-logo="" group-title="GPT-紀錄",HGTV
+http://34.80.180.91:5050/smart.php?id=HGTV
+#EXTINF:-1 tvg-id="亚洲旅游台" tvg-name="亚洲旅游台" tvg-logo="" group-title="GPT-紀錄",亞洲旅游台
+http://34.80.180.91:5050/smart.php?id=asiatravel_twn
+#EXTINF:-1 tvg-id="Skynews" tvg-name="Skynews" tvg-logo="" group-title="GPT-新聞",Skynews
+http://34.80.180.91:5050/smart.php?id=skynews_twn
+#EXTINF:-1 tvg-id="ABC News" tvg-name="ABC News" tvg-logo="" group-title="GPT-新聞",ABC News
+http://34.80.180.91:5050/smart.php?id=abcnews_glo
+#EXTINF:-1 tvg-id="东森财经新闻" tvg-name="东森财经新闻" tvg-logo="" group-title="GPT-新聞",東森財經新聞
+http://34.80.180.91:5050/smart.php?id=ettvcaijing_twn
+#EXTINF:-1 tvg-id="CBS HD" tvg-name="CBS HD" tvg-logo="" group-title="GPT-新聞",CBS HD
+http://34.80.180.91:5050/smart.php?id=cbshd_glo
+#EXTINF:-1 tvg-id="CBSN HD" tvg-name="CBSN HD" tvg-logo="" group-title="GPT-新聞",CBSN HD
+http://34.80.180.91:5050/smart.php?id=cbsn_glo
+#EXTINF:-1 tvg-id="France 24" tvg-name="France 24" tvg-logo="" group-title="GPT-新聞",France 24
+http://34.80.180.91:5050/smart.php?id=france24_twn
+#EXTINF:-1 tvg-id="DW (Deutsch)" tvg-name="DW (Deutsch)" tvg-logo="" group-title="GPT-新聞",DW (Deutsch)
+http://34.80.180.91:5050/smart.php?id=dw_twn
+#EXTINF:-1 tvg-id="NHK World" tvg-name="NHK World" tvg-logo="" group-title="GPT-新聞",NHK World
+http://34.80.180.91:5050/smart.php?id=nhkworld_japan
+#EXTINF:-1 tvg-id="Fox News" tvg-name="Fox News" tvg-logo="" group-title="GPT-新聞",Fox News
+http://34.80.180.91:5050/smart.php?id=foxnews_twn
+#EXTINF:-1 tvg-id="CGTN" tvg-name="CGTN" tvg-logo="" group-title="GPT-新聞",CGTN
+http://34.80.180.91:5050/smart.php?id=CGTN
+#EXTINF:-1 tvg-id="CNN International" tvg-name="CNN International" tvg-logo="" group-title="GPT-新聞",CNN International
+http://34.80.180.91:5050/smart.php?id=Cnn
+#EXTINF:-1 tvg-id="CNN backup" tvg-name="CNN backup" tvg-logo="" group-title="GPT-新聞",CNN backup
+http://34.80.180.91:5050/smart.php?id=cnn_twn
+#EXTINF:-1 tvg-id="CNBC" tvg-name="CNBC" tvg-logo="" group-title="GPT-新聞",CNBC
+http://34.80.180.91:5050/smart.php?id=cnbc_twn
+#EXTINF:-1 tvg-id="CNA" tvg-name="CNA" tvg-logo="" group-title="GPT-新聞",CNA
+http://34.80.180.91:5050/smart.php?id=cna
+#EXTINF:-1 tvg-id="BBC World News" tvg-name="BBC World News" tvg-logo="" group-title="GPT-新聞",BBC World News
+http://34.80.180.91:5050/smart.php?id=bbcnews_twn
+#EXTINF:-1 tvg-id="BBC World News" tvg-name="BBC World News" tvg-logo="" group-title="GPT-新聞",BBC World News
+http://34.80.180.91:5050/smart.php?id=Bbcnews
+#EXTINF:-1 tvg-id="Bloomberg News" tvg-name="Bloomberg News" tvg-logo="" group-title="GPT-新聞",Bloomberg News
+http://34.80.180.91:5050/smart.php?id=bloomberg_twn
+#EXTINF:-1 tvg-id="Al-Jazeera" tvg-name="Al-Jazeera" tvg-logo="" group-title="GPT-新聞",Al-Jazeera
+http://34.80.180.91:5050/smart.php?id=aljazeera_twn
+#EXTINF:-1 tvg-id="Baby TV Eng" tvg-name="Baby TV Eng" tvg-logo="" group-title="GPT-兒童",Baby TV Eng
+http://34.80.180.91:5050/smart.php?id=Babytv
+#EXTINF:-1 tvg-id="CBeebies" tvg-name="CBeebies" tvg-logo="" group-title="GPT-兒童",CBeebies
+http://34.80.180.91:5050/smart.php?id=Cbeebies
+#EXTINF:-1 tvg-id="Kids TV" tvg-name="Kids TV" tvg-logo="" group-title="GPT-兒童",Kids TV
+http://34.80.180.91:5050/smart.php?id=KidsTV
+#EXTINF:-1 tvg-id="Momo TV" tvg-name="Momo TV" tvg-logo="" group-title="GPT-兒童",Momo TV
+http://34.80.180.91:5050/smart.php?id=momo1_twn
+#EXTINF:-1 tvg-id="Animax" tvg-name="Animax" tvg-logo="" group-title="GPT-兒童",Animax
+http://34.80.180.91:5050/smart.php?id=Animax
+#EXTINF:-1 tvg-id="Baby TV" tvg-name="Baby TV" tvg-logo="" group-title="GPT-兒童",Baby TV
+http://34.80.180.91:5050/smart.php?id=babytv_twn
+#EXTINF:-1 tvg-id="MiaoMi" tvg-name="MiaoMi" tvg-logo="" group-title="GPT-兒童",MiaoMi
+http://34.80.180.91:5050/smart.php?id=MiaoMi
+#EXTINF:-1 tvg-id="靖天卡通" tvg-name="靖天卡通" tvg-logo="" group-title="GPT-兒童",靖天卡通
+http://34.80.180.91:5050/smart.php?id=jingtiancartoon_twn
+#EXTINF:-1 tvg-id="东森幼幼" tvg-name="东森幼幼" tvg-logo="" group-title="GPT-兒童",東森幼幼
+http://34.80.180.91:5050/smart.php?id=yoyo_twn
+#EXTINF:-1 tvg-id="Cartoon Network" tvg-name="Cartoon Network" tvg-logo="" group-title="GPT-兒童",Cartoon Network
+http://34.80.180.91:5050/smart.php?id=Cn
+#EXTINF:-1 tvg-id="Nickelodeon" tvg-name="Nickelodeon" tvg-logo="" group-title="GPT-兒童",Nickelodeon
+http://34.80.180.91:5050/smart.php?id=Nickelodeon
+#EXTINF:-1 tvg-id="Nick Jr" tvg-name="Nick Jr" tvg-logo="" group-title="GPT-兒童",Nick Jr
+http://34.80.180.91:5050/smart.php?id=Nickjr
+#EXTINF:-1 tvg-id="Astro Premier League 1" tvg-name="Astro Premier League 1" tvg-logo="" group-title="GPT-體育",Astro Premier League 1
+http://34.80.180.91:5050/smart.php?id=go_assp1
+#EXTINF:-1 tvg-id="Astro EPL 1 backup" tvg-name="Astro EPL 1 backup" tvg-logo="" group-title="GPT-體育",Astro EPL 1 backup
+http://34.80.180.91:5050/smart.php?id=go_assp1x
+#EXTINF:-1 tvg-id="Astro Premier League 2" tvg-name="Astro Premier League 2" tvg-logo="" group-title="GPT-體育",Astro Premier League 2
+http://34.80.180.91:5050/smart.php?id=go_assp2
+#EXTINF:-1 tvg-id="Astro Grandstand" tvg-name="Astro Grandstand" tvg-logo="" group-title="GPT-體育",Astro Grandstand
+http://34.80.180.91:5050/smart.php?id=go_assp3
+#EXTINF:-1 tvg-id="Astro Football" tvg-name="Astro Football" tvg-logo="" group-title="GPT-體育",Astro Football
+http://34.80.180.91:5050/smart.php?id=go_assp4
+#EXTINF:-1 tvg-id="Astro Sports Plus" tvg-name="Astro Sports Plus" tvg-logo="" group-title="GPT-體育",Astro Sports Plus
+http://34.80.180.91:5050/smart.php?id=go_sportsplus
+#EXTINF:-1 tvg-id="Astro Badminton 1" tvg-name="Astro Badminton 1" tvg-logo="" group-title="GPT-體育",Astro Badminton 1
+http://34.80.180.91:5050/smart.php?id=go_badminton1
+#EXTINF:-1 tvg-id="Astro Badminton 2" tvg-name="Astro Badminton 2" tvg-logo="" group-title="GPT-體育",Astro Badminton 2
+http://34.80.180.91:5050/smart.php?id=go_badminton2
+#EXTINF:-1 tvg-id="Astro W-Sports" tvg-name="Astro W-Sports" tvg-logo="" group-title="GPT-體育",Astro W-Sports
+http://34.80.180.91:5050/smart.php?id=go_assp5
+#EXTINF:-1 tvg-id="Supersports 1" tvg-name="Supersports 1" tvg-logo="" group-title="GPT-體育",Supersports 1
+http://34.80.180.91:5050/smart.php?id=Assp1
+#EXTINF:-1 tvg-id="Supersports 2" tvg-name="Supersports 2" tvg-logo="" group-title="GPT-體育",Supersports 2
+http://34.80.180.91:5050/smart.php?id=Assp2
+#EXTINF:-1 tvg-id="Supersports 3" tvg-name="Supersports 3" tvg-logo="" group-title="GPT-體育",Supersports 3
+http://34.80.180.91:5050/smart.php?id=Assp3
+#EXTINF:-1 tvg-id="Supersports 4" tvg-name="Supersports 4" tvg-logo="" group-title="GPT-體育",Supersports 4
+http://34.80.180.91:5050/smart.php?id=Assp4
+#EXTINF:-1 tvg-id="WWE" tvg-name="WWE" tvg-logo="" group-title="GPT-體育",WWE
+http://34.80.180.91:5050/smart.php?id=Wwe
+#EXTINF:-1 tvg-id="Fight Sports" tvg-name="Fight Sports" tvg-logo="" group-title="GPT-體育",Fight Sports
+http://34.80.180.91:5050/smart.php?id=Fs
+#EXTINF:-1 tvg-id="NBA TV" tvg-name="NBA TV" tvg-logo="" group-title="GPT-體育",NBA TV
+http://34.80.180.91:5050/smart.php?id=Nba
+#EXTINF:-1 tvg-id="Astro Cricket" tvg-name="Astro Cricket" tvg-logo="" group-title="GPT-體育",Astro Cricket
+http://34.80.180.91:5050/smart.php?id=Acricket
+#EXTINF:-1 tvg-id="Astro Golf" tvg-name="Astro Golf" tvg-logo="" group-title="GPT-體育",Astro Golf
+http://34.80.180.91:5050/smart.php?id=Agolf
+#EXTINF:-1 tvg-id="Tnt Sports 1" tvg-name="Tnt Sports 1" tvg-logo="" group-title="GPT-體育",Tnt Sports 1
+http://34.80.180.91:5050/smart.php?id=6fac0aaead
+#EXTINF:-1 tvg-id="TNT Sports 2" tvg-name="TNT Sports 2" tvg-logo="" group-title="GPT-體育",TNT Sports 2
+http://34.80.180.91:5050/smart.php?id=d9a76a79cc
+#EXTINF:-1 tvg-id="TNT Sports 3" tvg-name="TNT Sports 3" tvg-logo="" group-title="GPT-體育",TNT Sports 3
+http://34.80.180.91:5050/smart.php?id=5fea4d73db
+#EXTINF:-1 tvg-id="TNT Sports 4" tvg-name="TNT Sports 4" tvg-logo="" group-title="GPT-體育",TNT Sports 4
+http://34.80.180.91:5050/smart.php?id=tntsport4
+#EXTINF:-1 tvg-id="Sony Ten 1" tvg-name="Sony Ten 1" tvg-logo="" group-title="GPT-體育",Sony Ten 1
+http://34.80.180.91:5050/smart.php?id=ten1_raj
+#EXTINF:-1 tvg-id="Sony Ten 2" tvg-name="Sony Ten 2" tvg-logo="" group-title="GPT-體育",Sony Ten 2
+http://34.80.180.91:5050/smart.php?id=ten2_raj
+#EXTINF:-1 tvg-id="Sony Ten 3" tvg-name="Sony Ten 3" tvg-logo="" group-title="GPT-體育",Sony Ten 3
+http://34.80.180.91:5050/smart.php?id=ten3_raj
+#EXTINF:-1 tvg-id="SPOTV 1 HD" tvg-name="SPOTV 1 HD" tvg-logo="" group-title="GPT-體育",SPOTV 1 HD
+http://34.80.180.91:5050/smart.php?id=go_spotv
+#EXTINF:-1 tvg-id="SPO TV 2" tvg-name="SPO TV 2" tvg-logo="" group-title="GPT-體育",SPO TV 2
+http://34.80.180.91:5050/smart.php?id=go_spotv2
+#EXTINF:-1 tvg-id="Skysports F1" tvg-name="Skysports F1" tvg-logo="" group-title="GPT-體育",Skysports F1
+http://34.80.180.91:5050/smart.php?id=tiankongf1
+#EXTINF:-1 tvg-id="Skysports Cricket" tvg-name="Skysports Cricket" tvg-logo="" group-title="GPT-體育",Skysports Cricket
+http://34.80.180.91:5050/smart.php?id=tiankongcricket
+#EXTINF:-1 tvg-id="Skysports EPL" tvg-name="Skysports EPL" tvg-logo="" group-title="GPT-體育",Skysports EPL
+http://34.80.180.91:5050/smart.php?id=tiankongepl
+#EXTINF:-1 tvg-id="Skysports Main Event" tvg-name="Skysports Main Event" tvg-logo="" group-title="GPT-體育",Skysports Main Event
+http://34.80.180.91:5050/smart.php?id=tiankongmain
+#EXTINF:-1 tvg-id="Skysports News" tvg-name="Skysports News" tvg-logo="" group-title="GPT-體育",Skysports News
+http://34.80.180.91:5050/smart.php?id=tiankongnews
+#EXTINF:-1 tvg-id="Skysports Mix" tvg-name="Skysports Mix" tvg-logo="" group-title="GPT-體育",Skysports Mix
+http://34.80.180.91:5050/smart.php?id=tiankongmix
+#EXTINF:-1 tvg-id="CCTV-5 体育频道" tvg-name="CCTV-5 体育频道" tvg-logo="" group-title="GPT-體育",CCTV-5 體育頻道
+http://34.80.180.91:5050/smart.php?id=cctv5
+#EXTINF:-1 tvg-id="CCTV-5+ 体育赛事 HD" tvg-name="CCTV-5+ 体育赛事 HD" tvg-logo="" group-title="GPT-體育",CCTV-5+ 體育賽事 HD
+http://34.80.180.91:5050/smart.php?id=cctv5plus
+#EXTINF:-1 tvg-id="爱尔达体育2台" tvg-name="爱尔达体育2台" tvg-logo="" group-title="GPT-體育",愛爾達體育2台
+http://34.80.180.91:5050/smart.php?id=eltasport2_twn
+#EXTINF:-1 tvg-id="爱尔达体育3台" tvg-name="爱尔达体育3台" tvg-logo="" group-title="GPT-體育",愛爾達體育3台
+http://34.80.180.91:5050/smart.php?id=eltasport3_twn
+#EXTINF:-1 tvg-id="Rugby Pass TV" tvg-name="Rugby Pass TV" tvg-logo="" group-title="GPT-體育",Rugby Pass TV
+http://34.80.180.91:5050/smart.php?id=Rugbypasstv
+#EXTINF:-1 tvg-id="RTM Sports HD" tvg-name="RTM Sports HD" tvg-logo="" group-title="GPT-體育",RTM Sports HD
+http://34.80.180.91:5050/smart.php?id=Rtmsport
+#EXTINF:-1 tvg-id="Arena" tvg-name="Arena" tvg-logo="" group-title="GPT-體育",Arena
+http://34.80.180.91:5050/smart.php?id=Arena
+#EXTINF:-1 tvg-id="Arena 2" tvg-name="Arena 2" tvg-logo="" group-title="GPT-體育",Arena 2
+http://34.80.180.91:5050/smart.php?id=Arena2
+#EXTINF:-1 tvg-id="BolaArena 1" tvg-name="BolaArena 1" tvg-logo="" group-title="GPT-體育",BolaArena 1
+http://34.80.180.91:5050/smart.php?id=Bolaarena1
+#EXTINF:-1 tvg-id="BolaArena 2" tvg-name="BolaArena 2" tvg-logo="" group-title="GPT-體育",BolaArena 2
+http://34.80.180.91:5050/smart.php?id=Bolaarena2
+#EXTINF:-1 tvg-id="Astro Beinsports 1" tvg-name="Astro Beinsports 1" tvg-logo="" group-title="GPT-體育",Astro Beinsports 1
+http://34.80.180.91:5050/smart.php?id=Astrobein1
+#EXTINF:-1 tvg-id="Astro Beinsports 2" tvg-name="Astro Beinsports 2" tvg-logo="" group-title="GPT-體育",Astro Beinsports 2
+http://34.80.180.91:5050/smart.php?id=Astrobein2
+#EXTINF:-1 tvg-id="Astro Beinsports 3" tvg-name="Astro Beinsports 3" tvg-logo="" group-title="GPT-體育",Astro Beinsports 3
+http://34.80.180.91:5050/smart.php?id=Astrobein3
+#EXTINF:-1 tvg-id="Channel 5" tvg-name="Channel 5" tvg-logo="" group-title="GPT-新加坡",Channel 5
+http://34.80.180.91:5050/smart.php?id=Channel5HD
+#EXTINF:-1 tvg-id="Channel 8" tvg-name="Channel 8" tvg-logo="" group-title="GPT-新加坡",Channel 8
+http://34.80.180.91:5050/smart.php?id=Channel8HD
+#EXTINF:-1 tvg-id="Suria" tvg-name="Suria" tvg-logo="" group-title="GPT-新加坡",Suria
+http://34.80.180.91:5050/smart.php?id=Suria
+#EXTINF:-1 tvg-id="Channel U" tvg-name="Channel U" tvg-logo="" group-title="GPT-新加坡",Channel U
+http://34.80.180.91:5050/smart.php?id=ChannelU
+#EXTINF:-1 tvg-id="Vasantham" tvg-name="Vasantham" tvg-logo="" group-title="GPT-新加坡",Vasantham
+http://34.80.180.91:5050/smart.php?id=Vasantham
+#EXTINF:-1 tvg-id="CNA" tvg-name="CNA" tvg-logo="" group-title="GPT-新加坡",CNA
+http://34.80.180.91:5050/smart.php?id=cna
+#EXTINF:-1 tvg-id="CNA backup" tvg-name="CNA backup" tvg-logo="" group-title="GPT-新加坡",CNA backup
+http://34.80.180.91:5050/smart.php?id=cna_twn
+#EXTINF:-1 tvg-id="MeWatch Ch 5" tvg-name="MeWatch Ch 5" tvg-logo="" group-title="GPT-新加坡",MeWatch Ch 5
+http://34.80.180.91:5050/smart.php?id=Mewatch_ch5
+#EXTINF:-1 tvg-id="MeWatch Ch 8" tvg-name="MeWatch Ch 8" tvg-logo="" group-title="GPT-新加坡",MeWatch Ch 8
+http://34.80.180.91:5050/smart.php?id=Mewatch_ch8
+#EXTINF:-1 tvg-id="MeWatch Ch U" tvg-name="MeWatch Ch U" tvg-logo="" group-title="GPT-新加坡",MeWatch Ch U
+http://34.80.180.91:5050/smart.php?id=Mewatch_chU
+#EXTINF:-1 tvg-id="MeWatch Suria" tvg-name="MeWatch Suria" tvg-logo="" group-title="GPT-新加坡",MeWatch Suria
+http://34.80.180.91:5050/smart.php?id=Mewatch_Suria
+#EXTINF:-1 tvg-id="MeWatch Vasantham" tvg-name="MeWatch Vasantham" tvg-logo="" group-title="GPT-新加坡",MeWatch Vasantham
+http://34.80.180.91:5050/smart.php?id=Mewatch_Vasantham
+#EXTINF:-1 tvg-id="MeWatch CNA" tvg-name="MeWatch CNA" tvg-logo="" group-title="GPT-新加坡",MeWatch CNA
+http://34.80.180.91:5050/smart.php?id=Mewatch_cna
+#EXTINF:-1 tvg-id="TV1" tvg-name="TV1" tvg-logo="" group-title="GPT-馬来西亞",TV1
+http://34.80.180.91:5050/smart.php?id=TV1
+#EXTINF:-1 tvg-id="TV1 backup" tvg-name="TV1 backup" tvg-logo="" group-title="GPT-馬来西亞",TV1 backup
+http://34.80.180.91:5050/smart.php?id=TV1_backup
+#EXTINF:-1 tvg-id="TV2" tvg-name="TV2" tvg-logo="" group-title="GPT-馬来西亞",TV2
+http://34.80.180.91:5050/smart.php?id=TV2
+#EXTINF:-1 tvg-id="TV3" tvg-name="TV3" tvg-logo="" group-title="GPT-馬来西亞",TV3
+http://34.80.180.91:5050/smart.php?id=TV3
+#EXTINF:-1 tvg-id="TV3 SD" tvg-name="TV3 SD" tvg-logo="" group-title="GPT-馬来西亞",TV3 SD
+http://34.80.180.91:5050/smart.php?id=TV3_mega
+#EXTINF:-1 tvg-id="NTV7" tvg-name="NTV7" tvg-logo="" group-title="GPT-馬来西亞",NTV7
+http://34.80.180.91:5050/smart.php?id=NTV7
+#EXTINF:-1 tvg-id="TV8" tvg-name="TV8" tvg-logo="" group-title="GPT-馬来西亞",TV8
+http://34.80.180.91:5050/smart.php?id=TV8
+#EXTINF:-1 tvg-id="TV9" tvg-name="TV9" tvg-logo="" group-title="GPT-馬来西亞",TV9
+http://34.80.180.91:5050/smart.php?id=TV9
+#EXTINF:-1 tvg-id="Ria" tvg-name="Ria" tvg-logo="" group-title="GPT-馬来西亞",Ria
+http://34.80.180.91:5050/smart.php?id=Ria-0
+#EXTINF:-1 tvg-id="Ria-3" tvg-name="Ria-3" tvg-logo="" group-title="GPT-馬来西亞",Ria-3
+http://34.80.180.91:5050/smart.php?id=Ria_backup
+#EXTINF:-1 tvg-id="Al-Hijrah" tvg-name="Al-Hijrah" tvg-logo="" group-title="GPT-馬来西亞",Al-Hijrah
+http://34.80.180.91:5050/smart.php?id=Alhijrah
+#EXTINF:-1 tvg-id="Al-Hijrah backup" tvg-name="Al-Hijrah backup" tvg-logo="" group-title="GPT-馬来西亞",Al-Hijrah backup
+http://34.80.180.91:5050/smart.php?id=Alhijrah_backup
+#EXTINF:-1 tvg-id="Awani" tvg-name="Awani" tvg-logo="" group-title="GPT-馬来西亞",Awani
+http://34.80.180.91:5050/smart.php?id=Awani
+#EXTINF:-1 tvg-id="Bernama" tvg-name="Bernama" tvg-logo="" group-title="GPT-馬来西亞",Bernama
+http://34.80.180.91:5050/smart.php?id=Bernama
+#EXTINF:-1 tvg-id="Prima" tvg-name="Prima" tvg-logo="" group-title="GPT-馬来西亞",Prima
+http://34.80.180.91:5050/smart.php?id=Prima-0
+#EXTINF:-1 tvg-id="Prima backup" tvg-name="Prima backup" tvg-logo="" group-title="GPT-馬来西亞",Prima backup
+http://34.80.180.91:5050/smart.php?id=AAprima1
+#EXTINF:-1 tvg-id="Prima backup 2" tvg-name="Prima backup 2" tvg-logo="" group-title="GPT-馬来西亞",Prima backup 2
+http://34.80.180.91:5050/smart.php?id=AAprima
+#EXTINF:-1 tvg-id="Ceria" tvg-name="Ceria" tvg-logo="" group-title="GPT-馬来西亞",Ceria
+http://34.80.180.91:5050/smart.php?id=Ceria
+#EXTINF:-1 tvg-id="Astro MTV" tvg-name="Astro MTV" tvg-logo="" group-title="GPT-馬来西亞",Astro MTV
+http://34.80.180.91:5050/smart.php?id=AstroMTV
+#EXTINF:-1 tvg-id="Mecca Live HD" tvg-name="Mecca Live HD" tvg-logo="" group-title="GPT-馬来西亞",Mecca Live HD
+http://34.80.180.91:5050/smart.php?id=quran_mido
+#EXTINF:-1 tvg-id="Madinah HD" tvg-name="Madinah HD" tvg-logo="" group-title="GPT-馬来西亞",Madinah HD
+http://34.80.180.91:5050/smart.php?id=sunnah_mido
+#EXTINF:-1 tvg-id="Oasis" tvg-name="Oasis" tvg-logo="" group-title="GPT-馬来西亞",Oasis
+http://34.80.180.91:5050/smart.php?id=Oasis
+#EXTINF:-1 tvg-id="HBO HD" tvg-name="HBO HD" tvg-logo="" group-title="GPT-馬来西亞",HBO HD
+http://34.80.180.91:5050/smart.php?id=Hbo
+#EXTINF:-1 tvg-id="HBO Signature" tvg-name="HBO Signature" tvg-logo="" group-title="GPT-馬来西亞",HBO Signature
+http://34.80.180.91:5050/smart.php?id=Hbosignature
+#EXTINF:-1 tvg-id="HBO Hits" tvg-name="HBO Hits" tvg-logo="" group-title="GPT-馬来西亞",HBO Hits
+http://34.80.180.91:5050/smart.php?id=Hbohitshd
+#EXTINF:-1 tvg-id="NatGeo Wild HD" tvg-name="NatGeo Wild HD" tvg-logo="" group-title="GPT-馬来西亞",NatGeo Wild HD
+http://34.80.180.91:5050/smart.php?id=Natgeowild
+#EXTINF:-1 tvg-id="Cartoon Network" tvg-name="Cartoon Network" tvg-logo="" group-title="GPT-馬来西亞",Cartoon Network
+http://34.80.180.91:5050/smart.php?id=Cn
+#EXTINF:-1 tvg-id="Nickelodeon" tvg-name="Nickelodeon" tvg-logo="" group-title="GPT-馬来西亞",Nickelodeon
+http://34.80.180.91:5050/smart.php?id=Nickelodeon
+#EXTINF:-1 tvg-id="Nick Jr" tvg-name="Nick Jr" tvg-logo="" group-title="GPT-馬来西亞",Nick Jr
+http://34.80.180.91:5050/smart.php?id=Nickjr
+#EXTINF:-1 tvg-id="Dreamworks" tvg-name="Dreamworks" tvg-logo="" group-title="GPT-馬来西亞",Dreamworks
+http://34.80.180.91:5050/smart.php?id=Dreamworks
+#EXTINF:-1 tvg-id="Siar" tvg-name="Siar" tvg-logo="" group-title="GPT-馬来西亞",Siar
+http://34.80.180.91:5050/smart.php?id=Siar
+#EXTINF:-1 tvg-id="Citra" tvg-name="Citra" tvg-logo="" group-title="GPT-馬来西亞",Citra
+http://34.80.180.91:5050/smart.php?id=AAcitra
+#EXTINF:-1 tvg-id="Citra backup" tvg-name="Citra backup" tvg-logo="" group-title="GPT-馬来西亞",Citra backup
+http://34.80.180.91:5050/smart.php?id=AAcitra1
+#EXTINF:-1 tvg-id="Sensasi" tvg-name="Sensasi" tvg-logo="" group-title="GPT-馬来西亞",Sensasi
+http://34.80.180.91:5050/smart.php?id=Sensasi
+#EXTINF:-1 tvg-id="Aura" tvg-name="Aura" tvg-logo="" group-title="GPT-馬来西亞",Aura
+http://34.80.180.91:5050/smart.php?id=Aura
+#EXTINF:-1 tvg-id="Rania" tvg-name="Rania" tvg-logo="" group-title="GPT-馬来西亞",Rania
+http://34.80.180.91:5050/smart.php?id=Rania
+#EXTINF:-1 tvg-id="KBS World" tvg-name="KBS World" tvg-logo="" group-title="GPT-馬来西亞",KBS World
+http://34.80.180.91:5050/smart.php?id=KBS
+#EXTINF:-1 tvg-id="Boo" tvg-name="Boo" tvg-logo="" group-title="GPT-馬来西亞",Boo
+http://34.80.180.91:5050/smart.php?id=Boo
+#EXTINF:-1 tvg-id="Awesome TV" tvg-name="Awesome TV" tvg-logo="" group-title="GPT-馬来西亞",Awesome TV
+http://34.80.180.91:5050/smart.php?id=Dsangat
+#EXTINF:-1 tvg-id="Astro Sonypix" tvg-name="Astro Sonypix" tvg-logo="" group-title="GPT-馬来西亞",Astro Sonypix
+http://34.80.180.91:5050/smart.php?id=Asonypix
+#EXTINF:-1 tvg-id="Sony HD" tvg-name="Sony HD" tvg-logo="" group-title="GPT-馬来西亞",Sony HD
+http://34.80.180.91:5050/smart.php?id=SetOne
+#EXTINF:-1 tvg-id="TvN" tvg-name="TvN" tvg-logo="" group-title="GPT-馬来西亞",TvN
+http://34.80.180.91:5050/smart.php?id=TVN
+#EXTINF:-1 tvg-id="AEC" tvg-name="AEC" tvg-logo="" group-title="GPT-馬来西亞",AEC
+http://34.80.180.91:5050/smart.php?id=AEC
+#EXTINF:-1 tvg-id="华丽台 HD （Wah Lai Toi）" tvg-name="华丽台 HD （Wah Lai Toi）" tvg-logo="" group-title="GPT-馬来西亞",華麗台 HD （Wah Lai Toi）
+http://34.80.180.91:5050/smart.php?id=Wlt
+#EXTINF:-1 tvg-id="欢喜台 HD （Hua Hee Tai）" tvg-name="欢喜台 HD （Hua Hee Tai）" tvg-logo="" group-title="GPT-馬来西亞",歡喜台 HD （Hua Hee Tai）
+http://34.80.180.91:5050/smart.php?id=Huahee
+#EXTINF:-1 tvg-id="Astro QJ" tvg-name="Astro QJ" tvg-logo="" group-title="GPT-馬来西亞",Astro QJ
+http://34.80.180.91:5050/smart.php?id=Quanjia
+#EXTINF:-1 tvg-id="TVB Jade" tvg-name="TVB Jade" tvg-logo="" group-title="GPT-馬来西亞",TVB Jade
+http://34.80.180.91:5050/smart.php?id=Tvbjade
+#EXTINF:-1 tvg-id="TVB Asia" tvg-name="TVB Asia" tvg-logo="" group-title="GPT-馬来西亞",TVB Asia
+http://34.80.180.91:5050/smart.php?id=Tvbasia
+#EXTINF:-1 tvg-id="TVB Entertainment" tvg-name="TVB Entertainment" tvg-logo="" group-title="GPT-馬来西亞",TVB Entertainment
+http://34.80.180.91:5050/smart.php?id=Tvbentertainment
+#EXTINF:-1 tvg-id="TVB Classic" tvg-name="TVB Classic" tvg-logo="" group-title="GPT-馬来西亞",TVB Classic
+http://34.80.180.91:5050/smart.php?id=Tvbclassic
+#EXTINF:-1 tvg-id="AOD" tvg-name="AOD" tvg-logo="" group-title="GPT-馬来西亞",AOD
+http://34.80.180.91:5050/smart.php?id=Aodhd
+#EXTINF:-1 tvg-id="One" tvg-name="One" tvg-logo="" group-title="GPT-馬来西亞",One
+http://34.80.180.91:5050/smart.php?id=One
+#EXTINF:-1 tvg-id="TVB 星河台 Xing He" tvg-name="TVB 星河台 Xing He" tvg-logo="" group-title="GPT-馬来西亞",TVB 星河台 Xing He
+http://34.80.180.91:5050/smart.php?id=Xinhe
+#EXTINF:-1 tvg-id="爱奇艺 iQiyi" tvg-name="爱奇艺 iQiyi" tvg-logo="" group-title="GPT-馬来西亞",愛奇藝 iQiyi
+http://34.80.180.91:5050/smart.php?id=Qiyi
+#EXTINF:-1 tvg-id="Animal Planet (Eng)" tvg-name="Animal Planet (Eng)" tvg-logo="" group-title="GPT-馬来西亞",Animal Planet (Eng)
+http://34.80.180.91:5050/smart.php?id=AnimalPlanet
+#EXTINF:-1 tvg-id="tvN Movie" tvg-name="tvN Movie" tvg-logo="" group-title="GPT-馬来西亞",tvN Movie
+http://34.80.180.91:5050/smart.php?id=Tvnmovie
+#EXTINF:-1 tvg-id="CNN backup" tvg-name="CNN backup" tvg-logo="" group-title="GPT-馬来西亞",CNN backup
+http://34.80.180.91:5050/smart.php?id=cnn_twn
+#EXTINF:-1 tvg-id="Celestial Classic" tvg-name="Celestial Classic" tvg-logo="" group-title="GPT-馬来西亞",Celestial Classic
+http://34.80.180.91:5050/smart.php?id=Celestial2
+#EXTINF:-1 tvg-id="CNBC" tvg-name="CNBC" tvg-logo="" group-title="GPT-馬来西亞",CNBC
+http://34.80.180.91:5050/smart.php?id=cnbc_twn
+#EXTINF:-1 tvg-id="TLC" tvg-name="TLC" tvg-logo="" group-title="GPT-馬来西亞",TLC
+http://34.80.180.91:5050/smart.php?id=Tlc
+#EXTINF:-1 tvg-id="CNA" tvg-name="CNA" tvg-logo="" group-title="GPT-馬来西亞",CNA
+http://34.80.180.91:5050/smart.php?id=cna
+#EXTINF:-1 tvg-id="BBC World News" tvg-name="BBC World News" tvg-logo="" group-title="GPT-馬来西亞",BBC World News
+http://34.80.180.91:5050/smart.php?id=bbcnews_twn
+#EXTINF:-1 tvg-id="Foodnetwork Hd" tvg-name="Foodnetwork Hd" tvg-logo="" group-title="GPT-馬来西亞",Foodnetwork Hd
+http://34.80.180.91:5050/smart.php?id=Foodnetwork
+#EXTINF:-1 tvg-id="HGTV" tvg-name="HGTV" tvg-logo="" group-title="GPT-馬来西亞",HGTV
+http://34.80.180.91:5050/smart.php?id=HGTV
+#EXTINF:-1 tvg-id="Goshop" tvg-name="Goshop" tvg-logo="" group-title="GPT-馬来西亞",Goshop
+http://34.80.180.91:5050/smart.php?id=Goshop
+#EXTINF:-1 tvg-id="Celestial Movies HD" tvg-name="Celestial Movies HD" tvg-logo="" group-title="GPT-馬来西亞",Celestial Movies HD
+http://34.80.180.91:5050/smart.php?id=Celestial
+#EXTINF:-1 tvg-id="Axn HD" tvg-name="Axn HD" tvg-logo="" group-title="GPT-馬来西亞",Axn HD
+http://34.80.180.91:5050/smart.php?id=Axn
+#EXTINF:-1 tvg-id="Paramount Network" tvg-name="Paramount Network" tvg-logo="" group-title="GPT-馬来西亞",Paramount Network
+http://34.80.180.91:5050/smart.php?id=Paramountnetwork
+#EXTINF:-1 tvg-id="Astrol Kplus" tvg-name="Astrol Kplus" tvg-logo="" group-title="GPT-馬来西亞",Astrol Kplus
+http://34.80.180.91:5050/smart.php?id=Kplus
+#EXTINF:-1 tvg-id="AFC 亚洲旅游台" tvg-name="AFC 亚洲旅游台" tvg-logo="" group-title="GPT-馬来西亞",AFC 亞洲旅游台
+http://34.80.180.91:5050/smart.php?id=asiatravel_twn
+#EXTINF:-1 tvg-id="Rock Actions" tvg-name="Rock Actions" tvg-logo="" group-title="GPT-馬来西亞",Rock Actions
+http://34.80.180.91:5050/smart.php?id=Rockaction
+#EXTINF:-1 tvg-id="Bloomberg News" tvg-name="Bloomberg News" tvg-logo="" group-title="GPT-馬来西亞",Bloomberg News
+http://34.80.180.91:5050/smart.php?id=bloomberg_twn
+#EXTINF:-1 tvg-id="Al-Jazeera" tvg-name="Al-Jazeera" tvg-logo="" group-title="GPT-馬来西亞",Al-Jazeera
+http://34.80.180.91:5050/smart.php?id=aljazeera_twn
+#EXTINF:-1 tvg-id="Rock Entertainment" tvg-name="Rock Entertainment" tvg-logo="" group-title="GPT-馬来西亞",Rock Entertainment
+http://34.80.180.91:5050/smart.php?id=Rockentertain
+#EXTINF:-1 tvg-id="RTM Sports HD" tvg-name="RTM Sports HD" tvg-logo="" group-title="GPT-馬来西亞",RTM Sports HD
+http://34.80.180.91:5050/smart.php?id=Rtmsport
+#EXTINF:-1 tvg-id="Arena" tvg-name="Arena" tvg-logo="" group-title="GPT-馬来西亞",Arena
+http://34.80.180.91:5050/smart.php?id=Arena
+#EXTINF:-1 tvg-id="Arena 2" tvg-name="Arena 2" tvg-logo="" group-title="GPT-馬来西亞",Arena 2
+http://34.80.180.91:5050/smart.php?id=Arena2
+#EXTINF:-1 tvg-id="BolaArena 1" tvg-name="BolaArena 1" tvg-logo="" group-title="GPT-馬来西亞",BolaArena 1
+http://34.80.180.91:5050/smart.php?id=Bolaarena1
+#EXTINF:-1 tvg-id="BolaArena 2" tvg-name="BolaArena 2" tvg-logo="" group-title="GPT-馬来西亞",BolaArena 2
+http://34.80.180.91:5050/smart.php?id=Bolaarena2
+#EXTINF:-1 tvg-id="Astro LOL" tvg-name="Astro LOL" tvg-logo="" group-title="GPT-馬来西亞",Astro LOL
+http://34.80.180.91:5050/smart.php?id=Astro_lol
+#EXTINF:-1 tvg-id="Astro Rusi" tvg-name="Astro Rusi" tvg-logo="" group-title="GPT-馬来西亞",Astro Rusi
+http://34.80.180.91:5050/smart.php?id=Rusi
+#EXTINF:-1 tvg-id="WION" tvg-name="WION" tvg-logo="" group-title="GPT-馬来西亞",WION
+http://34.80.180.91:5050/smart.php?id=Wion
+#EXTINF:-1 tvg-id="RTM Asean" tvg-name="RTM Asean" tvg-logo="" group-title="GPT-馬来西亞",RTM Asean
+http://34.80.180.91:5050/smart.php?id=Rtmasean
+#EXTINF:-1 tvg-id="TVRI National" tvg-name="TVRI National" tvg-logo="" group-title="GPT-印尼",TVRI National
+http://34.80.180.91:5050/smart.php?id=TVRI
+#EXTINF:-1 tvg-id="RCTI" tvg-name="RCTI" tvg-logo="" group-title="GPT-印尼",RCTI
+http://34.80.180.91:5050/smart.php?id=Rcti
+#EXTINF:-1 tvg-id="Kompass TV" tvg-name="Kompass TV" tvg-logo="" group-title="GPT-印尼",Kompass TV
+http://34.80.180.91:5050/smart.php?id=Kompass
+#EXTINF:-1 tvg-id="Berita Satu" tvg-name="Berita Satu" tvg-logo="" group-title="GPT-印尼",Berita Satu
+http://34.80.180.91:5050/smart.php?id=BeritaSatu_eko
+#EXTINF:-1 tvg-id="Indosiar HD" tvg-name="Indosiar HD" tvg-logo="" group-title="GPT-印尼",Indosiar HD
+http://34.80.180.91:5050/smart.php?id=Indosiar
+#EXTINF:-1 tvg-id="AnTV" tvg-name="AnTV" tvg-logo="" group-title="GPT-印尼",AnTV
+http://34.80.180.91:5050/smart.php?id=Antv
+#EXTINF:-1 tvg-id="MNC TV" tvg-name="MNC TV" tvg-logo="" group-title="GPT-印尼",MNC TV
+http://34.80.180.91:5050/smart.php?id=Mnctv
+#EXTINF:-1 tvg-id="Trans 7" tvg-name="Trans 7" tvg-logo="" group-title="GPT-印尼",Trans 7
+http://34.80.180.91:5050/smart.php?id=Trans7_eko
+#EXTINF:-1 tvg-id="Transtv" tvg-name="Transtv" tvg-logo="" group-title="GPT-印尼",Transtv
+http://34.80.180.91:5050/smart.php?id=Transtv
+#EXTINF:-1 tvg-id="JTV" tvg-name="JTV" tvg-logo="" group-title="GPT-印尼",JTV
+http://34.80.180.91:5050/smart.php?id=JTV_eko
+#EXTINF:-1 tvg-id="Metro TV" tvg-name="Metro TV" tvg-logo="" group-title="GPT-印尼",Metro TV
+http://34.80.180.91:5050/smart.php?id=metrotv_eko
+#EXTINF:-1 tvg-id="Cinemax" tvg-name="Cinemax" tvg-logo="" group-title="GPT-印尼",Cinemax
+http://34.80.180.91:5050/smart.php?id=Cinemax
+#EXTINF:-1 tvg-id="SCTV" tvg-name="SCTV" tvg-logo="" group-title="GPT-印尼",SCTV
+http://34.80.180.91:5050/smart.php?id=SCTV
+#EXTINF:-1 tvg-id="Tvone" tvg-name="Tvone" tvg-logo="" group-title="GPT-印尼",Tvone
+http://34.80.180.91:5050/smart.php?id=Tvone
+#EXTINF:-1 tvg-id="TVMU" tvg-name="TVMU" tvg-logo="" group-title="GPT-印尼",TVMU
+http://34.80.180.91:5050/smart.php?id=TVMU_eko
+#EXTINF:-1 tvg-id="GTV" tvg-name="GTV" tvg-logo="" group-title="GPT-印尼",GTV
+http://34.80.180.91:5050/smart.php?id=Gtv
+#EXTINF:-1 tvg-id="RTV" tvg-name="RTV" tvg-logo="" group-title="GPT-印尼",RTV
+http://34.80.180.91:5050/smart.php?id=Rtv
+#EXTINF:-1 tvg-id="Jak TV" tvg-name="Jak TV" tvg-logo="" group-title="GPT-印尼",Jak TV
+http://34.80.180.91:5050/smart.php?id=JakTV
+#EXTINF:-1 tvg-id="iNews TV" tvg-name="iNews TV" tvg-logo="" group-title="GPT-印尼",iNews TV
+http://34.80.180.91:5050/smart.php?id=Inewstv
+#EXTINF:-1 tvg-id="Daai TV" tvg-name="Daai TV" tvg-logo="" group-title="GPT-印尼",Daai TV
+http://34.80.180.91:5050/smart.php?id=DaaiTV
+#EXTINF:-1 tvg-id="Net TV" tvg-name="Net TV" tvg-logo="" group-title="GPT-印尼",Net TV
+http://34.80.180.91:5050/smart.php?id=NetTV
+#EXTINF:-1 tvg-id="Animax" tvg-name="Animax" tvg-logo="" group-title="GPT-印尼",Animax
+http://34.80.180.91:5050/smart.php?id=Animax
+#EXTINF:-1 tvg-id="EWTN" tvg-name="EWTN" tvg-logo="" group-title="GPT-印尼",EWTN
+http://34.80.180.91:5050/smart.php?id=Ewtn
+#EXTINF:-1 tvg-id="AlQuran AlKareem" tvg-name="AlQuran AlKareem" tvg-logo="" group-title="GPT-印尼",AlQuran AlKareem
+http://34.80.180.91:5050/smart.php?id=AlQuran
+#EXTINF:-1 tvg-id="Tawaf TV" tvg-name="Tawaf TV" tvg-logo="" group-title="GPT-印尼",Tawaf TV
+http://34.80.180.91:5050/smart.php?id=TawafTV
+#EXTINF:-1 tvg-id="Vision Prime" tvg-name="Vision Prime" tvg-logo="" group-title="GPT-印尼",Vision Prime
+http://34.80.180.91:5050/smart.php?id=VisionPrime
+#EXTINF:-1 tvg-id="Muslim TV" tvg-name="Muslim TV" tvg-logo="" group-title="GPT-印尼",Muslim TV
+http://34.80.180.91:5050/smart.php?id=MuslimTV
+#EXTINF:-1 tvg-id="Music TV" tvg-name="Music TV" tvg-logo="" group-title="GPT-印尼",Music TV
+http://34.80.180.91:5050/smart.php?id=MusicTV
+#EXTINF:-1 tvg-id="Lifestyle&Fashion" tvg-name="Lifestyle&Fashion" tvg-logo="" group-title="GPT-印尼",Lifestyle&Fashion
+http://34.80.180.91:5050/smart.php?id=Lifestyle
+#EXTINF:-1 tvg-id="Entertain" tvg-name="Entertain" tvg-logo="" group-title="GPT-印尼",Entertain
+http://34.80.180.91:5050/smart.php?id=Entertain
+#EXTINF:-1 tvg-id="Hits" tvg-name="Hits" tvg-logo="" group-title="GPT-印尼",Hits
+http://34.80.180.91:5050/smart.php?id=Hits
+#EXTINF:-1 tvg-id="Warner TV" tvg-name="Warner TV" tvg-logo="" group-title="GPT-印尼",Warner TV
+http://34.80.180.91:5050/smart.php?id=WarnerTV
+#EXTINF:-1 tvg-id="SCM" tvg-name="SCM" tvg-logo="" group-title="GPT-印尼",SCM
+http://34.80.180.91:5050/smart.php?id=Weishimovie
+#EXTINF:-1 tvg-id="Thrill" tvg-name="Thrill" tvg-logo="" group-title="GPT-印尼",Thrill
+http://34.80.180.91:5050/smart.php?id=Thrill
+#EXTINF:-1 tvg-id="Fight Sports" tvg-name="Fight Sports" tvg-logo="" group-title="GPT-印尼",Fight Sports
+http://34.80.180.91:5050/smart.php?id=Fs
+#EXTINF:-1 tvg-id="Hits Movie" tvg-name="Hits Movie" tvg-logo="" group-title="GPT-印尼",Hits Movie
+http://34.80.180.91:5050/smart.php?id=Hitsmovie
+#EXTINF:-1 tvg-id="One" tvg-name="One" tvg-logo="" group-title="GPT-印尼",One
+http://34.80.180.91:5050/smart.php?id=One
+#EXTINF:-1 tvg-id="tvN Movie" tvg-name="tvN Movie" tvg-logo="" group-title="GPT-印尼",tvN Movie
+http://34.80.180.91:5050/smart.php?id=Tvnmovie
+#EXTINF:-1 tvg-id="Celestial Movies HD" tvg-name="Celestial Movies HD" tvg-logo="" group-title="GPT-印尼",Celestial Movies HD
+http://34.80.180.91:5050/smart.php?id=Celestialindo
+#EXTINF:-1 tvg-id="Rock Actions" tvg-name="Rock Actions" tvg-logo="" group-title="GPT-印尼",Rock Actions
+http://34.80.180.91:5050/smart.php?id=Rockaction
+#EXTINF:-1 tvg-id="Rock Entertainment" tvg-name="Rock Entertainment" tvg-logo="" group-title="GPT-印尼",Rock Entertainment
+http://34.80.180.91:5050/smart.php?id=Rockentertain
+#EXTINF:-1 tvg-id="Sun TV HD" tvg-name="Sun TV HD" tvg-logo="" group-title="GPT-印度",Sun TV HD
+http://34.80.180.91:5050/smart.php?id=Suntv
+#EXTINF:-1 tvg-id="Star Vijay" tvg-name="Star Vijay" tvg-logo="" group-title="GPT-印度",Star Vijay
+http://34.80.180.91:5050/smart.php?id=Starvijay
+#EXTINF:-1 tvg-id="Colors Tamil" tvg-name="Colors Tamil" tvg-logo="" group-title="GPT-印度",Colors Tamil
+http://34.80.180.91:5050/smart.php?id=Colorstam
+#EXTINF:-1 tvg-id="Sun Music" tvg-name="Sun Music" tvg-logo="" group-title="GPT-印度",Sun Music
+http://34.80.180.91:5050/smart.php?id=Sunmusic
+#EXTINF:-1 tvg-id="Astro Sunlife" tvg-name="Astro Sunlife" tvg-logo="" group-title="GPT-印度",Astro Sunlife
+http://34.80.180.91:5050/smart.php?id=Sunlife
+#EXTINF:-1 tvg-id="Astro Vaanavil" tvg-name="Astro Vaanavil" tvg-logo="" group-title="GPT-印度",Astro Vaanavil
+http://34.80.180.91:5050/smart.php?id=Vaanavil
+#EXTINF:-1 tvg-id="Zee Tamil" tvg-name="Zee Tamil" tvg-logo="" group-title="GPT-印度",Zee Tamil
+http://34.80.180.91:5050/smart.php?id=Zeetamil
+#EXTINF:-1 tvg-id="Zee Business" tvg-name="Zee Business" tvg-logo="" group-title="GPT-印度",Zee Business
+http://34.80.180.91:5050/smart.php?id=Zeebusiness
+#EXTINF:-1 tvg-id="News 18 Tamil" tvg-name="News 18 Tamil" tvg-logo="" group-title="GPT-印度",News 18 Tamil
+http://34.80.180.91:5050/smart.php?id=news18tamil_raj
+#EXTINF:-1 tvg-id="Adithya" tvg-name="Adithya" tvg-logo="" group-title="GPT-印度",Adithya
+http://34.80.180.91:5050/smart.php?id=Adithya
+#EXTINF:-1 tvg-id="Makkal TV" tvg-name="Makkal TV" tvg-logo="" group-title="GPT-印度",Makkal TV
+http://34.80.180.91:5050/smart.php?id=Makkaltv
+#EXTINF:-1 tvg-id="Zee Action" tvg-name="Zee Action" tvg-logo="" group-title="GPT-印度",Zee Action
+http://34.80.180.91:5050/smart.php?id=Zeeaction
+#EXTINF:-1 tvg-id="Astro KTV" tvg-name="Astro KTV" tvg-logo="" group-title="GPT-印度",Astro KTV
+http://34.80.180.91:5050/smart.php?id=Astroktv
+#EXTINF:-1 tvg-id="Zee TV HD" tvg-name="Zee TV HD" tvg-logo="" group-title="GPT-印度",Zee TV HD
+http://34.80.180.91:5050/smart.php?id=Zeetvhd
+#EXTINF:-1 tvg-id="Zee Cinema HD" tvg-name="Zee Cinema HD" tvg-logo="" group-title="GPT-印度",Zee Cinema HD
+http://34.80.180.91:5050/smart.php?id=Zeecinemahd
+#EXTINF:-1 tvg-id="Color HD" tvg-name="Color HD" tvg-logo="" group-title="GPT-印度",Color HD
+http://34.80.180.91:5050/smart.php?id=Colorhd
+#EXTINF:-1 tvg-id="Starplus HD" tvg-name="Starplus HD" tvg-logo="" group-title="GPT-印度",Starplus HD
+http://34.80.180.91:5050/smart.php?id=Starplushd
+#EXTINF:-1 tvg-id="Picture HD" tvg-name="Picture HD" tvg-logo="" group-title="GPT-印度",Picture HD
+http://34.80.180.91:5050/smart.php?id=Npicture
+#EXTINF:-1 tvg-id="Zee News" tvg-name="Zee News" tvg-logo="" group-title="GPT-印度",Zee News
+http://34.80.180.91:5050/smart.php?id=Zeenews
+#EXTINF:-1 tvg-id="Asianet" tvg-name="Asianet" tvg-logo="" group-title="GPT-印度",Asianet
+http://34.80.180.91:5050/smart.php?id=asianet_raj
+#EXTINF:-1 tvg-id="Asianet News" tvg-name="Asianet News" tvg-logo="" group-title="GPT-印度",Asianet News
+http://34.80.180.91:5050/smart.php?id=asianetnews_raj
+#EXTINF:-1 tvg-id="Discovery World Tamil" tvg-name="Discovery World Tamil" tvg-logo="" group-title="GPT-印度",Discovery World Tamil
+http://34.80.180.91:5050/smart.php?id=discoveryworldtam_raj
+#EXTINF:-1 tvg-id="History Tamil" tvg-name="History Tamil" tvg-logo="" group-title="GPT-印度",History Tamil
+http://34.80.180.91:5050/smart.php?id=historytam_raj
+#EXTINF:-1 tvg-id="NatGeo Tamil" tvg-name="NatGeo Tamil" tvg-logo="" group-title="GPT-印度",NatGeo Tamil
+http://34.80.180.91:5050/smart.php?id=natgeotamil_raj
+#EXTINF:-1 tvg-id="Natgeo Wild Tamil" tvg-name="Natgeo Wild Tamil" tvg-logo="" group-title="GPT-印度",Natgeo Wild Tamil
+http://34.80.180.91:5050/smart.php?id=natgeowildtamil_raj
+#EXTINF:-1 tvg-id="Astro Sonypix" tvg-name="Astro Sonypix" tvg-logo="" group-title="GPT-印度",Astro Sonypix
+http://34.80.180.91:5050/smart.php?id=Asonypix
+#EXTINF:-1 tvg-id="Discovery Kids Tamil" tvg-name="Discovery Kids Tamil" tvg-logo="" group-title="GPT-印度",Discovery Kids Tamil
+http://34.80.180.91:5050/smart.php?id=discoverykidtamil_raj
+#EXTINF:-1 tvg-id="Discovery Tamil" tvg-name="Discovery Tamil" tvg-logo="" group-title="GPT-印度",Discovery Tamil
+http://34.80.180.91:5050/smart.php?id=discoverytamil_raj
+#EXTINF:-1 tvg-id="Sony Yay Tamil" tvg-name="Sony Yay Tamil" tvg-logo="" group-title="GPT-印度",Sony Yay Tamil
+http://34.80.180.91:5050/smart.php?id=sonyyaytam_raj
+#EXTINF:-1 tvg-id="Sun TV India" tvg-name="Sun TV India" tvg-logo="" group-title="GPT-印度",Sun TV India
+http://34.80.180.91:5050/smart.php?id=suntv_raj
+#EXTINF:-1 tvg-id="Starmaa HD" tvg-name="Starmaa HD" tvg-logo="" group-title="GPT-印度",Starmaa HD
+http://34.80.180.91:5050/smart.php?id=starmaa_raj
+#EXTINF:-1 tvg-id="Starmaa Movies HD" tvg-name="Starmaa Movies HD" tvg-logo="" group-title="GPT-印度",Starmaa Movies HD
+http://34.80.180.91:5050/smart.php?id=starmaamovies_raj
+#EXTINF:-1 tvg-id="Bollyone" tvg-name="Bollyone" tvg-logo="" group-title="GPT-印度",Bollyone
+http://34.80.180.91:5050/smart.php?id=Bollyone
+#EXTINF:-1 tvg-id="Astro Sunmusic" tvg-name="Astro Sunmusic" tvg-logo="" group-title="GPT-印度",Astro Sunmusic
+http://34.80.180.91:5050/smart.php?id=Sunmusic
+#EXTINF:-1 tvg-id="Vijay Super" tvg-name="Vijay Super" tvg-logo="" group-title="GPT-印度",Vijay Super
+http://34.80.180.91:5050/smart.php?id=vijaysuper_raj
+#EXTINF:-1 tvg-id="Vellithirai" tvg-name="Vellithirai" tvg-logo="" group-title="GPT-印度",Vellithirai
+http://34.80.180.91:5050/smart.php?id=Vellithirai
+#EXTINF:-1 tvg-id="Channel 3 Thailand" tvg-name="Channel 3 Thailand" tvg-logo="" group-title="GPT-泰國",Channel 3 Thailand
+http://34.80.180.91:5050/smart.php?id=ch3_pat
+#EXTINF:-1 tvg-id="Channel 5 Thailand" tvg-name="Channel 5 Thailand" tvg-logo="" group-title="GPT-泰國",Channel 5 Thailand
+http://34.80.180.91:5050/smart.php?id=ch5_pat
+#EXTINF:-1 tvg-id="Channel 7 Thailand" tvg-name="Channel 7 Thailand" tvg-logo="" group-title="GPT-泰國",Channel 7 Thailand
+http://34.80.180.91:5050/smart.php?id=ch7_pat
+#EXTINF:-1 tvg-id="MCOT HD Thailand-1" tvg-name="MCOT HD Thailand-1" tvg-logo="" group-title="GPT-泰國",MCOT HD Thailand-1
+http://34.80.180.91:5050/smart.php?id=mcot_pat
+#EXTINF:-1 tvg-id="PPTV Thailand1" tvg-name="PPTV Thailand1" tvg-logo="" group-title="GPT-泰國",PPTV Thailand1
+http://34.80.180.91:5050/smart.php?id=pptv_pat
+#EXTINF:-1 tvg-id="Thai Thai" tvg-name="Thai Thai" tvg-logo="" group-title="GPT-泰國",Thai Thai
+http://34.80.180.91:5050/smart.php?id=thaithai_pat
+#EXTINF:-1 tvg-id="Amarin" tvg-name="Amarin" tvg-logo="" group-title="GPT-泰國",Amarin
+http://34.80.180.91:5050/smart.php?id=amarin_pat
+#EXTINF:-1 tvg-id="Ch 8" tvg-name="Ch 8" tvg-logo="" group-title="GPT-泰國",Ch 8
+http://34.80.180.91:5050/smart.php?id=ch8_pat
+#EXTINF:-1 tvg-id="GmmOne" tvg-name="GmmOne" tvg-logo="" group-title="GPT-泰國",GmmOne
+http://34.80.180.91:5050/smart.php?id=gmmone_pat
+#EXTINF:-1 tvg-id="Mono" tvg-name="Mono" tvg-logo="" group-title="GPT-泰國",Mono
+http://34.80.180.91:5050/smart.php?id=mono_pat
+#EXTINF:-1 tvg-id="Thairath" tvg-name="Thairath" tvg-logo="" group-title="GPT-泰國",Thairath
+http://34.80.180.91:5050/smart.php?id=thairath_pat
+#EXTINF:-1 tvg-id="tpbs" tvg-name="tpbs" tvg-logo="" group-title="GPT-泰國",tpbs
+http://34.80.180.91:5050/smart.php?id=tpbs_pat
+#EXTINF:-1 tvg-id="Workpoint" tvg-name="Workpoint" tvg-logo="" group-title="GPT-泰國",Workpoint
+http://34.80.180.91:5050/smart.php?id=workpoint_pat
+#EXTINF:-1 tvg-id="Gmm Channel" tvg-name="Gmm Channel" tvg-logo="" group-title="GPT-泰國",Gmm Channel
+http://34.80.180.91:5050/smart.php?id=gmmchannel_pat
+#EXTINF:-1 tvg-id="Nation" tvg-name="Nation" tvg-logo="" group-title="GPT-泰國",Nation
+http://34.80.180.91:5050/smart.php?id=nation_pat
+#EXTINF:-1 tvg-id="Tnn24" tvg-name="Tnn24" tvg-logo="" group-title="GPT-泰國",Tnn24
+http://34.80.180.91:5050/smart.php?id=tnn24_pat
+#EXTINF:-1 tvg-id="Nbt" tvg-name="Nbt" tvg-logo="" group-title="GPT-泰國",Nbt
+http://34.80.180.91:5050/smart.php?id=nbt_pat
+#EXTINF:-1 tvg-id="New" tvg-name="New" tvg-logo="" group-title="GPT-泰國",New
+http://34.80.180.91:5050/smart.php?id=new_pat
+#EXTINF:-1 tvg-id="TPTV" tvg-name="TPTV" tvg-logo="" group-title="GPT-泰國",TPTV
+http://34.80.180.91:5050/smart.php?id=tptv_pat
+#EXTINF:-1 tvg-id="BBC 1" tvg-name="BBC 1" tvg-logo="" group-title="GPT-英國",BBC 1
+http://34.80.180.91:5050/smart.php?id=bbc1_antik
+#EXTINF:-1 tvg-id="BBC 2" tvg-name="BBC 2" tvg-logo="" group-title="GPT-英國",BBC 2
+http://34.80.180.91:5050/smart.php?id=bbc2_antik
+#EXTINF:-1 tvg-id="CBBC" tvg-name="CBBC" tvg-logo="" group-title="GPT-英國",CBBC
+http://34.80.180.91:5050/smart.php?id=cbbc_antik
+#EXTINF:-1 tvg-id="More4" tvg-name="More4" tvg-logo="" group-title="GPT-英國",More4
+http://34.80.180.91:5050/smart.php?id=more4_antik
+#EXTINF:-1 tvg-id="Freesports" tvg-name="Freesports" tvg-logo="" group-title="GPT-英國",Freesports
+http://34.80.180.91:5050/smart.php?id=freesports_antik
+#EXTINF:-1 tvg-id="Skynews" tvg-name="Skynews" tvg-logo="" group-title="GPT-英國",Skynews
+http://34.80.180.91:5050/smart.php?id=skynews_twn
+#EXTINF:-1 tvg-id="Pick TV" tvg-name="Pick TV" tvg-logo="" group-title="GPT-英國",Pick TV
+http://34.80.180.91:5050/smart.php?id=picktv_antik
+#EXTINF:-1 tvg-id="itv 1" tvg-name="itv 1" tvg-logo="" group-title="GPT-英國",itv 1
+http://34.80.180.91:5050/smart.php?id=itv1_antik
+#EXTINF:-1 tvg-id="itv 2" tvg-name="itv 2" tvg-logo="" group-title="GPT-英國",itv 2
+http://34.80.180.91:5050/smart.php?id=itv2_antik
+#EXTINF:-1 tvg-id="Euronews" tvg-name="Euronews" tvg-logo="" group-title="GPT-英國",Euronews
+http://34.80.180.91:5050/smart.php?id=euronews_antik
+#EXTINF:-1 tvg-id="Channel 4" tvg-name="Channel 4" tvg-logo="" group-title="GPT-英國",Channel 4
+http://34.80.180.91:5050/smart.php?id=channel4_antik
+#EXTINF:-1 tvg-id="NatGeo HD" tvg-name="NatGeo HD" tvg-logo="" group-title="GPT-英國",NatGeo HD
+http://34.80.180.91:5050/smart.php?id=Natgeo
+#EXTINF:-1 tvg-id="CBeebies" tvg-name="CBeebies" tvg-logo="" group-title="GPT-英國",CBeebies
+http://34.80.180.91:5050/smart.php?id=Cbeebies
+#EXTINF:-1 tvg-id="History" tvg-name="History" tvg-logo="" group-title="GPT-英國",History
+http://34.80.180.91:5050/smart.php?id=History
+#EXTINF:-1 tvg-id="Kids TV" tvg-name="Kids TV" tvg-logo="" group-title="GPT-英國",Kids TV
+http://34.80.180.91:5050/smart.php?id=KidsTV
+#EXTINF:-1 tvg-id="France 24" tvg-name="France 24" tvg-logo="" group-title="GPT-英國",France 24
+http://34.80.180.91:5050/smart.php?id=france24_twn
+#EXTINF:-1 tvg-id="DW (Deutsch)" tvg-name="DW (Deutsch)" tvg-logo="" group-title="GPT-英國",DW (Deutsch)
+http://34.80.180.91:5050/smart.php?id=dw_twn
+#EXTINF:-1 tvg-id="BBC Earth HD" tvg-name="BBC Earth HD" tvg-logo="" group-title="GPT-英國",BBC Earth HD
+http://34.80.180.91:5050/smart.php?id=bbcearth_twn
+#EXTINF:-1 tvg-id="BBC Earth Lifestyle" tvg-name="BBC Earth Lifestyle" tvg-logo="" group-title="GPT-英國",BBC Earth Lifestyle
+http://34.80.180.91:5050/smart.php?id=bbclifestyle_twn
+#EXTINF:-1 tvg-id="MTV Live" tvg-name="MTV Live" tvg-logo="" group-title="GPT-英國",MTV Live
+http://34.80.180.91:5050/smart.php?id=mtvhd_twn
+#EXTINF:-1 tvg-id="Star Movies HD" tvg-name="Star Movies HD" tvg-logo="" group-title="GPT-英國",Star Movies HD
+http://34.80.180.91:5050/smart.php?id=starmovies_raj
+#EXTINF:-1 tvg-id="NHK World" tvg-name="NHK World" tvg-logo="" group-title="GPT-英國",NHK World
+http://34.80.180.91:5050/smart.php?id=nhkworld_japan
+#EXTINF:-1 tvg-id="Warner TV" tvg-name="Warner TV" tvg-logo="" group-title="GPT-英國",Warner TV
+http://34.80.180.91:5050/smart.php?id=WarnerTV
+#EXTINF:-1 tvg-id="HBO HD" tvg-name="HBO HD" tvg-logo="" group-title="GPT-英國",HBO HD
+http://34.80.180.91:5050/smart.php?id=Hbo
+#EXTINF:-1 tvg-id="NatGeo Wild HD" tvg-name="NatGeo Wild HD" tvg-logo="" group-title="GPT-英國",NatGeo Wild HD
+http://34.80.180.91:5050/smart.php?id=Natgeowild
+#EXTINF:-1 tvg-id="Nickelodeon" tvg-name="Nickelodeon" tvg-logo="" group-title="GPT-英國",Nickelodeon
+http://34.80.180.91:5050/smart.php?id=Nickelodeon
+#EXTINF:-1 tvg-id="Nick Jr" tvg-name="Nick Jr" tvg-logo="" group-title="GPT-英國",Nick Jr
+http://34.80.180.91:5050/smart.php?id=Nickjr
+#EXTINF:-1 tvg-id="Thrill" tvg-name="Thrill" tvg-logo="" group-title="GPT-英國",Thrill
+http://34.80.180.91:5050/smart.php?id=Thrill
+#EXTINF:-1 tvg-id="CGTN" tvg-name="CGTN" tvg-logo="" group-title="GPT-英國",CGTN
+http://34.80.180.91:5050/smart.php?id=CGTN
+#EXTINF:-1 tvg-id="Hits Movie" tvg-name="Hits Movie" tvg-logo="" group-title="GPT-英國",Hits Movie
+http://34.80.180.91:5050/smart.php?id=Hitsmovie
+#EXTINF:-1 tvg-id="Animal Planet (Eng)" tvg-name="Animal Planet (Eng)" tvg-logo="" group-title="GPT-英國",Animal Planet (Eng)
+http://34.80.180.91:5050/smart.php?id=AnimalPlanet
+#EXTINF:-1 tvg-id="CNBC" tvg-name="CNBC" tvg-logo="" group-title="GPT-英國",CNBC
+http://34.80.180.91:5050/smart.php?id=cnbc_twn
+#EXTINF:-1 tvg-id="TLC" tvg-name="TLC" tvg-logo="" group-title="GPT-英國",TLC
+http://34.80.180.91:5050/smart.php?id=Tlc
+#EXTINF:-1 tvg-id="BBC World News" tvg-name="BBC World News" tvg-logo="" group-title="GPT-英國",BBC World News
+http://34.80.180.91:5050/smart.php?id=bbcworldnews_antik
+#EXTINF:-1 tvg-id="HGTV" tvg-name="HGTV" tvg-logo="" group-title="GPT-英國",HGTV
+http://34.80.180.91:5050/smart.php?id=HGTV
+#EXTINF:-1 tvg-id="Axn HD" tvg-name="Axn HD" tvg-logo="" group-title="GPT-英國",Axn HD
+http://34.80.180.91:5050/smart.php?id=Axn
+#EXTINF:-1 tvg-id="Skysports F1" tvg-name="Skysports F1" tvg-logo="" group-title="GPT-英國",Skysports F1
+http://34.80.180.91:5050/smart.php?id=tiankongf1
+#EXTINF:-1 tvg-id="Skysports Cricket" tvg-name="Skysports Cricket" tvg-logo="" group-title="GPT-英國",Skysports Cricket
+http://34.80.180.91:5050/smart.php?id=tiankongcricket
+#EXTINF:-1 tvg-id="Bloomberg News" tvg-name="Bloomberg News" tvg-logo="" group-title="GPT-英國",Bloomberg News
+http://34.80.180.91:5050/smart.php?id=bloomberg_twn
+#EXTINF:-1 tvg-id="Skysports EPL" tvg-name="Skysports EPL" tvg-logo="" group-title="GPT-英國",Skysports EPL
+http://34.80.180.91:5050/smart.php?id=tiankongepl
+#EXTINF:-1 tvg-id="Skysports Main Event" tvg-name="Skysports Main Event" tvg-logo="" group-title="GPT-英國",Skysports Main Event
+http://34.80.180.91:5050/smart.php?id=tiankongmain
+#EXTINF:-1 tvg-id="Skysports News" tvg-name="Skysports News" tvg-logo="" group-title="GPT-英國",Skysports News
+http://34.80.180.91:5050/smart.php?id=tiankongnews
+#EXTINF:-1 tvg-id="Al-Jazeera" tvg-name="Al-Jazeera" tvg-logo="" group-title="GPT-英國",Al-Jazeera
+http://34.80.180.91:5050/smart.php?id=aljazeera_twn
+
+#EXTINF:-1 tvg-id="翡翠台" tvg-name="翡翠台" tvg-logo="" group-title="GPT-香港",翡翠台
 https://ylqsxpnaayss.ap-southeast-1.clawcloudrun.com/smart.php?id=jade_twn
 #EXTINF:-1 tvg-id="翡翠台" tvg-name="翡翠台" tvg-logo="" group-title="GPT-香港",翡翠台
 https://ylqsxpnaayss.ap-southeast-1.clawcloudrun.com/smart.php?id=Jade_xue
