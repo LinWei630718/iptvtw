@@ -832,6 +832,12 @@
             "type": 3,
             "url": "https://linwei.endl.site/4gtv.m3u"
         },
+        {
+            "name": "SMT66(py)",
+            "type": 3,
+            "api": "https://raw.githubusercontent.com/LinWei630718/iptvtw/refs/heads/main/smt66.py",
+            "ext": "http://127.0.0.1:8080"
+        }, 
                 {
             "name": "LITV(php)",
             "type": 3,
