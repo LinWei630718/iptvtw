@@ -60,6 +60,17 @@
             "changeable": 0
         },
         {
+            "key": "永乐视频.py",
+            "name": "永樂視頻(py)",
+            "type": 3,
+            "api": "./python/ylys.py",
+            "searchable": 1,
+            "quickSearch": 1,
+            "filterable": 1,
+            "order_num": 0,
+            "ext": ""
+        },
+        {
          "key":"嗷呜小苹果",
          "name":"🍎嗷嗚小蘋果",
          "type":3,
