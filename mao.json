@@ -841,7 +841,12 @@
         {
             "name": "四季",
             "type": 3,
-            "url": "https://linwei.endl.site/4gtv.m3u"
+            "url": "https://github.com/LinWei630718/iptvtw/raw/refs/heads/main/4gtv.m3u"
+        },
+        {
+            "name": "4gtv",
+            "type": 3,
+            "url": "https://raw.githubusercontent.com/judy-gotv/iptv/main/4gtv.m3u"
         },
         {
             "name": "SMT66(py)",
