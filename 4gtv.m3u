@@ -1,6 +1,18 @@
 #EXTM3U
 #EXTM3U x-tvg-url="https://epg.946985.xyz/t.xml.gz,https://epg.iill.top/epg.xml,https://bit.ly/a1xepg,https://epg.catvod.com/epg.xml,https://7pal.short.gy/alex-epg,https://bit.ly/a1xepg"
 
+#EXTINF:-1 group-title="LiTV立視" ,民視新聞
+http://211.72.174.95:8117/0.ts
+#EXTINF:-1 group-title="LiTV立視" ,中視
+http://211.72.174.95:8113/0.ts
+#EXTINF:-1 group-title="LiTV立視" ,華視
+http://211.72.174.95:8114/0.ts
+#EXTINF:-1 group-title="LiTV立視" ,公視
+http://211.72.174.95:8116/0.ts
+#EXTINF:-1 group-title="LiTV立視" ,民視
+http://211.72.174.95:8115/0.ts
+#EXTINF:-1 group-title="LiTV立視" ,台視
+http://211.72.174.95:8112/0.ts
 #EXTINF:-1 group-title="LiTV立視" ,民視台灣台
 http://xtvantsc.xyz/litv_ts.php?id=4gtv-4gtv001
 #EXTINF:-1 group-title="LiTV立視" ,寰宇新聞台灣台
@@ -2513,6 +2525,415 @@ http://reasavvtlxyy.ap-northeast-1.clawcloudrun.com/ofiii252/index.m3u8
 http://reasavvtlxyy.ap-northeast-1.clawcloudrun.com/ofiii253/index.m3u8
 #EXTINF:-1 tvg-id="夏日陽光海浪聲" tvg-name="夏日陽光海浪聲" tvg-logo="https://p-cdnstatic.svc.litv.tv/pics/vod_channel/logo_3438_ofiii251_tv_20240816.png" group-title="歐飛點播",夏日陽光海浪聲
 http://reasavvtlxyy.ap-northeast-1.clawcloudrun.com/ofiii254/index.m3u8
+
+#EXTINF:-1 tvg-id="民视第一台" tvg-name="民视第一台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/FTV2.png"?token=abcd1234 group-title="綜合其他",民視第一台
+http://4gtvtw.koyeb.app/4gtv-4gtv003/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="民视台湾台" tvg-name="民视台湾台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/FTV3.png"?token=abcd1234 group-title="綜合其他",民視台灣台
+http://4gtvtw.koyeb.app/4gtv-4gtv001/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="民视" tvg-name="民视" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/FTV.png"?token=abcd1234 group-title="綜合其他",民視HD
+http://4gtvtw.koyeb.app/4gtv-4gtv002/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="大爱电视台" tvg-name="大爱电视台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/Daai1.png"?token=abcd1234 group-title="綜合其他",大愛電視
+http://4gtvtw.koyeb.app/4gtv-live007/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="中视" tvg-name="中视" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/CTV.png"?token=abcd1234 group-title="綜合其他",中視
+http://4gtvtw.koyeb.app/4gtv-4gtv040/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="中视经典台" tvg-name="中视经典台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/CTV2.png"?token=abcd1234 group-title="電影戲劇",中視經典台
+http://4gtvtw.koyeb.app/4gtv-4gtv080/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="华视" tvg-name="华视" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/CTS.png"?token=abcd1234 group-title="綜合其他",華視
+http://4gtvtw.koyeb.app/4gtv-4gtv041/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="三立综合台" tvg-name="三立综合台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/SET1.png"?token=abcd1234 group-title="綜合其他",三立綜合台
+http://4gtvtw.koyeb.app/4gtv-live207/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="客家电视台" tvg-name="客家电视台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/Hakka.png"?token=abcd1234 group-title="綜合其他",客家電視
+http://4gtvtw.koyeb.app/4gtv-4gtv043/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="八大综艺台" tvg-name="八大综艺台" tvg-logo="https://4gtvimg2.4gtv.tv/4gtv-Image/Channel/mobile/logo_4gtv_4gtv-4gtv039_mobile.png"?token=abcd1234 group-title="音樂綜藝",八大綜藝
+http://4gtvtw.koyeb.app/4gtv-4gtv039/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="中视菁采台" tvg-name="中视菁采台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/CTV3.png"?token=abcd1234 group-title="綜合其他",中視菁采台
+http://4gtvtw.koyeb.app/4gtv-4gtv064/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="TVBS精采台" tvg-name="TVBS精采台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/TVBS3.png"?token=abcd1234 group-title="音樂綜藝",TVBS精采台
+http://4gtvtw.koyeb.app/4gtv-4gtv067/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="爱尔达娱乐台" tvg-name="爱尔达娱乐台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/ELTA3.png"?token=abcd1234 group-title="音樂綜藝",ELTA娛樂
+http://4gtvtw.koyeb.app/4gtv-4gtv070/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="靖天综合台" tvg-name="靖天综合台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/GoldenTV1.png"?token=abcd1234 group-title="綜合其他",靖天綜合
+http://4gtvtw.koyeb.app/4gtv-4gtv046/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="靖天日本台" tvg-name="靖天日本台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/GoldenTV6.png"?token=abcd1234 group-title="綜合其他",靖天日本
+http://4gtvtw.koyeb.app/4gtv-4gtv047/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="新唐人亚太台" tvg-name="新唐人亚太台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/NTD.png"?token=abcd1234 group-title="綜合其他",新唐人亞太台
+http://4gtvtw.koyeb.app/4gtv-live050/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="ARIRANG阿里郎频道" tvg-name="ARIRANG阿里郎频道" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/ArirangTV.png"?token=abcd1234 group-title="綜合其他",Arirang TV
+http://4gtvtw.koyeb.app/4gtv-4gtv079/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="GLOBALTREKKER" tvg-name="GLOBALTREKKER" tvg-logo="https://assets.livednow.com/logo/Global-Trekker.png"?token=abcd1234 group-title="生活旅遊",Global Trekker
+http://4gtvtw.koyeb.app/4gtv-live112/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="原住民族电视台" tvg-name="原住民族电视台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/TITV.png"?token=abcd1234 group-title="綜合其他",原住民族電視台
+http://4gtvtw.koyeb.app/4gtv-live014/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="东森购物四台" tvg-name="东森购物四台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/EBC11.png"?token=abcd1234 group-title="綜合其他",東森購物四台
+http://4gtvtw.koyeb.app/4gtv-live049/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="LIVEABC互动英语频道" tvg-name="LIVEABC互动英语频道" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/liveabc.png"?token=abcd1234 group-title="兒童卡通",LiveABC互動英語頻道
+http://4gtvtw.koyeb.app/4gtv-live030/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="达文西频道" tvg-name="达文西频道" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/DaVinci.png"?token=abcd1234 group-title="兒童卡通",達文西頻道
+http://4gtvtw.koyeb.app/4gtv-4gtv018/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="ELTV生活英语台" tvg-name="ELTV生活英语台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/ELTA7.png"?token=abcd1234 group-title="兒童卡通",ELTV生活英語台
+http://4gtvtw.koyeb.app/litv-longturn20/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="NICKJR.儿童频道" tvg-name="NICKJR.儿童频道" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/Nickjr.png"?token=abcd1234 group-title="兒童卡通",Nick Jr.
+http://4gtvtw.koyeb.app/4gtv-live032/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="尼克儿童频道" tvg-name="尼克儿童频道" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/Nickelodeon.png"?token=abcd1234 group-title="兒童卡通",尼克兒童頻道
+http://4gtvtw.koyeb.app/4gtv-live105/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="DREAMWORKS频道" tvg-name="DREAMWORKS频道" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/DreamWorks.png"?token=abcd1234 group-title="兒童卡通",DREAMWORKS頻道
+http://4gtvtw.koyeb.app/4gtv-live017/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="靖天卡通台" tvg-name="靖天卡通台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/GoldenTV7.png"?token=abcd1234 group-title="兒童卡通",靖天卡通
+http://4gtvtw.koyeb.app/4gtv-4gtv044/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="靖洋卡通NICEBINGO" tvg-name="靖洋卡通NICEBINGO" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/jy1.png"?token=abcd1234 group-title="兒童卡通",靖洋卡通
+http://4gtvtw.koyeb.app/4gtv-4gtv057/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="MOMO亲子台" tvg-name="MOMO亲子台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/momo1.png"?token=abcd1234 group-title="兒童卡通",MOMO親子
+http://4gtvtw.koyeb.app/4gtv-live107/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="东森购物1台" tvg-name="东森购物1台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/EBC11.png"?token=abcd1234 group-title="綜合其他",東森購物一台
+http://4gtvtw.koyeb.app/4gtv-live047/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="东森购物1台" tvg-name="东森购物1台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/EBC11.png"?token=abcd1234 group-title="綜合其他",東森購物一台
+http://4gtvtw.koyeb.app/4gtv-4gtv102/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="镜电视新闻台" tvg-name="镜电视新闻台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/Mnews.png"?token=abcd1234 group-title="新聞財經",鏡電視新聞台
+http://4gtvtw.koyeb.app/4gtv-4gtv075/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="东森新闻台" tvg-name="东森新闻台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/EBC6.png"?token=abcd1234 group-title="新聞財經",東森新聞
+http://4gtvtw.koyeb.app/4gtv-4gtv152/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="华视新闻" tvg-name="华视新闻" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/CTS1.png"?token=abcd1234 group-title="新聞財經",華視新聞台
+http://4gtvtw.koyeb.app/4gtv-4gtv052/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="民视新闻台" tvg-name="民视新闻台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/FTV1.png"?token=abcd1234 group-title="新聞財經",民視新聞
+http://4gtvtw.koyeb.app/litv-ftv13/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="三立新闻INEWS" tvg-name="三立新闻INEWS" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/SET3.png"?token=abcd1234 group-title="新聞財經",三立iNEWS
+http://4gtvtw.koyeb.app/4gtv-live089/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="东森财经新闻台" tvg-name="东森财经新闻台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/EBC7.png"?token=abcd1234 group-title="新聞財經",東森財經新聞
+http://4gtvtw.koyeb.app/4gtv-4gtv153/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="中视新闻台" tvg-name="中视新闻台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/CTV1.png"?token=abcd1234 group-title="新聞財經",中視新聞台
+http://4gtvtw.koyeb.app/4gtv-4gtv074/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="中天新闻台" tvg-name="中天新闻台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/CTI2.png""?token=abcd1234 group-title="新聞財經",中天新聞台
+http://4gtvtw.koyeb.app/4gtv-4gtv009/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="BLOOMBERGTV" tvg-name="BLOOMBERGTV" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/BloombergTV.png"?token=abcd1234 group-title="新聞財經",BLOOMBERG TV
+http://4gtvtw.koyeb.app/4gtv-live059/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="寰宇新闻台" tvg-name="寰宇新闻台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/Global2.png"?token=abcd1234 group-title="新聞財經",寰宇新聞
+http://4gtvtw.koyeb.app/litv-longturn14/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="寰宇新闻台湾台" tvg-name="寰宇新闻台湾台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/Global3.png"?token=abcd1234 group-title="新聞財經",寰宇新聞台灣台
+http://4gtvtw.koyeb.app/4gtv-4gtv156/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="SBN全球财经台" tvg-name="SBN全球财经台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/SBNcaijing.png"?token=abcd1234 group-title="新聞財經",SBN 全球財經台
+http://4gtvtw.koyeb.app/4gtv-live060/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="NHK新闻资讯台" tvg-name="NHK新闻资讯台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/NHKWorld.png"?token=abcd1234 group-title="新聞財經",NHK 新聞資訊台
+http://4gtvtw.koyeb.app/4gtv-live168/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="TVBS" tvg-name="TVBS" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/TVBS.png"?token=abcd1234 group-title="綜合其他",TVBS HD
+http://4gtvtw.koyeb.app/4gtv-4gtv073/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="东森购物2台" tvg-name="东森购物2台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/EBC11.png"?token=abcd1234 group-title="綜合其他",東森購物二台
+http://4gtvtw.koyeb.app/4gtv-live046/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="东森购物2台" tvg-name="东森购物2台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/EBC11.png"?token=abcd1234 group-title="綜合其他",東森購物二台
+http://4gtvtw.koyeb.app/4gtv-4gtv103/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="民视综艺台" tvg-name="民视综艺台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/FTV6.png"?token=abcd1234 group-title="音樂綜藝",民視綜藝台
+http://4gtvtw.koyeb.app/4gtv-4gtv004/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="猪哥亮歌厅秀" tvg-name="猪哥亮歌厅秀" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/FTV7.png"?token=abcd1234 group-title="音樂綜藝",豬哥亮歌廳秀
+http://4gtvtw.koyeb.app/4gtv-4gtv006/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="靖天育乐台" tvg-name="靖天育乐台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/GoldenTV5.png"?token=abcd1234 group-title="綜合其他",靖天育樂台
+http://4gtvtw.koyeb.app/4gtv-4gtv062/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="KLT靖天国际台HD" tvg-name="KLT靖天国际台HD" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/GoldenTV10.png"?token=abcd1234 group-title="綜合其他",KLT靖天國際台HD
+http://4gtvtw.koyeb.app/4gtv-4gtv063/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="NICETV靖天欢乐台" tvg-name="NICETV靖天欢乐台" tvg-logo="https://epg.pw/media/images/epg/2024/06/12/20240612111031068542_59.png"?token=abcd1234 group-title="綜合其他",NICETV靖天歡樂台
+http://4gtvtw.koyeb.app/4gtv-4gtv054/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="靖天资讯台" tvg-name="靖天资讯台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/GoldenTV2.png"?token=abcd1234 group-title="綜合其他",靖天資訊
+http://4gtvtw.koyeb.app/4gtv-4gtv065/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="TVBS欢乐台" tvg-name="TVBS欢乐台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/TVBS2.png"?token=abcd1234 group-title="音樂綜藝",TVBS歡樂台
+http://4gtvtw.koyeb.app/4gtv-4gtv068/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="韩国娱乐台KMTV" tvg-name="韩国娱乐台KMTV" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/hanguoyl.png"?token=abcd1234 group-title="綜合其他",韓國娛樂台
+http://4gtvtw.koyeb.app/4gtv-4gtv016/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="ROCKENTERTAINMENT" tvg-name="ROCKENTERTAINMENT" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/ROCKEntertainment.png"?token=abcd1234 group-title="電影戲劇",ROCK Entertainment
+http://4gtvtw.koyeb.app/4gtv-live080/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="LIFETIME娱乐频道" tvg-name="LIFETIME娱乐频道" tvg-logo="https://4gtvimg2.4gtv.tv/4gtv-Image/Channel/mobile/logo_4gtv_4gtv-live029_mobile.png"?token=abcd1234 group-title="生活旅遊",Lifetime
+http://4gtvtw.koyeb.app/4gtv-live029/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="电影原声台CMUSIC" tvg-name="电影原声台CMUSIC" tvg-logo="https://4gtvimg2.4gtv.tv/4gtv-Image/Channel/mobile/logo_4gtv_4gtv-live031_mobile.png"?token=abcd1234 group-title="音樂綜藝",電影原聲台 CMusic
+http://4gtvtw.koyeb.app/4gtv-live031/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="TRACEURBAN" tvg-name="TRACEURBAN" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/TraceUrban.png"?token=abcd1234 group-title="音樂綜藝",TRACE Urban
+http://4gtvtw.koyeb.app/4gtv-4gtv082/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="MTVLIVEHD音乐频道" tvg-name="MTVLIVEHD音乐频道" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/MTVLive.png"?token=abcd1234 group-title="音樂綜藝",MTV Live
+http://4gtvtw.koyeb.app/4gtv-live025/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="MEZZOLIVEHD" tvg-name="MEZZOLIVEHD" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/mezzolive.png"?token=abcd1234 group-title="音樂綜藝",Mezzo Live HD
+http://4gtvtw.koyeb.app/4gtv-4gtv083/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="CLASSICA古典乐" tvg-name="CLASSICA古典乐" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/classical.png"?token=abcd1234 group-title="音樂綜藝",CLASSICA古典樂
+http://4gtvtw.koyeb.app/4gtv-4gtv059/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="东森购物三台" tvg-name="东森购物三台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/EBC11.png"?token=abcd1234 group-title="綜合其他",東森購物三台
+http://4gtvtw.koyeb.app/4gtv-live048/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="INULTRA" tvg-name="INULTRA" tvg-logo="https://4gtvimg2.4gtv.tv/4gtv-Image/Channel/pc/logo_INULTRA_mobile.png"?token=abcd1234 group-title="生活旅遊",INULTRA
+http://4gtvtw.koyeb.app/4gtv-live096/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="TRACESPORTSTARS" tvg-name="TRACESPORTSTARS" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/TraceSport.png"?token=abcd1234 group-title="體育競技",TRACE Sport Stars
+http://4gtvtw.koyeb.app/4gtv-4gtv077/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="智林体育台" tvg-name="智林体育台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/TSL.png"?token=abcd1234 group-title="體育競技",智林體育
+http://4gtvtw.koyeb.app/4gtv-4gtv101/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="时尚运动X" tvg-name="时尚运动X" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/ssydX.png"?token=abcd1234 group-title="體育競技",時尚運動X
+http://4gtvtw.koyeb.app/4gtv-4gtv014/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="车迷TV" tvg-name="车迷TV" tvg-logo="https://4gtvimg2.4gtv.tv/4gtv-Image/Channel/mobile/logo_4gtv_4gtv-live201_mobile.png"?token=abcd1234 group-title="體育競技",車迷 TV
+http://4gtvtw.koyeb.app/4gtv-live201/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="GINXESPORTSTV" tvg-name="GINXESPORTSTV" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/GINXesport.png"?token=abcd1234 group-title="體育競技",GINX Esports TV
+http://4gtvtw.koyeb.app/4gtv-4gtv053/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="PETCLUBTVHD" tvg-name="PETCLUBTVHD" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/PetClubTV.png"?token=abcd1234 group-title="生活旅遊",Pet Club TV
+http://4gtvtw.koyeb.app/4gtv-4gtv110/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="民视旅游台" tvg-name="民视旅游台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/FTV5.png"?token=abcd1234 group-title="生活旅遊",民視旅遊
+http://4gtvtw.koyeb.app/litv-ftv07/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="滚动力ROLLOR" tvg-name="滚动力ROLLOR" tvg-logo="https://4gtvimg2.4gtv.tv/4gtv-Image/Channel/mobile/logo_4gtv_4gtv-live012_mobile.png"?token=abcd1234 group-title="生活旅遊",滾動力 ROLLOR
+http://4gtvtw.koyeb.app/4gtv-live012/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="亚洲旅游台" tvg-name="亚洲旅游台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/Asiatravel.png"?token=abcd1234 group-title="生活旅遊",亞洲旅遊
+http://4gtvtw.koyeb.app/4gtv-4gtv076/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="FUN探索娱乐台4K" tvg-name="FUN探索娱乐台4K" tvg-logo="https://4gtvimg2.4gtv.tv/4gtv-Image/Channel/mobile/logo_4gtv_4gtv-live011_mobile.png"?token=abcd1234 group-title="生活旅遊",fun探索娛樂台
+http://4gtvtw.koyeb.app/4gtv-live011/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="幸福空间居家台" tvg-name="幸福空间居家台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/Gorgeous.png"?token=abcd1234 group-title="生活旅遊",幸福空間居家台
+http://4gtvtw.koyeb.app/4gtv-live206/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="LOVENATURE" tvg-name="LOVENATURE" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/LoveNarure4K.png"?token=abcd1234 group-title="生活旅遊",LOVE NATURE
+http://4gtvtw.koyeb.app/4gtv-live208/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="HISTORY历史频道" tvg-name="HISTORY历史频道" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/History1.png"?token=abcd1234 group-title="紀實探索",歷史頻道
+http://4gtvtw.koyeb.app/4gtv-live026/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="爱尔达生活旅游台" tvg-name="爱尔达生活旅游台" tvg-logo="https://cdn.jsdelivr.net/gh/myhomebox/tv@main/img/ELTA8.png"?token=abcd1234 group-title="生活旅遊",ELTA生活旅遊
+http://4gtvtw.koyeb.app/4gtv-live120/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="LUXETVCHANNEL" tvg-name="LUXETVCHANNEL" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/LuxeTV.png"?token=abcd1234 group-title="生活旅遊",LUXE TV
+http://4gtvtw.koyeb.app/4gtv-live121/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="TV5MONDESTYLEHD生活时尚" tvg-name="TV5MONDESTYLEHD生活时尚" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/TV5MondeStyle.png"?token=abcd1234 group-title="生活旅遊",TV5MONDE Style
+http://4gtvtw.koyeb.app/4gtv-live122/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="MAGELLANTV频道(麦哲伦频道)" tvg-name="MAGELLANTV频道(麦哲伦频道)" tvg-logo="https://4gtvimg2.4gtv.tv/4gtv-Image/Channel/mobile/logo_MGTV_mobile.png"?token=abcd1234 group-title="生活旅遊",MagellanTV頻道
+http://4gtvtw.koyeb.app/4gtv-live123/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="公视戏剧" tvg-name="公视戏剧" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/PTS3.png"?token=abcd1234 group-title="電影戲劇",公視戲劇
+http://4gtvtw.koyeb.app/4gtv-4gtv042/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="民视影剧台" tvg-name="民视影剧台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/FTV4.png"?token=abcd1234 group-title="電影戲劇",民視影劇台
+http://4gtvtw.koyeb.app/litv-ftv09/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="HITS频道" tvg-name="HITS频道" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/HITS.png"?token=abcd1234 group-title="電影戲劇",HITS頻道
+http://4gtvtw.koyeb.app/4gtv-live620/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="八大精彩台" tvg-name="八大精彩台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/GTV5.png"?token=abcd1234 group-title="音樂綜藝",八大精彩
+http://4gtvtw.koyeb.app/4gtv-4gtv034/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="霹雳布袋戏" tvg-name="霹雳布袋戏" tvg-logo="https://4gtvimg2.4gtv.tv/4gtv-Image/Channel/mobile/logo_4gtv_4gtv-live145_mobile.png"?token=abcd1234 group-title="電影戲劇",霹靂布袋戲
+http://4gtvtw.koyeb.app/4gtv-live145/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="靖天戏剧台" tvg-name="靖天戏剧台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/GoldenTV8.png"?token=abcd1234 group-title="電影戲劇",靖天戲劇台
+http://4gtvtw.koyeb.app/4gtv-4gtv058/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="靖洋戏剧台" tvg-name="靖洋戏剧台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/jy2.png"?token=abcd1234 group-title="電影戲劇",靖洋戲劇台
+http://4gtvtw.koyeb.app/4gtv-4gtv045/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="CI罪案侦查频道" tvg-name="CI罪案侦查频道" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/Crimeplus.png"?token=abcd1234 group-title="紀實探索",CI 罪案偵查頻道
+http://4gtvtw.koyeb.app/4gtv-live027/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="CNEX纪实频道" tvg-name="CNEX纪实频道" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/cnex.png"?token=abcd1234 group-title="紀實探索",視納華仁紀實頻道
+http://4gtvtw.koyeb.app/4gtv-4gtv013/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="影迷数位纪实台" tvg-name="影迷数位纪实台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/FANS2.png"?token=abcd1234 group-title="紀實探索",影迷數位紀實台
+http://4gtvtw.koyeb.app/litv-ftv15/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="金光布袋戏" tvg-name="金光布袋戏" tvg-logo="https://4gtvimg2.4gtv.tv/4gtv-Image/Channel/pc/logo_4gtv_4gtv-live144_pc.png"?token=abcd1234 group-title="電影戲劇",金光布袋戲
+http://4gtvtw.koyeb.app/4gtv-live144/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="ROCKACTION" tvg-name="ROCKACTION" tvg-logo="https://4gtvimg2.4gtv.tv/4gtv-Image/Channel/mobile/live138_mobile.png"?token=abcd1234 group-title="電影戲劇",ROCK Action
+http://4gtvtw.koyeb.app/4gtv-live138/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="采昌影剧台" tvg-name="采昌影剧台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/caichang.png"?token=abcd1234 group-title="電影戲劇",采昌影劇台
+http://4gtvtw.koyeb.app/4gtv-4gtv049/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="靖天映画" tvg-name="靖天映画" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/GoldenTV3.png"?token=abcd1234 group-title="電影戲劇",靖天映画
+http://4gtvtw.koyeb.app/4gtv-4gtv055/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="靖天电影台" tvg-name="靖天电影台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/GoldenTV9.png"?token=abcd1234 group-title="電影戲劇",靖天電影台
+http://4gtvtw.koyeb.app/4gtv-4gtv061/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="影迷数位电影台" tvg-name="影迷数位电影台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/FANS1.png"?token=abcd1234 group-title="電影戲劇",影迷數位電影台
+http://4gtvtw.koyeb.app/4gtv-4gtv011/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="amc电影台" tvg-name="amc电影台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/AMCMovies.png"?token=abcd1234 group-title="電影戲劇",amc電影台
+http://4gtvtw.koyeb.app/4gtv-4gtv017/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="CINEMAWORLD" tvg-name="CINEMAWORLD" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/CinemaWorld.png"?token=abcd1234 group-title="電影戲劇",Cinema World
+http://4gtvtw.koyeb.app/4gtv-live069/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="好消息" tvg-name="好消息" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/GoodTV1.png"?token=abcd1234 group-title="綜合其他",好消息
+http://4gtvtw.koyeb.app/litv-ftv16/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="好消息2台" tvg-name="好消息2台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/GoodTV2.png"?token=abcd1234 group-title="綜合其他",好消息2台
+http://4gtvtw.koyeb.app/litv-ftv17/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="大爱二台" tvg-name="大爱二台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/Daai2.png"?token=abcd1234 group-title="綜合其他",大愛二台
+http://4gtvtw.koyeb.app/4gtv-live106/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="人间卫视" tvg-name="人间卫视" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/BLTV.png"?token=abcd1234 group-title="綜合其他",人間衛視
+http://4gtvtw.koyeb.app/4gtv-live008/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="FRANCE24英文台" tvg-name="FRANCE24英文台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/France24.png"?token=abcd1234 group-title="新聞財經",FRANCE24 英文台
+http://4gtvtw.koyeb.app/4gtv-live146/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="半岛国际新闻台" tvg-name="半岛国际新闻台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/AlJazeera.png"?token=abcd1234 group-title="新聞財經",半島國際新聞台
+http://4gtvtw.koyeb.app/4gtv-live157/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="VOA美国之音" tvg-name="VOA美国之音" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/VOATV.png"?token=abcd1234 group-title="新聞財經",VOA 美國之音
+http://4gtvtw.koyeb.app/litv-ftv03/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="CNBCASIA财经台" tvg-name="CNBCASIA财经台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/CNBCAsia.png"?token=abcd1234 group-title="新聞財經",CNBC Asia 財經台
+http://4gtvtw.koyeb.app/4gtv-live130/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="DW" tvg-name="DW德国之声" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/DWChannel.png"?token=abcd1234 group-title="新聞財經",DW德國之聲
+http://4gtvtw.koyeb.app/4gtv-live071/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="国会频道1" tvg-name="国会频道1" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/guohui1.png"?token=abcd1234 group-title="綜合其他",國會頻道1台
+http://4gtvtw.koyeb.app/4gtv-4gtv084/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="国会频道2" tvg-name="国会频道2" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/guohui2.png"?token=abcd1234 group-title="綜合其他",國會頻道2台
+http://4gtvtw.koyeb.app/4gtv-4gtv085/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="TVBS综艺台" tvg-name="TVBS综艺台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/TVBS2.png"?token=abcd1234 group-title="音樂綜藝",TVBS綜藝台
+http://4gtvtw.koyeb.app/4gtv-live087/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="TVBS台剧台" tvg-name="TVBS台剧台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/TVBS.png"?token=abcd1234 group-title="電影戲劇",TVBS台劇台
+http://4gtvtw.koyeb.app/4gtv-live088/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="经典电影台" tvg-name="经典电影台" tvg-logo="https://4gtvimg2.4gtv.tv/4gtv-Image/Channel/pc/logo_4gtv_4gtv-live021_pc.png"?token=abcd1234 group-title="電影戲劇",經典電影台
+http://4gtvtw.koyeb.app/4gtv-live021/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="经典卡通台" tvg-name="经典卡通台" tvg-logo="https://4gtvimg2.4gtv.tv/4gtv-Image/Channel/pc/logo_4gtv_4gtv-live022_pc.png"?token=abcd1234 group-title="兒童卡通",經典卡通台
+http://4gtvtw.koyeb.app/4gtv-live022/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="精选动漫台" tvg-name="精选动漫台" tvg-logo="https://4gtvimg2.4gtv.tv/4gtv-Image/Channel/pc/logo_4gtv_4gtv-live024_pc.png"?token=abcd1234 group-title="兒童卡通",精選動漫台
+http://4gtvtw.koyeb.app/4gtv-live024/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="戏剧免费看 1台" tvg-name="戏剧免费看 1台" tvg-logo="https://4gtvimg2.4gtv.tv/4gtv-Image/Channel/pc/logo_4gtv_4gtv-live010_pc.png"?token=abcd1234 group-title="電影戲劇",戲劇免費看1台
+http://4gtvtw.koyeb.app/4gtv-live010/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="民视第一台" tvg-name="民视第一台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/FTV2.png"?token=abcd1234 group-title="綜合其他",民視第一台
+http://4gtvtw.koyeb.app/li-4gtv-4gtv003/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="民视台湾台" tvg-name="民视台湾台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/FTV3.png"?token=abcd1234 group-title="綜合其他",民視台灣台
+http://4gtvtw.koyeb.app/li-4gtv-4gtv001/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="民视" tvg-name="民视" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/FTV.png"?token=abcd1234 group-title="綜合其他",民視HD
+http://4gtvtw.koyeb.app/4gtv-4gtv155/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="中视" tvg-name="中视" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/CTV.png"?token=abcd1234 group-title="綜合其他",中視
+http://4gtvtw.koyeb.app/li-4gtv-4gtv040/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="中视经典台" tvg-name="中视经典台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/CTV2.png"?token=abcd1234 group-title="電影戲劇",中視經典台
+http://4gtvtw.koyeb.app/li-4gtv-4gtv080/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="华视" tvg-name="华视" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/CTS.png"?token=abcd1234 group-title="綜合其他",華視
+http://4gtvtw.koyeb.app/li-4gtv-4gtv041/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="华视新闻" tvg-name="华视新闻" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/CTS1.png"?token=abcd1234 group-title="新聞財經",華視新聞台
+http://4gtvtw.koyeb.app/li-4gtv-4gtv052/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="龙华洋片台" tvg-name="龙华洋片台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/LTV2.png"?token=abcd1234 group-title="電影戲劇",龍華洋片
+http://4gtvtw.koyeb.app/li-litv-longturn02/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="龙华卡通台" tvg-name="龙华卡通台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/LTV9.png"?token=abcd1234 group-title="兒童卡通",龍華卡通
+http://4gtvtw.koyeb.app/li-litv-longturn01/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="龙华电影台" tvg-name="龙华电影台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/LTV1.png"?token=abcd1234 group-title="電影戲劇",龍華電影
+http://4gtvtw.koyeb.app/li-litv-longturn03/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="龙华日韩台" tvg-name="龙华日韩台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/LTV5.png"?token=abcd1234 group-title="電影戲劇",龍華日韓
+http://4gtvtw.koyeb.app/li-litv-longturn11/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="龙华偶像台" tvg-name="龙华偶像台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/LTV6.png"?token=abcd1234 group-title="電影戲劇",龍華偶像
+http://4gtvtw.koyeb.app/li-litv-longturn12/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="龙华戏剧台" tvg-name="龙华戏剧台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/LTV4.png"?token=abcd1234 group-title="電影戲劇",龍華戲劇
+http://4gtvtw.koyeb.app/li-litv-longturn18/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="龙华经典台" tvg-name="龙华经典台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/LTV7.png"?token=abcd1234 group-title="電影戲劇",龍華經典
+http://4gtvtw.koyeb.app/li-litv-longturn21/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="博斯魅力网" tvg-name="博斯魅力网" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/sportcast6.png"?token=abcd1234 group-title="體育競技",博斯魅力
+http://4gtvtw.koyeb.app/litv-longturn04/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="博斯高球一台" tvg-name="博斯高球一台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/sportcast3.png"?token=abcd1234 group-title="體育競技",博斯高球I
+http://4gtvtw.koyeb.app/litv-longturn05/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="博斯高球二台" tvg-name="博斯高球二台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/sportcast4.png"?token=abcd1234 group-title="體育競技",博斯高球II
+http://4gtvtw.koyeb.app/litv-longturn06/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="博斯运动一台" tvg-name="博斯运动一台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/sportcast1.png"?token=abcd1234 group-title="體育競技",博斯運動I
+http://4gtvtw.koyeb.app/litv-longturn07/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="博斯运动二台HD" tvg-name="博斯运动二台HD" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/sportcast2.png"?token=abcd1234 group-title="體育競技",博斯運動II
+http://4gtvtw.koyeb.app/litv-longturn08/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="博斯网球台" tvg-name="博斯网球台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/sportcast5.png"?token=abcd1234 group-title="體育競技",博斯網球
+http://4gtvtw.koyeb.app/litv-longturn09/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="博斯无限台HD" tvg-name="博斯无限台HD" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/sportcast7.png"?token=abcd1234 group-title="體育競技",博斯無限I
+http://4gtvtw.koyeb.app/litv-longturn10/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="博斯无限二台" tvg-name="博斯无限二台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/sportcast8.png"?token=abcd1234 group-title="體育競技",博斯無限II
+http://4gtvtw.koyeb.app/litv-longturn13/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="非凡新闻台" tvg-name="非凡新闻台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/Unique1.png""?token=abcd1234 group-title="新聞財經",非凡新聞
+http://4gtvtw.koyeb.app/4gtv-4gtv010/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="非凡商业台" tvg-name="非凡商业台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/Unique2.png""?token=abcd1234 group-title="新聞財經",非凡商業
+http://4gtvtw.koyeb.app/4gtv-4gtv048/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="台视财经台" tvg-name="台视财经台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/TTV3.png"?token=abcd1234 group-title="新聞財經",台視財經台
+http://4gtvtw.koyeb.app/4gtv-4gtv056/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="中天亚洲台" tvg-name="中天亚洲台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/CTI4.png"?token=abcd1234 group-title="綜合其他",中天亞洲台
+http://4gtvtw.koyeb.app/4gtv-4gtv109/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="客家电视台" tvg-name="客家电视台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/Hakka.png"?token=abcd1234 group-title="綜合其他",客家電視
+http://4gtvtw.koyeb.app/li-4gtv-4gtv043/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="八大综艺台" tvg-name="八大综艺台" tvg-logo="https://4gtvimg2.4gtv.tv/4gtv-Image/Channel/mobile/logo_4gtv_4gtv-4gtv039_mobile.png"?token=abcd1234 group-title="音樂綜藝",八大綜藝
+http://4gtvtw.koyeb.app/li-4gtv-4gtv039/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="中视菁采台" tvg-name="中视菁采台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/CTV3.png"?token=abcd1234 group-title="綜合其他",中視菁采台
+http://4gtvtw.koyeb.app/li-4gtv-4gtv064/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="TVBS精采台" tvg-name="TVBS精采台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/TVBS3.png"?token=abcd1234 group-title="音樂綜藝",TVBS精采台
+http://4gtvtw.koyeb.app/li-4gtv-4gtv067/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="爱尔达娱乐台" tvg-name="爱尔达娱乐台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/ELTA3.png"?token=abcd1234 group-title="音樂綜藝",ELTA娛樂
+http://4gtvtw.koyeb.app/li-4gtv-4gtv070/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="靖天综合台" tvg-name="靖天综合台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/GoldenTV1.png"?token=abcd1234 group-title="綜合其他",靖天綜合
+http://4gtvtw.koyeb.app/li-4gtv-4gtv046/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="靖天日本台" tvg-name="靖天日本台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/GoldenTV6.png"?token=abcd1234 group-title="綜合其他",靖天日本
+http://4gtvtw.koyeb.app/li-4gtv-4gtv047/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="ARIRANG阿里郎频道" tvg-name="ARIRANG阿里郎频道" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/ArirangTV.png"?token=abcd1234 group-title="綜合其他",Arirang TV
+http://4gtvtw.koyeb.app/li-4gtv-4gtv079/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="达文西频道" tvg-name="达文西频道" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/DaVinci.png"?token=abcd1234 group-title="兒童卡通",達文西頻道
+http://4gtvtw.koyeb.app/li-4gtv-4gtv018/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="PETCLUBTVHD" tvg-name="PETCLUBTVHD" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/PetClubTV.png"?token=abcd1234 group-title="生活旅遊",Pet Club TV
+http://4gtvtw.koyeb.app/li-4gtv-4gtv110/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="ELTV生活英语台" tvg-name="ELTV生活英语台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/ELTA7.png"?token=abcd1234 group-title="兒童卡通",ELTV生活英語台
+http://4gtvtw.koyeb.app/li-litv-longturn20/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="靖天卡通台" tvg-name="靖天卡通台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/GoldenTV7.png"?token=abcd1234 group-title="兒童卡通",靖天卡通
+http://4gtvtw.koyeb.app/li-4gtv-4gtv044/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="靖洋卡通NICEBINGO" tvg-name="靖洋卡通NICEBINGO" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/jy1.png"?token=abcd1234 group-title="兒童卡通",靖洋卡通
+http://4gtvtw.koyeb.app/li-4gtv-4gtv057/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="东森新闻台" tvg-name="东森新闻台"tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/EBC6.png"?token=abcd1234 group-title="新聞財經",東森新聞
+http://4gtvtw.koyeb.app/li-4gtv-4gtv152/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="民视新闻台" tvg-name="民视新闻台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/FTV1.png"?token=abcd1234 group-title="新聞財經",民視新聞
+http://4gtvtw.koyeb.app/li-litv-ftv13/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="TVBS新闻" tvg-name="TVBS新闻" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/TVBS1.png"?token=abcd1234 group-title="新聞財經",TVBS新聞台
+http://4gtvtw.koyeb.app/li-4gtv-4gtv072/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="东森财经新闻台" tvg-name="东森财经新闻台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/EBC7.png"?token=abcd1234 group-title="新聞財經",東森財經新聞
+http://4gtvtw.koyeb.app/li-4gtv-4gtv153/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="中视新闻台" tvg-name="中视新闻台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/CTV1.png"?token=abcd1234 group-title="新聞財經",中視新聞台
+http://4gtvtw.koyeb.app/li-4gtv-4gtv074/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="中天新闻台" tvg-name="中天新闻台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/CTI2.png""?token=abcd1234 group-title="新聞財經",中天新聞台
+http://4gtvtw.koyeb.app/li-4gtv-4gtv009/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="寰宇新闻台" tvg-name="寰宇新闻台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/Global2.png"?token=abcd1234 group-title="新聞財經",寰宇新聞
+http://4gtvtw.koyeb.app/li-litv-longturn14/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="寰宇新闻台湾台" tvg-name="寰宇新闻台湾台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/Global3.png"?token=abcd1234 group-title="新聞財經",寰宇新聞台灣台
+http://4gtvtw.koyeb.app/li-4gtv-4gtv156/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="寰宇财经台" tvg-name="寰宇财经台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/Global4.png"?token=abcd1234 group-title="新聞財經",寰宇財經
+http://4gtvtw.koyeb.app/li-4gtv-4gtv158/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="TVBS" tvg-name="TVBS" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/TVBS.png"?token=abcd1234 group-title="綜合其他",TVBS HD
+http://4gtvtw.koyeb.app/li-4gtv-4gtv073/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="民视综艺台" tvg-name="民视综艺台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/FTV6.png"?token=abcd1234 group-title="音樂綜藝",民視綜藝台
+http://4gtvtw.koyeb.app/li-4gtv-4gtv004/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="猪哥亮歌厅秀" tvg-name="猪哥亮歌厅秀" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/FTV7.png"?token=abcd1234 group-title="音樂綜藝",豬哥亮歌廳秀
+http://4gtvtw.koyeb.app/li-4gtv-4gtv006/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="靖天育乐台" tvg-name="靖天育乐台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/GoldenTV5.png"?token=abcd1234 group-title="綜合其他",靖天育樂台
+http://4gtvtw.koyeb.app/li-4gtv-4gtv062/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="KLT靖天国际台HD" tvg-name="KLT靖天国际台HD" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/GoldenTV10.png"?token=abcd1234 group-title="綜合其他",KLT靖天國際台HD
+http://4gtvtw.koyeb.app/li-4gtv-4gtv063/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="NICETV靖天欢乐台" tvg-name="NICETV靖天欢乐台" tvg-logo="https://epg.pw/media/images/epg/2024/06/12/20240612111031068542_59.png"?token=abcd1234 group-title="綜合其他",NICETV靖天歡樂台
+http://4gtvtw.koyeb.app/li-4gtv-4gtv054/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="靖天资讯台" tvg-name="靖天资讯台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/GoldenTV2.png"?token=abcd1234 group-title="綜合其他",靖天資訊
+http://4gtvtw.koyeb.app/li-4gtv-4gtv065/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="TVBS欢乐台" tvg-name="TVBS欢乐台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/TVBS2.png"?token=abcd1234 group-title="音樂綜藝",TVBS歡樂台
+http://4gtvtw.koyeb.app/li-4gtv-4gtv068/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="韩国娱乐台KMTV" tvg-name="韩国娱乐台KMTV" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/hanguoyl.png"?token=abcd1234 group-title="綜合其他",韓國娛樂台
+http://4gtvtw.koyeb.app/li-4gtv-4gtv016/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="TRACEURBAN" tvg-name="TRACEURBAN" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/TraceUrban.png"?token=abcd1234 group-title="音樂綜藝",TRACE Urban
+http://4gtvtw.koyeb.app/li-4gtv-4gtv082/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="MEZZOLIVEHD" tvg-name="MEZZOLIVEHD" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/mezzolive.png"?token=abcd1234 group-title="音樂綜藝",Mezzo Live HD
+http://4gtvtw.koyeb.app/li-4gtv-4gtv083/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="CLASSICA古典乐" tvg-name="CLASSICA古典乐" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/classical.png"?token=abcd1234 group-title="音樂綜藝",CLASSICA古典樂
+http://4gtvtw.koyeb.app/li-4gtv-4gtv059/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="TRACESPORTSTARS" tvg-name="TRACESPORTSTARS" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/TraceSport.png"?token=abcd1234 group-title="體育競技",TRACE Sport Stars
+http://4gtvtw.koyeb.app/li-4gtv-4gtv077/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="智林体育台" tvg-name="智林体育台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/TSL.png"?token=abcd1234 group-title="體育競技",智林體育
+http://4gtvtw.koyeb.app/li-4gtv-4gtv101/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="时尚运动X" tvg-name="时尚运动X" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/ssydX.png"?token=abcd1234 group-title="體育競技",時尚運動X
+http://4gtvtw.koyeb.app/li-4gtv-4gtv014/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="GINXESPORTSTV" tvg-name="GINXESPORTSTV" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/GINXesport.png"?token=abcd1234 group-title="體育競技",GINX Esports TV
+http://4gtvtw.koyeb.app/li-4gtv-4gtv053/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="民视旅游台" tvg-name="民视旅游台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/FTV5.png"?token=abcd1234 group-title="生活旅遊",民視旅遊
+http://4gtvtw.koyeb.app/li-litv-ftv07/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="亚洲旅游台" tvg-name="亚洲旅游台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/Asiatravel.png"?token=abcd1234 group-title="生活旅遊",亞洲旅遊
+http://4gtvtw.koyeb.app/li-4gtv-4gtv076/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="公视戏剧" tvg-name="公视戏剧" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/PTS3.png"?token=abcd1234 group-title="電影戲劇",公視戲劇
+http://4gtvtw.koyeb.app/li-4gtv-4gtv042/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="民视影剧台" tvg-name="民视影剧台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/FTV4.png"?token=abcd1234 group-title="電影戲劇",民視影劇台
+http://4gtvtw.koyeb.app/li-litv-ftv09/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="八大精彩台" tvg-name="八大精彩台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/GTV5.png"?token=abcd1234 group-title="音樂綜藝",八大精彩
+http://4gtvtw.koyeb.app/li-4gtv-4gtv034/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="靖天戏剧台" tvg-name="靖天戏剧台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/GoldenTV8.png"?token=abcd1234 group-title="電影戲劇",靖天戲劇台
+http://4gtvtw.koyeb.app/li-4gtv-4gtv058/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="靖洋戏剧台" tvg-name="靖洋戏剧台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/jy2.png"?token=abcd1234 group-title="電影戲劇",靖洋戲劇台
+http://4gtvtw.koyeb.app/li-4gtv-4gtv045/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="CNEX纪实频道" tvg-name="CNEX纪实频道" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/cnex.png"?token=abcd1234 group-title="紀實探索",視納華仁紀實頻道
+http://4gtvtw.koyeb.app/li-4gtv-4gtv013/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="影迷数位纪实台" tvg-name="影迷数位纪实台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/FANS2.png"?token=abcd1234 group-title="紀實探索",影迷數位紀實台
+http://4gtvtw.koyeb.app/li-litv-ftv15/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="采昌影剧台" tvg-name="采昌影剧台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/caichang.png"?token=abcd1234 group-title="電影戲劇",采昌影劇台
+http://4gtvtw.koyeb.app/li-4gtv-4gtv049/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="靖天映画" tvg-name="靖天映画" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/GoldenTV3.png"?token=abcd1234 group-title="電影戲劇",靖天映画
+http://4gtvtw.koyeb.app/li-4gtv-4gtv055/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="靖天电影台" tvg-name="靖天电影台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/GoldenTV9.png"?token=abcd1234 group-title="電影戲劇",靖天電影台
+http://4gtvtw.koyeb.app/li-4gtv-4gtv061/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="影迷数位电影台" tvg-name="影迷数位电影台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/FANS1.png"?token=abcd1234 group-title="電影戲劇",影迷數位電影台
+http://4gtvtw.koyeb.app/li-4gtv-4gtv011/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="amc电影台" tvg-name="amc电影台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/AMCMovies.png"?token=abcd1234 group-title="電影戲劇",amc電影台
+http://4gtvtw.koyeb.app/li-4gtv-4gtv017/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="好消息" tvg-name="好消息" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/GoodTV1.png"?token=abcd1234 group-title="綜合其他",好消息
+http://4gtvtw.koyeb.app/li-litv-ftv16/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="好消息2台" tvg-name="好消息2台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/GoodTV2.png"?token=abcd1234 group-title="綜合其他",好消息2台
+http://4gtvtw.koyeb.app/li-litv-ftv17/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="VOA美国之音" tvg-name="VOA美国之音" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/VOATV.png"?token=abcd1234 group-title="新聞財經",VOA 美國之音
+http://4gtvtw.koyeb.app/li-litv-ftv03/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="国会频道1台" tvg-name="国会频道1台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/guohui1.png"?token=abcd1234 group-title="綜合其他",國會頻道1台
+http://4gtvtw.koyeb.app/li-4gtv-4gtv084/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="国会频道2台" tvg-name="国会频道2台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/guohui2.png"?token=abcd1234 group-title="綜合其他",國會頻道2台
+http://4gtvtw.koyeb.app/li-4gtv-4gtv085/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="台湾戏剧台" tvg-name="台湾戏剧台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/Taiwanxiju.png"?token=abcd1234 group-title="電影戲劇",台灣戲劇台
+http://4gtvtw.koyeb.app/li-litv-longturn22/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="SMART知识台" tvg-name="SMART知识台" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/smarttv.png"?token=abcd1234 group-title="生活旅遊",Smart知識台
+http://4gtvtw.koyeb.app/li-litv-longturn19/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="台视新闻" tvg-name="台视新闻" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/TTV2.png"?token=abcd1234 group-title="新聞財經",台視新聞台
+http://4gtvtw.koyeb.app/li-4gtv-4gtv051/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="台视" tvg-name="台视" tvg-logo="https://cdn.jsdelivr.net/gh/wanglindl/TVlogo@main/img/TTV.png"?token=abcd1234 group-title="綜合其他",台視HD
+http://4gtvtw.koyeb.app/li-4gtv-4gtv066/index.m3u8?token=abcd1234
+#EXTINF:-1 tvg-id="第1商业台" tvg-name="第1商业台" tvg-logo="https://p-cdnstatic.svc.litv.tv/pics/logo_litv_4gtv-4gtv104_pc.png"?token=abcd1234 group-title="新聞財經",第1商業台
+http://4gtvtw.koyeb.app/li-4gtv-4gtv104/index.m3u8?token=abcd1234
 
 #EXTINF:-1 group-title="亞太GT",中視
 http://211.23.95.147:18881/live/dtv1_h265.ts
