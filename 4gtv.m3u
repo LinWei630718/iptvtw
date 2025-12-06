@@ -1119,7 +1119,7 @@ http://220.134.196.147:8554/http/61.219.99.20:8081/hls/87/80/Pts4max.m3u8
 http://220.134.196.147:8515/http/61.219.99.20:8081/hls/69/811/ch36.m3u8
 #EXTINF:-1 tvg-name="大愛電視" tvg-logo="https://logo.catvod.com/大愛電視.png" group-title="台灣酒店",大愛電視
 http://220.134.196.147:8549/http/61.219.99.20:8081/hls/73/815/ch52.m3u8
-#EXTINF:-1 tvg-name="好訊息GOOD TV" tvg-logo="https://logo.catvod.com/好訊息GOOD TV.png" group-title="台灣酒店",好訊息GOOD TV
+#EXTINF:-1 tvg-name="好消息GOOD TV" tvg-logo="https://logo.catvod.com/好訊息GOOD TV.png" group-title="台灣酒店",好消息GOOD TV
 http://220.134.196.147:8523/http/61.219.99.20:8081/hls/74/816/ch53.m3u8
 #EXTINF:-1 tvg-name="Trace Sport Stars" tvg-logo="https://logo.catvod.com/Trace Sport Stars.png" group-title="台灣酒店",Trace Sport Stars
 http://220.134.196.147:8569/http/61.219.99.20:8092/upload/212/TraceS_TS-1111_1.m3u8
