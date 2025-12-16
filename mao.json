@@ -903,24 +903,6 @@
       "playerType": 1
         },
         {
-      "name": "MQitv211(台灣酒店)",
-      "api": "csp_MQiTV",
-      "ua": "okhttp",
-      "jar": "./jar/mtv.jar",
-      "ext": "211.23.114.106:1888",
-      "timeout": 30,
-      "playerType": 1
-        },
-        {
-      "name": "MQitv220(台灣酒店)",
-      "api": "csp_MQiTV",
-      "ua": "okhttp",
-      "jar": "./jar/mtv.jar",
-      "ext": "220.134.196.147:1888",
-      "timeout": 30,
-      "playerType": 1
-        },
-        {
             "name": "直播嗅探",
             "type": 0,
             "url": "https://gh-proxy.com/https://raw.githubusercontent.com/LinWei630718/iptvtw/refs/heads/main/xt.txt",
