@@ -35,45 +35,6 @@
       "changeable": 0
     },
         {
-            "key":"py_OleVod",
-            "name":"🍋‍🟩歐樂影院(T4)",
-            "type":4,
-            "api":"https://py.doube.eu.org/spider?site=OleVod",
-            "searchable":1,
-            "quickSearch":0,
-            "filterable":0,
-            "changeable":0
-        },
-        {
-            "key":"py_Dm84",
-            "name":"🚐動漫巴士(T4)",
-            "type":4,
-            "api":"https://py.doube.eu.org/spider?site=Dm84",
-            "searchable":1,
-            "quickSearch":0,
-            "filterable":0,
-            "changeable":0
-        },
-        {
-            "key": "py_粤漫之家",
-            "name": "🍋粤漫之家(T4)",
-            "type": 4,
-            "api": "https://py.doube.eu.org/v2/spider?site=de0fbc805050ecc4d63971c109724d0e",
-            "searchable": 1,
-            "quickSearch": 0,
-            "filterable": 0,
-            "changeable": 0
-        },
-        {
-            "key": "py_jieyingshi",
-            "name": "📽️界影視(T3)",
-            "type": 3,
-            "api": "https://d.kstore.dev/download/14756/python/vod_jieyingshi.py",
-            "searchable": 1,
-            "filterable": 0,
-            "changeable": 0
-        },
-        {
             "key": "py_jianpian",
             "name": "🖖薦片(T3)",
             "type": 3,
