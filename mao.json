@@ -53,6 +53,24 @@
             "changeable": 0
         },
         {
+            "key": "js_short",
+            "name": "📹聚合短劇(JS)",
+            "type": 3,
+            "api": "./js/short.js",
+            "searchable": 1,
+            "filterable": 0,
+            "changeable": 0
+        },
+        {
+            "key": "py_korea",
+            "name": "🇰🇷新韓劇網(py)",
+            "type": 3,
+            "api": "./python/korea.min.py",
+            "searchable": 1,
+            "filterable": 0,
+            "changeable": 0
+        },
+        {
             "key": "py_aigua",
             "name": "🍉愛瓜TV(T3)",
             "type": 3,
