@@ -16,7 +16,7 @@
     },
     {
       "key": "py_64832281816dd9a7b7c506233d457a5d",
-      "name": "🍎官方采集(T4)",
+      "name": "🥝官方采集(T4)",
       "type": 4,
       "api": "https://py.doube.eu.org/v2/spider?site=64832281816dd9a7b7c506233d457a5d",
       "searchable": 1,
@@ -44,6 +44,15 @@
             "changeable": 0
         },
         {
+            "key": "js_jes",
+            "name": "📼界影視(JS)",
+            "type": 3,
+            "api": "./js/jes.js",
+            "searchable": 1,
+            "filterable": 0,
+            "changeable": 0
+        },
+        {
             "key": "py_aigua",
             "name": "🍉愛瓜TV(T3)",
             "type": 3,
@@ -54,7 +63,7 @@
         },
         {
             "key": "永乐视频.py",
-            "name": "永樂視頻(py)",
+            "name": "😀永樂視頻(py)",
             "type": 3,
             "api": "./python/ylys.py",
             "searchable": 1,
