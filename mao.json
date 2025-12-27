@@ -35,10 +35,10 @@
       "changeable": 0
     },
         {
-            "key": "py_jianpian",
-            "name": "🖖薦片(T3)",
+            "key": "js_jianpian",
+            "name": "🖖薦片(JS)",
             "type": 3,
-            "api": "./python/py_jianpian.py",
+            "api": "./js/jianpian.js",
             "searchable": 1,
             "filterable": 0,
             "changeable": 0
