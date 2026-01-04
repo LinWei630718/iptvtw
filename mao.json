@@ -916,7 +916,7 @@
         {
             "name": "SMT(py)",
             "type": 3,
-            "url": "https://raw.githubusercontent.com/LinWei630718/iptvtw/refs/heads/main/smt.txt"
+            "url": "https://raw.githubusercontent.com/LinWei630718/iptvtw/refs/heads/main/smt.txt",
             "api": "https://raw.githubusercontent.com/LinWei630718/iptvtw/refs/heads/main/python/SMT.py",
             "ext": "http://127.0.0.1:8080"
         }, 
