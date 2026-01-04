@@ -914,9 +914,9 @@
             "url": "https://raw.githubusercontent.com/judy-gotv/iptv/main/4gtv.m3u"
         },
         {
-            "name": "SMT66(py)",
+            "name": "SMT(py)",
             "type": 3,
-            "api": "https://raw.githubusercontent.com/LinWei630718/iptvtw/refs/heads/main/smt66.py",
+            "api": "https://raw.githubusercontent.com/LinWei630718/iptvtw/refs/heads/main/smt.py",
             "ext": "http://127.0.0.1:8080"
         }, 
                 {
