@@ -916,8 +916,9 @@
         {
             "name": "SMT(py)",
             "type": 3,
-            "api": "https://raw.githubusercontent.com/LinWei630718/iptvtw/refs/heads/main/smt.py",
-            "ext": "http://127.0.0.1:8080"
+            "url":"https://raw.githubusercontent.com/LinWei630718/iptvtw/refs/heads/main/smt.txt"
+            "api": "./python/SMT.py",
+            "ext": {"proxy":"http://192.168.31.13:10808"}
         }, 
                 {
             "name": "LITV(php)",
