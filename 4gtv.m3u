@@ -31,18 +31,6 @@ http://74.91.26.218:82/live/ttvnews.m3u8
 http://74.91.26.218:82/live/ttvzh.m3u8
 #EXTINF:-1 group-title="LiTV立視",台視財經
 http://74.91.26.218:82/live/ttvcj.m3u8
-#EXTINF:-1 group-title="LiTV立視",美亞電影
-http://74.91.26.218:82/live/mydy.m3u8
-#EXTINF:-1 group-title="LiTV立視",天映頻道
-http://74.91.26.218:82/live/typd.m3u8
-#EXTINF:-1 group-title="LiTV立視",天映經典
-http://74.91.26.218:82/live/tyjd.m3u8
-#EXTINF:-1 group-title="LiTV立視",NOW星影
-http://74.91.26.218:82/live/nowxy.m3u8
-#EXTINF:-1 group-title="LiTV立視",中天新聞
-http://74.91.26.218:82/live/ztxw.m3u8
-#EXTINF:-1 group-title="LiTV立視",Z頻道
-http://74.91.26.218:82/live/twz.m3u8
 #EXTINF:-1 group-title="LiTV立視" ,民視台灣台
 http://xtvantsc.xyz/litv_ts.php?id=4gtv-4gtv001
 #EXTINF:-1 group-title="LiTV立視" ,寰宇新聞台灣台
