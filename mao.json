@@ -28,42 +28,22 @@
 		},
 		{
 			"key": "py_动漫巴士",
-			"name": "🍎動漫巴士(T4)",
+			"name": "🚐動漫巴士(T4)",
 			"type": 4,
 			"api": "https://py.doube.eu.org/v2/spider?site=6b5899d243816bacb8712de7ab6ceb89"
 		},
 		{
 			"key": "py_欧乐影院",
-			"name": "🍎歐樂影院(T4)",
+			"name": "😀歐樂影院(T4)",
 			"type": 4,
 			"api": "https://py.doube.eu.org/v2/spider?site=8a0bbe9e97c4429a517cd2ece3f6772b"
 		},
 		{
 			"key": "py_新韩剧网",
-			"name": "🍎新韓劇網(T4)",
+			"name": "🇰🇷新韓劇網(T4)",
 			"type": 4,
 			"api": "https://py.doube.eu.org/v2/spider?site=2a7cc0edf96108c9d57420ff57c654c6"
 		},
-    {
-      "key": "py_64832281816dd9a7b7c506233d457a5d",
-      "name": "🥝官方采集(T4)",
-      "type": 4,
-      "api": "https://py.doube.eu.org/v2/spider?site=64832281816dd9a7b7c506233d457a5d",
-      "searchable": 1,
-      "quickSearch": 0,
-      "filterable": 0,
-      "changeable": 0
-    },
-    {
-      "key": "py_9037cfae7c64405111e0e364401adb60",
-      "name": "🍎小蘋果(T4)",
-      "type": 4,
-      "api": "https://py.doube.eu.org/v2/spider?site=9037cfae7c64405111e0e364401adb60",
-      "searchable": 1,
-      "quickSearch": 0,
-      "filterable": 0,
-      "changeable": 0
-    },
         {
             "key": "js_jianpian",
             "name": "🖖薦片(JS)",
@@ -672,15 +652,16 @@
             "searchable": 1,
             "changeable": 1
         },
-        {
-            "key": "商店",
-            "name": "🏪商店",
-            "type": 3,
-            "api": "csp_Market",
-            "searchable": 0,
-            "changeable": 0,
-            "ext": "https://raw.githubusercontent.com/gaotianliuyun/gao/master/json/market.json"
-        },
+		{
+			"key": "market",
+			"name": "🏪應用｜商店",
+			"type": 3,
+			"api": "csp_Market",
+			"searchable": 0,
+			"changeable": 0,
+			"ext": "https://down.nigx.cn/raw.githubusercontent.com/ediart/tvbox/refs/heads/main/lz/market.json",
+			"jar": "https://down.nigx.cn/raw.githubusercontent.com/ediart/tvbox/refs/heads/main/lz/fm.jar"
+		},
         {
             "key": "本地",
             "name": "本地",
