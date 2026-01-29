@@ -944,6 +944,27 @@ http://211.23.95.147:18881/live/102_h265.ts
 #EXTINF:-1 group-title="亞太GT",壹綜合
 http://211.23.95.147:18881/live/104_h265.ts
 
+#EXTINF:-1 group-title="電影輪播" ,愛情公寓
+http://74.91.26.218:82/live/vlaqgy.m3u8
+#EXTINF:-1 group-title="電影輪播" ,喜劇影院
+http://74.91.26.218:82/live/vlxjyy.m3u8
+#EXTINF:-1 group-title="電影輪播" ,成龍
+http://74.91.26.218:82/live/vlcl.m3u8
+#EXTINF:-1 group-title="電影輪播" ,黃百鳴
+http://74.91.26.218:82/live/vlhbm.m3u8
+#EXTINF:-1 group-title="電影輪播" ,洪金寶
+http://74.91.26.218:82/live/vlhjb.m3u8
+#EXTINF:-1 group-title="電影輪播" ,劉德華
+http://74.91.26.218:82/live/vlldh.m3u8
+#EXTINF:-1 group-title="電影輪播" ,林正英
+http://74.91.26.218:82/live/vllzy.m3u8
+#EXTINF:-1 group-title="電影輪播" ,周潤發
+http://74.91.26.218:82/live/vlzrf.m3u8
+#EXTINF:-1 group-title="電影輪播" ,周星馳
+http://74.91.26.218:82/live/vlzxc.m3u8
+#EXTINF:-1 group-title="電影輪播" ,少年包青天
+http://74.91.26.218:82/live/vlsnbqt.m3u8
+
 #EXTINF:-1 group-title="電影",導演你有病
 https://v.lzcdn25.com/20250411/314_13a8eb7e/2000k/hls/mixed.m3u8
 #EXTINF:-1 group-title="電影",傳說
