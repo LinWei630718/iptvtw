@@ -61,6 +61,28 @@ http://74.91.26.218:82/live/mydy.m3u8
 http://74.91.26.218:82/live/typd.m3u8
 #EXTINF:-1 group-title="LiTV立視",天映經典
 http://74.91.26.218:82/live/tyjd.m3u8
+#EXTINF:-1 group-title="LiTV立視" ,龍華電影
+http://cdn8.163189.xyz/163189/lhdy
+#EXTINF:-1 group-title="LiTV立視" ,龍華經典
+http://cdn8.163189.xyz/163189/lhjd
+#EXTINF:-1 group-title="LiTV立視" ,龍華卡通
+http://cdn8.163189.xyz/163189/lhkt
+#EXTINF:-1 group-title="LiTV立視" ,龍華偶像
+http://cdn8.163189.xyz/163189/lhox
+#EXTINF:-1 group-title="LiTV立視" ,龍華日韓
+http://cdn8.163189.xyz/163189/lhrh
+#EXTINF:-1 group-title="LiTV立視" ,龍華戲劇
+http://cdn8.163189.xyz/163189/lhxj
+#EXTINF:-1 group-title="LiTV立視" ,龍華洋片
+http://cdn8.163189.xyz/163189/lhyp
+#EXTINF:-1 group-title="LiTV立視" ,天映頻道
+http://cdn10.163189.xyz/163189/typd
+#EXTINF:-1 group-title="LiTV立視" ,天映經典
+http://cdn10.163189.xyz/163189/ccm
+#EXTINF:-1 group-title="LiTV立視" ,天映頻道
+https://o11.163189.xyz/stream/live/typd/
+#EXTINF:-1 group-title="LiTV立視" ,天映經典
+https://o11.163189.xyz/stream/live/ccm/
 
 #EXTINF:-1 tvg-id="litv-xinchuang01" tvg-name="龍華卡通台" tvg-logo="https://p-cdnstatic.svc.litv.tv/pics/logo_litv_litv-longturn01_mobile.png" group-title="LiTV立視",龍華卡通台
 http://litv.msbot.dpdns.org/li.php?id=litv-xinchuang01
