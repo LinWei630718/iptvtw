@@ -84,6 +84,19 @@ https://o11.163189.xyz/stream/live/typd/
 #EXTINF:-1 group-title="LiTV立視" ,天映經典
 https://o11.163189.xyz/stream/live/ccm/
 
+#EXTINF:-1 group-title="LiTV立視" ,緯來日本
+https://hls.iill.top/api/wlrb/index.m3u8
+#EXTINF:-1 group-title="LiTV立視" ,緯來體育
+https://hls.iill.top/api/wlty/index.m3u8
+#EXTINF:-1 group-title="LiTV立視" ,緯來電影
+https://hls.iill.top/api/wldy/index.m3u8
+#EXTINF:-1 group-title="LiTV立視" ,東森電影
+https://hls.iill.top/api/dsdy/index.m3u8
+#EXTINF:-1 group-title="LiTV立視" ,東森洋片
+https://hls.iill.top/api/dsyp/index.m3u8
+#EXTINF:-1 group-title="LiTV立視" ,龍祥時代
+https://hls.iill.top/api/lxsd/index.m3u8
+
 #EXTINF:-1 tvg-name="TVBS新聞" tvg-logo="https://live.fanmingming.cn/tv/TVBS新聞.png" group-title="LiTV立視",TVBS新聞
 http://iptv.4666888.xyz/iptv2A.php?id=43
 #EXTINF:-1 tvg-name="非凡新聞" tvg-logo="https://live.fanmingming.cn/tv/非凡新聞.png" group-title="LiTV立視",非凡新聞
