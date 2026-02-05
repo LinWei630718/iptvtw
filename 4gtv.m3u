@@ -97,45 +97,41 @@ https://hls.iill.top/api/dsyp/index.m3u8
 #EXTINF:-1 group-title="LiTV立視" ,龍祥時代
 https://hls.iill.top/api/lxsd/index.m3u8
 
-#EXTINF:-1 tvg-name="TVBS新聞" tvg-logo="https://live.fanmingming.cn/tv/TVBS新聞.png" group-title="LiTV立視",TVBS新聞
+#EXTINF:-1 tvg-name="TVBS新聞" group-title="LiTV立視",TVBS新聞
 http://iptv.4666888.xyz/iptv2A.php?id=43
-#EXTINF:-1 tvg-name="非凡新聞" tvg-logo="https://live.fanmingming.cn/tv/非凡新聞.png" group-title="LiTV立視",非凡新聞
+#EXTINF:-1 tvg-name="非凡新聞" group-title="LiTV立視",非凡新聞
 http://iptv.4666888.xyz/iptv2A.php?id=44
-#EXTINF:-1 tvg-name="民視" tvg-logo="https://live.fanmingming.cn/tv/民視.png" group-title="LiTV立視",民視
+#EXTINF:-1 tvg-name="民視" group-title="LiTV立視",民視
 http://iptv.4666888.xyz/iptv2A.php?id=55
-#EXTINF:-1 tvg-name="華藝中文" tvg-logo="https://live.fanmingming.cn/tv/華藝中文.png" group-title="LiTV立視",華藝中文
+#EXTINF:-1 tvg-name="華藝中文" group-title="LiTV立視",華藝中文
 http://iptv.4666888.xyz/iptv2A.php?id=37
-#EXTINF:-1 tvg-name="愛奇藝" tvg-logo="https://live.fanmingming.cn/tv/愛奇藝.png" group-title="LiTV立視",愛奇藝
-http://iptv.4666888.xyz/iptv2A.php?id=21
-#EXTINF:-1 tvg-name="靖洋戲劇" tvg-logo="https://live.fanmingming.cn/tv/靖洋戲劇.png" group-title="LiTV立視",靖洋戲劇
+#EXTINF:-1 tvg-name="靖洋戲劇" group-title="LiTV立視",靖洋戲劇
 http://iptv.4666888.xyz/iptv2A.php?id=42
-#EXTINF:-1 tvg-name="靖天電影" tvg-logo="https://live.fanmingming.cn/tv/靖天電影.png" group-title="LiTV立視",靖天電影
+#EXTINF:-1 tvg-name="靖天電影" group-title="LiTV立視",靖天電影
 http://iptv.4666888.xyz/iptv2A.php?id=56
-#EXTINF:-1 tvg-name="邵氏武俠" tvg-logo="https://live.fanmingming.cn/tv/邵氏武俠.png" group-title="LiTV立視",邵氏武俠
+#EXTINF:-1 tvg-name="邵氏武俠" group-title="LiTV立視",邵氏武俠
 http://iptv.4666888.xyz/iptv2A.php?id=40
-#EXTINF:-1 tvg-name="東森電影" tvg-logo="https://live.fanmingming.cn/tv/東森電影.png" group-title="LiTV立視",東森電影
+#EXTINF:-1 tvg-name="東森電影" group-title="LiTV立視",東森電影
 http://iptv.4666888.xyz/iptv2A.php?id=48
-#EXTINF:-1 tvg-name="龍華電影" tvg-logo="https://live.fanmingming.cn/tv/龍華電影.png" group-title="LiTV立視",龍華電影
+#EXTINF:-1 tvg-name="龍華電影" group-title="LiTV立視",龍華電影
 http://iptv.4666888.xyz/iptv2A.php?id=45
-#EXTINF:-1 tvg-name="民視綜藝" tvg-logo="https://live.fanmingming.cn/tv/民視綜藝.png" group-title="LiTV立視",民視綜藝
+#EXTINF:-1 tvg-name="民視綜藝" group-title="LiTV立視",民視綜藝
 http://iptv.4666888.xyz/iptv2A.php?id=46
-#EXTINF:-1 tvg-name="TVBS精采" tvg-logo="https://live.fanmingming.cn/tv/TVBS精采.png" group-title="LiTV立視",TVBS精采
+#EXTINF:-1 tvg-name="TVBS精采" group-title="LiTV立視",TVBS精采
 http://iptv.4666888.xyz/iptv2A.php?id=47
-#EXTINF:-1 tvg-name="邵氏電影" tvg-logo="https://live.fanmingming.cn/tv/邵氏電影.png" group-title="LiTV立視",邵氏電影
+#EXTINF:-1 tvg-name="邵氏電影" group-title="LiTV立視",邵氏電影
 http://iptv.4666888.xyz/iptv2A.php?id=39
-#EXTINF:-1 tvg-name="東森洋片" tvg-logo="https://live.fanmingming.cn/tv/東森洋片.png" group-title="LiTV立視",東森洋片
+#EXTINF:-1 tvg-name="東森洋片" group-title="LiTV立視",東森洋片
 http://iptv.4666888.xyz/iptv2A.php?id=45
-#EXTINF:-1 tvg-name="愛爾達綜合" tvg-logo="https://live.fanmingming.cn/tv/愛爾達綜合.png" group-title="LiTV立視",愛爾達綜合
+#EXTINF:-1 tvg-name="愛爾達綜合" group-title="LiTV立視",愛爾達綜合
 http://iptv.4666888.xyz/iptv2A.php?id=49
-#EXTINF:-1 tvg-name="ROCK_Action" tvg-logo="https://live.fanmingming.cn/tv/ROCK_Action.png" group-title="LiTV立視",ROCK_Action
+#EXTINF:-1 tvg-name="ROCK_Action" group-title="LiTV立視",ROCK_Action
 http://iptv.4666888.xyz/iptv2A.php?id=50
-#EXTINF:-1 tvg-name="臺視綜合" tvg-logo="https://live.fanmingming.cn/tv/臺視綜合.png" group-title="LiTV立視",臺視綜合
+#EXTINF:-1 tvg-name="台視綜合" group-title="LiTV立視",台視綜合
 http://iptv.4666888.xyz/iptv2A.php?id=51
-#EXTINF:-1 tvg-name="八度空間" tvg-logo="https://live.fanmingming.cn/tv/八度空間.png" group-title="LiTV立視",八度空間
-http://iptv.4666888.xyz/iptv2A.php?id=52
-#EXTINF:-1 tvg-name="民視影劇" tvg-logo="https://live.fanmingming.cn/tv/民視影劇.png" group-title="LiTV立視",民視影劇
+#EXTINF:-1 tvg-name="民視影劇" group-title="LiTV立視",民視影劇
 http://iptv.4666888.xyz/iptv2A.php?id=53
-#EXTINF:-1 tvg-name="中視經典" tvg-logo="https://live.fanmingming.cn/tv/中視經典.png" group-title="LiTV立視",中視經典
+#EXTINF:-1 tvg-name="中視經典" group-title="LiTV立視",中視經典
 http://iptv.4666888.xyz/iptv2A.php?id=54
 
 #EXTINF:-1 tvg-id="台視" tvg-name="台視" tvg-logo="https://logo.doube.eu.org/台視.png" group-title="台灣酒店",台視
