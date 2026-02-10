@@ -85,6 +85,24 @@ https://o11.163189.xyz/stream/live/typd/
 https://o11.163189.xyz/stream/live/ccm/
 #EXTINF:-1 tvg-name="非凡新聞" group-title="LiTV立視",非凡新聞
 rtmp://f13h.mine.nu/sat/tv581
+#EXTINF:-1 tvg-name="ELEVEN体育1" group-title="LiTV立視",DAZN1
+rtmp://f13h.mine.nu/sat/tv731
+#EXTINF:-1 tvg-name="ELEVEN体育2" group-title="LiTV立視",DAZN2
+rtmp://f13h.mine.nu/sat/tv741
+#EXTINF:-1 tvg-name="纬来体育" group-title="LiTV立視",緯來體育
+rtmp://f13h.mine.nu/sat/tv721
+#EXTINF:-1 tvg-name="纬来育乐" group-title="LiTV立視",緯來育樂
+rtmp://f13h.mine.nu/sat/tv701
+#EXTINF:-1 tvg-name="民视" group-title="LiTV立視",民視
+rtmp://f13h.mine.nu/sat/tv051
+#EXTINF:-1 tvg-name="台视" group-title="LiTV立視",台視
+rtmp://f13h.mine.nu/sat/tv071
+#EXTINF:-1 tvg-name="中视" group-title="LiTV立視",中視
+rtmp://f13h.mine.nu/sat/tv091
+#EXTINF:-1 tvg-name="华视" group-title="LiTV立視",华視
+rtmp://f13h.mine.nu/sat/tv111
+#EXTINF:-1 tvg-name="公视" group-title="LiTV立視",公視
+rtmp://f13h.mine.nu/sat/tv771
 
 #EXTINF:-1 group-title="LiTV立視" ,緯來日本
 https://hls.iill.top/api/wlrb/index.m3u8
