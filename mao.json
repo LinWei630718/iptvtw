@@ -905,7 +905,6 @@
             "name": "直播嗅探",
             "type": 0,
             "url": "https://gh-proxy.com/https://raw.githubusercontent.com/LinWei630718/iptvtw/refs/heads/main/xt.txt",
-            "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36",
         },
         {
             "name": "四季",
