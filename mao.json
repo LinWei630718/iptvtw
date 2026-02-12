@@ -905,36 +905,12 @@
             "name": "直播嗅探",
             "type": 0,
             "url": "https://gh-proxy.com/https://raw.githubusercontent.com/LinWei630718/iptvtw/refs/heads/main/xt.txt",
-            "ua": "okhttp/3.15",
-            "epg": "http://iptv.52sw.top:668/?ch={name}&date={date}"
-        },
-        {
-            "name": "LITV立視(py)",
-            "type": 3,
-            "api": "https://gh-proxy.com/https://raw.githubusercontent.com/LinWei630718/iptvtw/refs/heads/main/litv.py",
-            "ext": {}
+            "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36",
         },
         {
             "name": "四季",
             "type": 3,
             "url": "https://github.com/LinWei630718/iptvtw/raw/refs/heads/main/4gtv.m3u"
-        },
-        {
-            "name": "4gtv",
-            "type": 3,
-            "url": "https://raw.githubusercontent.com/judy-gotv/iptv/main/4gtv.m3u"
-        },
-        {
-            "name": "SMT(py)",
-            "type": 3,
-            "url": "https://raw.githubusercontent.com/LinWei630718/iptvtw/refs/heads/main/smt.txt",
-            "api": "https://raw.githubusercontent.com/LinWei630718/iptvtw/refs/heads/main/python/SMT.py",
-            "ext": "http://127.0.0.1:8080"
-        }, 
-                {
-            "name": "LITV(php)",
-            "type": 3,
-            "url": "http://xtvantsc.xyz/litv_ts.php"
         }
     ],
     "ads": [
