@@ -839,6 +839,1005 @@ http://211.23.95.147:18881/live/102_h265.ts
 #EXTINF:-1 group-title="亞太GT",壹綜合
 http://211.23.95.147:18881/live/104_h265.ts
 
+#EXTINF:-1 tvg-id="翡翠台" tvg-name="翡翠台" tvg-logo="" group-title="GPT-香港",翡翠台
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=jade_twn&token=abcd1234
+#EXTINF:-1 tvg-id="翡翠台" tvg-name="翡翠台" tvg-logo="" group-title="GPT-香港",翡翠台
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Jade_xue&token=abcd1234
+#EXTINF:-1 tvg-id="明珠台" tvg-name="明珠台" tvg-logo="" group-title="GPT-香港",明珠台
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=pearl_twn&token=abcd1234
+#EXTINF:-1 tvg-id="无线新闻" tvg-name="无线新闻" tvg-logo="" group-title="GPT-香港",无线新闻
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=inews_twn&token=abcd1234
+#EXTINF:-1 tvg-id="TVBPLUS" tvg-name="TVBPLUS" tvg-logo="" group-title="GPT-香港",TVBPLUS
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=j2_twn&token=abcd1234
+#EXTINF:-1 tvg-id="ViuTV" tvg-name="ViuTV" tvg-logo="" group-title="GPT-香港",ViuTV
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=viu1_twn&token=abcd1234
+#EXTINF:-1 tvg-id="ViuTV 6" tvg-name="ViuTV 6" tvg-logo="" group-title="GPT-香港",ViuTV 6
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=viusix_twn&token=abcd1234
+#EXTINF:-1 tvg-id="RTHK 31" tvg-name="RTHK 31" tvg-logo="" group-title="GPT-香港",RTHK 31
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=rhk31_twn&token=abcd1234
+#EXTINF:-1 tvg-id="RTHK 32" tvg-name="RTHK 32" tvg-logo="" group-title="GPT-香港",RTHK 32
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=rhk32_twn&token=abcd1234
+#EXTINF:-1 tvg-id="HOY TV" tvg-name="HOY TV" tvg-logo="" group-title="GPT-香港",HOY TV
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=hoycaijing_twn&token=abcd1234
+#EXTINF:-1 tvg-id="凤凰中文" tvg-name="凤凰中文" tvg-logo="" group-title="GPT-香港",凤凰中文
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=phoenixtv_hd&token=abcd1234
+#EXTINF:-1 tvg-id="凤凰资讯" tvg-name="凤凰资讯" tvg-logo="" group-title="GPT-香港",凤凰资讯
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=phoenixinfo_hd&token=abcd1234
+#EXTINF:-1 tvg-id="凤凰香港" tvg-name="凤凰香港" tvg-logo="" group-title="GPT-香港",凤凰香港
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=hkphoenix_twn&token=abcd1234
+#EXTINF:-1 tvg-id="台视 HD" tvg-name="台视 HD" tvg-logo="" group-title="GPT-台灣",台视 HD
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=ttv_taiwan&token=abcd1234
+#EXTINF:-1 tvg-id="台视新闻" tvg-name="台视新闻" tvg-logo="" group-title="GPT-台灣",台视新闻
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=ttvnews_twn&token=abcd1234
+#EXTINF:-1 tvg-id="台视综合" tvg-name="台视综合" tvg-logo="" group-title="GPT-台灣",台视综合
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=ttvzhonghe&token=abcd1234
+#EXTINF:-1 tvg-id="中视 HD" tvg-name="中视 HD" tvg-logo="" group-title="GPT-台灣",中视 HD
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=zhongshihd_twn&token=abcd1234
+#EXTINF:-1 tvg-id="中视新闻" tvg-name="中视新闻" tvg-logo="" group-title="GPT-台灣",中视新闻
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=zhongshinews_twn&token=abcd1234
+#EXTINF:-1 tvg-id="中视经典" tvg-name="中视经典" tvg-logo="" group-title="GPT-台灣",中视经典
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=zhongshi_twn&token=abcd1234
+#EXTINF:-1 tvg-id="华视 HD" tvg-name="华视 HD" tvg-logo="" group-title="GPT-台灣",华视 HD
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=ctshd_twn&token=abcd1234
+#EXTINF:-1 tvg-id="公视 HD" tvg-name="公视 HD" tvg-logo="" group-title="GPT-台灣",公视 HD
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=ctv_taiwan&token=abcd1234
+#EXTINF:-1 tvg-id="公视台语台" tvg-name="公视台语台" tvg-logo="" group-title="GPT-台灣",公视台语台
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=ctv2_twn&token=abcd1234
+#EXTINF:-1 tvg-id="三立台湾台" tvg-name="三立台湾台" tvg-logo="" group-title="GPT-台灣",三立台湾台
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=sanlitaiwan&token=abcd1234
+#EXTINF:-1 tvg-id="三立都会台" tvg-name="三立都会台" tvg-logo="" group-title="GPT-台灣",三立都会台
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=sanlidouhui&token=abcd1234
+#EXTINF:-1 tvg-id="三立综合台" tvg-name="三立综合台" tvg-logo="" group-title="GPT-台灣",三立综合台
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=sanlizhonghe&token=abcd1234
+#EXTINF:-1 tvg-id="三立戏剧台" tvg-name="三立戏剧台" tvg-logo="" group-title="GPT-台灣",三立戏剧台
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=sanlixiju_twn&token=abcd1234
+#EXTINF:-1 tvg-id="东森新闻台" tvg-name="东森新闻台" tvg-logo="" group-title="GPT-台灣",东森新闻台
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=ettvnews&token=abcd1234
+#EXTINF:-1 tvg-id="东森财经新闻台" tvg-name="东森财经新闻台" tvg-logo="" group-title="GPT-台灣",东森财经新闻台
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=ettvcaijing_twn&token=abcd1234
+#EXTINF:-1 tvg-id="东森综合台" tvg-name="东森综合台" tvg-logo="" group-title="GPT-台灣",东森综合台
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=ettvzhonghe&token=abcd1234
+#EXTINF:-1 tvg-id="东森戏剧台" tvg-name="东森戏剧台" tvg-logo="" group-title="GPT-台灣",东森戏剧台
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=ettvdrama&token=abcd1234
+#EXTINF:-1 tvg-id="东森电影台" tvg-name="东森电影台" tvg-logo="" group-title="GPT-台灣",东森电影台
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=ettvmovie&token=abcd1234
+#EXTINF:-1 tvg-id="东森洋片台" tvg-name="东森洋片台" tvg-logo="" group-title="GPT-台灣",东森洋片台
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=ettvwestern&token=abcd1234
+#EXTINF:-1 tvg-id="东森幼幼台" tvg-name="东森幼幼台" tvg-logo="" group-title="GPT-台灣",东森幼幼台
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=yoyo_twn&token=abcd1234
+#EXTINF:-1 tvg-id="东森超视" tvg-name="东森超视" tvg-logo="" group-title="GPT-台灣",东森超视
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=ettvsuper&token=abcd1234
+#EXTINF:-1 tvg-id="TVBS HD" tvg-name="TVBS HD" tvg-logo="" group-title="GPT-台灣",TVBS HD
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=tvbs&token=abcd1234
+#EXTINF:-1 tvg-id="TVBS 新闻台" tvg-name="TVBS 新闻台" tvg-logo="" group-title="GPT-台灣",TVBS 新闻台
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=tvbs_n&token=abcd1234
+#EXTINF:-1 tvg-id="TVBS 欢乐台" tvg-name="TVBS 欢乐台" tvg-logo="" group-title="GPT-台灣",TVBS 欢乐台
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=tvbshuanle_twn&token=abcd1234
+#EXTINF:-1 tvg-id="民视 HD" tvg-name="民视 HD" tvg-logo="" group-title="GPT-台灣",民视 HD
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=ftvhd_taiwan&token=abcd1234
+#EXTINF:-1 tvg-id="民视新闻台" tvg-name="民视新闻台" tvg-logo="" group-title="GPT-台灣",民视新闻台
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=ftvnew_taiwan&token=abcd1234
+#EXTINF:-1 tvg-id="民视台湾台" tvg-name="民视台湾台" tvg-logo="" group-title="GPT-台灣",民视台湾台
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=ftvtaiwan_twn&token=abcd1234
+#EXTINF:-1 tvg-id="中天综合" tvg-name="中天综合" tvg-logo="" group-title="GPT-台灣",中天综合
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=ctizhonghe&token=abcd1234
+#EXTINF:-1 tvg-id="中天娱乐" tvg-name="中天娱乐" tvg-logo="" group-title="GPT-台灣",中天娱乐
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=ctient&token=abcd1234
+#EXTINF:-1 tvg-id="中天亚洲" tvg-name="中天亚洲" tvg-logo="" group-title="GPT-台灣",中天亚洲
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=ctiasia_twn&token=abcd1234
+#EXTINF:-1 tvg-id="中天新闻" tvg-name="中天新闻" tvg-logo="" group-title="GPT-台灣",中天新闻
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=ctinews&token=abcd1234
+#EXTINF:-1 tvg-id="寰宇新闻台" tvg-name="寰宇新闻台" tvg-logo="" group-title="GPT-台灣",寰宇新闻台
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=huanyuxinwen_twn&token=abcd1234
+#EXTINF:-1 tvg-id="寰宇财经台" tvg-name="寰宇财经台" tvg-logo="" group-title="GPT-台灣",寰宇财经台
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=huanyutaiwan_twn&token=abcd1234
+#EXTINF:-1 tvg-id="八大第一台" tvg-name="八大第一台" tvg-logo="" group-title="GPT-台灣",八大第一台
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=badafirst&token=abcd1234
+#EXTINF:-1 tvg-id="八大综合台" tvg-name="八大综合台" tvg-logo="" group-title="GPT-台灣",八大综合台
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=badazhonghe&token=abcd1234
+#EXTINF:-1 tvg-id="八大戏剧台" tvg-name="八大戏剧台" tvg-logo="" group-title="GPT-台灣",八大戏剧台
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=badadrama&token=abcd1234
+#EXTINF:-1 tvg-id="八大娱乐台" tvg-name="八大娱乐台" tvg-logo="" group-title="GPT-台灣",八大娱乐台
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=badaentertain&token=abcd1234
+#EXTINF:-1 tvg-id="纬来体育" tvg-name="纬来体育" tvg-logo="" group-title="GPT-台灣",纬来体育
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=videolandsport&token=abcd1234
+#EXTINF:-1 tvg-id="纬来精彩" tvg-name="纬来精彩" tvg-logo="" group-title="GPT-台灣",纬来精彩
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=videolandspecial_twn&token=abcd1234
+#EXTINF:-1 tvg-id="纬来日本" tvg-name="纬来日本" tvg-logo="" group-title="GPT-台灣",纬来日本
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=videolandjapan&token=abcd1234
+#EXTINF:-1 tvg-id="纬来电影" tvg-name="纬来电影" tvg-logo="" group-title="GPT-台灣",纬来电影
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=videolandmovie&token=abcd1234
+#EXTINF:-1 tvg-id="纬来综合" tvg-name="纬来综合" tvg-logo="" group-title="GPT-台灣",纬来综合
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=videolandzonghe&token=abcd1234
+#EXTINF:-1 tvg-id="纬来育乐" tvg-name="纬来育乐" tvg-logo="" group-title="GPT-台灣",纬来育乐
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=videolandyule&token=abcd1234
+#EXTINF:-1 tvg-id="爱尔达综合台" tvg-name="爱尔达综合台" tvg-logo="" group-title="GPT-台灣",爱尔达综合台
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=eltazonghe_twn&token=abcd1234
+#EXTINF:-1 tvg-id="爱尔达影剧台" tvg-name="爱尔达影剧台" tvg-logo="" group-title="GPT-台灣",爱尔达影剧台
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=eltayingju_twn&token=abcd1234
+#EXTINF:-1 tvg-id="爱尔达体育1台" tvg-name="爱尔达体育1台" tvg-logo="" group-title="GPT-台灣",爱尔达体育1台
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=eltasport_twn&token=abcd1234
+#EXTINF:-1 tvg-id="爱尔达体育2台" tvg-name="爱尔达体育2台" tvg-logo="" group-title="GPT-台灣",爱尔达体育2台
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=eltasport2_twn&token=abcd1234
+#EXTINF:-1 tvg-id="爱尔达体育3台" tvg-name="爱尔达体育3台" tvg-logo="" group-title="GPT-台灣",爱尔达体育3台
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=eltasport3_twn&token=abcd1234
+#EXTINF:-1 tvg-id="非凡新闻" tvg-name="非凡新闻" tvg-logo="" group-title="GPT-台灣",非凡新闻
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=feifannews_twn&token=abcd1234
+#EXTINF:-1 tvg-id="年代新闻" tvg-name="年代新闻" tvg-logo="" group-title="GPT-台灣",年代新闻
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=niandainews_twn&token=abcd1234
+#EXTINF:-1 tvg-id="龙华戏剧" tvg-name="龙华戏剧" tvg-logo="" group-title="GPT-台灣",龙华戏剧
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=lunghuaxiju_twn&token=abcd1234
+#EXTINF:-1 tvg-id="龙华偶像" tvg-name="龙华偶像" tvg-logo="" group-title="GPT-台灣",龙华偶像
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=lunghuaidol_twn&token=abcd1234
+#EXTINF:-1 tvg-id="龙华电影" tvg-name="龙华电影" tvg-logo="" group-title="GPT-台灣",龙华电影
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=xingwei_movie&token=abcd1234
+#EXTINF:-1 tvg-id="龙华洋片" tvg-name="龙华洋片" tvg-logo="" group-title="GPT-台灣",龙华洋片
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=lunghuawestern_twn&token=abcd1234
+#EXTINF:-1 tvg-id="龙华经典" tvg-name="龙华经典" tvg-logo="" group-title="GPT-台灣",龙华经典
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=lunghuajingdian_twn&token=abcd1234
+#EXTINF:-1 tvg-id="靖天国际" tvg-name="靖天国际" tvg-logo="" group-title="GPT-台灣",靖天国际
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=jingtianintl_twn&token=abcd1234
+#EXTINF:-1 tvg-id="靖天卡通" tvg-name="靖天卡通" tvg-logo="" group-title="GPT-台灣",靖天卡通
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=jingtiancartoon_twn&token=abcd1234
+#EXTINF:-1 tvg-id="大愛電視" tvg-name="大愛電視" tvg-logo="" group-title="GPT-台灣",大愛電視
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=daai_twn&token=abcd1234
+#EXTINF:-1 tvg-id="大愛二台" tvg-name="大愛二台" tvg-logo="" group-title="GPT-台灣",大愛二台
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=daai2_twn&token=abcd1234
+#EXTINF:-1 tvg-id="EYE 旅游台" tvg-name="EYE 旅游台" tvg-logo="" group-title="GPT-台灣",EYE 旅游台
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=eyetvtravel_twn&token=abcd1234
+#EXTINF:-1 tvg-id="EYE 戏剧台" tvg-name="EYE 戏剧台" tvg-logo="" group-title="GPT-台灣",EYE 戏剧台
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=eyetvxiju_twn&token=abcd1234
+#EXTINF:-1 tvg-id="亚洲美食" tvg-name="亚洲美食" tvg-logo="" group-title="GPT-台灣",亚洲美食
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=afc_twn&token=abcd1234
+#EXTINF:-1 tvg-id="美食星球" tvg-name="美食星球" tvg-logo="" group-title="GPT-台灣",美食星球
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=foodplanet_twn&token=abcd1234
+#EXTINF:-1 tvg-id="TLC旅遊生活" tvg-name="TLC旅遊生活" tvg-logo="" group-title="GPT-台灣",TLC旅遊生活
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=tlc_twn&token=abcd1234
+#EXTINF:-1 tvg-id="亚洲旅游台" tvg-name="亚洲旅游台" tvg-logo="" group-title="GPT-台灣",亚洲旅游台
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=asiatravel_twn&token=abcd1234
+#EXTINF:-1 tvg-id="Arirang" tvg-name="Arirang" tvg-logo="" group-title="GPT-台灣",Arirang
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=arirang_twn&token=abcd1234
+#EXTINF:-1 tvg-id="AXN Taiwan" tvg-name="AXN Taiwan" tvg-logo="" group-title="GPT-台灣",AXN Taiwan
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=axn_twn&token=abcd1234
+#EXTINF:-1 tvg-id="MTV Live" tvg-name="MTV Live" tvg-logo="" group-title="GPT-台灣",MTV Live
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=mtvhd_twn&token=abcd1234
+#EXTINF:-1 tvg-id="HBO_HD" tvg-name="HBO_HD" tvg-logo="" group-title="GPT-台灣",HBO_HD
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=hbohd_twn&token=abcd1234
+#EXTINF:-1 tvg-id="HBO_HITS" tvg-name="HBO_HITS" tvg-logo="" group-title="GPT-台灣",HBO_HITS
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=hbohit_twn&token=abcd1234
+#EXTINF:-1 tvg-id="CINEMAX" tvg-name="CINEMAX" tvg-logo="" group-title="GPT-台灣",CINEMAX
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=cinemax_twn&token=abcd1234
+#EXTINF:-1 tvg-id="好萊塢電影台" tvg-name="好萊塢電影台" tvg-logo="" group-title="GPT-台灣",好萊塢電影台
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=hollywoodmovies_twn&token=abcd1234
+#EXTINF:-1 tvg-id="卫视电影台" tvg-name="卫视电影台" tvg-logo="" group-title="GPT-台灣",卫视电影台
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=weishimovie_twn&token=abcd1234
+#EXTINF:-1 tvg-id="龙祥时代" tvg-name="龙祥时代" tvg-logo="" group-title="GPT-台灣",龙祥时代
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=lungxiangtime_twn&token=abcd1234
+#EXTINF:-1 tvg-id="美亚电影" tvg-name="美亚电影" tvg-logo="" group-title="GPT-台灣",美亚电影
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=meiyamovie_twn&token=abcd1234
+#EXTINF:-1 tvg-id="華藝綜合" tvg-name="華藝綜合" tvg-logo="" group-title="GPT-台灣",華藝綜合
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=weishichinese_twn&token=abcd1234
+#EXTINF:-1 tvg-id="博斯运动一台" tvg-name="博斯运动一台" tvg-logo="" group-title="GPT-台灣",博斯运动一台
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=bosisport1_twn&token=abcd1234
+#EXTINF:-1 tvg-id="博斯运动二台" tvg-name="博斯运动二台" tvg-logo="" group-title="GPT-台灣",博斯运动二台
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=bosisport2_twn&token=abcd1234
+#EXTINF:-1 tvg-id="博斯高球一台" tvg-name="博斯高球一台" tvg-logo="" group-title="GPT-台灣",博斯高球一台
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=bosigolf1_twn&token=abcd1234
+#EXTINF:-1 tvg-id="博斯高球二台" tvg-name="博斯高球二台" tvg-logo="" group-title="GPT-台灣",博斯高球二台
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=bosigolf2_twn&token=abcd1234
+#EXTINF:-1 tvg-id="博斯网球台" tvg-name="博斯网球台" tvg-logo="" group-title="GPT-台灣",博斯网球台
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=bositennis_twn&token=abcd1234
+#EXTINF:-1 tvg-id="博斯无限台" tvg-name="博斯无限台" tvg-logo="" group-title="GPT-台灣",博斯无限台
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=bosiunlimited_twn&token=abcd1234
+#EXTINF:-1 tvg-id="好消息 2" tvg-name="好消息 2" tvg-logo="" group-title="GPT-台灣",好消息 2
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=good2_twn&token=abcd1234
+#EXTINF:-1 tvg-id="CCTV-1 综合" tvg-name="CCTV-1 综合" tvg-logo="" group-title="GPT-央視",CCTV-1 综合
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=cctv1&token=abcd1234
+#EXTINF:-1 tvg-id="CCTV-2 财经" tvg-name="CCTV-2 财经" tvg-logo="" group-title="GPT-央視",CCTV-2 财经
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=cctv2&token=abcd1234
+#EXTINF:-1 tvg-id="CCTV-3 综艺" tvg-name="CCTV-3 综艺" tvg-logo="" group-title="GPT-央視",CCTV-3 综艺
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=cctv3&token=abcd1234
+#EXTINF:-1 tvg-id="CCTV-4 中文国际" tvg-name="CCTV-4 中文国际" tvg-logo="" group-title="GPT-央視",CCTV-4 中文国际
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Cctv4&token=abcd1234
+#EXTINF:-1 tvg-id="CCTV-4 中文国际" tvg-name="CCTV-4 中文国际" tvg-logo="" group-title="GPT-央視",CCTV-4 中文国际
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=cctv4&token=abcd1234
+#EXTINF:-1 tvg-id="CCTV-5 体育" tvg-name="CCTV-5 体育" tvg-logo="" group-title="GPT-央視",CCTV-5 体育
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=cctv5&token=abcd1234
+#EXTINF:-1 tvg-id="CCTV-6 电影" tvg-name="CCTV-6 电影" tvg-logo="" group-title="GPT-央視",CCTV-6 电影
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=cctv6&token=abcd1234
+#EXTINF:-1 tvg-id="CCTV-7 国防军事" tvg-name="CCTV-7 国防军事" tvg-logo="" group-title="GPT-央視",CCTV-7 国防军事
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=cctv7&token=abcd1234
+#EXTINF:-1 tvg-id="CCTV-8 电视剧" tvg-name="CCTV-8 电视剧" tvg-logo="" group-title="GPT-央視",CCTV-8 电视剧
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=cctv8hd&token=abcd1234
+#EXTINF:-1 tvg-id="CCTV-9 记录" tvg-name="CCTV-9 记录" tvg-logo="" group-title="GPT-央視",CCTV-9 记录
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=cctv9hd&token=abcd1234
+#EXTINF:-1 tvg-id="CCTV-10 科教" tvg-name="CCTV-10 科教" tvg-logo="" group-title="GPT-央視",CCTV-10 科教
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=cctv10hd&token=abcd1234
+#EXTINF:-1 tvg-id="CCTV-11 戏曲" tvg-name="CCTV-11 戏曲" tvg-logo="" group-title="GPT-央視",CCTV-11 戏曲
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=cctv11&token=abcd1234
+#EXTINF:-1 tvg-id="CCTV-12 社会与法" tvg-name="CCTV-12 社会与法" tvg-logo="" group-title="GPT-央視",CCTV-12 社会与法
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=cctv12&token=abcd1234
+#EXTINF:-1 tvg-id="CCTV-13 新闻" tvg-name="CCTV-13 新闻" tvg-logo="" group-title="GPT-央視",CCTV-13 新闻
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=cctv13&token=abcd1234
+#EXTINF:-1 tvg-id="CCTV-14 少儿" tvg-name="CCTV-14 少儿" tvg-logo="" group-title="GPT-央視",CCTV-14 少儿
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=cctv14&token=abcd1234
+#EXTINF:-1 tvg-id="CCTV-15 音乐" tvg-name="CCTV-15 音乐" tvg-logo="" group-title="GPT-央視",CCTV-15 音乐
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=cctv15&token=abcd1234
+#EXTINF:-1 tvg-id="CCTV-16 奥林匹克" tvg-name="CCTV-16 奥林匹克" tvg-logo="" group-title="GPT-央視",CCTV-16 奥林匹克
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=cctv16&token=abcd1234
+#EXTINF:-1 tvg-id="CCTV-17 农业农村" tvg-name="CCTV-17 农业农村" tvg-logo="" group-title="GPT-央視",CCTV-17 农业农村
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=cctv17&token=abcd1234
+#EXTINF:-1 tvg-id="CCTV-5+ 体育赛事" tvg-name="CCTV-5+ 体育赛事" tvg-logo="" group-title="GPT-央視",CCTV-5+ 体育赛事
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=cctv5plus&token=abcd1234
+#EXTINF:-1 tvg-id="湖南卫视" tvg-name="湖南卫视" tvg-logo="" group-title="GPT-央視",湖南卫视
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=hunan_twn&token=abcd1234
+#EXTINF:-1 tvg-id="浙江卫视" tvg-name="浙江卫视" tvg-logo="" group-title="GPT-央視",浙江卫视
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=zhejiang_twn&token=abcd1234
+#EXTINF:-1 tvg-id="江苏卫视" tvg-name="江苏卫视" tvg-logo="" group-title="GPT-央視",江苏卫视
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=jiangsu_twn&token=abcd1234
+#EXTINF:-1 tvg-id="东方卫视" tvg-name="东方卫视" tvg-logo="" group-title="GPT-央視",东方卫视
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=dongfangweishi_twn&token=abcd1234
+#EXTINF:-1 tvg-id="北京卫视" tvg-name="北京卫视" tvg-logo="" group-title="GPT-央視",北京卫视
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=beijing&token=abcd1234
+#EXTINF:-1 tvg-id="深圳卫视" tvg-name="深圳卫视" tvg-logo="" group-title="GPT-央視",深圳卫视
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=shenzhen&token=abcd1234
+#EXTINF:-1 tvg-id="广东卫视" tvg-name="广东卫视" tvg-logo="" group-title="GPT-央視",广东卫视
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=guangdongweishi_twn&token=abcd1234
+#EXTINF:-1 tvg-id="大湾区卫视" tvg-name="大湾区卫视" tvg-logo="" group-title="GPT-央視",大湾区卫视
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=nanfang_twn&token=abcd1234
+#EXTINF:-1 tvg-id="珠江台" tvg-name="珠江台" tvg-logo="" group-title="GPT-央視",珠江台
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=zhujiang&token=abcd1234
+#EXTINF:-1 tvg-id="东南卫视" tvg-name="东南卫视" tvg-logo="" group-title="GPT-央視",东南卫视
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=fujian&token=abcd1234
+#EXTINF:-1 tvg-id="广西卫视" tvg-name="广西卫视" tvg-logo="" group-title="GPT-央視",广西卫视
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=guangxi&token=abcd1234
+#EXTINF:-1 tvg-id="湖北卫视" tvg-name="湖北卫视" tvg-logo="" group-title="GPT-央視",湖北卫视
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=hubei&token=abcd1234
+#EXTINF:-1 tvg-id="四川卫视" tvg-name="四川卫视" tvg-logo="" group-title="GPT-央視",四川卫视
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=sichuan_twn&token=abcd1234
+#EXTINF:-1 tvg-id="CGTN" tvg-name="CGTN" tvg-logo="" group-title="GPT-央視",CGTN
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=CGTN&token=abcd1234
+#EXTINF:-1 tvg-id="CCTV-6" tvg-name="CCTV-6" tvg-logo="" group-title="GPT-電影",CCTV-6
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=cctv6&token=abcd1234
+#EXTINF:-1 tvg-id="AXN Taiwan" tvg-name="AXN Taiwan" tvg-logo="" group-title="GPT-電影",AXN Taiwan
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=axn_twn&token=abcd1234
+#EXTINF:-1 tvg-id="HBO_HD" tvg-name="HBO_HD" tvg-logo="" group-title="GPT-電影",HBO_HD
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=hbohd_twn&token=abcd1234
+#EXTINF:-1 tvg-id="HBO_HITS" tvg-name="HBO_HITS" tvg-logo="" group-title="GPT-電影",HBO_HITS
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=hbohit_twn&token=abcd1234
+#EXTINF:-1 tvg-id="CINEMAX" tvg-name="CINEMAX" tvg-logo="" group-title="GPT-電影",CINEMAX
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=cinemax_twn&token=abcd1234
+#EXTINF:-1 tvg-id="好萊塢電影台" tvg-name="好萊塢電影台" tvg-logo="" group-title="GPT-電影",好萊塢電影台
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=hollywoodmovies_twn&token=abcd1234
+#EXTINF:-1 tvg-id="东森电影" tvg-name="东森电影" tvg-logo="" group-title="GPT-電影",东森电影
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=ettvmovie&token=abcd1234
+#EXTINF:-1 tvg-id="东森洋片" tvg-name="东森洋片" tvg-logo="" group-title="GPT-電影",东森洋片
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=ettvwestern&token=abcd1234
+#EXTINF:-1 tvg-id="龙华电影" tvg-name="龙华电影" tvg-logo="" group-title="GPT-電影",龙华电影
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=xingwei_movie&token=abcd1234
+#EXTINF:-1 tvg-id="龙华洋片" tvg-name="龙华洋片" tvg-logo="" group-title="GPT-電影",龙华洋片
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=lunghuawestern_twn&token=abcd1234
+#EXTINF:-1 tvg-id="龙祥时代" tvg-name="龙祥时代" tvg-logo="" group-title="GPT-電影",龙祥时代
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=lungxiangtime_twn&token=abcd1234
+#EXTINF:-1 tvg-id="美亚电影" tvg-name="美亚电影" tvg-logo="" group-title="GPT-電影",美亚电影
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=meiyamovie_twn&token=abcd1234
+#EXTINF:-1 tvg-id="卫视电影台" tvg-name="卫视电影台" tvg-logo="" group-title="GPT-電影",卫视电影台
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=weishimovie_twn&token=abcd1234
+#EXTINF:-1 tvg-id="天映频道" tvg-name="天映频道" tvg-logo="" group-title="GPT-電影",天映频道
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Celestial&token=abcd1234
+#EXTINF:-1 tvg-id="天映频道" tvg-name="天映频道" tvg-logo="" group-title="GPT-電影",天映频道
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Celestialindo&token=abcd1234
+#EXTINF:-1 tvg-id="天映经典" tvg-name="天映经典" tvg-logo="" group-title="GPT-電影",天映经典
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Celestial2&token=abcd1234
+#EXTINF:-1 tvg-id="Animax" tvg-name="Animax" tvg-logo="" group-title="GPT-電影",Animax
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Animax&token=abcd1234
+#EXTINF:-1 tvg-id="Movies Now HD" tvg-name="Movies Now HD" tvg-logo="" group-title="GPT-電影",Movies Now HD
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=moviesnow_raj&token=abcd1234
+#EXTINF:-1 tvg-id="Star Movies HD" tvg-name="Star Movies HD" tvg-logo="" group-title="GPT-電影",Star Movies HD
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=starmovies_raj&token=abcd1234
+#EXTINF:-1 tvg-id="Hits" tvg-name="Hits" tvg-logo="" group-title="GPT-電影",Hits
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Hits&token=abcd1234
+#EXTINF:-1 tvg-id="Warner TV" tvg-name="Warner TV" tvg-logo="" group-title="GPT-電影",Warner TV
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=WarnerTV&token=abcd1234
+#EXTINF:-1 tvg-id="HBO HD" tvg-name="HBO HD" tvg-logo="" group-title="GPT-電影",HBO HD
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Hbo&token=abcd1234
+#EXTINF:-1 tvg-id="HBO Signature" tvg-name="HBO Signature" tvg-logo="" group-title="GPT-電影",HBO Signature
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Hbosignature&token=abcd1234
+#EXTINF:-1 tvg-id="HBO Family" tvg-name="HBO Family" tvg-logo="" group-title="GPT-電影",HBO Family
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Hbofamily&token=abcd1234
+#EXTINF:-1 tvg-id="HBO Hits" tvg-name="HBO Hits" tvg-logo="" group-title="GPT-電影",HBO Hits
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Hbohitshd&token=abcd1234
+#EXTINF:-1 tvg-id="Cinemax" tvg-name="Cinemax" tvg-logo="" group-title="GPT-電影",Cinemax
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Cinemax&token=abcd1234
+#EXTINF:-1 tvg-id="Dreamworks" tvg-name="Dreamworks" tvg-logo="" group-title="GPT-電影",Dreamworks
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Dreamworks&token=abcd1234
+#EXTINF:-1 tvg-id="SCM" tvg-name="SCM" tvg-logo="" group-title="GPT-電影",SCM
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Weishimovie&token=abcd1234
+#EXTINF:-1 tvg-id="Thrill" tvg-name="Thrill" tvg-logo="" group-title="GPT-電影",Thrill
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Thrill&token=abcd1234
+#EXTINF:-1 tvg-id="Hits Movie" tvg-name="Hits Movie" tvg-logo="" group-title="GPT-電影",Hits Movie
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Hitsmovie&token=abcd1234
+#EXTINF:-1 tvg-id="One" tvg-name="One" tvg-logo="" group-title="GPT-電影",One
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=One&token=abcd1234
+#EXTINF:-1 tvg-id="tvN Movie" tvg-name="tvN Movie" tvg-logo="" group-title="GPT-電影",tvN Movie
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Tvnmovie&token=abcd1234
+#EXTINF:-1 tvg-id="Axn HD" tvg-name="Axn HD" tvg-logo="" group-title="GPT-電影",Axn HD
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Axn&token=abcd1234
+#EXTINF:-1 tvg-id="Paramount Network" tvg-name="Paramount Network" tvg-logo="" group-title="GPT-電影",Paramount Network
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Paramountnetwork&token=abcd1234
+#EXTINF:-1 tvg-id="Astrol Kplus" tvg-name="Astrol Kplus" tvg-logo="" group-title="GPT-電影",Astrol Kplus
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Kplus&token=abcd1234
+#EXTINF:-1 tvg-id="Rock Actions" tvg-name="Rock Actions" tvg-logo="" group-title="GPT-電影",Rock Actions
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Rockaction&token=abcd1234
+#EXTINF:-1 tvg-id="Rock Entertainment" tvg-name="Rock Entertainment" tvg-logo="" group-title="GPT-電影",Rock Entertainment
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Rockentertain&token=abcd1234
+#EXTINF:-1 tvg-id="Natgeo_HD" tvg-name="Natgeo_HD" tvg-logo="" group-title="GPT-記錄",Natgeo_HD
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=natgeohd_twn&token=abcd1234
+#EXTINF:-1 tvg-id="NatGeo_Wild HD" tvg-name="NatGeo_Wild HD" tvg-logo="" group-title="GPT-記錄",NatGeo_Wild HD
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=natgeowild_twn&token=abcd1234
+#EXTINF:-1 tvg-id="Animal_Planet" tvg-name="Animal_Planet" tvg-logo="" group-title="GPT-記錄",Animal_Planet
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=animalplanet_twn&token=abcd1234
+#EXTINF:-1 tvg-id="Discovery Asia" tvg-name="Discovery Asia" tvg-logo="" group-title="GPT-記錄",Discovery Asia
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=discoverytwn_twn&token=abcd1234
+#EXTINF:-1 tvg-id="CI" tvg-name="CI" tvg-logo="" group-title="GPT-記錄",CI
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=ci_twn&token=abcd1234
+#EXTINF:-1 tvg-id="Asia Travel" tvg-name="Asia Travel" tvg-logo="" group-title="GPT-記錄",Asia Travel
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=asiatravel_twn&token=abcd1234
+#EXTINF:-1 tvg-id="Discovery HD" tvg-name="Discovery HD" tvg-logo="" group-title="GPT-記錄",Discovery HD
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=discoveryhd_twn&token=abcd1234
+#EXTINF:-1 tvg-id="亚洲美食" tvg-name="亚洲美食" tvg-logo="" group-title="GPT-記錄",亚洲美食
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=afc_twn&token=abcd1234
+#EXTINF:-1 tvg-id="美食星球" tvg-name="美食星球" tvg-logo="" group-title="GPT-記錄",美食星球
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=foodplanet_twn&token=abcd1234
+#EXTINF:-1 tvg-id="亚洲TLC" tvg-name="亚洲TLC" tvg-logo="" group-title="GPT-記錄",亚洲TLC
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=tlc_twn&token=abcd1234
+#EXTINF:-1 tvg-id="NatGeo HD" tvg-name="NatGeo HD" tvg-logo="" group-title="GPT-記錄",NatGeo HD
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Natgeo&token=abcd1234
+#EXTINF:-1 tvg-id="Fashion TV" tvg-name="Fashion TV" tvg-logo="" group-title="GPT-記錄",Fashion TV
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=fashiontv_twn&token=abcd1234
+#EXTINF:-1 tvg-id="History" tvg-name="History" tvg-logo="" group-title="GPT-記錄",History
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=History&token=abcd1234
+#EXTINF:-1 tvg-id="BBC Earth HD" tvg-name="BBC Earth HD" tvg-logo="" group-title="GPT-記錄",BBC Earth HD
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=bbcearth_twn&token=abcd1234
+#EXTINF:-1 tvg-id="BBC Earth Lifestyle" tvg-name="BBC Earth Lifestyle" tvg-logo="" group-title="GPT-記錄",BBC Earth Lifestyle
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=bbclifestyle_twn&token=abcd1234
+#EXTINF:-1 tvg-id="MTV Live" tvg-name="MTV Live" tvg-logo="" group-title="GPT-記錄",MTV Live
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=mtvhd_twn&token=abcd1234
+#EXTINF:-1 tvg-id="NatGeo Wild HD" tvg-name="NatGeo Wild HD" tvg-logo="" group-title="GPT-記錄",NatGeo Wild HD
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Natgeowild&token=abcd1234
+#EXTINF:-1 tvg-id="Animal Planet (Eng)" tvg-name="Animal Planet (Eng)" tvg-logo="" group-title="GPT-記錄",Animal Planet (Eng)
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=AnimalPlanet&token=abcd1234
+#EXTINF:-1 tvg-id="TLC" tvg-name="TLC" tvg-logo="" group-title="GPT-記錄",TLC
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Tlc&token=abcd1234
+#EXTINF:-1 tvg-id="Foodnetwork Hd" tvg-name="Foodnetwork Hd" tvg-logo="" group-title="GPT-記錄",Foodnetwork Hd
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Foodnetwork&token=abcd1234
+#EXTINF:-1 tvg-id="HGTV" tvg-name="HGTV" tvg-logo="" group-title="GPT-記錄",HGTV
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=HGTV&token=abcd1234
+#EXTINF:-1 tvg-id="亚洲旅游台" tvg-name="亚洲旅游台" tvg-logo="" group-title="GPT-記錄",亚洲旅游台
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=asiatravel_twn&token=abcd1234
+#EXTINF:-1 tvg-id="Skynews" tvg-name="Skynews" tvg-logo="" group-title="GPT-新聞",Skynews
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=skynews_twn&token=abcd1234
+#EXTINF:-1 tvg-id="ABC News" tvg-name="ABC News" tvg-logo="" group-title="GPT-新聞",ABC News
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=abcnews_glo&token=abcd1234
+#EXTINF:-1 tvg-id="东森财经新闻" tvg-name="东森财经新闻" tvg-logo="" group-title="GPT-新聞",东森财经新闻
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=ettvcaijing_twn&token=abcd1234
+#EXTINF:-1 tvg-id="CBS HD" tvg-name="CBS HD" tvg-logo="" group-title="GPT-新聞",CBS HD
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=cbshd_glo&token=abcd1234
+#EXTINF:-1 tvg-id="CBSN HD" tvg-name="CBSN HD" tvg-logo="" group-title="GPT-新聞",CBSN HD
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=cbsn_glo&token=abcd1234
+#EXTINF:-1 tvg-id="France 24" tvg-name="France 24" tvg-logo="" group-title="GPT-新聞",France 24
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=france24_twn&token=abcd1234
+#EXTINF:-1 tvg-id="DW (Deutsch)" tvg-name="DW (Deutsch)" tvg-logo="" group-title="GPT-新聞",DW (Deutsch)
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=dw_twn&token=abcd1234
+#EXTINF:-1 tvg-id="NHK World" tvg-name="NHK World" tvg-logo="" group-title="GPT-新聞",NHK World
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=nhkworld_japan&token=abcd1234
+#EXTINF:-1 tvg-id="Fox News" tvg-name="Fox News" tvg-logo="" group-title="GPT-新聞",Fox News
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=foxnews_twn&token=abcd1234
+#EXTINF:-1 tvg-id="CGTN" tvg-name="CGTN" tvg-logo="" group-title="GPT-新聞",CGTN
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=cgtn&token=abcd1234
+#EXTINF:-1 tvg-id="CNN International" tvg-name="CNN International" tvg-logo="" group-title="GPT-新聞",CNN International
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Cnn&token=abcd1234
+#EXTINF:-1 tvg-id="CNN backup" tvg-name="CNN backup" tvg-logo="" group-title="GPT-新聞",CNN backup
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=cnn_twn&token=abcd1234
+#EXTINF:-1 tvg-id="CNBC" tvg-name="CNBC" tvg-logo="" group-title="GPT-新聞",CNBC
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=cnbc_twn&token=abcd1234
+#EXTINF:-1 tvg-id="CNA" tvg-name="CNA" tvg-logo="" group-title="GPT-新聞",CNA
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=cna&token=abcd1234
+#EXTINF:-1 tvg-id="BBC World News" tvg-name="BBC World News" tvg-logo="" group-title="GPT-新聞",BBC World News
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=bbcnews_twn&token=abcd1234
+#EXTINF:-1 tvg-id="BBC World News" tvg-name="BBC World News" tvg-logo="" group-title="GPT-新聞",BBC World News
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Bbcnews&token=abcd1234
+#EXTINF:-1 tvg-id="Bloomberg News" tvg-name="Bloomberg News" tvg-logo="" group-title="GPT-新聞",Bloomberg News
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=bloomberg_twn&token=abcd1234
+#EXTINF:-1 tvg-id="Al-Jazeera" tvg-name="Al-Jazeera" tvg-logo="" group-title="GPT-新聞",Al-Jazeera
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=aljazeera_twn&token=abcd1234
+#EXTINF:-1 tvg-id="Baby TV Eng" tvg-name="Baby TV Eng" tvg-logo="" group-title="GPT-兒童",Baby TV Eng
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=babytv&token=abcd1234
+#EXTINF:-1 tvg-id="CBeebies" tvg-name="CBeebies" tvg-logo="" group-title="GPT-兒童",CBeebies
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Cbeebies&token=abcd1234
+#EXTINF:-1 tvg-id="Kids TV" tvg-name="Kids TV" tvg-logo="" group-title="GPT-兒童",Kids TV
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=kidstv&token=abcd1234
+#EXTINF:-1 tvg-id="Momo TV" tvg-name="Momo TV" tvg-logo="" group-title="GPT-兒童",Momo TV
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=momo1_twn&token=abcd1234
+#EXTINF:-1 tvg-id="Animax" tvg-name="Animax" tvg-logo="" group-title="GPT-兒童",Animax
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Animax&token=abcd1234
+#EXTINF:-1 tvg-id="Baby TV" tvg-name="Baby TV" tvg-logo="" group-title="GPT-兒童",Baby TV
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=babytv_twn&token=abcd1234
+#EXTINF:-1 tvg-id="MiaoMi" tvg-name="MiaoMi" tvg-logo="" group-title="GPT-兒童",MiaoMi
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=MiaoMi&token=abcd1234
+#EXTINF:-1 tvg-id="靖天卡通" tvg-name="靖天卡通" tvg-logo="" group-title="GPT-兒童",靖天卡通
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=jingtiancartoon_twn&token=abcd1234
+#EXTINF:-1 tvg-id="东森幼幼" tvg-name="东森幼幼" tvg-logo="" group-title="GPT-兒童",东森幼幼
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=yoyo_twn&token=abcd1234
+#EXTINF:-1 tvg-id="Cartoon Network" tvg-name="Cartoon Network" tvg-logo="" group-title="GPT-兒童",Cartoon Network
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Cn&token=abcd1234
+#EXTINF:-1 tvg-id="Nickelodeon" tvg-name="Nickelodeon" tvg-logo="" group-title="GPT-兒童",Nickelodeon
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Nickelodeon&token=abcd1234
+#EXTINF:-1 tvg-id="Nick Jr" tvg-name="Nick Jr" tvg-logo="" group-title="GPT-兒童",Nick Jr
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Nickjr&token=abcd1234
+#EXTINF:-1 tvg-id="Astro Premier League 1" tvg-name="Astro Premier League 1" tvg-logo="" group-title="GPT-體育",Astro Premier League 1
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=go_assp1&token=abcd1234
+#EXTINF:-1 tvg-id="Astro EPL 1 backup" tvg-name="Astro EPL 1 backup" tvg-logo="" group-title="GPT-體育",Astro EPL 1 backup
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=go_assp1x&token=abcd1234
+#EXTINF:-1 tvg-id="Astro Premier League 2" tvg-name="Astro Premier League 2" tvg-logo="" group-title="GPT-體育",Astro Premier League 2
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=go_assp2&token=abcd1234
+#EXTINF:-1 tvg-id="Astro Grandstand" tvg-name="Astro Grandstand" tvg-logo="" group-title="GPT-體育",Astro Grandstand
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=go_assp3&token=abcd1234
+#EXTINF:-1 tvg-id="Astro Football" tvg-name="Astro Football" tvg-logo="" group-title="GPT-體育",Astro Football
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=go_assp4&token=abcd1234
+#EXTINF:-1 tvg-id="Astro Sports Plus" tvg-name="Astro Sports Plus" tvg-logo="" group-title="GPT-體育",Astro Sports Plus
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=go_sportsplus&token=abcd1234
+#EXTINF:-1 tvg-id="Astro Badminton 1" tvg-name="Astro Badminton 1" tvg-logo="" group-title="GPT-體育",Astro Badminton 1
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=go_badminton1&token=abcd1234
+#EXTINF:-1 tvg-id="Astro Badminton 2" tvg-name="Astro Badminton 2" tvg-logo="" group-title="GPT-體育",Astro Badminton 2
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=go_badminton2&token=abcd1234
+#EXTINF:-1 tvg-id="Astro W-Sports" tvg-name="Astro W-Sports" tvg-logo="" group-title="GPT-體育",Astro W-Sports
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=go_assp5&token=abcd1234
+#EXTINF:-1 tvg-id="Supersports 1" tvg-name="Supersports 1" tvg-logo="" group-title="GPT-體育",Supersports 1
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Assp1&token=abcd1234
+#EXTINF:-1 tvg-id="Supersports 2" tvg-name="Supersports 2" tvg-logo="" group-title="GPT-體育",Supersports 2
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Assp2&token=abcd1234
+#EXTINF:-1 tvg-id="Supersports 3" tvg-name="Supersports 3" tvg-logo="" group-title="GPT-體育",Supersports 3
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Assp3&token=abcd1234
+#EXTINF:-1 tvg-id="Supersports 4" tvg-name="Supersports 4" tvg-logo="" group-title="GPT-體育",Supersports 4
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Assp4&token=abcd1234
+#EXTINF:-1 tvg-id="WWE" tvg-name="WWE" tvg-logo="" group-title="GPT-體育",WWE
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=wwe&token=abcd1234
+#EXTINF:-1 tvg-id="Fight Sports" tvg-name="Fight Sports" tvg-logo="" group-title="GPT-體育",Fight Sports
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Fs&token=abcd1234
+#EXTINF:-1 tvg-id="NBA TV" tvg-name="NBA TV" tvg-logo="" group-title="GPT-體育",NBA TV
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Nba&token=abcd1234
+#EXTINF:-1 tvg-id="Astro Cricket" tvg-name="Astro Cricket" tvg-logo="" group-title="GPT-體育",Astro Cricket
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Acricket&token=abcd1234
+#EXTINF:-1 tvg-id="Astro Golf" tvg-name="Astro Golf" tvg-logo="" group-title="GPT-體育",Astro Golf
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=agolf&token=abcd1234
+#EXTINF:-1 tvg-id="Tnt Sports 1" tvg-name="Tnt Sports 1" tvg-logo="" group-title="GPT-體育",Tnt Sports 1
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=6fac0aaead&token=abcd1234
+#EXTINF:-1 tvg-id="TNT Sports 2" tvg-name="TNT Sports 2" tvg-logo="" group-title="GPT-體育",TNT Sports 2
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=d9a76a79cc&token=abcd1234
+#EXTINF:-1 tvg-id="TNT Sports 3" tvg-name="TNT Sports 3" tvg-logo="" group-title="GPT-體育",TNT Sports 3
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=5fea4d73db&token=abcd1234
+#EXTINF:-1 tvg-id="TNT Sports 4" tvg-name="TNT Sports 4" tvg-logo="" group-title="GPT-體育",TNT Sports 4
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=tntsport4&token=abcd1234
+#EXTINF:-1 tvg-id="Sony Ten 1" tvg-name="Sony Ten 1" tvg-logo="" group-title="GPT-體育",Sony Ten 1
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=ten1_raj&token=abcd1234
+#EXTINF:-1 tvg-id="Sony Ten 2" tvg-name="Sony Ten 2" tvg-logo="" group-title="GPT-體育",Sony Ten 2
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=ten2_raj&token=abcd1234
+#EXTINF:-1 tvg-id="Sony Ten 3" tvg-name="Sony Ten 3" tvg-logo="" group-title="GPT-體育",Sony Ten 3
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=ten3_raj&token=abcd1234
+#EXTINF:-1 tvg-id="SPOTV 1 HD" tvg-name="SPOTV 1 HD" tvg-logo="" group-title="GPT-體育",SPOTV 1 HD
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=go_spotv&token=abcd1234
+#EXTINF:-1 tvg-id="SPO TV 2" tvg-name="SPO TV 2" tvg-logo="" group-title="GPT-體育",SPO TV 2
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=go_spotv2&token=abcd1234
+#EXTINF:-1 tvg-id="Skysports F1" tvg-name="Skysports F1" tvg-logo="" group-title="GPT-體育",Skysports F1
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=tiankongf1&token=abcd1234
+#EXTINF:-1 tvg-id="Skysports Cricket" tvg-name="Skysports Cricket" tvg-logo="" group-title="GPT-體育",Skysports Cricket
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=tiankongcricket&token=abcd1234
+#EXTINF:-1 tvg-id="Skysports EPL" tvg-name="Skysports EPL" tvg-logo="" group-title="GPT-體育",Skysports EPL
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=tiankongepl&token=abcd1234
+#EXTINF:-1 tvg-id="Skysports Main Event" tvg-name="Skysports Main Event" tvg-logo="" group-title="GPT-體育",Skysports Main Event
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=tiankongmain&token=abcd1234
+#EXTINF:-1 tvg-id="Skysports News" tvg-name="Skysports News" tvg-logo="" group-title="GPT-體育",Skysports News
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=tiankongnews&token=abcd1234
+#EXTINF:-1 tvg-id="Skysports Mix" tvg-name="Skysports Mix" tvg-logo="" group-title="GPT-體育",Skysports Mix
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=tiankongmix&token=abcd1234
+#EXTINF:-1 tvg-id="CCTV-5 体育频道" tvg-name="CCTV-5 体育频道" tvg-logo="" group-title="GPT-體育",CCTV-5 体育频道
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=cctv5&token=abcd1234
+#EXTINF:-1 tvg-id="CCTV-5+ 体育赛事 HD" tvg-name="CCTV-5+ 体育赛事 HD" tvg-logo="" group-title="GPT-體育",CCTV-5+ 体育赛事 HD
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=cctv5plus&token=abcd1234
+#EXTINF:-1 tvg-id="爱尔达体育2台" tvg-name="爱尔达体育2台" tvg-logo="" group-title="GPT-體育",爱尔达体育2台
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=eltasport2_twn&token=abcd1234
+#EXTINF:-1 tvg-id="爱尔达体育3台" tvg-name="爱尔达体育3台" tvg-logo="" group-title="GPT-體育",爱尔达体育3台
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=eltasport3_twn&token=abcd1234
+#EXTINF:-1 tvg-id="Rugby Pass TV" tvg-name="Rugby Pass TV" tvg-logo="" group-title="GPT-體育",Rugby Pass TV
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Rugbypasstv&token=abcd1234
+#EXTINF:-1 tvg-id="RTM Sports HD" tvg-name="RTM Sports HD" tvg-logo="" group-title="GPT-體育",RTM Sports HD
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Rtmsport&token=abcd1234
+#EXTINF:-1 tvg-id="Arena" tvg-name="Arena" tvg-logo="" group-title="GPT-體育",Arena
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Arena&token=abcd1234
+#EXTINF:-1 tvg-id="Arena 2" tvg-name="Arena 2" tvg-logo="" group-title="GPT-體育",Arena 2
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Arena2&token=abcd1234
+#EXTINF:-1 tvg-id="BolaArena 1" tvg-name="BolaArena 1" tvg-logo="" group-title="GPT-體育",BolaArena 1
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=bolaarena1&token=abcd1234
+#EXTINF:-1 tvg-id="BolaArena 2" tvg-name="BolaArena 2" tvg-logo="" group-title="GPT-體育",BolaArena 2
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=bolaarena2&token=abcd1234
+#EXTINF:-1 tvg-id="Astro Beinsports 1" tvg-name="Astro Beinsports 1" tvg-logo="" group-title="GPT-體育",Astro Beinsports 1
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=astrobein1&token=abcd1234
+#EXTINF:-1 tvg-id="Astro Beinsports 2" tvg-name="Astro Beinsports 2" tvg-logo="" group-title="GPT-體育",Astro Beinsports 2
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=astrobein2&token=abcd1234
+#EXTINF:-1 tvg-id="Astro Beinsports 3" tvg-name="Astro Beinsports 3" tvg-logo="" group-title="GPT-體育",Astro Beinsports 3
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=astrobein3&token=abcd1234
+#EXTINF:-1 tvg-id="Channel 5" tvg-name="Channel 5" tvg-logo="" group-title="GPT-新加坡",Channel 5
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=channel5hd&token=abcd1234
+#EXTINF:-1 tvg-id="Channel 8" tvg-name="Channel 8" tvg-logo="" group-title="GPT-新加坡",Channel 8
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=channel8hd&token=abcd1234
+#EXTINF:-1 tvg-id="Suria" tvg-name="Suria" tvg-logo="" group-title="GPT-新加坡",Suria
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=suria&token=abcd1234
+#EXTINF:-1 tvg-id="Channel U" tvg-name="Channel U" tvg-logo="" group-title="GPT-新加坡",Channel U
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=channelu&token=abcd1234
+#EXTINF:-1 tvg-id="Vasantham" tvg-name="Vasantham" tvg-logo="" group-title="GPT-新加坡",Vasantham
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=vasantham&token=abcd1234
+#EXTINF:-1 tvg-id="CNA" tvg-name="CNA" tvg-logo="" group-title="GPT-新加坡",CNA
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=cna&token=abcd1234
+#EXTINF:-1 tvg-id="CNA backup" tvg-name="CNA backup" tvg-logo="" group-title="GPT-新加坡",CNA backup
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=cna_twn&token=abcd1234
+#EXTINF:-1 tvg-id="MeWatch Ch 5" tvg-name="MeWatch Ch 5" tvg-logo="" group-title="GPT-新加坡",MeWatch Ch 5
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Mewatch_ch5&token=abcd1234
+#EXTINF:-1 tvg-id="MeWatch Ch 8" tvg-name="MeWatch Ch 8" tvg-logo="" group-title="GPT-新加坡",MeWatch Ch 8
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Mewatch_ch8&token=abcd1234
+#EXTINF:-1 tvg-id="MeWatch Ch U" tvg-name="MeWatch Ch U" tvg-logo="" group-title="GPT-新加坡",MeWatch Ch U
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Mewatch_chU&token=abcd1234
+#EXTINF:-1 tvg-id="MeWatch Suria" tvg-name="MeWatch Suria" tvg-logo="" group-title="GPT-新加坡",MeWatch Suria
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Mewatch_Suria&token=abcd1234
+#EXTINF:-1 tvg-id="MeWatch Vasantham" tvg-name="MeWatch Vasantham" tvg-logo="" group-title="GPT-新加坡",MeWatch Vasantham
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Mewatch_Vasantham&token=abcd1234
+#EXTINF:-1 tvg-id="MeWatch CNA" tvg-name="MeWatch CNA" tvg-logo="" group-title="GPT-新加坡",MeWatch CNA
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Mewatch_cna&token=abcd1234
+#EXTINF:-1 tvg-id="TV1" tvg-name="TV1" tvg-logo="" group-title="GPT-馬來西亞",TV1
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=TV1&token=abcd1234
+#EXTINF:-1 tvg-id="TV1 backup" tvg-name="TV1 backup" tvg-logo="" group-title="GPT-馬來西亞",TV1 backup
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=TV1_backup&token=abcd1234
+#EXTINF:-1 tvg-id="TV2" tvg-name="TV2" tvg-logo="" group-title="GPT-馬來西亞",TV2
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=TV2&token=abcd1234
+#EXTINF:-1 tvg-id="TV3" tvg-name="TV3" tvg-logo="" group-title="GPT-馬來西亞",TV3
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=TV3&token=abcd1234
+#EXTINF:-1 tvg-id="TV3 SD" tvg-name="TV3 SD" tvg-logo="" group-title="GPT-馬來西亞",TV3 SD
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=TV3_mega&token=abcd1234
+#EXTINF:-1 tvg-id="NTV7" tvg-name="NTV7" tvg-logo="" group-title="GPT-馬來西亞",NTV7
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=NTV7&token=abcd1234
+#EXTINF:-1 tvg-id="TV8" tvg-name="TV8" tvg-logo="" group-title="GPT-馬來西亞",TV8
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=TV8&token=abcd1234
+#EXTINF:-1 tvg-id="TV9" tvg-name="TV9" tvg-logo="" group-title="GPT-馬來西亞",TV9
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=TV9&token=abcd1234
+#EXTINF:-1 tvg-id="Ria" tvg-name="Ria" tvg-logo="" group-title="GPT-馬來西亞",Ria
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Ria-0&token=abcd1234
+#EXTINF:-1 tvg-id="Ria-3" tvg-name="Ria-3" tvg-logo="" group-title="GPT-馬來西亞",Ria-3
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Ria_backup&token=abcd1234
+#EXTINF:-1 tvg-id="Al-Hijrah" tvg-name="Al-Hijrah" tvg-logo="" group-title="GPT-馬來西亞",Al-Hijrah
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Alhijrah&token=abcd1234
+#EXTINF:-1 tvg-id="Al-Hijrah backup" tvg-name="Al-Hijrah backup" tvg-logo="" group-title="GPT-馬來西亞",Al-Hijrah backup
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Alhijrah_backup&token=abcd1234
+#EXTINF:-1 tvg-id="Awani" tvg-name="Awani" tvg-logo="" group-title="GPT-馬來西亞",Awani
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Awani&token=abcd1234
+#EXTINF:-1 tvg-id="Bernama" tvg-name="Bernama" tvg-logo="" group-title="GPT-馬來西亞",Bernama
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Bernama&token=abcd1234
+#EXTINF:-1 tvg-id="Prima" tvg-name="Prima" tvg-logo="" group-title="GPT-馬來西亞",Prima
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Prima-0&token=abcd1234
+#EXTINF:-1 tvg-id="Prima backup" tvg-name="Prima backup" tvg-logo="" group-title="GPT-馬來西亞",Prima backup
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=AAprima1&token=abcd1234
+#EXTINF:-1 tvg-id="Prima backup 2" tvg-name="Prima backup 2" tvg-logo="" group-title="GPT-馬來西亞",Prima backup 2
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=AAprima&token=abcd1234
+#EXTINF:-1 tvg-id="Ceria" tvg-name="Ceria" tvg-logo="" group-title="GPT-馬來西亞",Ceria
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Ceria&token=abcd1234
+#EXTINF:-1 tvg-id="Astro MTV" tvg-name="Astro MTV" tvg-logo="" group-title="GPT-馬來西亞",Astro MTV
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=AstroMTV&token=abcd1234
+#EXTINF:-1 tvg-id="Mecca Live HD" tvg-name="Mecca Live HD" tvg-logo="" group-title="GPT-馬來西亞",Mecca Live HD
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=quran_mido&token=abcd1234
+#EXTINF:-1 tvg-id="Madinah HD" tvg-name="Madinah HD" tvg-logo="" group-title="GPT-馬來西亞",Madinah HD
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=sunnah_mido&token=abcd1234
+#EXTINF:-1 tvg-id="Oasis" tvg-name="Oasis" tvg-logo="" group-title="GPT-馬來西亞",Oasis
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Oasis&token=abcd1234
+#EXTINF:-1 tvg-id="HBO HD" tvg-name="HBO HD" tvg-logo="" group-title="GPT-馬來西亞",HBO HD
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Hbo&token=abcd1234
+#EXTINF:-1 tvg-id="HBO Signature" tvg-name="HBO Signature" tvg-logo="" group-title="GPT-馬來西亞",HBO Signature
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Hbosignature&token=abcd1234
+#EXTINF:-1 tvg-id="HBO Hits" tvg-name="HBO Hits" tvg-logo="" group-title="GPT-馬來西亞",HBO Hits
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Hbohitshd&token=abcd1234
+#EXTINF:-1 tvg-id="NatGeo Wild HD" tvg-name="NatGeo Wild HD" tvg-logo="" group-title="GPT-馬來西亞",NatGeo Wild HD
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Natgeowild&token=abcd1234
+#EXTINF:-1 tvg-id="Cartoon Network" tvg-name="Cartoon Network" tvg-logo="" group-title="GPT-馬來西亞",Cartoon Network
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Cn&token=abcd1234
+#EXTINF:-1 tvg-id="Nickelodeon" tvg-name="Nickelodeon" tvg-logo="" group-title="GPT-馬來西亞",Nickelodeon
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Nickelodeon&token=abcd1234
+#EXTINF:-1 tvg-id="Nick Jr" tvg-name="Nick Jr" tvg-logo="" group-title="GPT-馬來西亞",Nick Jr
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Nickjr&token=abcd1234
+#EXTINF:-1 tvg-id="Dreamworks" tvg-name="Dreamworks" tvg-logo="" group-title="GPT-馬來西亞",Dreamworks
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Dreamworks&token=abcd1234
+#EXTINF:-1 tvg-id="Siar" tvg-name="Siar" tvg-logo="" group-title="GPT-馬來西亞",Siar
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Siar&token=abcd1234
+#EXTINF:-1 tvg-id="Citra" tvg-name="Citra" tvg-logo="" group-title="GPT-馬來西亞",Citra
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=AAcitra&token=abcd1234
+#EXTINF:-1 tvg-id="Citra backup" tvg-name="Citra backup" tvg-logo="" group-title="GPT-馬來西亞",Citra backup
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=AAcitra1&token=abcd1234
+#EXTINF:-1 tvg-id="Sensasi" tvg-name="Sensasi" tvg-logo="" group-title="GPT-馬來西亞",Sensasi
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Sensasi&token=abcd1234
+#EXTINF:-1 tvg-id="Aura" tvg-name="Aura" tvg-logo="" group-title="GPT-馬來西亞",Aura
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Aura&token=abcd1234
+#EXTINF:-1 tvg-id="Rania" tvg-name="Rania" tvg-logo="" group-title="GPT-馬來西亞",Rania
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Rania&token=abcd1234
+#EXTINF:-1 tvg-id="KBS World" tvg-name="KBS World" tvg-logo="" group-title="GPT-馬來西亞",KBS World
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=KBS&token=abcd1234
+#EXTINF:-1 tvg-id="Boo" tvg-name="Boo" tvg-logo="" group-title="GPT-馬來西亞",Boo
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Boo&token=abcd1234
+#EXTINF:-1 tvg-id="Awesome TV" tvg-name="Awesome TV" tvg-logo="" group-title="GPT-馬來西亞",Awesome TV
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Dsangat&token=abcd1234
+#EXTINF:-1 tvg-id="Astro Sonypix" tvg-name="Astro Sonypix" tvg-logo="" group-title="GPT-馬來西亞",Astro Sonypix
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Asonypix&token=abcd1234
+#EXTINF:-1 tvg-id="Sony HD" tvg-name="Sony HD" tvg-logo="" group-title="GPT-馬來西亞",Sony HD
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=SetOne&token=abcd1234
+#EXTINF:-1 tvg-id="TvN" tvg-name="TvN" tvg-logo="" group-title="GPT-馬來西亞",TvN
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=TVN&token=abcd1234
+#EXTINF:-1 tvg-id="AEC" tvg-name="AEC" tvg-logo="" group-title="GPT-馬來西亞",AEC
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=AEC&token=abcd1234
+#EXTINF:-1 tvg-id="华丽台 HD （Wah Lai Toi）" tvg-name="华丽台 HD （Wah Lai Toi）" tvg-logo="" group-title="GPT-馬來西亞",华丽台 HD （Wah Lai Toi）
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Wlt&token=abcd1234
+#EXTINF:-1 tvg-id="欢喜台 HD （Hua Hee Tai）" tvg-name="欢喜台 HD （Hua Hee Tai）" tvg-logo="" group-title="GPT-馬來西亞",欢喜台 HD （Hua Hee Tai）
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Huahee&token=abcd1234
+#EXTINF:-1 tvg-id="Astro QJ" tvg-name="Astro QJ" tvg-logo="" group-title="GPT-馬來西亞",Astro QJ
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Quanjia&token=abcd1234
+#EXTINF:-1 tvg-id="TVB Jade" tvg-name="TVB Jade" tvg-logo="" group-title="GPT-馬來西亞",TVB Jade
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Tvbjade&token=abcd1234
+#EXTINF:-1 tvg-id="TVB Asia" tvg-name="TVB Asia" tvg-logo="" group-title="GPT-馬來西亞",TVB Asia
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Tvbasia&token=abcd1234
+#EXTINF:-1 tvg-id="TVB Entertainment" tvg-name="TVB Entertainment" tvg-logo="" group-title="GPT-馬來西亞",TVB Entertainment
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Tvbentertainment&token=abcd1234
+#EXTINF:-1 tvg-id="TVB Classic" tvg-name="TVB Classic" tvg-logo="" group-title="GPT-馬來西亞",TVB Classic
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Tvbclassic&token=abcd1234
+#EXTINF:-1 tvg-id="AOD" tvg-name="AOD" tvg-logo="" group-title="GPT-馬來西亞",AOD
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Aodhd&token=abcd1234
+#EXTINF:-1 tvg-id="One" tvg-name="One" tvg-logo="" group-title="GPT-馬來西亞",One
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=One&token=abcd1234
+#EXTINF:-1 tvg-id="TVB 星河台 Xing He" tvg-name="TVB 星河台 Xing He" tvg-logo="" group-title="GPT-馬來西亞",TVB 星河台 Xing He
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Xinhe&token=abcd1234
+#EXTINF:-1 tvg-id="爱奇艺 iQiyi" tvg-name="爱奇艺 iQiyi" tvg-logo="" group-title="GPT-馬來西亞",爱奇艺 iQiyi
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Qiyi&token=abcd1234
+#EXTINF:-1 tvg-id="Animal Planet (Eng)" tvg-name="Animal Planet (Eng)" tvg-logo="" group-title="GPT-馬來西亞",Animal Planet (Eng)
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=AnimalPlanet&token=abcd1234
+#EXTINF:-1 tvg-id="tvN Movie" tvg-name="tvN Movie" tvg-logo="" group-title="GPT-馬來西亞",tvN Movie
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Tvnmovie&token=abcd1234
+#EXTINF:-1 tvg-id="CNN backup" tvg-name="CNN backup" tvg-logo="" group-title="GPT-馬來西亞",CNN backup
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=cnn_twn&token=abcd1234
+#EXTINF:-1 tvg-id="Celestial Classic" tvg-name="Celestial Classic" tvg-logo="" group-title="GPT-馬來西亞",Celestial Classic
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Celestial2&token=abcd1234
+#EXTINF:-1 tvg-id="CNBC" tvg-name="CNBC" tvg-logo="" group-title="GPT-馬來西亞",CNBC
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=cnbc_twn&token=abcd1234
+#EXTINF:-1 tvg-id="TLC" tvg-name="TLC" tvg-logo="" group-title="GPT-馬來西亞",TLC
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Tlc&token=abcd1234
+#EXTINF:-1 tvg-id="CNA" tvg-name="CNA" tvg-logo="" group-title="GPT-馬來西亞",CNA
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=cna&token=abcd1234
+#EXTINF:-1 tvg-id="BBC World News" tvg-name="BBC World News" tvg-logo="" group-title="GPT-馬來西亞",BBC World News
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=bbcnews_twn&token=abcd1234
+#EXTINF:-1 tvg-id="Foodnetwork Hd" tvg-name="Foodnetwork Hd" tvg-logo="" group-title="GPT-馬來西亞",Foodnetwork Hd
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Foodnetwork&token=abcd1234
+#EXTINF:-1 tvg-id="HGTV" tvg-name="HGTV" tvg-logo="" group-title="GPT-馬來西亞",HGTV
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=HGTV&token=abcd1234
+#EXTINF:-1 tvg-id="Goshop" tvg-name="Goshop" tvg-logo="" group-title="GPT-馬來西亞",Goshop
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Goshop&token=abcd1234
+#EXTINF:-1 tvg-id="Celestial Movies HD" tvg-name="Celestial Movies HD" tvg-logo="" group-title="GPT-馬來西亞",Celestial Movies HD
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Celestial&token=abcd1234
+#EXTINF:-1 tvg-id="Axn HD" tvg-name="Axn HD" tvg-logo="" group-title="GPT-馬來西亞",Axn HD
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Axn&token=abcd1234
+#EXTINF:-1 tvg-id="Paramount Network" tvg-name="Paramount Network" tvg-logo="" group-title="GPT-馬來西亞",Paramount Network
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Paramountnetwork&token=abcd1234
+#EXTINF:-1 tvg-id="Astrol Kplus" tvg-name="Astrol Kplus" tvg-logo="" group-title="GPT-馬來西亞",Astrol Kplus
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Kplus&token=abcd1234
+#EXTINF:-1 tvg-id="AFC 亚洲旅游台" tvg-name="AFC 亚洲旅游台" tvg-logo="" group-title="GPT-馬來西亞",AFC 亚洲旅游台
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=asiatravel_twn&token=abcd1234
+#EXTINF:-1 tvg-id="Rock Actions" tvg-name="Rock Actions" tvg-logo="" group-title="GPT-馬來西亞",Rock Actions
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Rockaction&token=abcd1234
+#EXTINF:-1 tvg-id="Bloomberg News" tvg-name="Bloomberg News" tvg-logo="" group-title="GPT-馬來西亞",Bloomberg News
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=bloomberg_twn&token=abcd1234
+#EXTINF:-1 tvg-id="Al-Jazeera" tvg-name="Al-Jazeera" tvg-logo="" group-title="GPT-馬來西亞",Al-Jazeera
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=aljazeera_twn&token=abcd1234
+#EXTINF:-1 tvg-id="Rock Entertainment" tvg-name="Rock Entertainment" tvg-logo="" group-title="GPT-馬來西亞",Rock Entertainment
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Rockentertain&token=abcd1234
+#EXTINF:-1 tvg-id="RTM Sports HD" tvg-name="RTM Sports HD" tvg-logo="" group-title="GPT-馬來西亞",RTM Sports HD
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Rtmsport&token=abcd1234
+#EXTINF:-1 tvg-id="Arena" tvg-name="Arena" tvg-logo="" group-title="GPT-馬來西亞",Arena
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Arena&token=abcd1234
+#EXTINF:-1 tvg-id="Arena 2" tvg-name="Arena 2" tvg-logo="" group-title="GPT-馬來西亞",Arena 2
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Arena2&token=abcd1234
+#EXTINF:-1 tvg-id="BolaArena 1" tvg-name="BolaArena 1" tvg-logo="" group-title="GPT-馬來西亞",BolaArena 1
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Bolaarena1&token=abcd1234
+#EXTINF:-1 tvg-id="BolaArena 2" tvg-name="BolaArena 2" tvg-logo="" group-title="GPT-馬來西亞",BolaArena 2
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Bolaarena2&token=abcd1234
+#EXTINF:-1 tvg-id="Astro LOL" tvg-name="Astro LOL" tvg-logo="" group-title="GPT-馬來西亞",Astro LOL
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Astro_lol&token=abcd1234
+#EXTINF:-1 tvg-id="Astro Rusi" tvg-name="Astro Rusi" tvg-logo="" group-title="GPT-馬來西亞",Astro Rusi
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Rusi&token=abcd1234
+#EXTINF:-1 tvg-id="WION" tvg-name="WION" tvg-logo="" group-title="GPT-馬來西亞",WION
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Wion&token=abcd1234
+#EXTINF:-1 tvg-id="RTM Asean" tvg-name="RTM Asean" tvg-logo="" group-title="GPT-馬來西亞",RTM Asean
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Rtmasean&token=abcd1234
+#EXTINF:-1 tvg-id="TVRI National" tvg-name="TVRI National" tvg-logo="" group-title="GPT-印尼",TVRI National
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=TVRI&token=abcd1234
+#EXTINF:-1 tvg-id="RCTI" tvg-name="RCTI" tvg-logo="" group-title="GPT-印尼",RCTI
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Rcti&token=abcd1234
+#EXTINF:-1 tvg-id="Kompass TV" tvg-name="Kompass TV" tvg-logo="" group-title="GPT-印尼",Kompass TV
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Kompass&token=abcd1234
+#EXTINF:-1 tvg-id="Berita Satu" tvg-name="Berita Satu" tvg-logo="" group-title="GPT-印尼",Berita Satu
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=BeritaSatu_eko&token=abcd1234
+#EXTINF:-1 tvg-id="Indosiar HD" tvg-name="Indosiar HD" tvg-logo="" group-title="GPT-印尼",Indosiar HD
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Indosiar&token=abcd1234
+#EXTINF:-1 tvg-id="AnTV" tvg-name="AnTV" tvg-logo="" group-title="GPT-印尼",AnTV
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Antv&token=abcd1234
+#EXTINF:-1 tvg-id="MNC TV" tvg-name="MNC TV" tvg-logo="" group-title="GPT-印尼",MNC TV
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Mnctv&token=abcd1234
+#EXTINF:-1 tvg-id="Trans 7" tvg-name="Trans 7" tvg-logo="" group-title="GPT-印尼",Trans 7
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Trans7_eko&token=abcd1234
+#EXTINF:-1 tvg-id="Transtv" tvg-name="Transtv" tvg-logo="" group-title="GPT-印尼",Transtv
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Transtv&token=abcd1234
+#EXTINF:-1 tvg-id="JTV" tvg-name="JTV" tvg-logo="" group-title="GPT-印尼",JTV
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=JTV_eko&token=abcd1234
+#EXTINF:-1 tvg-id="Metro TV" tvg-name="Metro TV" tvg-logo="" group-title="GPT-印尼",Metro TV
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=metrotv_eko&token=abcd1234
+#EXTINF:-1 tvg-id="Cinemax" tvg-name="Cinemax" tvg-logo="" group-title="GPT-印尼",Cinemax
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Cinemax&token=abcd1234
+#EXTINF:-1 tvg-id="SCTV" tvg-name="SCTV" tvg-logo="" group-title="GPT-印尼",SCTV
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=SCTV&token=abcd1234
+#EXTINF:-1 tvg-id="Tvone" tvg-name="Tvone" tvg-logo="" group-title="GPT-印尼",Tvone
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Tvone&token=abcd1234
+#EXTINF:-1 tvg-id="TVMU" tvg-name="TVMU" tvg-logo="" group-title="GPT-印尼",TVMU
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=TVMU_eko&token=abcd1234
+#EXTINF:-1 tvg-id="GTV" tvg-name="GTV" tvg-logo="" group-title="GPT-印尼",GTV
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Gtv&token=abcd1234
+#EXTINF:-1 tvg-id="RTV" tvg-name="RTV" tvg-logo="" group-title="GPT-印尼",RTV
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Rtv&token=abcd1234
+#EXTINF:-1 tvg-id="Jak TV" tvg-name="Jak TV" tvg-logo="" group-title="GPT-印尼",Jak TV
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=JakTV&token=abcd1234
+#EXTINF:-1 tvg-id="iNews TV" tvg-name="iNews TV" tvg-logo="" group-title="GPT-印尼",iNews TV
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Inewstv&token=abcd1234
+#EXTINF:-1 tvg-id="Daai TV" tvg-name="Daai TV" tvg-logo="" group-title="GPT-印尼",Daai TV
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=DaaiTV&token=abcd1234
+#EXTINF:-1 tvg-id="Net TV" tvg-name="Net TV" tvg-logo="" group-title="GPT-印尼",Net TV
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=NetTV&token=abcd1234
+#EXTINF:-1 tvg-id="Animax" tvg-name="Animax" tvg-logo="" group-title="GPT-印尼",Animax
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Animax&token=abcd1234
+#EXTINF:-1 tvg-id="EWTN" tvg-name="EWTN" tvg-logo="" group-title="GPT-印尼",EWTN
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Ewtn&token=abcd1234
+#EXTINF:-1 tvg-id="AlQuran AlKareem" tvg-name="AlQuran AlKareem" tvg-logo="" group-title="GPT-印尼",AlQuran AlKareem
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=AlQuran&token=abcd1234
+#EXTINF:-1 tvg-id="Tawaf TV" tvg-name="Tawaf TV" tvg-logo="" group-title="GPT-印尼",Tawaf TV
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=TawafTV&token=abcd1234
+#EXTINF:-1 tvg-id="Vision Prime" tvg-name="Vision Prime" tvg-logo="" group-title="GPT-印尼",Vision Prime
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=VisionPrime&token=abcd1234
+#EXTINF:-1 tvg-id="Muslim TV" tvg-name="Muslim TV" tvg-logo="" group-title="GPT-印尼",Muslim TV
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=MuslimTV&token=abcd1234
+#EXTINF:-1 tvg-id="Music TV" tvg-name="Music TV" tvg-logo="" group-title="GPT-印尼",Music TV
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=MusicTV&token=abcd1234
+#EXTINF:-1 tvg-id="Lifestyle&Fashion" tvg-name="Lifestyle&Fashion" tvg-logo="" group-title="GPT-印尼",Lifestyle&Fashion
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Lifestyle&token=abcd1234
+#EXTINF:-1 tvg-id="Entertain" tvg-name="Entertain" tvg-logo="" group-title="GPT-印尼",Entertain
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Entertain&token=abcd1234
+#EXTINF:-1 tvg-id="Hits" tvg-name="Hits" tvg-logo="" group-title="GPT-印尼",Hits
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Hits&token=abcd1234
+#EXTINF:-1 tvg-id="Warner TV" tvg-name="Warner TV" tvg-logo="" group-title="GPT-印尼",Warner TV
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=WarnerTV&token=abcd1234
+#EXTINF:-1 tvg-id="SCM" tvg-name="SCM" tvg-logo="" group-title="GPT-印尼",SCM
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Weishimovie&token=abcd1234
+#EXTINF:-1 tvg-id="Thrill" tvg-name="Thrill" tvg-logo="" group-title="GPT-印尼",Thrill
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Thrill&token=abcd1234
+#EXTINF:-1 tvg-id="Fight Sports" tvg-name="Fight Sports" tvg-logo="" group-title="GPT-印尼",Fight Sports
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Fs&token=abcd1234
+#EXTINF:-1 tvg-id="Hits Movie" tvg-name="Hits Movie" tvg-logo="" group-title="GPT-印尼",Hits Movie
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Hitsmovie&token=abcd1234
+#EXTINF:-1 tvg-id="One" tvg-name="One" tvg-logo="" group-title="GPT-印尼",One
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=One&token=abcd1234
+#EXTINF:-1 tvg-id="tvN Movie" tvg-name="tvN Movie" tvg-logo="" group-title="GPT-印尼",tvN Movie
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Tvnmovie&token=abcd1234
+#EXTINF:-1 tvg-id="Celestial Movies HD" tvg-name="Celestial Movies HD" tvg-logo="" group-title="GPT-印尼",Celestial Movies HD
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Celestialindo&token=abcd1234
+#EXTINF:-1 tvg-id="Rock Actions" tvg-name="Rock Actions" tvg-logo="" group-title="GPT-印尼",Rock Actions
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Rockaction&token=abcd1234
+#EXTINF:-1 tvg-id="Rock Entertainment" tvg-name="Rock Entertainment" tvg-logo="" group-title="GPT-印尼",Rock Entertainment
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Rockentertain&token=abcd1234
+#EXTINF:-1 tvg-id="Sun TV HD" tvg-name="Sun TV HD" tvg-logo="" group-title="GPT-印度",Sun TV HD
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Suntv&token=abcd1234
+#EXTINF:-1 tvg-id="Star Vijay" tvg-name="Star Vijay" tvg-logo="" group-title="GPT-印度",Star Vijay
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Starvijay&token=abcd1234
+#EXTINF:-1 tvg-id="Colors Tamil" tvg-name="Colors Tamil" tvg-logo="" group-title="GPT-印度",Colors Tamil
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Colorstam&token=abcd1234
+#EXTINF:-1 tvg-id="Sun Music" tvg-name="Sun Music" tvg-logo="" group-title="GPT-印度",Sun Music
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Sunmusic&token=abcd1234
+#EXTINF:-1 tvg-id="Astro Sunlife" tvg-name="Astro Sunlife" tvg-logo="" group-title="GPT-印度",Astro Sunlife
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Sunlife&token=abcd1234
+#EXTINF:-1 tvg-id="Astro Vaanavil" tvg-name="Astro Vaanavil" tvg-logo="" group-title="GPT-印度",Astro Vaanavil
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Vaanavil&token=abcd1234
+#EXTINF:-1 tvg-id="Zee Tamil" tvg-name="Zee Tamil" tvg-logo="" group-title="GPT-印度",Zee Tamil
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Zeetamil&token=abcd1234
+#EXTINF:-1 tvg-id="Zee Business" tvg-name="Zee Business" tvg-logo="" group-title="GPT-印度",Zee Business
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Zeebusiness&token=abcd1234
+#EXTINF:-1 tvg-id="News 18 Tamil" tvg-name="News 18 Tamil" tvg-logo="" group-title="GPT-印度",News 18 Tamil
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=news18tamil_raj&token=abcd1234
+#EXTINF:-1 tvg-id="Adithya" tvg-name="Adithya" tvg-logo="" group-title="GPT-印度",Adithya
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Adithya&token=abcd1234
+#EXTINF:-1 tvg-id="Makkal TV" tvg-name="Makkal TV" tvg-logo="" group-title="GPT-印度",Makkal TV
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Makkaltv&token=abcd1234
+#EXTINF:-1 tvg-id="Zee Action" tvg-name="Zee Action" tvg-logo="" group-title="GPT-印度",Zee Action
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Zeeaction&token=abcd1234
+#EXTINF:-1 tvg-id="Astro KTV" tvg-name="Astro KTV" tvg-logo="" group-title="GPT-印度",Astro KTV
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Astroktv&token=abcd1234
+#EXTINF:-1 tvg-id="Zee TV HD" tvg-name="Zee TV HD" tvg-logo="" group-title="GPT-印度",Zee TV HD
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Zeetvhd&token=abcd1234
+#EXTINF:-1 tvg-id="Zee Cinema HD" tvg-name="Zee Cinema HD" tvg-logo="" group-title="GPT-印度",Zee Cinema HD
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Zeecinemahd&token=abcd1234
+#EXTINF:-1 tvg-id="Color HD" tvg-name="Color HD" tvg-logo="" group-title="GPT-印度",Color HD
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Colorhd&token=abcd1234
+#EXTINF:-1 tvg-id="Starplus HD" tvg-name="Starplus HD" tvg-logo="" group-title="GPT-印度",Starplus HD
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Starplushd&token=abcd1234
+#EXTINF:-1 tvg-id="Picture HD" tvg-name="Picture HD" tvg-logo="" group-title="GPT-印度",Picture HD
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Npicture&token=abcd1234
+#EXTINF:-1 tvg-id="Zee News" tvg-name="Zee News" tvg-logo="" group-title="GPT-印度",Zee News
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Zeenews&token=abcd1234
+#EXTINF:-1 tvg-id="Asianet" tvg-name="Asianet" tvg-logo="" group-title="GPT-印度",Asianet
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=asianet_raj&token=abcd1234
+#EXTINF:-1 tvg-id="Asianet News" tvg-name="Asianet News" tvg-logo="" group-title="GPT-印度",Asianet News
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=asianetnews_raj&token=abcd1234
+#EXTINF:-1 tvg-id="Discovery World Tamil" tvg-name="Discovery World Tamil" tvg-logo="" group-title="GPT-印度",Discovery World Tamil
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=discoveryworldtam_raj&token=abcd1234
+#EXTINF:-1 tvg-id="History Tamil" tvg-name="History Tamil" tvg-logo="" group-title="GPT-印度",History Tamil
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=historytam_raj&token=abcd1234
+#EXTINF:-1 tvg-id="NatGeo Tamil" tvg-name="NatGeo Tamil" tvg-logo="" group-title="GPT-印度",NatGeo Tamil
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=natgeotamil_raj&token=abcd1234
+#EXTINF:-1 tvg-id="Natgeo Wild Tamil" tvg-name="Natgeo Wild Tamil" tvg-logo="" group-title="GPT-印度",Natgeo Wild Tamil
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=natgeowildtamil_raj&token=abcd1234
+#EXTINF:-1 tvg-id="Astro Sonypix" tvg-name="Astro Sonypix" tvg-logo="" group-title="GPT-印度",Astro Sonypix
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Asonypix&token=abcd1234
+#EXTINF:-1 tvg-id="Discovery Kids Tamil" tvg-name="Discovery Kids Tamil" tvg-logo="" group-title="GPT-印度",Discovery Kids Tamil
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=discoverykidtamil_raj&token=abcd1234
+#EXTINF:-1 tvg-id="Discovery Tamil" tvg-name="Discovery Tamil" tvg-logo="" group-title="GPT-印度",Discovery Tamil
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=discoverytamil_raj&token=abcd1234
+#EXTINF:-1 tvg-id="Sony Yay Tamil" tvg-name="Sony Yay Tamil" tvg-logo="" group-title="GPT-印度",Sony Yay Tamil
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=sonyyaytam_raj&token=abcd1234
+#EXTINF:-1 tvg-id="Sun TV India" tvg-name="Sun TV India" tvg-logo="" group-title="GPT-印度",Sun TV India
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=suntv_raj&token=abcd1234
+#EXTINF:-1 tvg-id="Starmaa HD" tvg-name="Starmaa HD" tvg-logo="" group-title="GPT-印度",Starmaa HD
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=starmaa_raj&token=abcd1234
+#EXTINF:-1 tvg-id="Starmaa Movies HD" tvg-name="Starmaa Movies HD" tvg-logo="" group-title="GPT-印度",Starmaa Movies HD
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=starmaamovies_raj&token=abcd1234
+#EXTINF:-1 tvg-id="Bollyone" tvg-name="Bollyone" tvg-logo="" group-title="GPT-印度",Bollyone
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Bollyone&token=abcd1234
+#EXTINF:-1 tvg-id="Astro Sunmusic" tvg-name="Astro Sunmusic" tvg-logo="" group-title="GPT-印度",Astro Sunmusic
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Sunmusic&token=abcd1234
+#EXTINF:-1 tvg-id="Vijay Super" tvg-name="Vijay Super" tvg-logo="" group-title="GPT-印度",Vijay Super
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=vijaysuper_raj&token=abcd1234
+#EXTINF:-1 tvg-id="Vellithirai" tvg-name="Vellithirai" tvg-logo="" group-title="GPT-印度",Vellithirai
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Vellithirai&token=abcd1234
+#EXTINF:-1 tvg-id="Channel 3 Thailand" tvg-name="Channel 3 Thailand" tvg-logo="" group-title="GPT-泰國",Channel 3 Thailand
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=ch3_pat&token=abcd1234
+#EXTINF:-1 tvg-id="Channel 5 Thailand" tvg-name="Channel 5 Thailand" tvg-logo="" group-title="GPT-泰國",Channel 5 Thailand
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=ch5_pat&token=abcd1234
+#EXTINF:-1 tvg-id="Channel 7 Thailand" tvg-name="Channel 7 Thailand" tvg-logo="" group-title="GPT-泰國",Channel 7 Thailand
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=ch7_pat&token=abcd1234
+#EXTINF:-1 tvg-id="MCOT HD Thailand-1" tvg-name="MCOT HD Thailand-1" tvg-logo="" group-title="GPT-泰國",MCOT HD Thailand-1
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=mcot_pat&token=abcd1234
+#EXTINF:-1 tvg-id="PPTV Thailand1" tvg-name="PPTV Thailand1" tvg-logo="" group-title="GPT-泰國",PPTV Thailand1
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=pptv_pat&token=abcd1234
+#EXTINF:-1 tvg-id="Thai Thai" tvg-name="Thai Thai" tvg-logo="" group-title="GPT-泰國",Thai Thai
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=thaithai_pat&token=abcd1234
+#EXTINF:-1 tvg-id="Amarin" tvg-name="Amarin" tvg-logo="" group-title="GPT-泰國",Amarin
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=amarin_pat&token=abcd1234
+#EXTINF:-1 tvg-id="Ch 8" tvg-name="Ch 8" tvg-logo="" group-title="GPT-泰國",Ch 8
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=ch8_pat&token=abcd1234
+#EXTINF:-1 tvg-id="GmmOne" tvg-name="GmmOne" tvg-logo="" group-title="GPT-泰國",GmmOne
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=gmmone_pat&token=abcd1234
+#EXTINF:-1 tvg-id="Mono" tvg-name="Mono" tvg-logo="" group-title="GPT-泰國",Mono
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=mono_pat&token=abcd1234
+#EXTINF:-1 tvg-id="Thairath" tvg-name="Thairath" tvg-logo="" group-title="GPT-泰國",Thairath
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=thairath_pat&token=abcd1234
+#EXTINF:-1 tvg-id="tpbs" tvg-name="tpbs" tvg-logo="" group-title="GPT-泰國",tpbs
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=tpbs_pat&token=abcd1234
+#EXTINF:-1 tvg-id="Workpoint" tvg-name="Workpoint" tvg-logo="" group-title="GPT-泰國",Workpoint
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=workpoint_pat&token=abcd1234
+#EXTINF:-1 tvg-id="Gmm Channel" tvg-name="Gmm Channel" tvg-logo="" group-title="GPT-泰國",Gmm Channel
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=gmmchannel_pat&token=abcd1234
+#EXTINF:-1 tvg-id="Nation" tvg-name="Nation" tvg-logo="" group-title="GPT-泰國",Nation
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=nation_pat&token=abcd1234
+#EXTINF:-1 tvg-id="Tnn24" tvg-name="Tnn24" tvg-logo="" group-title="GPT-泰國",Tnn24
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=tnn24_pat&token=abcd1234
+#EXTINF:-1 tvg-id="Nbt" tvg-name="Nbt" tvg-logo="" group-title="GPT-泰國",Nbt
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=nbt_pat&token=abcd1234
+#EXTINF:-1 tvg-id="New" tvg-name="New" tvg-logo="" group-title="GPT-泰國",New
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=new_pat&token=abcd1234
+#EXTINF:-1 tvg-id="TPTV" tvg-name="TPTV" tvg-logo="" group-title="GPT-泰國",TPTV
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=tptv_pat&token=abcd1234
+#EXTINF:-1 tvg-id="BBC 1" tvg-name="BBC 1" tvg-logo="" group-title="GPT-英國",BBC 1
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=bbc1_antik&token=abcd1234
+#EXTINF:-1 tvg-id="BBC 2" tvg-name="BBC 2" tvg-logo="" group-title="GPT-英國",BBC 2
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=bbc2_antik&token=abcd1234
+#EXTINF:-1 tvg-id="CBBC" tvg-name="CBBC" tvg-logo="" group-title="GPT-英國",CBBC
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=cbbc_antik&token=abcd1234
+#EXTINF:-1 tvg-id="More4" tvg-name="More4" tvg-logo="" group-title="GPT-英國",More4
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=more4_antik&token=abcd1234
+#EXTINF:-1 tvg-id="Freesports" tvg-name="Freesports" tvg-logo="" group-title="GPT-英國",Freesports
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=freesports_antik&token=abcd1234
+#EXTINF:-1 tvg-id="Skynews" tvg-name="Skynews" tvg-logo="" group-title="GPT-英國",Skynews
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=skynews_twn&token=abcd1234
+#EXTINF:-1 tvg-id="Pick TV" tvg-name="Pick TV" tvg-logo="" group-title="GPT-英國",Pick TV
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=picktv_antik&token=abcd1234
+#EXTINF:-1 tvg-id="itv 1" tvg-name="itv 1" tvg-logo="" group-title="GPT-英國",itv 1
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=itv1_antik&token=abcd1234
+#EXTINF:-1 tvg-id="itv 2" tvg-name="itv 2" tvg-logo="" group-title="GPT-英國",itv 2
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=itv2_antik&token=abcd1234
+#EXTINF:-1 tvg-id="Euronews" tvg-name="Euronews" tvg-logo="" group-title="GPT-英國",Euronews
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=euronews_antik&token=abcd1234
+#EXTINF:-1 tvg-id="Channel 4" tvg-name="Channel 4" tvg-logo="" group-title="GPT-英國",Channel 4
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=channel4_antik&token=abcd1234
+#EXTINF:-1 tvg-id="NatGeo HD" tvg-name="NatGeo HD" tvg-logo="" group-title="GPT-英國",NatGeo HD
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Natgeo&token=abcd1234
+#EXTINF:-1 tvg-id="CBeebies" tvg-name="CBeebies" tvg-logo="" group-title="GPT-英國",CBeebies
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Cbeebies&token=abcd1234
+#EXTINF:-1 tvg-id="History" tvg-name="History" tvg-logo="" group-title="GPT-英國",History
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=History&token=abcd1234
+#EXTINF:-1 tvg-id="Kids TV" tvg-name="Kids TV" tvg-logo="" group-title="GPT-英國",Kids TV
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=KidsTV&token=abcd1234
+#EXTINF:-1 tvg-id="France 24" tvg-name="France 24" tvg-logo="" group-title="GPT-英國",France 24
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=france24_twn&token=abcd1234
+#EXTINF:-1 tvg-id="DW (Deutsch)" tvg-name="DW (Deutsch)" tvg-logo="" group-title="GPT-英國",DW (Deutsch)
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=dw_twn&token=abcd1234
+#EXTINF:-1 tvg-id="BBC Earth HD" tvg-name="BBC Earth HD" tvg-logo="" group-title="GPT-英國",BBC Earth HD
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=bbcearth_twn&token=abcd1234
+#EXTINF:-1 tvg-id="BBC Earth Lifestyle" tvg-name="BBC Earth Lifestyle" tvg-logo="" group-title="GPT-英國",BBC Earth Lifestyle
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=bbclifestyle_twn&token=abcd1234
+#EXTINF:-1 tvg-id="MTV Live" tvg-name="MTV Live" tvg-logo="" group-title="GPT-英國",MTV Live
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=mtvhd_twn&token=abcd1234
+#EXTINF:-1 tvg-id="Star Movies HD" tvg-name="Star Movies HD" tvg-logo="" group-title="GPT-英國",Star Movies HD
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=starmovies_raj&token=abcd1234
+#EXTINF:-1 tvg-id="NHK World" tvg-name="NHK World" tvg-logo="" group-title="GPT-英國",NHK World
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=nhkworld_japan&token=abcd1234
+#EXTINF:-1 tvg-id="Warner TV" tvg-name="Warner TV" tvg-logo="" group-title="GPT-英國",Warner TV
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=WarnerTV&token=abcd1234
+#EXTINF:-1 tvg-id="HBO HD" tvg-name="HBO HD" tvg-logo="" group-title="GPT-英國",HBO HD
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Hbo&token=abcd1234
+#EXTINF:-1 tvg-id="NatGeo Wild HD" tvg-name="NatGeo Wild HD" tvg-logo="" group-title="GPT-英國",NatGeo Wild HD
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Natgeowild&token=abcd1234
+#EXTINF:-1 tvg-id="Nickelodeon" tvg-name="Nickelodeon" tvg-logo="" group-title="GPT-英國",Nickelodeon
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Nickelodeon&token=abcd1234
+#EXTINF:-1 tvg-id="Nick Jr" tvg-name="Nick Jr" tvg-logo="" group-title="GPT-英國",Nick Jr
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Nickjr&token=abcd1234
+#EXTINF:-1 tvg-id="Thrill" tvg-name="Thrill" tvg-logo="" group-title="GPT-英國",Thrill
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Thrill&token=abcd1234
+#EXTINF:-1 tvg-id="CGTN" tvg-name="CGTN" tvg-logo="" group-title="GPT-英國",CGTN
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=CGTN&token=abcd1234
+#EXTINF:-1 tvg-id="Hits Movie" tvg-name="Hits Movie" tvg-logo="" group-title="GPT-英國",Hits Movie
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Hitsmovie&token=abcd1234
+#EXTINF:-1 tvg-id="Animal Planet (Eng)" tvg-name="Animal Planet (Eng)" tvg-logo="" group-title="GPT-英國",Animal Planet (Eng)
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=AnimalPlanet&token=abcd1234
+#EXTINF:-1 tvg-id="CNBC" tvg-name="CNBC" tvg-logo="" group-title="GPT-英國",CNBC
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=cnbc_twn&token=abcd1234
+#EXTINF:-1 tvg-id="TLC" tvg-name="TLC" tvg-logo="" group-title="GPT-英國",TLC
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Tlc&token=abcd1234
+#EXTINF:-1 tvg-id="BBC World News" tvg-name="BBC World News" tvg-logo="" group-title="GPT-英國",BBC World News
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=bbcworldnews_antik&token=abcd1234
+#EXTINF:-1 tvg-id="HGTV" tvg-name="HGTV" tvg-logo="" group-title="GPT-英國",HGTV
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=HGTV&token=abcd1234
+#EXTINF:-1 tvg-id="Axn HD" tvg-name="Axn HD" tvg-logo="" group-title="GPT-英國",Axn HD
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=Axn&token=abcd1234
+#EXTINF:-1 tvg-id="Skysports F1" tvg-name="Skysports F1" tvg-logo="" group-title="GPT-英國",Skysports F1
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=tiankongf1&token=abcd1234
+#EXTINF:-1 tvg-id="Skysports Cricket" tvg-name="Skysports Cricket" tvg-logo="" group-title="GPT-英國",Skysports Cricket
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=tiankongcricket&token=abcd1234
+#EXTINF:-1 tvg-id="Bloomberg News" tvg-name="Bloomberg News" tvg-logo="" group-title="GPT-英國",Bloomberg News
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=bloomberg_twn&token=abcd1234
+#EXTINF:-1 tvg-id="Skysports EPL" tvg-name="Skysports EPL" tvg-logo="" group-title="GPT-英國",Skysports EPL
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=tiankongepl&token=abcd1234
+#EXTINF:-1 tvg-id="Skysports Main Event" tvg-name="Skysports Main Event" tvg-logo="" group-title="GPT-英國",Skysports Main Event
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=tiankongmain&token=abcd1234
+#EXTINF:-1 tvg-id="Skysports News" tvg-name="Skysports News" tvg-logo="" group-title="GPT-英國",Skysports News
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=tiankongnews&token=abcd1234
+#EXTINF:-1 tvg-id="Al-Jazeera" tvg-name="Al-Jazeera" tvg-logo="" group-title="GPT-英國",Al-Jazeera
+http://plnliecozfxw.ap-northeast-1.clawcloudrun.com/smart.php?id=aljazeera_twn&token=abcd1234
+
 #EXTINF:-1 group-title="電影輪播" ,愛情公寓
 http://74.91.26.218:82/live/vlaqgy.m3u8
 #EXTINF:-1 group-title="電影輪播" ,喜劇影院
