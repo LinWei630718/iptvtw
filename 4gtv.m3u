@@ -116,6 +116,8 @@ https://hls.iill.top/api/dsdy/index.m3u8
 https://hls.iill.top/api/dsyp/index.m3u8
 #EXTINF:-1 group-title="LiTV立視" ,龍祥時代
 https://hls.iill.top/api/lxsd/index.m3u8
+#EXTINF:-1 group-title="LiTV立視" ,動物星球
+https://hls.iill.top/api/dwxq/index.m3u8
 
 #EXTINF:-1 tvg-name="TVBS新聞" group-title="LiTV立視",TVBS新聞
 http://iptv.4666888.xyz/iptv2A.php?id=43
