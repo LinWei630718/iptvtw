@@ -154,549 +154,303 @@ http://iptv.4666888.xyz/iptv2A.php?id=53
 #EXTINF:-1 tvg-name="中視經典" group-title="LiTV立視",中視經典
 http://iptv.4666888.xyz/iptv2A.php?id=54
 
-#EXTINF:-1 tvg-id="台視" tvg-name="台視" tvg-logo="https://logo.doube.eu.org/台視.png" group-title="台灣酒店",台視
-http://tv543.cc/litv.php?token=leifeng&id=4gtv-4gtv066
-#EXTINF:-1 tvg-name="中視HD" tvg-logo="https://logo.catvod.com/中視HD.png" group-title="台灣酒店",中視HD
-http://220.134.196.147:8510/http/61.219.99.20:8081/hls/88/80/Ctv4max.m3u8
-#EXTINF:-1 tvg-name="華視HD" tvg-logo="https://logo.catvod.com/華視HD.png" group-title="台灣酒店",華視HD
-http://220.134.196.147:8539/http/61.219.99.20:8081/hls/89/80/Cts4max.m3u8
-#EXTINF:-1 tvg-name="民視HD" tvg-logo="https://logo.catvod.com/民視HD.png" group-title="台灣酒店",民視HD
-http://220.134.196.147:9574/http/61.219.99.20:8081/hls/85/80/Ftv4max.m3u8
-#EXTINF:-1 tvg-name="公視" tvg-logo="https://logo.catvod.com/公視.png" group-title="台灣酒店",公視
-http://220.134.196.147:8554/http/61.219.99.20:8081/hls/87/80/Pts4max.m3u8
-#EXTINF:-1 tvg-name="人間衛視" tvg-logo="https://logo.catvod.com/人間衛視.png" group-title="台灣酒店",人間衛視
-http://220.134.196.147:8515/http/61.219.99.20:8081/hls/69/811/ch36.m3u8
-#EXTINF:-1 tvg-name="大愛電視" tvg-logo="https://logo.catvod.com/大愛電視.png" group-title="台灣酒店",大愛電視
-http://220.134.196.147:8549/http/61.219.99.20:8081/hls/73/815/ch52.m3u8
-#EXTINF:-1 tvg-name="好消息GOOD TV" tvg-logo="https://logo.catvod.com/好訊息GOOD TV.png" group-title="台灣酒店",好消息GOOD TV
-http://220.134.196.147:8523/http/61.219.99.20:8081/hls/74/816/ch53.m3u8
-#EXTINF:-1 tvg-name="Trace Sport Stars" tvg-logo="https://logo.catvod.com/Trace Sport Stars.png" group-title="台灣酒店",Trace Sport Stars
-http://220.134.196.147:8569/http/61.219.99.20:8092/upload/212/TraceS_TS-1111_1.m3u8
-#EXTINF:-1 tvg-name="DISCOVERY" tvg-logo="https://logo.catvod.com/DISCOVERY.png" group-title="台灣酒店",DISCOVERY
-http://220.134.196.147:8516/http/61.219.99.20:8081/hls/71/813/ch44.m3u8
-#EXTINF:-1 tvg-name="旅遊生活" tvg-logo="https://logo.catvod.com/旅遊生活.png" group-title="台灣酒店",旅遊生活
-http://220.134.196.147:8557/http/61.219.99.20:8081/hls/70/812/ch38.m3u8
-#EXTINF:-1 tvg-name="動物星球" tvg-logo="https://logo.catvod.com/動物星球.png" group-title="台灣酒店",動物星球
-http://220.134.196.147:8540/http/61.219.99.20:8081/hls/70/812/ch37.m3u8
-#EXTINF:-1 tvg-name="亞洲旅遊" tvg-logo="https://logo.catvod.com/亞洲旅遊.png" group-title="台灣酒店",亞洲旅遊
-http://220.134.196.147:8579/http/61.219.99.20:8081/hls/76/818/ch61.m3u8
-#EXTINF:-1 tvg-name="MOMO親子台" tvg-logo="https://logo.catvod.com/MOMO親子台.png" group-title="台灣酒店",MOMO親子台
-http://220.134.196.147:8517/http/61.219.99.20:8081/hls/90/80/momo4max.m3u8
-#EXTINF:-1 tvg-name="東森幼幼HD" tvg-logo="https://logo.catvod.com/東森幼幼HD.png" group-title="台灣酒店",東森幼幼HD
-http://220.134.196.147:9588/http/61.219.99.20:8081/hls/63/805/ch09.m3u8
-#EXTINF:-1 tvg-name="龍華卡通台" tvg-logo="https://logo.catvod.com/龍華卡通台.png" group-title="台灣酒店",龍華卡通台
-http://220.134.196.147:8568/http/61.219.99.20:8068/hls/14/80/cstv14.m3u8
-#EXTINF:-1 tvg-name="緯來綜合HD" tvg-logo="https://logo.catvod.com/緯來綜合HD.png" group-title="台灣酒店",緯來綜合HD
-http://220.134.196.147:8533/http/61.219.99.20:8081/hls/68/810/ch32.m3u8
-#EXTINF:-1 tvg-name="八大第一HD" tvg-logo="https://logo.catvod.com/八大第一HD.png" group-title="台灣酒店",八大第一HD
-http://220.134.196.147:8505/http/61.219.99.20:8081/hls/66/808/ch22.m3u8
-#EXTINF:-1 tvg-name="八大綜合HD" tvg-logo="https://logo.catvod.com/八大綜合HD.png" group-title="台灣酒店",八大綜合HD
-http://220.134.196.147:8518/http/61.219.99.20:8081/hls/66/808/ch21.m3u8
-#EXTINF:-1 tvg-name="三立台灣HD" tvg-logo="https://logo.catvod.com/三立台灣HD.png" group-title="台灣酒店",三立台灣HD
-http://220.134.196.147:8513/http/61.219.99.20:8081/hls/65/807/ch20.m3u8
-#EXTINF:-1 tvg-name="三立都會HD" tvg-logo="https://logo.catvod.com/三立都會HD.png" group-title="台灣酒店",三立都會HD
-http://220.134.196.147:8503/http/61.219.99.20:8081/hls/65/807/ch19.m3u8
-#EXTINF:-1 tvg-name="韓國娛樂台" tvg-logo="https://logo.catvod.com/韓國娛樂台.png" group-title="台灣酒店",韓國娛樂台
-http://220.134.196.147:8506/http/61.219.99.20:8092/upload/116/KMTV_TS-1111_1.m3u8
-#EXTINF:-1 tvg-name="東森綜合HD" tvg-logo="https://logo.catvod.com/東森綜合HD.png" group-title="台灣酒店",東森綜合HD
-http://220.134.196.147:9553/http/61.219.99.20:8081/hls/63/805/ch12.m3u8
-#EXTINF:-1 tvg-name="超視HD" tvg-logo="https://logo.catvod.com/超視HD.png" group-title="台灣酒店",超視HD
-http://220.134.196.147:8508/http/61.219.99.20:8081/hls/64/806/ch14.m3u8
-#EXTINF:-1 tvg-name="中天綜合HD" tvg-logo="https://logo.catvod.com/中天綜合HD.png" group-title="台灣酒店",中天綜合HD
-http://220.134.196.147:8502/http/61.219.99.20:8081/hls/67/809/ch25.m3u8
-#EXTINF:-1 tvg-name="中天娛樂HD" tvg-logo="https://logo.catvod.com/中天娛樂HD.png" group-title="台灣酒店",中天娛樂HD
-http://220.134.196.147:8509/http/61.219.99.20:8081/hls/67/809/ch26.m3u8
-#EXTINF:-1 tvg-name="東風衛視" tvg-logo="https://logo.catvod.com/東風衛視.png" group-title="台灣酒店",東風衛視
-http://220.134.196.147:8537/http/61.219.99.20:8081/hls/68/810/ch31.m3u8
-#EXTINF:-1 tvg-name="MUCH TV" tvg-logo="https://logo.catvod.com/MUCH TV.png" group-title="台灣酒店",MUCH TV
-http://220.134.196.147:8530/http/61.219.99.20:8081/hls/72/814/ch45.m3u8
-#EXTINF:-1 tvg-name="東森戲劇HD" tvg-logo="https://logo.catvod.com/東森戲劇HD.png" group-title="台灣酒店",東森戲劇HD
-http://220.134.196.147:8536/http/61.219.99.20:8081/hls/64/806/ch13.m3u8
-#EXTINF:-1 tvg-name="八大戲劇HD" tvg-logo="https://logo.catvod.com/八大戲劇HD.png" group-title="台灣酒店",八大戲劇HD
-http://220.134.196.147:8552/http/61.219.99.20:8081/hls/66/808/ch23.m3u8
-#EXTINF:-1 tvg-name="TVBS歡樂HD" tvg-logo="https://logo.catvod.com/TVBS歡樂HD.png" group-title="台灣酒店",TVBS歡樂HD
-http://220.134.196.147:8522/http/61.219.99.20:8081/hls/65/807/ch17.m3u8
-#EXTINF:-1 tvg-name="緯來戲劇" tvg-logo="https://logo.catvod.com/緯來戲劇.png" group-title="台灣酒店",緯來戲劇
-http://220.134.196.147:8504/http/61.219.99.20:8081/hls/69/811/ch33.m3u8
-#EXTINF:-1 tvg-name="龍華戲劇台" tvg-logo="https://logo.catvod.com/龍華戲劇台.png" group-title="台灣酒店",龍華戲劇台
-http://220.134.196.147:8555/http/61.219.99.20:8068/hls/13/80/cstv13.m3u8
-#EXTINF:-1 tvg-name="龍華日韓劇" tvg-logo="https://logo.catvod.com/龍華日韓劇.png" group-title="台灣酒店",龍華日韓劇
-http://220.134.196.147:8531/http/61.219.99.20:8068/hls/12/80/cstv12.m3u8
-#EXTINF:-1 tvg-name="龍華偶像劇" tvg-logo="https://logo.catvod.com/龍華偶像劇.png" group-title="台灣酒店",龍華偶像劇
-http://220.134.196.147:8562/http/61.219.99.20:8068/hls/11/80/cstv11.m3u8
-#EXTINF:-1 tvg-name="緯來日本HD" tvg-logo="https://logo.catvod.com/緯來日本HD.png" group-title="台灣酒店",緯來日本HD
-http://220.134.196.147:8565/http/61.219.99.20:8081/hls/69/811/ch34.m3u8
-#EXTINF:-1 tvg-name="Taiwan Plus" tvg-logo="https://logo.catvod.com/Taiwan Plus.png" group-title="台灣酒店",Taiwan Plus
-http://220.134.196.147:8524/http/61.219.99.20:8081/hls/87/80/PtsTaiwanPlus4max.m3u8
-#EXTINF:-1 tvg-name="壹新聞" tvg-logo="https://logo.catvod.com/壹新聞.png" group-title="台灣酒店",壹新聞
-http://220.134.196.147:8501/http/61.219.99.20:8081/hls/66/808/ch24.m3u8
-#EXTINF:-1 tvg-name="年代新聞" tvg-logo="https://logo.catvod.com/年代新聞.png" group-title="台灣酒店",年代新聞
-http://smt.iptv543.com/Smart.php?id=niandainews_twn
-#EXTINF:-1 tvg-name="東森新聞HD" tvg-logo="https://logo.catvod.com/東森新聞HD.png" group-title="台灣酒店",東森新聞HD
-http://220.134.196.147:8527/http/61.219.99.20:8081/hls/63/805/ch10.m3u8
-#EXTINF:-1 tvg-name="中天新聞" tvg-logo="https://logo.catvod.com/中天新聞.png" group-title="台灣酒店",中天新聞
-http://220.134.196.147:8567/http/61.219.99.20:8081/hls/78/80/ch63max.m3u8
-#EXTINF:-1 tvg-name="民視新聞" tvg-logo="https://logo.catvod.com/民視新聞.png" group-title="台灣酒店",民視新聞
-http://220.134.196.147:8519/http/61.219.99.20:8081/hls/85/80/FtvNews4max.m3u8
-#EXTINF:-1 tvg-name="三立新聞HD" tvg-logo="https://logo.catvod.com/三立新聞HD.png" group-title="台灣酒店",三立新聞HD
-http://220.134.196.147:8541/http/61.219.99.20:8081/hls/65/807/ch18.m3u8
-#EXTINF:-1 tvg-name="TVBS新聞HD" tvg-logo="https://logo.catvod.com/TVBS新聞HD.png" group-title="台灣酒店",TVBS新聞HD
-http://220.134.196.147:8542/http/61.219.99.20:8081/hls/75/817/ch59.m3u8
-#EXTINF:-1 tvg-name="TVBS HD" tvg-logo="https://logo.catvod.com/TVBS HD.png" group-title="台灣酒店",TVBS HD
-http://220.134.196.147:8570/http/61.219.99.20:8081/hls/75/817/ch58.m3u8
-#EXTINF:-1 tvg-id="非凡新聞" tvg-name="非凡新聞" tvg-logo="https://logo.doube.eu.org/非凡新聞.png" group-title="台灣酒店",非凡新聞
-http://tv543.cc/litv.php?token=leifeng&id=4gtv-4gtv010
-#EXTINF:-1 tvg-name="非凡商業HD" tvg-logo="https://logo.catvod.com/非凡商業HD.png" group-title="台灣酒店",非凡商業HD
-http://220.134.196.147:8511/http/61.219.99.20:8081/hls/74/816/ch56.m3u8
-#EXTINF:-1 tvg-name="東森財經HD" tvg-logo="https://logo.catvod.com/東森財經HD.png" group-title="台灣酒店",東森財經HD
-http://220.134.196.147:8525/http/61.219.99.20:8081/hls/63/805/ch11.m3u8
-#EXTINF:-1 tvg-name="寰宇新聞" tvg-logo="https://logo.catvod.com/寰宇新聞.png" group-title="台灣酒店",寰宇新聞
-http://220.134.196.147:8548/http/61.219.99.20:8081/hls/76/818/ch62.m3u8
-#EXTINF:-1 tvg-name="Bloomberg News" tvg-logo="https://logo.catvod.com/Bloomberg News.png" group-title="台灣酒店",Bloomberg News
-http://220.134.196.147:8514/http/61.219.99.20:8078/hls/43/80/bloomber.m3u8
-#EXTINF:-1 tvg-name="NHK HD" tvg-logo="https://logo.catvod.com/NHK HD.png" group-title="台灣酒店",NHK HD
-http://220.134.196.147:8534/http/61.219.99.20:8081/hls/62/804/ch06.m3u8
-#EXTINF:-1 tvg-id="鏡電視新聞台" tvg-name="鏡新聞" tvg-logo="https://logo.doube.eu.org/鏡電視新聞台.png" group-title="台灣酒店",鏡新聞
-http://tv543.cc/litv.php?token=leifeng&id=4gtv-4gtv075
-#EXTINF:-1 tvg-name="好萊塢電影HD" tvg-logo="https://logo.catvod.com/好萊塢電影HD.png" group-title="台灣酒店",好萊塢電影HD
-http://220.134.196.147:8543/http/61.219.99.20:8081/hls/74/816/ch55.m3u8
-#EXTINF:-1 tvg-name="緯來電影HD" tvg-logo="https://logo.catvod.com/緯來電影HD.png" group-title="台灣酒店",緯來電影HD
-http://220.134.196.147:8574/http/61.219.99.20:8081/hls/69/811/ch35.m3u8
-#EXTINF:-1 tvg-name="龍華電影台" tvg-logo="https://logo.catvod.com/龍華電影台.png" group-title="台灣酒店",龍華電影台
-http://220.134.196.147:8545/http/61.219.99.20:8068/hls/10/80/cstv10.m3u8
-#EXTINF:-1 tvg-name="HBO" tvg-logo="https://logo.catvod.com/HBO.png" group-title="台灣酒店",HBO
-http://220.134.196.147:9520/http/61.219.99.20:8081/hls/71/813/ch41.m3u8
-#EXTINF:-1 tvg-name="AXN" tvg-logo="https://logo.catvod.com/AXN.png" group-title="台灣酒店",AXN
-http://220.134.196.147:8526/http/61.219.99.20:8081/hls/71/813/ch43.m3u8
-#EXTINF:-1 tvg-name="CINEMAX HD" tvg-logo="https://logo.catvod.com/CINEMAX HD.png" group-title="台灣酒店",CINEMAX HD
-http://220.134.196.147:8535/http/61.219.99.20:8081/hls/71/813/ch42.m3u8
-#EXTINF:-1 tvg-name="AMC 電影台" tvg-logo="https://logo.catvod.com/AMC 電影台.png" group-title="台灣酒店",AMC 電影台
-http://220.134.196.147:8521/http/61.219.99.20:8092/upload/115/AMC_TS-1111_1.m3u8
-#EXTINF:-1 tvg-name="寵物頻道" tvg-logo="https://logo.catvod.com/寵物頻道.png" group-title="台灣酒店",寵物頻道
-http://220.134.196.147:8532/http/59.120.8.187:8078/hls/40/80/pettv.m3u8
-#EXTINF:-1 tvg-name="緯來育樂HD" tvg-logo="https://logo.catvod.com/緯來育樂HD.png" group-title="台灣酒店",緯來育樂HD
-http://220.134.196.147:8547/http/59.120.8.187:8081/hls/68/810/ch30.m3u8
-#EXTINF:-1 tvg-name="緯來體育HD" tvg-logo="https://logo.catvod.com/緯來體育HD.png" group-title="台灣酒店",緯來體育HD
-http://220.134.196.147:8553/http/59.120.8.187:8081/hls/67/809/ch28.m3u8
-#EXTINF:-1 tvg-name="博斯運動一" tvg-logo="https://logo.catvod.com/博斯運動一.png" group-title="台灣酒店",博斯運動一
-http://220.134.196.147:8564/http/61.219.99.20:8068/hls/15/80/cstv15.m3u8
-#EXTINF:-1 tvg-name="momo綜合台" tvg-logo="https://logo.catvod.com/momo綜合台.png" group-title="台灣酒店",momo綜合台
-http://220.134.196.147:8575/http/59.120.8.187:8081/hls/76/818/momo_max.m3u8
-#EXTINF:-1 group-title="台灣酒店",華藝BNC
-http://211.23.95.147:18881/live/31_h265.ts
-#EXTINF:-1 tvg-name="DAZN 1" tvg-logo="https://logo.catvod.com/DAZN 1.png" group-title="台灣酒店",DAZN 1
-http://220.134.196.147:9120/http/59.120.8.187:8078/hls/25/80/esport.m3u8
-#EXTINF:-1 tvg-name="DAZN 2" tvg-logo="https://logo.catvod.com/DAZN 2.png" group-title="台灣酒店",DAZN 2
-http://220.134.196.147:9119/http/59.120.8.187:8078/hls/26/80/esport2.m3u8
-
-#EXTINF:-1 group-title="台灣酒店",AMC電影台
-http://211.23.114.106:9359/http/61.219.99.20:8092/upload/115/AMC_TS-1111_1.m3u8
-#EXTINF:-1 group-title="台灣酒店",AMC電影台
-http://220.134.196.147:8521/http/61.219.99.20:8092/upload/115/AMC_TS-1111_1.m3u8
-#EXTINF:-1 group-title="台灣酒店",ANIMAX卡通動畫
-http://61.221.81.93:8608/http/192.168.11.70/ch39.m3u8
-#EXTINF:-1 group-title="台灣酒店",AXN
-http://211.23.114.106:9357/http/61.219.99.20:8081/hls/71/813/ch43.m3u8
-#EXTINF:-1 group-title="台灣酒店",AXN
-http://220.134.196.147:8526/http/61.219.99.20:8081/hls/71/813/ch43.m3u8
-#EXTINF:-1 group-title="台灣酒店",AXN
-http://61.221.81.93:8595/http/192.168.1.10:8088/hls/71/813/ch43.m3u8
-#EXTINF:-1 group-title="台灣酒店",Bloomberg News
-http://211.23.114.106:9350/http/61.219.99.20:8078/hls/43/80/bloomber.m3u8
-#EXTINF:-1 group-title="台灣酒店",Bloomberg News
-http://220.134.196.147:8514/http/61.219.99.20:8078/hls/43/80/bloomber.m3u8
-#EXTINF:-1 group-title="台灣酒店",CINEMAX
-http://211.23.114.106:9358/http/61.219.99.20:8081/hls/71/813/ch42.m3u8
-#EXTINF:-1 group-title="台灣酒店",CINEMAX
-http://220.134.196.147:8535/http/61.219.99.20:8081/hls/71/813/ch42.m3u8
-#EXTINF:-1 group-title="台灣酒店",CINEMAX
-http://61.221.81.93:8596/http/192.168.1.10:8088/hls/71/813/ch42.m3u8
-#EXTINF:-1 group-title="台灣酒店",DAZN 1
-http://211.23.114.106:8523/http/59.120.8.187:8078/hls/25/80/esport.m3u8
-#EXTINF:-1 group-title="台灣酒店",DAZN 1
-http://220.134.196.147:9120/http/59.120.8.187:8078/hls/25/80/esport.m3u8
-#EXTINF:-1 group-title="台灣酒店",DAZN 2
-http://211.23.114.106:8555/http/59.120.8.187:8078/hls/26/80/esport2.m3u8
-#EXTINF:-1 group-title="台灣酒店",DAZN 2
-http://220.134.196.147:9119/http/59.120.8.187:8078/hls/26/80/esport2.m3u8
+#EXTINF:-1 group-title="台灣酒店",台視
+http://220.134.196.147:8507/http://59.120.8.187:8081/hls/86/80/Ttv4max.m3u8
+#EXTINF:-1 group-title="台灣酒店",中視
+http://220.134.196.147:8510/http://59.120.8.187:8081/hls/88/80/Ctv4max.m3u8
+#EXTINF:-1 group-title="台灣酒店",華視
+http://220.134.196.147:8539/http://59.120.8.187:8081/hls/89/80/Cts4max.m3u8
+#EXTINF:-1 group-title="台灣酒店",民視
+http://220.134.196.147:9574/http://59.120.8.187:8081/hls/85/80/Ftv4max.m3u8
+#EXTINF:-1 group-title="台灣酒店",公視
+http://220.134.196.147:8554/http://59.120.8.187:8081/hls/87/80/Pts4max.m3u8
+#EXTINF:-1 group-title="台灣酒店",人間衛視
+http://220.134.196.147:8515/http://59.120.8.187:8081/hls/69/811/ch36.m3u8
+#EXTINF:-1 group-title="台灣酒店",大愛電視
+http://220.134.196.147:8549/http://59.120.8.187:8081/hls/73/815/ch52.m3u8
+#EXTINF:-1 group-title="台灣酒店",好消息GOOD TV
+http://220.134.196.147:8523/http://59.120.8.187:8081/hls/74/816/ch53.m3u8
+#EXTINF:-1 group-title="台灣酒店",Trace Sport Stars
+http://220.134.196.147:8569/http://59.120.8.187:8092/upload/212/TraceS_TS-1111_1.m3u8
 #EXTINF:-1 group-title="台灣酒店",DISCOVERY
-http://211.23.114.106:9310/http/61.219.99.20:8081/hls/71/813/ch44.m3u8
-#EXTINF:-1 group-title="台灣酒店",DISCOVERY
-http://220.134.196.147:8516/http/61.219.99.20:8081/hls/71/813/ch44.m3u8
-#EXTINF:-1 group-title="台灣酒店",DISCOVERY
-http://61.221.81.93:8551/http/192.168.1.10:8088/hls/71/813/ch44.m3u8
-#EXTINF:-1 group-title="台灣酒店",ELEVEN SPORTS 1
-http://61.221.81.93:8605/http/192.168.11.76/evensports1_max.m3u8
-#EXTINF:-1 group-title="台灣酒店",ELEVEN SPORTS 2
-http://61.221.81.93:8606/http/192.168.11.77/evensports2_max.m3u8
-#EXTINF:-1 group-title="台灣酒店",HBO
-http://211.23.114.106:9356/http/61.219.99.20:8081/hls/71/813/ch41.m3u8
-#EXTINF:-1 group-title="台灣酒店",HBO
-http://220.134.196.147:9520/http/61.219.99.20:8081/hls/71/813/ch41.m3u8
-#EXTINF:-1 group-title="台灣酒店",HBO
-http://61.221.81.93:8594/http/192.168.1.10:8088/hls/71/813/ch41.m3u8
+http://220.134.196.147:8516/http://59.120.8.187:8081/hls/71/813/ch44.m3u8
+#EXTINF:-1 group-title="台灣酒店",旅遊生活
+http://220.134.196.147:8557/http://59.120.8.187:8081/hls/70/812/ch38.m3u8
+#EXTINF:-1 group-title="台灣酒店",動物星球
+http://220.134.196.147:8540/http://59.120.8.187:8081/hls/70/812/ch37.m3u8
+#EXTINF:-1 group-title="台灣酒店",亞洲旅遊
+http://220.134.196.147:8579/http://59.120.8.187:8081/hls/76/818/ch61.m3u8
+#EXTINF:-1 group-title="台灣酒店",MOMO親子台
+http://220.134.196.147:8517/http://59.120.8.187:8081/hls/90/80/momo4max.m3u8
+#EXTINF:-1 group-title="台灣酒店",東森幼幼
+http://220.134.196.147:9588/http://59.120.8.187:8081/hls/63/805/ch09.m3u8
+#EXTINF:-1 group-title="台灣酒店",公視兒少台
+http://220.134.196.147:8568/http://61.63.32.3:5999/upload/khh33/KHH33.m3u8
+#EXTINF:-1 group-title="台灣酒店",緯來綜合
+http://220.134.196.147:8533/http://59.120.8.187:8081/hls/68/810/ch32.m3u8
+#EXTINF:-1 group-title="台灣酒店",八大第一
+http://220.134.196.147:8505/http://59.120.8.187:8081/hls/66/808/ch22.m3u8
+#EXTINF:-1 group-title="台灣酒店",八大綜合
+http://220.134.196.147:8518/http://59.120.8.187:8081/hls/66/808/ch21.m3u8
+#EXTINF:-1 group-title="台灣酒店",三立台灣
+http://220.134.196.147:8513/http://59.120.8.187:8081/hls/65/807/ch20.m3u8
+#EXTINF:-1 group-title="台灣酒店",三立都會
+http://220.134.196.147:8503/http://59.120.8.187:8081/hls/65/807/ch19.m3u8
+#EXTINF:-1 group-title="台灣酒店",韓國娛樂台
+http://220.134.196.147:8506/http://59.120.8.187:8092/upload/116/KMTV_TS-1111_1.m3u8
+#EXTINF:-1 group-title="台灣酒店",東森綜合
+http://220.134.196.147:9553/http://59.120.8.187:8081/hls/63/805/ch12.m3u8
+#EXTINF:-1 group-title="台灣酒店",超視
+http://220.134.196.147:8508/http://59.120.8.187:8081/hls/64/806/ch14.m3u8
+#EXTINF:-1 group-title="台灣酒店",中天綜合
+http://220.134.196.147:8502/http://59.120.8.187:8081/hls/67/809/ch25.m3u8
+#EXTINF:-1 group-title="台灣酒店",中天娛樂
+http://220.134.196.147:8509/http://59.120.8.187:8081/hls/67/809/ch26.m3u8
+#EXTINF:-1 group-title="台灣酒店",東風衛視
+http://220.134.196.147:8537/http://59.120.8.187:8081/hls/68/810/ch31.m3u8
+#EXTINF:-1 group-title="台灣酒店",MUCH TV
+http://220.134.196.147:8530/http://59.120.8.187:8081/hls/72/814/ch45.m3u8
+#EXTINF:-1 group-title="台灣酒店",東森戲劇
+http://220.134.196.147:8536/http://59.120.8.187:8081/hls/64/806/ch13.m3u8
+#EXTINF:-1 group-title="台灣酒店",八大戲劇
+http://220.134.196.147:8552/http://59.120.8.187:8081/hls/66/808/ch23.m3u8
+#EXTINF:-1 group-title="台灣酒店",TVBS歡樂
+http://220.134.196.147:8522/http://59.120.8.187:8081/hls/65/807/ch17.m3u8
+#EXTINF:-1 group-title="台灣酒店",緯來戲劇
+http://220.134.196.147:8504/http://59.120.8.187:8081/hls/69/811/ch33.m3u8
 #EXTINF:-1 group-title="台灣酒店",JET綜合
-http://61.221.81.93:8560/http/192.168.1.10:8088/hls/74/816/ch54.m3u8
-#EXTINF:-1 group-title="台灣酒店",MOMO綜合台
-http://211.23.114.106:8511/http/59.120.8.187:8081/hls/76/818/MOMO_max.m3u8
-#EXTINF:-1 group-title="台灣酒店",MOMO綜合台
-http://220.134.196.147:8575/http/59.120.8.187:8081/hls/76/818/MOMO_max.m3u8
-#EXTINF:-1 group-title="台灣酒店",MOMO綜合台
-http://61.221.81.93:8565/http/192.168.1.10:8088/hls/76/818/MOMO_max.m3u8
-#EXTINF:-1 group-title="台灣酒店",MOMO親子台
-http://211.23.114.106:8516/http/61.219.99.20:8081/hls/90/80/MOMO4max.m3u8
-#EXTINF:-1 group-title="台灣酒店",MOMO親子台
-http://220.134.196.147:8517/http/61.219.99.20:8081/hls/90/80/MOMO4max.m3u8
-#EXTINF:-1 group-title="台灣酒店",MUCH TV
-http://211.23.114.106:9328/http/61.219.99.20:8081/hls/72/814/ch45.m3u8
-#EXTINF:-1 group-title="台灣酒店",MUCH TV
-http://220.134.196.147:8530/http/61.219.99.20:8081/hls/72/814/ch45.m3u8
-#EXTINF:-1 group-title="台灣酒店",MUCH TV
-http://61.221.81.93:8570/http/192.168.1.10:8088/hls/72/814/ch45.m3u8
-#EXTINF:-1 group-title="台灣酒店",NHK世界
-http://220.134.196.147:8534/http/61.219.99.20:8081/hls/62/804/ch06.m3u8
-#EXTINF:-1 group-title="台灣酒店",NHK世界
-http://61.221.81.93:8564/http/192.168.1.10:8088/hls/62/804/ch06.m3u8
-#EXTINF:-1 group-title="台灣酒店",NHK世界
-http://211.23.114.106:9351/http/61.219.99.20:8081/hls/62/804/ch06.m3u8
-#EXTINF:-1 group-title="台灣酒店",Taiwan Plus
-http://220.134.196.147:8524/http/61.219.99.20:8081/hls/87/80/PtsTaiwanPlus4max.m3u8
-#EXTINF:-1 group-title="台灣酒店",Taiwan Plus
-http://61.221.81.93:8614/http/192.168.11.61/ch03.m3u8
-#EXTINF:-1 group-title="台灣酒店",Taiwan Plus
-http://hk.mushui.tk/mqlive/live.php?ip=211.23.114.106&url=http://211.23.114.106:5003/live1674.m3u8
-#EXTINF:-1 group-title="台灣酒店",Trace Sport Stars
-http://211.23.114.106:8505/http/61.219.99.20:8092/upload/212/TraceS_TS-1111_1.m3u8
-#EXTINF:-1 group-title="台灣酒店",Trace Sport Stars
-http://220.134.196.147:8569/http/61.219.99.20:8092/upload/212/TraceS_TS-1111_1.m3u8
-#EXTINF:-1 group-title="台灣酒店",TVBS
-http://211.23.114.106:9344/http/61.219.99.20:8081/hls/75/817/ch58.m3u8
-#EXTINF:-1 group-title="台灣酒店",TVBS
-http://220.134.196.147:8570/http/61.219.99.20:8081/hls/75/817/ch58.m3u8
-#EXTINF:-1 group-title="台灣酒店",TVBS新聞
-http://211.23.114.106:8510/http/61.219.99.20:8081/hls/75/817/ch59.m3u8
-#EXTINF:-1 group-title="台灣酒店",TVBS新聞
-http://220.134.196.147:8542/http/61.219.99.20:8081/hls/75/817/ch59.m3u8
-#EXTINF:-1 group-title="台灣酒店",TVBS新聞
-http://61.221.81.93:8611/http/192.168.11.75/ch59.m3u8
-#EXTINF:-1 group-title="台灣酒店",TVBS歡樂
-http://211.23.114.106:8553/http/61.219.99.20:8081/hls/65/807/ch17.m3u8
-#EXTINF:-1 group-title="台灣酒店",TVBS歡樂
-http://220.134.196.147:8522/http/61.219.99.20:8081/hls/65/807/ch17.m3u8
-#EXTINF:-1 group-title="台灣酒店",TVBS歡樂
-http://61.221.81.93:8576/http/192.168.1.9:8088/hls/65/807/ch17.m3u8
-#EXTINF:-1 group-title="台灣酒店",人間衛視
-http://211.23.114.106:9306/http/61.219.99.20:8081/hls/69/811/ch36.m3u8
-#EXTINF:-1 group-title="台灣酒店",人間衛視
-http://220.134.196.147:8515/http/61.219.99.20:8081/hls/69/811/ch36.m3u8
-#EXTINF:-1 group-title="台灣酒店",人間衛視
-http://61.221.81.93:8526/http/192.168.1.10:8088/hls/69/811/ch36.m3u8
-#EXTINF:-1 group-title="台灣酒店",八大第一
-http://211.23.114.106:9318/http/61.219.99.20:8081/hls/66/808/ch22.m3u8
-#EXTINF:-1 group-title="台灣酒店",八大第一
-http://220.134.196.147:8505/http/61.219.99.20:8081/hls/66/808/ch22.m3u8
-#EXTINF:-1 group-title="台灣酒店",八大第一
-http://61.221.81.93:8558/http/192.168.1.10:8088/hls/66/808/ch22.m3u8
-#EXTINF:-1 group-title="台灣酒店",八大綜合
-http://211.23.114.106:8521/http/61.219.99.20:8081/hls/66/808/ch21.m3u8
-#EXTINF:-1 group-title="台灣酒店",八大綜合
-http://220.134.196.147:8518/http/61.219.99.20:8081/hls/66/808/ch21.m3u8
-#EXTINF:-1 group-title="台灣酒店",八大綜合
-http://61.221.81.93:8559/http/192.168.1.10:8088/hls/66/808/ch21.m3u8
-#EXTINF:-1 group-title="台灣酒店",八大戲劇
-http://211.23.114.106:9330/http/61.219.99.20:8081/hls/66/808/ch23.m3u8
-#EXTINF:-1 group-title="台灣酒店",八大戲劇
-http://220.134.196.147:8552/http/61.219.99.20:8081/hls/66/808/ch23.m3u8
-#EXTINF:-1 group-title="台灣酒店",八大戲劇
-http://61.221.81.93:8575/http/192.168.1.10:8088/hls/66/808/ch23.m3u8
-#EXTINF:-1 group-title="台灣酒店",三立台灣
-http://211.23.114.106:9378/http/61.219.99.20:8081/hls/65/807/ch20.m3u8
-#EXTINF:-1 group-title="台灣酒店",三立台灣
-http://220.134.196.147:8513/http/61.219.99.20:8081/hls/65/807/ch20.m3u8
-#EXTINF:-1 group-title="台灣酒店",三立台灣
-http://61.221.81.93:8561/http/192.168.1.10:8088/hls/65/807/ch20.m3u8
-#EXTINF:-1 group-title="台灣酒店",三立都會
-http://211.23.114.106:8538/http/61.219.99.20:8081/hls/65/807/ch19.m3u8
-#EXTINF:-1 group-title="台灣酒店",三立都會
-http://220.134.196.147:8503/http/61.219.99.20:8081/hls/65/807/ch19.m3u8
-#EXTINF:-1 group-title="台灣酒店",三立都會
-http://61.221.81.93:8562/http/192.168.1.10:8088/hls/65/807/ch19.m3u8
-#EXTINF:-1 group-title="台灣酒店",三立新聞
-http://220.134.196.147:8541/http/61.219.99.20:8081/hls/65/807/ch18.m3u8
-#EXTINF:-1 group-title="台灣酒店",三立新聞
-http://61.221.81.93:8584/http/192.168.1.10:8088/hls/65/807/ch18.m3u8
-#EXTINF:-1 group-title="台灣酒店",三立新聞
-http://hk.mushui.tk/mqlive/live.php?ip=211.23.114.106&url=http://211.23.114.106:5003/live1016.m3u8
-#EXTINF:-1 group-title="台灣酒店",大愛二
-http://61.221.81.93:8540/http/192.168.1.9:8088/hls/75/817/ch60.m3u8
-#EXTINF:-1 group-title="台灣酒店",大愛電視
-http://211.23.114.106:9307/http/61.219.99.20:8081/hls/73/815/ch52.m3u8
-#EXTINF:-1 group-title="台灣酒店",大愛電視
-http://220.134.196.147:8549/http/61.219.99.20:8081/hls/73/815/ch52.m3u8
-#EXTINF:-1 group-title="台灣酒店",大愛電視
-http://61.221.81.93:8528/http/192.168.1.10:8088/hls/73/815/ch52.m3u8
-#EXTINF:-1 group-title="台灣酒店",中天娛樂
-http://211.23.114.106:8508/http/61.219.99.20:8081/hls/67/809/ch26.m3u8
-#EXTINF:-1 group-title="台灣酒店",中天娛樂
-http://220.134.196.147:8509/http/61.219.99.20:8081/hls/67/809/ch26.m3u8
-#EXTINF:-1 group-title="台灣酒店",中天娛樂
-http://61.221.81.93:8568/http/192.168.1.10:8088/hls/67/809/ch26.m3u8
-#EXTINF:-1 group-title="台灣酒店",中天新聞
-http://220.134.196.147:8567/http/61.219.99.20:8081/hls/78/80/ch63max.m3u8
-#EXTINF:-1 group-title="台灣酒店",中天新聞
-http://hk.mushui.tk/mqlive/live.php?ip=211.23.114.106&url=http://211.23.114.106:5003/live1675.m3u8
-#EXTINF:-1 group-title="台灣酒店",中天新聞
-http://61.221.81.93:8582/http/192.168.1.10:8088/hls/78/80/ch63max.m3u8
-#EXTINF:-1 group-title="台灣酒店",中天綜合
-http://211.23.114.106:9325/http/61.219.99.20:8081/hls/67/809/ch25.m3u8
-#EXTINF:-1 group-title="台灣酒店",中天綜合
-http://220.134.196.147:8502/http/61.219.99.20:8081/hls/67/809/ch25.m3u8
-#EXTINF:-1 group-title="台灣酒店",中天綜合
-http://61.221.81.93:8567/http/192.168.1.10:8088/hls/67/809/ch25.m3u8
-#EXTINF:-1 group-title="台灣酒店",中視
-http://211.23.114.106:8534/http/61.219.99.20:8081/hls/88/80/Ctv4max.m3u8
-#EXTINF:-1 group-title="台灣酒店",中視
-http://220.134.196.147:8510/http/61.219.99.20:8081/hls/88/80/Ctv4max.m3u8
-#EXTINF:-1 group-title="台灣酒店",中視
-http://61.221.81.93:8512/http/192.168.1.9:8088/hls/72/814/ch47.m3u8
-#EXTINF:-1 group-title="台灣酒店",公視
-http://211.23.114.106:8550/http/61.219.99.20:8081/hls/87/80/Pts4max.m3u8
-#EXTINF:-1 group-title="台灣酒店",公視
-http://220.134.196.147:8554/http/61.219.99.20:8081/hls/87/80/Pts4max.m3u8
-#EXTINF:-1 group-title="台灣酒店",公視
-http://61.221.81.93:8518/http/192.168.1.10:8088/hls/73/815/ch50.m3u8
-#EXTINF:-1 group-title="台灣酒店",台視
-http://220.134.196.147:9110/http/61.219.99.20:8081/hls/86/80/Ttv4max.m3u8
-#EXTINF:-1 group-title="台灣酒店",台視
-http://61.221.81.93:8511/http/192.168.1.9:8088/hls/72/814/ch46.m3u8
-#EXTINF:-1 group-title="台灣酒店",台視
-http://hk.mushui.tk/mqlive/live.php?ip=211.23.114.106&url=http://211.23.114.106:5003/live1047.m3u8
-#EXTINF:-1 group-title="台灣酒店",正德電視
-http://61.221.81.93:8587/http/192.168.1.10:8088/hls/64/806/ch16.m3u8
-#EXTINF:-1 group-title="台灣酒店",民視
-http://211.23.114.106:8501/http/61.219.99.20:8081/hls/85/80/Ftv4max.m3u8
-#EXTINF:-1 group-title="台灣酒店",民視
-http://220.134.196.147:9574/http/61.219.99.20:8081/hls/85/80/Ftv4max.m3u8
-#EXTINF:-1 group-title="台灣酒店",民視
-http://61.221.81.93:8517/http/192.168.1.10:8088/hls/73/815/ch49.m3u8
-#EXTINF:-1 group-title="台灣酒店",民視新聞
-http://220.134.196.147:8519/http/61.219.99.20:8081/hls/85/80/FtvNews4max.m3u8
-#EXTINF:-1 group-title="台灣酒店",民視新聞
-http://61.221.81.93:8583/http/192.168.1.10:8088/hls/73/815/ch51.m3u8
-#EXTINF:-1 group-title="台灣酒店",民視新聞
-http://hk.mushui.tk/mqlive/live.php?ip=211.23.114.106&url=http://211.23.114.106:5003/live1204.m3u8
-#EXTINF:-1 group-title="台灣酒店",好消息GOOD TV
-http://211.23.114.106:9308/http/61.219.99.20:8081/hls/74/816/ch53.m3u8
-#EXTINF:-1 group-title="台灣酒店",好消息GOOD TV
-http://220.134.196.147:8523/http/61.219.99.20:8081/hls/74/816/ch53.m3u8
-#EXTINF:-1 group-title="台灣酒店",好消息GOOD TV
-http://61.221.81.93:8547/http/192.168.1.10:8088/hls/74/816/ch53.m3u8
-#EXTINF:-1 group-title="台灣酒店",好萊塢電影
-http://211.23.114.106:9353/http/61.219.99.20:8081/hls/74/816/ch55.m3u8
-#EXTINF:-1 group-title="台灣酒店",好萊塢電影
-http://220.134.196.147:8543/http/61.219.99.20:8081/hls/74/816/ch55.m3u8
-#EXTINF:-1 group-title="台灣酒店",好萊塢電影
-http://61.221.81.93:8597/http/192.168.1.10:8088/hls/74/816/ch55.m3u8
-#EXTINF:-1 group-title="台灣酒店",年代新聞
-http://220.134.196.147:8538/http/61.219.99.20:8081/hls/67/809/ch27.m3u8
-#EXTINF:-1 group-title="台灣酒店",年代新聞
-http://hk.mushui.tk/mqlive/live.php?ip=211.23.114.106&url=http://211.23.114.106:5003/live1192.m3u8
-#EXTINF:-1 group-title="台灣酒店",年代新聞
-http://61.221.81.93:8578/http/192.168.1.10:8088/hls/67/809/ch27.m3u8
-#EXTINF:-1 group-title="台灣酒店",亞洲旅遊
-http://211.23.114.106:8512/http/61.219.99.20:8081/hls/76/818/ch61.m3u8
-#EXTINF:-1 group-title="台灣酒店",亞洲旅遊
-http://220.134.196.147:8579/http/61.219.99.20:8081/hls/76/818/ch61.m3u8
-#EXTINF:-1 group-title="台灣酒店",亞洲旅遊
-http://61.221.81.93:8553/http/192.168.1.10:8088/hls/76/818/ch61.m3u8
-#EXTINF:-1 group-title="台灣酒店",東方衛視
-http://211.23.114.106:8517/http/59.120.8.187:8078/hls/41/80/east.m3u8
-#EXTINF:-1 group-title="台灣酒店",東方衛視
-http://220.134.196.147:8558/http/59.120.8.187:8078/hls/41/80/east.m3u8
-#EXTINF:-1 group-title="台灣酒店",東風衛視
-http://211.23.114.106:9327/http/61.219.99.20:8081/hls/68/810/ch31.m3u8
-#EXTINF:-1 group-title="台灣酒店",東風衛視
-http://220.134.196.147:8537/http/61.219.99.20:8081/hls/68/810/ch31.m3u8
-#EXTINF:-1 group-title="台灣酒店",東風衛視
-http://61.221.81.93:8569/http/192.168.1.10:8088/hls/68/810/ch31.m3u8
-#EXTINF:-1 group-title="台灣酒店",東森幼幼
-http://211.23.114.106:8551/http/61.219.99.20:8081/hls/63/805/ch09.m3u8
-#EXTINF:-1 group-title="台灣酒店",東森幼幼
-http://220.134.196.147:9588/http/61.219.99.20:8081/hls/63/805/ch09.m3u8
-#EXTINF:-1 group-title="台灣酒店",東森幼幼
-http://61.221.81.93:8556/http/192.168.1.10:8088/hls/63/805/ch09.m3u8
-#EXTINF:-1 group-title="台灣酒店",東森財經
-http://220.134.196.147:8525/http/61.219.99.20:8081/hls/63/805/ch11.m3u8
-#EXTINF:-1 group-title="台灣酒店",東森財經
-http://61.221.81.93:8590/http/192.168.1.10:8088/hls/63/805/ch11.m3u8
-#EXTINF:-1 group-title="台灣酒店",東森財經
-http://hk.mushui.tk/mqlive/live.php?ip=211.23.114.106&url=http://211.23.114.106:5003/live1017.m3u8
-#EXTINF:-1 group-title="台灣酒店",東森超視
-http://61.221.81.93:8566/http/192.168.1.10:8088/hls/64/806/ch14.m3u8
-#EXTINF:-1 group-title="台灣酒店",東森新聞
-http://220.134.196.147:8527/http/61.219.99.20:8081/hls/63/805/ch10.m3u8
-#EXTINF:-1 group-title="台灣酒店",東森新聞
-http://61.221.81.93:8579/http/192.168.1.10:8088/hls/63/805/ch10.m3u8
-#EXTINF:-1 group-title="台灣酒店",東森新聞
-http://hk.mushui.tk/mqlive/live.php?ip=211.23.114.106&url=http://211.23.114.106:5003/live1014.m3u8
-#EXTINF:-1 group-title="台灣酒店",東森綜合
-http://211.23.114.106:8535/http/61.219.99.20:8081/hls/63/805/ch12.m3u8
-#EXTINF:-1 group-title="台灣酒店",東森綜合
-http://220.134.196.147:9553/http/61.219.99.20:8081/hls/63/805/ch12.m3u8
-#EXTINF:-1 group-title="台灣酒店",東森綜合
-http://61.221.81.93:8826/http/192.168.11.63/ch12.m3u8
-#EXTINF:-1 group-title="台灣酒店",東森戲劇
-http://211.23.114.106:8552/http/61.219.99.20:8081/hls/64/806/ch13.m3u8
-#EXTINF:-1 group-title="台灣酒店",東森戲劇
-http://220.134.196.147:8536/http/61.219.99.20:8081/hls/64/806/ch13.m3u8
-#EXTINF:-1 group-title="台灣酒店",東森戲劇
-http://61.221.81.93:8574/http/192.168.1.10:8088/hls/64/806/ch13.m3u8
-#EXTINF:-1 group-title="台灣酒店",非凡商業
-http://220.134.196.147:8511/http/61.219.99.20:8081/hls/74/816/ch56.m3u8
-#EXTINF:-1 group-title="台灣酒店",非凡商業
-http://61.221.81.93:8589/http/192.168.1.10:8088/hls/74/816/ch56.m3u8
-#EXTINF:-1 group-title="台灣酒店",非凡商業
-http://hk.mushui.tk/mqlive/live.php?ip=61.216.180.81&url=http://61.216.180.81:5003/live1013.m3u8
-#EXTINF:-1 group-title="台灣酒店",非凡新聞
-http://220.134.196.147:8571/http/61.219.99.20:8081/hls/75/817/ch57.m3u8
-#EXTINF:-1 group-title="台灣酒店",非凡新聞
-http://61.221.81.93:8586/http/192.168.1.10:8088/hls/75/817/ch57.m3u8
-#EXTINF:-1 group-title="台灣酒店",非凡新聞
-http://hk.mushui.tk/mqlive/live.php?ip=211.23.114.106&url=http://211.23.114.106:5003/live1013.m3u8
-#EXTINF:-1 group-title="台灣酒店",旅遊生活
-http://211.23.114.106:9311/http/61.219.99.20:8081/hls/70/812/ch38.m3u8
-#EXTINF:-1 group-title="台灣酒店",旅遊生活
-http://220.134.196.147:8557/http/61.219.99.20:8081/hls/70/812/ch38.m3u8
-#EXTINF:-1 group-title="台灣酒店",旅遊生活
-http://61.221.81.93:8552/http/192.168.1.10:8088/hls/70/812/ch38.m3u8
-#EXTINF:-1 group-title="台灣酒店",浙江衛視
-http://211.23.114.106:8537/http/59.120.8.187:8078/hls/41/80/zhejiang.m3u8
-#EXTINF:-1 group-title="台灣酒店",浙江衛視
-http://220.134.196.147:8512/http/59.120.8.187:8078/hls/41/80/zhejiang.m3u8
-#EXTINF:-1 group-title="台灣酒店",海峽衛視
-http://211.23.114.106:8554/http/59.120.8.187:8078/hls/42/80/fjttv.m3u8
-#EXTINF:-1 group-title="台灣酒店",海峽衛視
-http://220.134.196.147:8550/http/59.120.8.187:8078/hls/42/80/fjttv.m3u8
-#EXTINF:-1 group-title="台灣酒店",動物星球
-http://211.23.114.106:9312/http/61.219.99.20:8081/hls/70/812/ch37.m3u8
-#EXTINF:-1 group-title="台灣酒店",動物星球
-http://220.134.196.147:8540/http/61.219.99.20:8081/hls/70/812/ch37.m3u8
-#EXTINF:-1 group-title="台灣酒店",動物星球
-http://61.221.81.93:8554/http/192.168.1.10:8088/hls/70/812/ch37.m3u8
+http://220.134.196.147:8555/http://61.63.32.3:5999/upload/khh07/KHH07.m3u8
 #EXTINF:-1 group-title="台灣酒店",國興衛視
-http://61.221.81.93:8588/http/192.168.1.10:8088/hls/64/806/ch15.m3u8
-#EXTINF:-1 group-title="台灣酒店",博斯運動一
-http://211.23.114.106:8518/http/59.120.8.187:8068/hls/15/80/cstv15.m3u8
-#EXTINF:-1 group-title="台灣酒店",博斯運動一
-http://220.134.196.147:8564/http/61.219.99.20:8068/hls/15/80/cstv15.m3u8
-#EXTINF:-1 group-title="台灣酒店",博斯運動二
-http://61.221.81.93:8616/http/192.168.11.61/ch04.m3u8
-#EXTINF:-1 group-title="台灣酒店",壹新聞
-http://220.134.196.147:8501/http/61.219.99.20:8081/hls/66/808/ch24.m3u8
-#EXTINF:-1 group-title="台灣酒店",壹新聞
-http://hk.mushui.tk/mqlive/live.php?ip=211.23.114.106&url=http://211.23.114.106:5003/live1676.m3u8
-#EXTINF:-1 group-title="台灣酒店",壹新聞
-http://61.221.81.93:8580/http/192.168.1.10:8088/hls/66/808/ch24.m3u8
-#EXTINF:-1 group-title="台灣酒店",湖南衛視
-http://211.23.114.106:8502/http/59.120.8.187:8078/hls/41/80/huana.m3u8
-#EXTINF:-1 group-title="台灣酒店",湖南衛視
-http://220.134.196.147:8563/http/59.120.8.187:8078/hls/41/80/huana.m3u8
-#EXTINF:-1 group-title="台灣酒店",華視
-http://211.23.114.106:8504/http/61.219.99.20:8081/hls/89/80/Cts4max.m3u8
-#EXTINF:-1 group-title="台灣酒店",華視
-http://220.134.196.147:8539/http/61.219.99.20:8081/hls/89/80/Cts4max.m3u8
-#EXTINF:-1 group-title="台灣酒店",華視
-http://61.221.81.93:8514/http/192.168.1.10:8088/hls/72/814/ch48.m3u8
-#EXTINF:-1 group-title="台灣酒店",超視
-http://211.23.114.106:9381/http/61.219.99.20:8081/hls/64/806/ch14.m3u8
-#EXTINF:-1 group-title="台灣酒店",超視
-http://220.134.196.147:8508/http/61.219.99.20:8081/hls/64/806/ch14.m3u8
-#EXTINF:-1 group-title="台灣酒店",廈門衛視
-http://211.23.114.106:8530/http/59.120.8.187:8078/hls/42/80/xmtv.m3u8
-#EXTINF:-1 group-title="台灣酒店",廈門衛視
-http://220.134.196.147:8573/http/59.120.8.187:8078/hls/42/80/xmtv.m3u8
-#EXTINF:-1 group-title="台灣酒店",鳯凰衛視中文
-http://211.23.114.106:8549/http/59.120.8.187:8078/hls/21/80/phoenixch.m3u8
-#EXTINF:-1 group-title="台灣酒店",鳯凰衛視中文
-http://220.134.196.147:8578/http/59.120.8.187:8078/hls/21/80/phoenixch.m3u8
-#EXTINF:-1 group-title="台灣酒店",鳯凰衛視資訊
-http://211.23.114.106:8548/http/59.120.8.187:8078/hls/20/80/phoenixif.m3u8
-#EXTINF:-1 group-title="台灣酒店",鳯凰衛視資訊
-http://220.134.196.147:8577/http/59.120.8.187:8078/hls/20/80/phoenixif.m3u8
+http://220.134.196.147:8531/http://61.63.32.3:5999/upload/khh32/KHH32.m3u8
+#EXTINF:-1 group-title="台灣酒店",中視菁采台
+http://220.134.196.147:8562/http://61.63.32.3:5999/upload/khh41/KHH41.m3u8
 #EXTINF:-1 group-title="台灣酒店",緯來日本
-http://211.23.114.106:9336/http/61.219.99.20:8081/hls/69/811/ch34.m3u8
-#EXTINF:-1 group-title="台灣酒店",緯來日本
-http://220.134.196.147:8565/http/61.219.99.20:8081/hls/69/811/ch34.m3u8
-#EXTINF:-1 group-title="台灣酒店",緯來日本
-http://61.221.81.93:8607/http/192.168.11.69/ch34.m3u8
-#EXTINF:-1 group-title="台灣酒店",緯來育樂
-http://211.23.114.106:8513/http/59.120.8.187:8081/hls/68/810/ch30.m3u8
-#EXTINF:-1 group-title="台灣酒店",緯來育樂
-http://220.134.196.147:8547/http/59.120.8.187:8081/hls/68/810/ch30.m3u8
-#EXTINF:-1 group-title="台灣酒店",緯來育樂
-http://61.221.81.93:8603/http/192.168.11.68/ch30.m3u8
-#EXTINF:-1 group-title="台灣酒店",緯來電影
-http://211.23.114.106:9354/http/61.219.99.20:8081/hls/69/811/ch35.m3u8
-#EXTINF:-1 group-title="台灣酒店",緯來電影
-http://220.134.196.147:8574/http/61.219.99.20:8081/hls/69/811/ch35.m3u8
-#EXTINF:-1 group-title="台灣酒店",緯來電影
-http://61.221.81.93:8592/http/192.168.1.10:8088/hls/69/811/ch35.m3u8
-#EXTINF:-1 group-title="台灣酒店",緯來綜合
-http://211.23.114.106:8536/http/61.219.99.20:8081/hls/68/810/ch32.m3u8
-#EXTINF:-1 group-title="台灣酒店",緯來綜合
-http://220.134.196.147:8533/http/61.219.99.20:8081/hls/68/810/ch32.m3u8
-#EXTINF:-1 group-title="台灣酒店",緯來綜合
-http://61.221.81.93:8557/http/192.168.1.10:8088/hls/68/810/ch32.m3u8
-#EXTINF:-1 group-title="台灣酒店",緯來戲劇
-http://211.23.114.106:9332/http/61.219.99.20:8081/hls/69/811/ch33.m3u8
-#EXTINF:-1 group-title="台灣酒店",緯來戲劇
-http://220.134.196.147:8504/http/61.219.99.20:8081/hls/69/811/ch33.m3u8
-#EXTINF:-1 group-title="台灣酒店",緯來戲劇
-http://61.221.81.93:8577/http/192.168.1.10:8088/hls/69/811/ch33.m3u8
-#EXTINF:-1 group-title="台灣酒店",緯來體育
-http://211.23.114.106:8528/http/59.120.8.187:8081/hls/67/809/ch28.m3u8
-#EXTINF:-1 group-title="台灣酒店",緯來體育
-http://220.134.196.147:8553/http/59.120.8.187:8081/hls/67/809/ch28.m3u8
-#EXTINF:-1 group-title="台灣酒店",緯來體育
-http://61.221.81.93:8604/http/192.168.11.67/ch28.m3u8
+http://220.134.196.147:8565/http://59.120.8.187:8081/hls/69/811/ch34.m3u8
+#EXTINF:-1 group-title="台灣酒店",Taiwan Plus
+http://220.134.196.147:8524/http://59.120.8.187:8081/hls/87/80/PtsTaiwanPlus4max.m3u8
+#EXTINF:-1 group-title="台灣酒店",年代新聞
+http://220.134.196.147:8520/http://59.120.8.187:8081/hls/67/809/ch27.m3u8
+#EXTINF:-1 group-title="台灣酒店",東森新聞
+http://220.134.196.147:8527/http://59.120.8.187:8081/hls/63/805/ch10.m3u8
+#EXTINF:-1 group-title="台灣酒店",中天新聞
+http://220.134.196.147:8567/http://59.120.8.187:8081/hls/78/80/ch63max.m3u8
+#EXTINF:-1 group-title="台灣酒店",民視新聞
+http://220.134.196.147:8519/http://59.120.8.187:8081/hls/85/80/FtvNews4max.m3u8
+#EXTINF:-1 group-title="台灣酒店",三立新聞
+http://220.134.196.147:8541/http://59.120.8.187:8081/hls/65/807/ch18.m3u8
+#EXTINF:-1 group-title="台灣酒店",TVBS新聞
+http://220.134.196.147:8542/http://59.120.8.187:8081/hls/75/817/ch59.m3u8
+#EXTINF:-1 group-title="台灣酒店",TVBS
+http://220.134.196.147:8570/http://59.120.8.187:8081/hls/75/817/ch58.m3u8
+#EXTINF:-1 group-title="台灣酒店",非凡新聞
+http://220.134.196.147:8528/http://59.120.8.187:8081/hls/75/817/ch57.m3u8
+#EXTINF:-1 group-title="台灣酒店",非凡商業
+http://220.134.196.147:8511/http://59.120.8.187:8081/hls/74/816/ch56.m3u8
+#EXTINF:-1 group-title="台灣酒店",東森財經
+http://220.134.196.147:8525/http://59.120.8.187:8081/hls/63/805/ch11.m3u8
 #EXTINF:-1 group-title="台灣酒店",寰宇新聞
-http://220.134.196.147:8548/http/61.219.99.20:8081/hls/76/818/ch62.m3u8
-#EXTINF:-1 group-title="台灣酒店",寰宇新聞
-http://61.221.81.93:8585/http/192.168.1.10:8088/hls/76/818/ch62.m3u8
-#EXTINF:-1 group-title="台灣酒店",寰宇新聞
-http://hk.mushui.tk/mqlive/live.php?ip=211.23.114.106&url=http://211.23.114.106:5003/live1222.m3u8
-#EXTINF:-1 group-title="台灣酒店",龍華日韓劇
-http://211.23.114.106:8525/http/61.219.99.20:8068/hls/12/80/cstv12.m3u8
-#EXTINF:-1 group-title="台灣酒店",龍華日韓劇
-http://220.134.196.147:8531/http/61.219.99.20:8068/hls/12/80/cstv12.m3u8
-#EXTINF:-1 group-title="台灣酒店",龍華卡通台
-http://211.23.114.106:8506/http/61.219.99.20:8068/hls/14/80/cstv14.m3u8
-#EXTINF:-1 group-title="台灣酒店",龍華卡通台
-http://220.134.196.147:8568/http/61.219.99.20:8068/hls/14/80/cstv14.m3u8
-#EXTINF:-1 group-title="台灣酒店",龍華偶像劇
-http://211.23.114.106:8515/http/61.219.99.20:8068/hls/11/80/cstv11.m3u8
-#EXTINF:-1 group-title="台灣酒店",龍華偶像劇
-http://220.134.196.147:8562/http/61.219.99.20:8068/hls/11/80/cstv11.m3u8
-#EXTINF:-1 group-title="台灣酒店",龍華電影台
-http://211.23.114.106:8509/http/61.219.99.20:8068/hls/10/80/cstv10.m3u8
-#EXTINF:-1 group-title="台灣酒店",龍華電影台
-http://220.134.196.147:8545/http/61.219.99.20:8068/hls/10/80/cstv10.m3u8
-#EXTINF:-1 group-title="台灣酒店",龍華戲劇台
-http://211.23.114.106:8522/http/61.219.99.20:8068/hls/13/80/cstv13.m3u8
-#EXTINF:-1 group-title="台灣酒店",龍華戲劇台
-http://220.134.196.147:8555/http/61.219.99.20:8068/hls/13/80/cstv13.m3u8
-#EXTINF:-1 group-title="台灣酒店",韓國娛樂台
-http://211.23.114.106:8544/http/61.219.99.20:8092/upload/116/KMTV_TS-1111_1.m3u8
-#EXTINF:-1 group-title="台灣酒店",韓國娛樂台
-http://220.134.196.147:8506/http/61.219.99.20:8092/upload/116/KMTV_TS-1111_1.m3u8
-#EXTINF:-1 group-title="台灣酒店",寵物頻道
-http://211.23.114.106:9360/http/59.120.8.187:8078/hls/40/80/pettv.m3u8
-#EXTINF:-1 group-title="台灣酒店",寵物頻道
-http://220.134.196.147:8532/http/59.120.8.187:8078/hls/40/80/pettv.m3u8
+http://220.134.196.147:8548/http://59.120.8.187:8081/hls/76/818/ch62.m3u8
+#EXTINF:-1 group-title="台灣酒店",壹新聞
+http://220.134.196.147:8501/http://59.120.8.187:8081/hls/66/808/ch24.m3u8
+#EXTINF:-1 group-title="台灣酒店",Bloomberg News
+http://220.134.196.147:8514/http://59.120.8.187:8078/hls/43/80/bloomber.m3u8
+#EXTINF:-1 group-title="台灣酒店",NHK
+http://220.134.196.147:8534/http://59.120.8.187:8081/hls/62/804/ch06.m3u8
 #EXTINF:-1 group-title="台灣酒店",鏡電視新聞台
-http://211.23.114.106:8545/http/61.219.99.20:8092/upload/114/MNEWS_TS-1111_1.m3u8
+http://220.134.196.147:8529/http://59.120.8.187:8092/upload/114/MNEWS_TS-1111_1.m3u8
+#EXTINF:-1 group-title="台灣酒店",好萊塢電影
+http://220.134.196.147:8543/http://59.120.8.187:8081/hls/74/816/ch55.m3u8
+#EXTINF:-1 group-title="台灣酒店",緯來電影
+http://220.134.196.147:8574/http://59.120.8.187:8081/hls/69/811/ch35.m3u8
+#EXTINF:-1 group-title="台灣酒店",NHK WORLD
+http://220.134.196.147:8545/http://61.63.32.3:5999/hls/38/80/nhkworld.m3u8
+#EXTINF:-1 group-title="台灣酒店",HBO
+http://220.134.196.147:9520/http://59.120.8.187:8081/hls/71/813/ch41.m3u8
+#EXTINF:-1 group-title="台灣酒店",AXN
+http://220.134.196.147:8526/http://59.120.8.187:8081/hls/71/813/ch43.m3u8
+#EXTINF:-1 group-title="台灣酒店",CINEMAX
+http://220.134.196.147:8535/http://59.120.8.187:8081/hls/71/813/ch42.m3u8
+#EXTINF:-1 group-title="台灣酒店",AMC 電影台
+http://220.134.196.147:8521/http://59.120.8.187:8092/upload/115/AMC_TS-1111_1.m3u8
+#EXTINF:-1 group-title="台灣酒店",寵物頻道
+http://220.134.196.147:8532/http://59.120.8.187:8078/hls/40/80/pettv.m3u8
+#EXTINF:-1 group-title="台灣酒店",緯來育樂
+http://220.134.196.147:8547/http://59.120.8.187:8081/hls/68/810/ch30.m3u8
+#EXTINF:-1 group-title="台灣酒店",緯來體育
+http://220.134.196.147:8553/http://59.120.8.187:8081/hls/67/809/ch28.m3u8
+#EXTINF:-1 group-title="台灣酒店",博斯運動2台
+http://220.134.196.147:8564/http://61.63.32.3:5999/upload/khh49/KHH49.m3u8
+#EXTINF:-1 group-title="台灣酒店",momo綜合台
+http://220.134.196.147:8575/http://59.120.8.187:8081/hls/76/818/momo_max.m3u8
+#EXTINF:-1 group-title="台灣酒店",DAZN 1
+http://220.134.196.147:9120/http://59.120.8.187:8078/hls/25/80/esport.m3u8
+#EXTINF:-1 group-title="台灣酒店",DAZN 2
+http://220.134.196.147:9119/http://59.120.8.187:8078/hls/26/80/esport2.m3u8
+#EXTINF:-1 group-title="台灣酒店",廈門衛視
+http://220.134.196.147:8573/http://59.120.8.187:8078/hls/42/80/xmtv.m3u8
+#EXTINF:-1 group-title="台灣酒店",CCTV4-中央衛視
+http://220.134.196.147:8559/http://59.120.8.187:8078/hls/42/80/cctv4.m3u8
+#EXTINF:-1 group-title="台灣酒店",海峽衛視
+http://220.134.196.147:8550/http://59.120.8.187:8078/hls/42/80/fjttv.m3u8
+#EXTINF:-1 group-title="台灣酒店",浙江衛視
+http://220.134.196.147:8512/http://59.120.8.187:8078/hls/41/80/zhejiang.m3u8
+#EXTINF:-1 group-title="台灣酒店",東方衛視
+http://220.134.196.147:8558/http://59.120.8.187:8078/hls/41/80/east.m3u8
+#EXTINF:-1 group-title="台灣酒店",湖南衛視
+http://220.134.196.147:8563/http://59.120.8.187:8078/hls/41/80/huana.m3u8
+#EXTINF:-1 group-title="台灣酒店",鳯凰衛視資訊
+http://220.134.196.147:8577/http://59.120.8.187:8078/hls/20/80/phoenixif.m3u8
+#EXTINF:-1 group-title="台灣酒店",鳯凰衛視中文
+http://220.134.196.147:8578/http://59.120.8.187:8078/hls/21/80/phoenixch.m3u8
+
+#EXTINF:-1 group-title="台灣酒店",台視
+http://211.23.114.106:8503/http://59.120.8.187:8081/hls/86/80/Ttv4max.m3u8 
+#EXTINF:-1 group-title="台灣酒店",中視
+http://211.23.114.106:8534/http://59.120.8.187:8081/hls/88/80/Ctv4max.m3u8 
+#EXTINF:-1 group-title="台灣酒店",華視
+http://211.23.114.106:8504/http://59.120.8.187:8081/hls/89/80/Cts4max.m3u8 
+#EXTINF:-1 group-title="台灣酒店",民視
+http://211.23.114.106:8501/http://59.120.8.187:8081/hls/85/80/Ftv4max.m3u8 
+#EXTINF:-1 group-title="台灣酒店",公視
+http://211.23.114.106:8550/http://59.120.8.187:8081/hls/87/80/Pts4max.m3u8 
+#EXTINF:-1 group-title="台灣酒店",人間衛視
+http://211.23.114.106:9306/http://59.120.8.187:8081/hls/69/811/ch36.m3u8 
+#EXTINF:-1 group-title="台灣酒店",大愛電視
+http://211.23.114.106:9307/http://59.120.8.187:8081/hls/73/815/ch52.m3u8 
+#EXTINF:-1 group-title="台灣酒店",好消息GOOD TV
+http://211.23.114.106:9308/http://59.120.8.187:8081/hls/74/816/ch53.m3u8 
+#EXTINF:-1 group-title="台灣酒店",Trace Sport Stars
+http://211.23.114.106:8524/http://59.120.8.187:8092/upload/212/TraceS_TS-1111_1.m3u8 
+#EXTINF:-1 group-title="台灣酒店",DISCOVERY
+http://211.23.114.106:9310/http://59.120.8.187:8081/hls/71/813/ch44.m3u8 
+#EXTINF:-1 group-title="台灣酒店",旅遊生活
+http://211.23.114.106:9311/http://59.120.8.187:8081/hls/70/812/ch38.m3u8 
+#EXTINF:-1 group-title="台灣酒店",動物星球
+http://211.23.114.106:9312/http://59.120.8.187:8081/hls/70/812/ch37.m3u8 
+#EXTINF:-1 group-title="台灣酒店",亞洲旅遊
+http://211.23.114.106:8519/http://59.120.8.187:8081/hls/76/818/ch61.m3u8 
+#EXTINF:-1 group-title="台灣酒店",MOMO親子台
+http://211.23.114.106:8516/http://59.120.8.187:8081/hls/90/80/momo4max.m3u8 
+#EXTINF:-1 group-title="台灣酒店",東森幼幼
+http://211.23.114.106:8551/http://59.120.8.187:8081/hls/63/805/ch09.m3u8 
+#EXTINF:-1 group-title="台灣酒店",公視兒少台
+http://211.23.114.106:8520/http://61.63.32.3:5999/upload/khh33/KHH33.m3u8 
+#EXTINF:-1 group-title="台灣酒店",緯來綜合
+http://211.23.114.106:8536/http://59.120.8.187:8081/hls/68/810/ch32.m3u8 
+#EXTINF:-1 group-title="台灣酒店",八大第一
+http://211.23.114.106:9318/http://59.120.8.187:8081/hls/66/808/ch22.m3u8 
+#EXTINF:-1 group-title="台灣酒店",八大綜合
+http://211.23.114.106:8521/http://59.120.8.187:8081/hls/66/808/ch21.m3u8 
+#EXTINF:-1 group-title="台灣酒店",三立台灣
+http://211.23.114.106:9378/http://59.120.8.187:8081/hls/65/807/ch20.m3u8 
+#EXTINF:-1 group-title="台灣酒店",三立都會
+http://211.23.114.106:8538/http://59.120.8.187:8081/hls/65/807/ch19.m3u8 
+#EXTINF:-1 group-title="台灣酒店",韓國娛樂台
+http://211.23.114.106:8544/http://59.120.8.187:8092/upload/116/KMTV_TS-1111_1.m3u8 
+#EXTINF:-1 group-title="台灣酒店",東森綜合
+http://211.23.114.106:8535/http://59.120.8.187:8081/hls/63/805/ch12.m3u8 
+#EXTINF:-1 group-title="台灣酒店",超視
+http://211.23.114.106:9381/http://59.120.8.187:8081/hls/64/806/ch14.m3u8 
+#EXTINF:-1 group-title="台灣酒店",中天綜合
+http://211.23.114.106:9325/http://59.120.8.187:8081/hls/67/809/ch25.m3u8 
+#EXTINF:-1 group-title="台灣酒店",中天娛樂
+http://211.23.114.106:8508/http://59.120.8.187:8081/hls/67/809/ch26.m3u8 
+#EXTINF:-1 group-title="台灣酒店",東風衛視
+http://211.23.114.106:9327/http://59.120.8.187:8081/hls/68/810/ch31.m3u8 
+#EXTINF:-1 group-title="台灣酒店",MUCH TV
+http://211.23.114.106:9328/http://59.120.8.187:8081/hls/72/814/ch45.m3u8 
+#EXTINF:-1 group-title="台灣酒店",東森戲劇
+http://211.23.114.106:8552/http://59.120.8.187:8081/hls/64/806/ch13.m3u8 
+#EXTINF:-1 group-title="台灣酒店",八大戲劇
+http://211.23.114.106:9330/http://59.120.8.187:8081/hls/66/808/ch23.m3u8 
+#EXTINF:-1 group-title="台灣酒店",TVBS歡樂
+http://211.23.114.106:8553/http://59.120.8.187:8081/hls/65/807/ch17.m3u8 
+#EXTINF:-1 group-title="台灣酒店",緯來戲劇
+http://211.23.114.106:9332/http://59.120.8.187:8081/hls/69/811/ch33.m3u8 
+#EXTINF:-1 group-title="台灣酒店",JET綜合
+http://211.23.114.106:8522/http://61.63.32.3:5999/upload/khh07/KHH07.m3u8 
+#EXTINF:-1 group-title="台灣酒店",國興衛視
+http://211.23.114.106:8525/http://61.63.32.3:5999/upload/khh32/KHH32.m3u8 
+#EXTINF:-1 group-title="台灣酒店",中視菁采台
+http://211.23.114.106:8515/http://61.63.32.3:5999/upload/khh41/KHH41.m3u8 
+#EXTINF:-1 group-title="台灣酒店",緯來日本
+http://211.23.114.106:9336/http://59.120.8.187:8081/hls/69/811/ch34.m3u8 
+#EXTINF:-1 group-title="台灣酒店",Taiwan Plus
+http://211.23.114.106:8514/http://59.120.8.187:8081/hls/87/80/PtsTaiwanPlus4max.m3u8 
+#EXTINF:-1 group-title="台灣酒店",年代新聞
+http://211.23.114.106:9338/http://59.120.8.187:8081/hls/67/809/ch27.m3u8 
+#EXTINF:-1 group-title="台灣酒店",東森新聞
+http://211.23.114.106:9339/http://59.120.8.187:8081/hls/63/805/ch10.m3u8 
+#EXTINF:-1 group-title="台灣酒店",中天新聞
+http://211.23.114.106:9340/http://59.120.8.187:8081/hls/78/80/ch63max.m3u8 
+#EXTINF:-1 group-title="台灣酒店",民視新聞
+http://211.23.114.106:9341/http://59.120.8.187:8081/hls/85/80/FtvNews4max.m3u8 
+#EXTINF:-1 group-title="台灣酒店",三立新聞
+http://211.23.114.106:8507/http://59.120.8.187:8081/hls/65/807/ch18.m3u8 
+#EXTINF:-1 group-title="台灣酒店",TVBS新聞
+http://211.23.114.106:8510/http://59.120.8.187:8081/hls/75/817/ch59.m3u8 
+#EXTINF:-1 group-title="台灣酒店",TVBS
+http://211.23.114.106:9344/http://59.120.8.187:8081/hls/75/817/ch58.m3u8 
+#EXTINF:-1 group-title="台灣酒店",非凡新聞
+http://211.23.114.106:9345/http://59.120.8.187:8081/hls/75/817/ch57.m3u8 
+#EXTINF:-1 group-title="台灣酒店",非凡商業
+http://211.23.114.106:9346/http://59.120.8.187:8081/hls/74/816/ch56.m3u8 
+#EXTINF:-1 group-title="台灣酒店",東森財經
+http://211.23.114.106:9347/http://59.120.8.187:8081/hls/63/805/ch11.m3u8 
+#EXTINF:-1 group-title="台灣酒店",寰宇新聞
+http://211.23.114.106:9348/http://59.120.8.187:8081/hls/76/818/ch62.m3u8 
+#EXTINF:-1 group-title="台灣酒店",壹新聞
+http://211.23.114.106:9349/http://59.120.8.187:8081/hls/66/808/ch24.m3u8 
+#EXTINF:-1 group-title="台灣酒店",Bloomberg News
+http://211.23.114.106:9350/http://59.120.8.187:8078/hls/43/80/bloomber.m3u8 
+#EXTINF:-1 group-title="台灣酒店",NHK世界
+http://211.23.114.106:9351/http://59.120.8.187:8081/hls/62/804/ch06.m3u8 
 #EXTINF:-1 group-title="台灣酒店",鏡電視新聞台
-http://220.134.196.147:8561/http/61.219.99.20:8092/upload/114/MNEWS_TS-1111_1.m3u8
+http://211.23.114.106:8545/http://59.120.8.187:8092/upload/114/MNEWS_TS-1111_1.m3u8 
+#EXTINF:-1 group-title="台灣酒店",好萊塢電影
+http://211.23.114.106:9353/http://59.120.8.187:8081/hls/74/816/ch55.m3u8 
+#EXTINF:-1 group-title="台灣酒店",緯來電影
+http://211.23.114.106:9354/http://59.120.8.187:8081/hls/69/811/ch35.m3u8 
+#EXTINF:-1 group-title="台灣酒店",NHK WORLD
+http://211.23.114.106:8509/http://61.63.32.3:5999/hls/38/80/nhkworld.m3u8 
+#EXTINF:-1 group-title="台灣酒店",HBO
+http://211.23.114.106:9356/http://59.120.8.187:8081/hls/71/813/ch41.m3u8 
+#EXTINF:-1 group-title="台灣酒店",AXN
+http://211.23.114.106:9357/http://59.120.8.187:8081/hls/71/813/ch43.m3u8 
+#EXTINF:-1 group-title="台灣酒店",CINEMAX
+http://211.23.114.106:9358/http://59.120.8.187:8081/hls/71/813/ch42.m3u8 
+#EXTINF:-1 group-title="台灣酒店",AMC 電影台
+http://211.23.114.106:9359/http://59.120.8.187:8092/upload/115/AMC_TS-1111_1.m3u8 
+#EXTINF:-1 group-title="台灣酒店",寵物頻道
+http://211.23.114.106:9360/http://59.120.8.187:8078/hls/40/80/pettv.m3u8 
+#EXTINF:-1 group-title="台灣酒店",緯來育樂
+http://211.23.114.106:8513/http://59.120.8.187:8081/hls/68/810/ch30.m3u8 
+#EXTINF:-1 group-title="台灣酒店",緯來體育
+http://211.23.114.106:8528/http://59.120.8.187:8081/hls/67/809/ch28.m3u8 
+#EXTINF:-1 group-title="台灣酒店",博斯運動2台
+http://211.23.114.106:8518/http://61.63.32.3:5999/upload/khh49/KHH49.m3u8 
+#EXTINF:-1 group-title="台灣酒店",momo綜合台
+http://211.23.114.106:8511/http://59.120.8.187:8081/hls/76/818/momo_max.m3u8 
+#EXTINF:-1 group-title="台灣酒店",DAZN 1
+http://211.23.114.106:8523/http://59.120.8.187:8078/hls/25/80/esport.m3u8 
+#EXTINF:-1 group-title="台灣酒店",DAZN 2
+http://211.23.114.106:8555/http://59.120.8.187:8078/hls/26/80/esport2.m3u8 
+#EXTINF:-1 group-title="台灣酒店",廈門衛視
+http://211.23.114.106:8530/http://59.120.8.187:8078/hls/42/80/xmtv.m3u8 
+#EXTINF:-1 group-title="台灣酒店",CCTV4-中央衛視
+http://211.23.114.106:8542/http://59.120.8.187:8078/hls/42/80/cctv4.m3u8 
+#EXTINF:-1 group-title="台灣酒店",海峽衛視
+http://211.23.114.106:8554/http://59.120.8.187:8078/hls/42/80/fjttv.m3u8 
+#EXTINF:-1 group-title="台灣酒店",浙江衛視
+http://211.23.114.106:8537/http://59.120.8.187:8078/hls/41/80/zhejiang.m3u8 
+#EXTINF:-1 group-title="台灣酒店",東方衛視
+http://211.23.114.106:8517/http://59.120.8.187:8078/hls/41/80/east.m3u8 
+#EXTINF:-1 group-title="台灣酒店",湖南衛視
+http://211.23.114.106:8502/http://59.120.8.187:8078/hls/41/80/huana.m3u8 
+#EXTINF:-1 group-title="台灣酒店",鳯凰衛視資訊
+http://211.23.114.106:8548/http://59.120.8.187:8078/hls/20/80/phoenixif.m3u8 
+#EXTINF:-1 group-title="台灣酒店",鳯凰衛視中文
+http://211.23.114.106:8549/http://59.120.8.187:8078/hls/21/80/phoenixch.m3u8
 
 #EXTINF:-1 group-title="亞太GT",中視
 http://211.23.95.147:18881/live/dtv1_h265.ts
