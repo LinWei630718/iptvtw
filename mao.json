@@ -901,14 +901,10 @@
       "timeout": 30,
       "playerType": 1
         },
-       {
-      "name": "MQitv220",
-      "api": "csp_MQiTV",
-      "ua": "okhttp",
-      "jar": "./jar/mtv.jar",
-      "ext": "220.134.196.147:1888",
-      "timeout": 30,
-      "playerType": 1
+        {
+            "name": "海馬",
+            "type": 3,
+            "url": "https://tang.hz.cz/api/user?token=35a3f7a2"
         },
         {
             "name": "直播嗅探",
