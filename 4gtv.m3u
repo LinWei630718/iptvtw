@@ -264,8 +264,6 @@ https://litv.go-iptv.ggff.net/litv.php?id=litv-xinchuang19
 https://litv.go-iptv.ggff.net/litv.php?id=litv-xinchuang20
 #EXTINF:-1 tvg-name=龍華經典 group-title="LiTV", 龍華經典 
 https://litv.go-iptv.ggff.net/litv.php?id=litv-xinchuang21
-#EXTINF:-1 tvg-name=台灣戲劇台 group-title="LiTV", 台灣戲劇台 
-https://litv.go-iptv.ggff.net/litv.php?id=litv-xinchuang22
 
 #EXTINF:-1 group-title="LiTV立視" ,緯來日本
 https://hls.iill.top/api/wlrb/index.m3u8
