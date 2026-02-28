@@ -876,6 +876,49 @@ http://211.23.95.147:18881/live/95_h265.ts
 http://211.23.95.147:18881/live/102_h265.ts
 #EXTINF:-1 group-title="亞太GT",壹綜合
 http://211.23.95.147:18881/live/104_h265.ts
+#EXTINF:-1 group-title="亞太GT",NHK World Premium(NHK世界收費電視頻道)
+http://211.23.95.147:18881/live/95_h265.ts
+#EXTINF:-1 group-title="亞太GT",Cna亚洲新聞
+http://211.23.95.147:18881/live/dtv25_h265.ts
+#EXTINF:-1 group-title="亞太GT",CCTV-15音樂
+http://211.23.95.147:18881/live/dtv26_h265.ts
+#EXTINF:-1 group-title="亞太GT",星空衛視
+http://211.23.95.147:18881/live/dtv27_h265.ts
+#EXTINF:-1 group-title="亞太GT",CCTV-14少兒
+http://211.23.95.147:18881/live/dtv28_h265.ts
+#EXTINF:-1 group-title="亞太GT",金鹰卡通
+http://211.23.95.147:18881/live/dtv29_h265.ts
+#EXTINF:-1 group-title="亞太GT",鳳凰衛視中文台
+http://211.23.95.147:18881/live/dtv30_h265.ts
+#EXTINF:-1 group-title="亞太GT",鳳凰衛視資訊台
+http://211.23.95.147:18881/live/dtv31_h265.ts
+#EXTINF:-1 group-title="亞太GT",CCTV-9紀录
+http://211.23.95.147:18881/live/dtv32_h265.ts
+#EXTINF:-1 group-title="亞太GT",海峡衛視
+http://211.23.95.147:18881/live/dtv33_h265.ts
+#EXTINF:-1 group-title="亞太GT",CCTV-4中文國際
+http://211.23.95.147:18881/live/dtv34_h265.ts
+CGTN,http://211.23.95.147:18881/live/dtv35_h265.ts
+#EXTINF:-1 group-title="亞太GT",中國電影頻道北美版
+http://211.23.95.147:18881/live/dtv36_h265.ts
+#EXTINF:-1 group-title="亞太GT",CCTV-娛樂
+http://211.23.95.147:18881/live/dtv37_h265.ts
+#EXTINF:-1 group-title="亞太GT",東方衛視國際
+http://211.23.95.147:18881/live/dtv38_h265.ts
+#EXTINF:-1 group-title="亞太GT",NHK BS(日本放送協會衛星電視頻道)
+http://211.23.95.147:18881/live/dtv39_h265.ts
+#EXTINF:-1 group-title="亞太GT",BS日テレ東(東京電視台衛星電視頻道)
+http://211.23.95.147:18881/live/dtv40_h265.ts
+#EXTINF:-1 group-title="亞太GT",深圳國際
+http://211.23.95.147:18881/live/dtv41_h265.ts
+#EXTINF:-1 group-title="亞太GT",大灣區衛視
+http://211.23.95.147:18881/live/dtv42_h265.ts
+#EXTINF:-1 group-title="亞太GT",厦門衛視
+http://211.23.95.147:18881/live/dtv43_h265.ts
+#EXTINF:-1 group-title="亞太GT",浙江國際
+http://211.23.95.147:18881/live/dtv44_h265.ts
+#EXTINF:-1 group-title="亞太GT",湖南國際
+http://211.23.95.147:18881/live/dtv45_h265.ts
 
 #EXTINF:-1 group-title="電影輪播" ,愛情公寓
 http://74.91.26.218:82/live/vlaqgy.m3u8
