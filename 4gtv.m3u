@@ -1,5 +1,4 @@
-#EXTM3U
-#EXTM3U x-tvg-url="https://epg.946985.xyz/t.xml.gz,https://epg.iill.top/epg.xml,https://bit.ly/a1xepg,https://epg.catvod.com/epg.xml,https://7pal.short.gy/alex-epg,https://bit.ly/a1xepg"
+#EXTM3U url-tvg="https://epg.cdn.loc.cc/xml" catchup="append" catchup-source="?playseek=${(b)yyyyMMddHHmmss}-${(e)yyyyMMddHHmmss}"
 
 #EXTINF:-1 group-title="LiTV立視" ,民視新聞
 http://211.72.174.95:8117/0.ts
@@ -83,6 +82,51 @@ http://cdn10.163189.xyz/163189/ccm
 https://o11.163189.xyz/stream/live/typd/
 #EXTINF:-1 group-title="LiTV立視" ,天映經典
 https://o11.163189.xyz/stream/live/ccm/
+
+#EXTINF:-1 tvg-name="民視影劇台" group-title="LiTV立視",民視影劇台
+https://cdn12.178.indevs.in/163189/73d93f1c22fa91d7
+#EXTINF:-1 tvg-name="公視戲劇" group-title="LiTV立視",公視戲劇
+https://cdn12.178.indevs.in/163189/2973b910e7719c08
+#EXTINF:-1 tvg-name="采昌影劇台" group-title="LiTV立視",采昌影劇台
+https://cdn12.178.indevs.in/163189/0a6204ed0261460c
+#EXTINF:-1 tvg-name="靖天映畫" group-title="LiTV立視",靖天映畫
+https://cdn12.178.indevs.in/163189/bd4752bd7828b2bf
+#EXTINF:-1 tvg-name="靖天戲劇台" group-title="LiTV立視",靖天戲劇台
+https://cdn12.178.indevs.in/163189/177d541552f78003
+#EXTINF:-1 tvg-name="靖天電影台" group-title="LiTV立視",靖天電影台
+https://cdn12.178.indevs.in/163189/ed33509e03e78c7a
+#EXTINF:-1 tvg-name="靖洋戲劇台" group-title="LiTV立視",靖洋戲劇台
+https://cdn12.178.indevs.in/163189/25084ef5a2662aad
+#EXTINF:-1 tvg-name="影迷數位電影台" group-title="LiTV立視",影迷數位電影台
+https://cdn12.178.indevs.in/163189/a643783ec587540e
+#EXTINF:-1 tvg-name="amc電影台" group-title="LiTV立視",amc電影台
+https://cdn12.178.indevs.in/163189/0bcf9bb8c452e56a
+#EXTINF:-1 tvg-name="CinemaWorld頻道" group-title="LiTV立視",CinemaWorld
+https://cdn12.178.indevs.in/163189/6086cfe7a9756110
+#EXTINF:-1 tvg-name="My Cinema Europe" group-title="LiTV立視",My Cinema Europe
+https://cdn12.178.indevs.in/163189/5bda99f1c049edef
+#EXTINF:-1 tvg-name="經典電影台" group-title="LiTV立視",經典電影台
+https://cdn12.178.indevs.in/163189/61b8ea35ffce4630
+#EXTINF:-1 tvg-name="電影原聲台CMusic" group-title="LiTV立視",CMusic
+https://cdn12.178.indevs.in/163189/d396cb84b6c89889
+#EXTINF:-1 tvg-name="DreamWorks" group-title="LiTV立視",DreamWorks夢工廠動畫
+https://cdn12.178.indevs.in/163189/10395eb942c5a9b9
+#EXTINF:-1 tvg-name="精選動漫台" group-title="LiTV立視",精選動漫台
+https://cdn12.178.indevs.in/163189/e1d66f74bd2d4894
+#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",金光布袋戲
+https://cdn12.178.indevs.in/163189/5479c245d9d580b5
+#EXTINF:-1 tvg-name="龍華電影" group-title="LiTV立視",龍華電影
+http://cdn8.veryfast.filegear-sg.me/163189/lhdy
+#EXTINF:-1 tvg-name="龍華經典" group-title="LiTV立視",龍華經典
+http://cdn8.veryfast.filegear-sg.me/163189/lhjd
+#EXTINF:-1 tvg-name="龍華偶像" group-title="LiTV立視",龍華偶像
+http://cdn8.veryfast.filegear-sg.me/163189/lhox
+#EXTINF:-1 tvg-name="龍華日韓" group-title="LiTV立視",龍華日韓
+http://cdn8.veryfast.filegear-sg.me/163189/lhrh
+#EXTINF:-1 tvg-name="龍華戲劇" group-title="LiTV立視",龍華戲劇
+http://cdn8.veryfast.filegear-sg.me/163189/lhxj
+#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",金光布袋戲
+http://o11.163189.xyz/stream/live/jgbdx/
 
 #EXTINF:-1 group-title="LiTV立視" ,緯來電影
 https://smt.1678520.xyz/163189/145487bee05856fc
