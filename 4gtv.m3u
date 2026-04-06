@@ -129,19 +129,42 @@ http://cdn8.veryfast.filegear-sg.me/163189/lhxj
 http://o11.163189.xyz/stream/live/jgbdx/
 
 #EXTINF:-1 group-title="LiTV立視" ,緯來電影
-https://smt.1678520.xyz/163189/145487bee05856fc
+https://smt.1678520.xyz/163189/602e9465658d4f8c
 #EXTINF:-1 group-title="LiTV立視" ,緯來戲劇
-https://smt.1678520.xyz/163189/3586bd154f561caa
+https://smt.1678520.xyz/163189/ab657380c65c1fd1
 #EXTINF:-1 group-title="LiTV立視" ,緯來體育
-https://smt.1678520.xyz/163189/286f8eb30448a8e8
+https://smt.1678520.xyz/163189/b10b2645c6d9de2b
 #EXTINF:-1 group-title="LiTV立視" ,龍祥時代
-https://smt.1678520.xyz/163189/76e7d8326be4c1bb
+https://smt.1678520.xyz/163189/6963a2247128286b
 #EXTINF:-1 group-title="LiTV立視" ,東森電影
-https://smt.1678520.xyz/163189/a2a1ea789e237e18
+https://smt.1678520.xyz/163189/a2c09ea65fb10aa2
 #EXTINF:-1 group-title="LiTV立視" ,東森戲劇
-https://smt.1678520.xyz/163189/2824421ea53c4891
+https://smt.1678520.xyz/163189/f60cd3f14b06dabc
 #EXTINF:-1 group-title="LiTV立視" ,東森洋片
-https://smt.1678520.xyz/163189/c0e7a31a1ec220fd
+https://smt.1678520.xyz/163189/cd69d6ff4e8217c7
+
+#EXTINF:-1 group-title="LiTV立視",東森電影
+https://smt.pixman.us.ci/proxy/ff77d549ea9b89db.m3u8
+#EXTINF:-1 group-title="LiTV立視",東森洋片
+https://smt.pixman.us.ci/proxy/f9cf8471c7491eb9.m3u8
+#EXTINF:-1 group-title="LiTV立視",龍祥時代
+https://smt.pixman.us.ci/proxy/19edb2efac6d0b15.m3u8
+#EXTINF:-1 group-title="LiTV立視",美亞電影
+https://smt.pixman.us.ci/proxy/ecf481c18cc23fd4.m3u8
+#EXTINF:-1 group-title="LiTV立視",年代新聞
+https://smt.pixman.us.ci/proxy/bc7685dc95fd47bd.m3u8
+#EXTINF:-1 group-title="LiTV立視",天映頻道
+https://smt.pixman.us.ci/proxy/ef4e3e8fbf45f178.m3u8
+#EXTINF:-1 group-title="LiTV立視",緯來電影
+https://smt.pixman.us.ci/proxy/fcd99f4f15ad3077.m3u8
+#EXTINF:-1 group-title="LiTV立視",AXN
+https://smt.pixman.us.ci/proxy/24add3f950a39908.m3u8
+#EXTINF:-1 group-title="LiTV立視",美亞電影-HK
+https://smt.pixman.us.ci/proxy/c5d58c41c9fd717e.m3u8
+#EXTINF:-1 group-title="LiTV立視",中天新聞
+http://154.219.125.7:8088/iptv.php?key=xiangxiws2026&id=cti_news
+#EXTINF:-1 group-title="LiTV立視",非凡新聞
+http://154.219.125.7:8088/iptv.php?key=xiangxiws2026&id=unique_business_news
 
 #EXTINF:-1 tvg-id="中天新闻" tvg-name="中天新聞" tvg-logo="https://gcore.jsdelivr.net/gh/taksssss/tv/icon/中天新闻.png" group-title="LITV立視",中天新聞
 https://litv.tzh911.qzz.io/litv.php?id=4gtv-4gtv009&token=pixman
