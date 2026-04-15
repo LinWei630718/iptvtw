@@ -1020,6 +1020,51 @@ http://211.23.95.147:18881/live/dtv44_h265.ts
 #EXTINF:-1 group-title="亞太GT",湖南國際
 http://211.23.95.147:18881/live/dtv45_h265.ts
 
+#EXTINF:-1 group-title="油管直播",四季線上
+https://m.youtube.com/watch?v=GjXBXz5dl6E
+#EXTINF:-1 group-title="油管直播",TVBS新聞
+https://www.youtube.com/watch?v=m_dhMSvUCIc
+#EXTINF:-1 group-title="油管直播",民視新聞
+https://www.youtube.com/watch?v=ylYJSBUgaMA
+#EXTINF:-1 group-title="油管直播",三立新聞
+https://www.youtube.com/watch?v=QsGswQvRmtU
+#EXTINF:-1 group-title="油管直播",三立新聞網
+https://www.youtube.com/watch?v=XtllcS--JCs
+#EXTINF:-1 group-title="油管直播",三立LIVE
+https://www.youtube.com/watch?v=YpnpivjRr7U
+#EXTINF:-1 group-title="油管直播",三立INEW
+https://www.youtube.com/watch?v=kMwoV2js-B4
+#EXTINF:-1 group-title="油管直播",三立財經
+https://www.youtube.com/watch?v=1mbhK0xfohY
+#EXTINF:-1 group-title="油管直播",中天新聞
+https://www.youtube.com/watch?v=vr3XyVCR4T0
+#EXTINF:-1 group-title="油管直播",東森新聞
+https://www.youtube.com/watch?v=V1p33hqPrUk
+#EXTINF:-1 group-title="油管直播",東森財經
+https://www.youtube.com/watch?v=1I2iq41Akmo
+#EXTINF:-1 group-title="油管直播",華視新聞
+https://www.youtube.com/watch?v=wM0g8EoUZ_E
+#EXTINF:-1 group-title="油管直播",中視新聞
+https://m.youtube.com/watch?v=baDV1O5EBP0
+#EXTINF:-1 group-title="油管直播",台視新聞
+https://www.youtube.com/watch?v=xL0ch83RAK8
+#EXTINF:-1 group-title="油管直播",寰宇新聞
+https://www.youtube.com/watch?v=6IquAgfvYmc
+#EXTINF:-1 group-title="油管直播",寰宇新聞1
+https://www.youtube.com/watch?v=5SH3FDMyMzg
+#EXTINF:-1 group-title="油管直播",寰宇新聞台灣
+https://www.youtube.com/watch?v=w87VGpgd90U
+#EXTINF:-1 group-title="油管直播",寰宇財經
+https://www.youtube.com/watch?v=WTRQiVWK1jY
+#EXTINF:-1 group-title="油管直播",鏡新聞
+https://www.youtube.com/watch?v=5n0y6b0Q25o
+#EXTINF:-1 group-title="油管直播",公視新聞
+https://www.youtube.com/watch?v=quwqlazU-c8
+#EXTINF:-1 group-title="油管直播",公共電視
+https://www.youtube.com/watch?v=C6gYqSHLRw4
+#EXTINF:-1 group-title="油管直播",非凡財經
+https://www.youtube.com/watch?v=xLqt2p6Dowo
+
 #EXTINF:-1 group-title="電影輪播" ,愛情公寓
 http://74.91.26.218:82/live/vlaqgy.m3u8
 #EXTINF:-1 group-title="電影輪播" ,喜劇影院
