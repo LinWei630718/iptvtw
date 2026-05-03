@@ -947,11 +947,11 @@
       "playerType": 1
         },
        {
-      "name": "MQitv60.250.210.55(飯店)",
+      "name": "MQitv60.250.121.217(飯店)",
       "api": "csp_MQiTV",
       "ua": "okhttp",
       "jar": "./jar/mtv.jar",
-      "ext": "60.250.210.55:1888",
+      "ext": "60.250.121.217:888",
       "timeout": 30,
       "playerType": 1
         },
