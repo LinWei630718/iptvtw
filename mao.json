@@ -956,6 +956,15 @@
       "playerType": 1
         },
        {
+      "name": "MQitv59.124.81.19(飯店)",
+      "api": "csp_MQiTV",
+      "ua": "okhttp",
+      "jar": "./jar/mtv.jar",
+      "ext": "59.124.81.19:888",
+      "timeout": 30,
+      "playerType": 1
+        },
+       {
       "name": "MQitv123.51.229.128(藍山飯店)",
       "api": "csp_MQiTV",
       "ua": "okhttp",
