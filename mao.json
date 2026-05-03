@@ -911,7 +911,7 @@
     ],
         "lives": [
         {
-      "name": "MQitv61(瑞穗天合)",
+      "name": "MQitv61.63.19.241(瑞穗天合)",
       "api": "csp_MQiTV",
       "ua": "okhttp",
       "jar": "./jar/mtv.jar",
@@ -920,7 +920,7 @@
       "playerType": 1
         },
         {
-      "name": "MQitv123(藍山飯店)",
+      "name": "MQitv123.51.149.68(藍山飯店)",
       "api": "csp_MQiTV",
       "ua": "okhttp",
       "jar": "./jar/mtv.jar",
@@ -929,7 +929,7 @@
       "playerType": 1
         },
         {
-      "name": "MQitv61(台灣酒店)",
+      "name": "MQitv61.216.26.165(台灣酒店)",
       "api": "csp_MQiTV",
       "ua": "okhttp",
       "jar": "./jar/mtv.jar",
@@ -938,7 +938,7 @@
       "playerType": 1
         },
        {
-      "name": "MQitv60(藍山飯店)",
+      "name": "MQitv60.250.121.103(藍山飯店)",
       "api": "csp_MQiTV",
       "ua": "okhttp",
       "jar": "./jar/mtv.jar",
@@ -947,7 +947,16 @@
       "playerType": 1
         },
        {
-      "name": "123MQitv(藍山飯店)",
+      "name": "MQitv60.250.210.55(飯店)",
+      "api": "csp_MQiTV",
+      "ua": "okhttp",
+      "jar": "./jar/mtv.jar",
+      "ext": "60.250.210.55:1888",
+      "timeout": 30,
+      "playerType": 1
+        },
+       {
+      "name": "MQitv123.51.229.128(藍山飯店)",
       "api": "csp_MQiTV",
       "ua": "okhttp",
       "jar": "./jar/mtv.jar",
