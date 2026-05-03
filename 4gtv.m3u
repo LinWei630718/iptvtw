@@ -105,6 +105,53 @@ http://125.227.210.55:1085/VideoInput/play.ts
 http://125.227.210.55:1086/VideoInput/play.ts
 #EXTINF:-1 group-title="LiTV立視" ,東森超視
 http://125.227.210.55:1087/VideoInput/play.ts
+#EXTINF:-1 group-title="LiTV立視" ,HBO
+http://125.227.210.55:3013/VideoInput/play.ts
+#EXTINF:-1 group-title="LiTV立視" ,民視新聞
+http://125.227.210.55:3017/VideoInput/play.ts
+#EXTINF:-1 group-title="LiTV立視" ,台視
+http://125.227.210.55:3018/VideoInput/play.ts
+#EXTINF:-1 group-title="LiTV立視" ,三立台灣
+http://125.227.210.55:3020/VideoInput/play.ts
+#EXTINF:-1 group-title="LiTV立視" ,三立新聞
+http://125.227.210.55:3022/VideoInput/play.ts
+#EXTINF:-1 group-title="LiTV立視" ,公視
+http://125.227.210.55:3024/VideoInput/play.ts
+#EXTINF:-1 group-title="LiTV立視" ,CNN
+http://125.227.210.55:3026/VideoInput/play.ts
+#EXTINF:-1 group-title="LiTV立視" ,CN卡通頻道
+http://125.227.210.55:3027/VideoInput/play.ts
+#EXTINF:-1 group-title="LiTV立視" ,中天娛樂
+http://125.227.210.55:3044/VideoInput/play.ts
+#EXTINF:-1 group-title="LiTV立視" ,TVBS新聞
+http://125.227.210.55:3046/VideoInput/play.ts
+#EXTINF:-1 group-title="LiTV立視" ,TVBS歡樂
+http://125.227.210.55:3047/VideoInput/play.ts
+#EXTINF:-1 group-title="LiTV立視" ,TVBS
+http://125.227.210.55:3048/VideoInput/play.ts
+#EXTINF:-1 group-title="LiTV立視" ,中視
+http://125.227.210.55:3049/VideoInput/play.ts
+#EXTINF:-1 group-title="LiTV立視" ,東森電影
+http://125.227.210.55:3052/VideoInput/play.ts
+#EXTINF:-1 group-title="LiTV立視" ,動物星球
+http://125.227.210.55:3054/VideoInput/play.ts
+#EXTINF:-1 group-title="LiTV立視" ,東森洋片
+http://125.227.210.55:3055/VideoInput/play.ts
+#EXTINF:-1 group-title="LiTV立視" ,ANIMAX
+http://125.227.210.55:3056/VideoInput/play.ts
+#EXTINF:-1 group-title="LiTV立視" ,博斯高球I
+http://125.227.210.55:3059/VideoInput/play.ts
+#EXTINF:-1 group-title="LiTV立視" ,博斯網球
+http://125.227.210.55:3060/VideoInput/play.ts
+#EXTINF:-1 group-title="LiTV立視" ,博斯運動II
+http://125.227.210.55:3061/VideoInput/play.ts
+#EXTINF:-1 group-title="LiTV立視" ,東森洋片
+http://125.227.210.55:3078/VideoInput/play.ts
+#EXTINF:-1 group-title="LiTV立視" ,中視新聞
+http://125.227.210.55:3079/VideoInput/play.ts
+#EXTINF:-1 group-title="LiTV立視" ,中視經典
+http://125.227.210.55:3080/VideoInput/play.ts
+
 #EXTINF:-1 group-title="LiTV立視" ,民視第一台
 http://156.238.248.80:5566/4gtv-live403/index.m3u8?token=SDzCnf82ZVmlnUsxT0jIYSUyIRFxUGz3eC1ayPBZ0NvI8ZsakxSQPXftWLdRLGhD&proxy=true
 #EXTINF:-1 group-title="LiTV立視" ,民視第一台
