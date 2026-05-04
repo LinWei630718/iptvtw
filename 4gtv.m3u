@@ -199,6 +199,10 @@ http://125.227.210.55:4050/VideoInput/play.ts
 http://125.227.210.55:4051/VideoInput/play.ts
 #EXTINF:-1 group-title="LiTV立視" ,東森幼幼
 http://125.227.210.55:4052/VideoInput/play.ts
+#EXTINF:-1 group-title="LiTV立視" ,緯來體育
+http://125.227.210.55:7155/VideoInput/play.ts
+#EXTINF:-1 group-title="LiTV立視" ,民視
+http://125.227.210.55:8093/VideoInput/play.ts
 #EXTINF:-1 group-title="LiTV立視" ,NHK BS
 http://125.227.210.55:8210/VideoInput/play.ts
 #EXTINF:-1 group-title="LiTV立視" ,BS0テレ
