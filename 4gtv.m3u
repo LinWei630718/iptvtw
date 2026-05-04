@@ -151,6 +151,36 @@ http://125.227.210.55:3078/VideoInput/play.ts
 http://125.227.210.55:3079/VideoInput/play.ts
 #EXTINF:-1 group-title="LiTV立視" ,中視經典
 http://125.227.210.55:3080/VideoInput/play.ts
+#EXTINF:-1 group-title="LiTV立視" ,中視菁采
+http://125.227.210.55:3081/VideoInput/play.ts
+#EXTINF:-1 group-title="LiTV立視" ,公視台語
+http://125.227.210.55:3082/VideoInput/play.ts
+#EXTINF:-1 group-title="LiTV立視" ,Taiwan Plus
+http://125.227.210.55:3083/VideoInput/play.ts
+#EXTINF:-1 group-title="LiTV立視" ,民視第一台
+http://125.227.210.55:3084/VideoInput/play.ts
+#EXTINF:-1 group-title="LiTV立視" ,民視台灣台
+http://125.227.210.55:3085/VideoInput/play.ts
+#EXTINF:-1 group-title="LiTV立視" ,小公視
+http://125.227.210.55:3086/VideoInput/play.ts
+#EXTINF:-1 group-title="LiTV立視" ,客家電視
+http://125.227.210.55:3087/VideoInput/play.ts
+#EXTINF:-1 group-title="LiTV立視" ,原住民電視
+http://125.227.210.55:3088/VideoInput/play.ts
+#EXTINF:-1 group-title="LiTV立視" ,台視新聞
+http://125.227.210.55:3089/VideoInput/play.ts
+#EXTINF:-1 group-title="LiTV立視" ,台視財經
+http://125.227.210.55:3090/VideoInput/play.ts
+#EXTINF:-1 group-title="LiTV立視" ,台視綜合
+http://125.227.210.55:3091/VideoInput/play.ts
+#EXTINF:-1 group-title="LiTV立視" ,華視教育體育文化
+http://125.227.210.55:3092/VideoInput/play.ts
+#EXTINF:-1 group-title="LiTV立視" ,華視新聞資訊
+http://125.227.210.55:3093/VideoInput/play.ts
+#EXTINF:-1 group-title="LiTV立視" ,國會頻道1
+http://125.227.210.55:3094/VideoInput/play.ts
+#EXTINF:-1 group-title="LiTV立視" ,國會頻道2
+http://125.227.210.55:3095/VideoInput/play.ts
 
 #EXTINF:-1 group-title="LiTV立視" ,民視第一台
 http://156.238.248.80:5566/4gtv-live403/index.m3u8?token=SDzCnf82ZVmlnUsxT0jIYSUyIRFxUGz3eC1ayPBZ0NvI8ZsakxSQPXftWLdRLGhD&proxy=true
