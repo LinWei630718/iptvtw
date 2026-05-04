@@ -203,10 +203,16 @@ http://125.227.210.55:4052/VideoInput/play.ts
 http://125.227.210.55:7155/VideoInput/play.ts
 #EXTINF:-1 group-title="LiTV立視" ,民視
 http://125.227.210.55:8093/VideoInput/play.ts
-#EXTINF:-1 group-title="LiTV立視" ,NHK BS
-http://125.227.210.55:8210/VideoInput/play.ts
-#EXTINF:-1 group-title="LiTV立視" ,BS0テレ
-http://125.227.210.55:8215/VideoInput/play.ts
+#EXTINF:-1 group-title="LiTV立視" ,探索亞洲
+http://125.227.210.55:8154/VideoInput/play.ts
+#EXTINF:-1 group-title="LiTV立視" ,Bloomberg
+http://125.227.210.55:8161/VideoInput/play.ts
+#EXTINF:-1 group-title="LiTV立視" ,華視
+http://125.227.210.55:8163/VideoInput/play.ts
+#EXTINF:-1 group-title="LiTV立視" ,BBC NEWS
+http://125.227.210.55:8165/VideoInput/play.ts
+#EXTINF:-1 group-title="LiTV立視" ,博斯運動I
+http://125.227.210.55:8173/VideoInput/play.ts
 
 #EXTINF:-1 group-title="LiTV立視" ,民視第一台
 http://156.238.248.80:5566/4gtv-live403/index.m3u8?token=SDzCnf82ZVmlnUsxT0jIYSUyIRFxUGz3eC1ayPBZ0NvI8ZsakxSQPXftWLdRLGhD&proxy=true
