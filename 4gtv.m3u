@@ -199,6 +199,10 @@ http://125.227.210.55:4050/VideoInput/play.ts
 http://125.227.210.55:4051/VideoInput/play.ts
 #EXTINF:-1 group-title="LiTV立視" ,東森幼幼
 http://125.227.210.55:4052/VideoInput/play.ts
+#EXTINF:-1 group-title="LiTV立視" ,NHK BS
+http://125.227.210.55:8210/VideoInput/play.ts
+#EXTINF:-1 group-title="LiTV立視" ,BS0テレ
+http://125.227.210.55:8215/VideoInput/play.ts
 
 #EXTINF:-1 group-title="LiTV立視" ,民視第一台
 http://156.238.248.80:5566/4gtv-live403/index.m3u8?token=SDzCnf82ZVmlnUsxT0jIYSUyIRFxUGz3eC1ayPBZ0NvI8ZsakxSQPXftWLdRLGhD&proxy=true
