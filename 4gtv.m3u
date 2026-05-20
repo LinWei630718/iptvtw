@@ -85,6 +85,10 @@ https://o11.163189.xyz/stream/live/ccm/
 
 #EXTINF:-1 group-title="LiTV立視" ,愛爾達體育1
 https://drmteste-hamivideo.cdn.hinet.net/live/pool/ll-test-hevc/hls-cl-fhd6m-4s-ma/index.m3u8?0
+#EXTINF:-1 group-title="LiTV立視" ,愛爾達體育1
+https://drmteste-hamivideo.cdn.hinet.net/live/pool/hamitv-live166/hls-ae-fhd-4s-ma/index.m3u8?0
+#EXTINF:-1 group-title="LiTV立視" ,亞洲旅遊
+https://drmteste-hamivideo.cdn.hinet.net/live/pool/ll-test-dash-hls/da-cl-fhd-4s-ma/ll-test-dash-hls.mpd
 #EXTINF:-1 group-title="LiTV立視" ,東森電影
 https://cdn-2.ttvb.eu.org/api/ET-Movie/index.m3u8
 #EXTINF:-1 group-title="LiTV立視" ,中天新聞
