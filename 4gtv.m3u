@@ -87,6 +87,14 @@ https://o11.163189.xyz/stream/live/ccm/
 https://drmteste-hamivideo.cdn.hinet.net/live/pool/ll-test-hevc/hls-cl-fhd6m-4s-ma/index.m3u8?0
 #EXTINF:-1 group-title="LiTV立視" ,愛爾達體育1
 https://drmteste-hamivideo.cdn.hinet.net/live/pool/hamitv-live166/hls-ae-fhd-4s-ma/index.m3u8?0
+#EXTINF:-1 group-title="LiTV立視" ,愛爾達體育1
+http://119.29.25.130:1266/五HDTV.php?id=867f68da7829c4c75914e653564350ef
+#EXTINF:-1 group-title="LiTV立視" ,愛爾達體育2
+http://119.29.25.130:1266/五HDTV.php?id=5ce1329e33a1d45ba09f8eefc2b3e8fd
+#EXTINF:-1 group-title="LiTV立視" ,愛爾達體育3
+http://119.29.25.130:1266/五HDTV.php?id=5ebf5cae1c02342cdda5d3fcc176af77
+#EXTINF:-1 group-title="LiTV立視" ,愛爾達體育4
+http://119.29.25.130:1266/五HDTV.php?id=c10c2c1762a2654c8294dc76f5049975
 #EXTINF:-1 group-title="LiTV立視" ,亞洲旅遊
 https://drmteste-hamivideo.cdn.hinet.net/live/pool/ll-test-dash-hls/da-cl-fhd-4s-ma/ll-test-dash-hls.mpd
 #EXTINF:-1 group-title="LiTV立視" ,東森電影
