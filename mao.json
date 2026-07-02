@@ -3,58 +3,65 @@
     "wallpaper": "http://饭太硬.top/深色壁纸/api.php",
     "sites": [
         {
-            "key": "php_官方资源",
-            "name": "🍎 官方資源(PHP)",
-            "type": 4,
-            "api": "https://php.doube.eu.org/spider/php/官方资源.php",
+            "key": "枫叶影院.py2",
+            "name": "🍎 楓葉影院(T3)",
+            "type": 3,
+            "api": "https://raw.giteeusercontent.com/dobebly/img/raw/master/img/mc.png?sb.py",
             "searchable": 1,
             "quickSearch": 0,
-            "changeable": 0
+            "changeable": 0,
+			"ext":{"api":"https://raw.giteeusercontent.com/dobebly/img/raw/master/img/枫叶影院.png"}
         },
         {
-            "key": "php_斗鱼直播",
+            "key": "php_DouYu",
             "name": "🍎 斗鱼直播(PHP)",
             "type": 4,
-            "api": "https://php.doube.eu.org/spider/php/斗鱼直播.php",
+            "api": "https://php.doube.eu.org/php/",
             "searchable": 1,
             "quickSearch": 0,
-            "changeable": 0
+            "changeable": 0,
+			"ext":{"module_name":"DouYu"}
         },
         {
-            "key": "php_欧乐影院",
+            "key": "php_Ole",
             "name": "🍎 歐樂影院(PHP)",
             "type": 4,
-            "api": "https://php.doube.eu.org/spider/php/欧乐影院.php",
+            "api": "https://php.doube.eu.org/php/",
             "searchable": 1,
             "quickSearch": 0,
-            "changeable": 0
+            "changeable": 0,
+			"ext":{"module_name":"Ole"}
         },
         {
-            "key": "php_电影天堂",
-            "name": "🍎 電影天堂(PHP)",
+            "key": "php_无水印资源",
+            "name": "🍎 無水印資源(T4)",
             "type": 4,
-            "api": "https://php.doube.eu.org/spider/php/电影天堂.php",
+            "api": "https://php.doube.eu.org/php/",
             "searchable": 1,
             "quickSearch": 0,
-            "changeable": 0
+            "changeable": 0,
+			"ext":{"module_name":"CmsSuggest",
+			"url":"https://api.wsyzy.net/api.php/provide/vod"}
         },
         {
-            "key": "php_虎牙直播",
+            "key": "php_HuYa",
             "name": "🍎 虎牙直播(PHP)",
             "type": 4,
-            "api": "https://php.doube.eu.org/spider/php/虎牙直播.php",
+            "api": "https://php.doube.eu.org/php/",
             "searchable": 1,
             "quickSearch": 0,
-            "changeable": 0
+            "changeable": 0,
+			"ext":{"module_name":"HuYa"}
         },
         {
-            "key": "php_非凡资源",
-            "name": "🍎 非凡資源(PHP)",
+            "key": "php_BuBu",
+            "name": "🍎 布布影視(T4)",
             "type": 4,
-            "api": "https://php.doube.eu.org/spider/php/非凡资源.php",
+            "api": "https://php.doube.eu.org/php/",
             "searchable": 1,
             "quickSearch": 0,
-            "changeable": 0
+            "changeable": 0,
+			"ext":{"module_name":"BuBu"}
         },		
     {
       "key": "t1_dian_ying_tian_tang_02",
