@@ -3,16 +3,6 @@
     "wallpaper": "http://饭太硬.top/深色壁纸/api.php",
     "sites": [
         {
-            "key": "枫叶影院.py2",
-            "name": "🍎 楓葉影院(T3)",
-            "type": 3,
-            "api": "https://raw.giteeusercontent.com/dobebly/img/raw/master/img/mc.png?sb.py",
-            "searchable": 1,
-            "quickSearch": 0,
-            "changeable": 0,
-			"ext":{"api":"https://raw.giteeusercontent.com/dobebly/img/raw/master/img/枫叶影院.png"}
-        },
-        {
             "key": "php_DouYu",
             "name": "🍎 斗鱼直播(PHP)",
             "type": 4,
@@ -75,36 +65,6 @@
       "playUrl": "json:https://py.doube.eu.org/parse_dytt?url=",
       "categories": ["动作片", "喜剧片", "爱情片", "科幻片", "恐怖片", "剧情片", "战争片", "国产剧", "香港剧", "韩国剧", "欧美剧", "记录片", "台湾剧", "日本剧", "海外剧", "泰国剧", "大陆综艺", "港台综艺", "日韩综艺", "欧美综艺", "国产动漫", "日韩动漫", "欧美动漫", "港台动漫", "伦理片", "短剧", "动画片"]
     },
-    	{
-			"key": "py_小苹果",
-			"name": "🍎小蘋果(T4)",
-			"type": 4,
-			"api": "https://py.doube.eu.org/v2/spider?site=9037cfae7c64405111e0e364401adb60"
-		},
-		{
-			"key": "py_官方采集789",
-			"name": "🥝官方采集789(T4)",
-			"type": 4,
-			"api": "https://py.doube.eu.org/v2/spider?site=006849a2c19a6be413be5017be468c63"
-		},
-		{
-			"key": "py_动漫巴士",
-			"name": "🚐動漫巴士(T4)",
-			"type": 4,
-			"api": "https://py.doube.eu.org/v2/spider?site=6b5899d243816bacb8712de7ab6ceb89"
-		},
-		{
-			"key": "py_欧乐影院",
-			"name": "😀歐樂影院(T4)",
-			"type": 4,
-			"api": "https://py.doube.eu.org/v2/spider?site=8a0bbe9e97c4429a517cd2ece3f6772b"
-		},
-		{
-			"key": "py_新韩剧网",
-			"name": "🇰🇷新韓劇網(T4)",
-			"type": 4,
-			"api": "https://py.doube.eu.org/v2/spider?site=2a7cc0edf96108c9d57420ff57c654c6"
-		},
         {
             "key": "js_jianpian",
             "name": "🖖薦片(JS)",
