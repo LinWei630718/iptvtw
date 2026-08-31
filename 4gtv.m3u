@@ -14,6 +14,44 @@ http://211.72.174.95:8115/0.ts
 http://211.72.174.95:8112/0.ts
 #EXTINF:-1 group-title="LiTV立視" ,東森新聞
 http://211.72.174.95:8138/0.ts
+#EXTINF:-1 group-title="LiTV立視" ,中視
+http://220.135.241.47:8301/0.ts
+#EXTINF:-1 group-title="LiTV立視" ,中視新聞
+http://220.135.241.47:8302/0.ts
+#EXTINF:-1 group-title="LiTV立視" ,中視經典
+http://220.135.241.47:8321/0.ts
+#EXTINF:-1 group-title="LiTV立視" ,中視菁采
+http://220.135.241.47:8322/0.ts
+#EXTINF:-1 group-title="LiTV立視" ,客家電視
+http://220.135.241.47:8303/0.ts
+#EXTINF:-1 group-title="LiTV立視" ,公視
+http://220.135.241.47:8305/0.ts
+#EXTINF:-1 group-title="LiTV立視" ,小公視
+http://220.135.241.47:8312/0.ts
+#EXTINF:-1 group-title="LiTV立視" ,公視台語
+http://220.135.241.47:8306/0.ts
+#EXTINF:-1 group-title="LiTV立視" ,民視
+http://220.135.241.47:8308/0.ts
+#EXTINF:-1 group-title="LiTV立視" ,民視第一
+http://220.135.241.47:8309/0.ts
+#EXTINF:-1 group-title="LiTV立視" ,民視台灣
+http://220.135.241.47:8311/0.ts
+#EXTINF:-1 group-title="LiTV立視" ,民視新聞
+http://220.135.241.47:8310/0.ts
+#EXTINF:-1 group-title="LiTV立視" ,台視
+http://220.135.241.47:8313/0.ts
+#EXTINF:-1 group-title="LiTV立視" ,台視新聞
+http://220.135.241.47:8314/0.ts
+#EXTINF:-1 group-title="LiTV立視" ,台視綜合
+http://220.135.241.47:8316/0.ts
+#EXTINF:-1 group-title="LiTV立視" ,台視財經
+http://220.135.241.47:8315/0.ts
+#EXTINF:-1 group-title="LiTV立視" ,華視
+http://220.135.241.47:8317/0.ts 
+#EXTINF:-1 group-title="LiTV立視" ,華視新聞資訊
+http://220.135.241.47:8319/0.ts
+#EXTINF:-1 group-title="LiTV立視" ,華視教育體育文化
+http://220.135.241.47:8318/0.ts
 #EXTINF:-1 group-title="LiTV立視",中視
 http://74.91.26.218:82/live/ctv.m3u8
 #EXTINF:-1 group-title="LiTV立視",中視新聞
@@ -61,38 +99,75 @@ http://74.91.26.218:82/live/typd.m3u8
 #EXTINF:-1 group-title="LiTV立視",天映經典
 http://74.91.26.218:82/live/tyjd.m3u8
 #EXTINF:-1 group-title="LiTV立視" ,龍華電影
-http://cdn8.163189.xyz/163189/lhdy
+https://8.fast.hidns.vip/163189/lhdy
 #EXTINF:-1 group-title="LiTV立視" ,龍華經典
-http://cdn8.163189.xyz/163189/lhjd
-#EXTINF:-1 group-title="LiTV立視" ,龍華卡通
-http://cdn8.163189.xyz/163189/lhkt
+https://8.fast.hidns.vip/163189/lhjd
 #EXTINF:-1 group-title="LiTV立視" ,龍華偶像
-http://cdn8.163189.xyz/163189/lhox
+https://8.fast.hidns.vip/163189/lhox
 #EXTINF:-1 group-title="LiTV立視" ,龍華日韓
-http://cdn8.163189.xyz/163189/lhrh
+https://8.fast.hidns.vip/163189/lhrh
 #EXTINF:-1 group-title="LiTV立視" ,龍華戲劇
-http://cdn8.163189.xyz/163189/lhxj
+https://8.fast.hidns.vip/163189/lhxj
 #EXTINF:-1 group-title="LiTV立視" ,龍華洋片
-http://cdn8.163189.xyz/163189/lhyp
-#EXTINF:-1 group-title="LiTV立視" ,天映頻道
-http://cdn10.163189.xyz/163189/typd
+https://8.fast.hidns.vip/163189/lhyp
+#EXTINF:-1 group-title="LiTV立視" ,龍華卡通
+https://8.fast.hidns.vip/163189/lhkt
 #EXTINF:-1 group-title="LiTV立視" ,天映經典
-http://cdn10.163189.xyz/163189/ccm
-#EXTINF:-1 group-title="LiTV立視" ,天映頻道
-https://o11.163189.xyz/stream/live/typd/
-#EXTINF:-1 group-title="LiTV立視" ,天映經典
-https://o11.163189.xyz/stream/live/ccm/
+https://10.fast.hidns.vip/163189/ccm/
 
-#EXTINF:-1 group-title="LiTV立視" ,愛爾達體育1
-https://drmteste-hamivideo.cdn.hinet.net/live/pool/ll-test-hevc/hls-cl-fhd6m-4s-ma/index.m3u8?0
-#EXTINF:-1 group-title="LiTV立視" ,愛爾達體育1
-https://drmteste-hamivideo.cdn.hinet.net/live/pool/hamitv-live166/hls-ae-fhd-4s-ma/index.m3u8?0
-#EXTINF:-1 group-title="LiTV立視" ,亞洲旅遊
-https://drmteste-hamivideo.cdn.hinet.net/live/pool/ll-test-dash-hls/da-cl-fhd-4s-ma/ll-test-dash-hls.mpd
+#EXTINF:-1 group-title="LiTV立視" ,TVBS新聞
+http://iptv.4666888.xyz/iptv2A.php?id=43
+#EXTINF:-1 group-title="LiTV立視" ,非凡新聞
+http://iptv.4666888.xyz/iptv2A.php?id=44
+#EXTINF:-1 group-title="LiTV立視" ,民視
+http://iptv.4666888.xyz/iptv2A.php?id=55
+#EXTINF:-1 group-title="LiTV立視" ,華藝中文
+http://iptv.4666888.xyz/iptv2A.php?id=37
+#EXTINF:-1 group-title="LiTV立視" ,愛奇藝
+http://iptv.4666888.xyz/iptv2A.php?id=21
+#EXTINF:-1 group-title="LiTV立視" ,靖洋戲劇
+http://iptv.4666888.xyz/iptv2A.php?id=42
+#EXTINF:-1 group-title="LiTV立視" ,靖天電影
+http://iptv.4666888.xyz/iptv2A.php?id=56
 #EXTINF:-1 group-title="LiTV立視" ,東森電影
-https://cdn-2.ttvb.eu.org/api/ET-Movie/index.m3u8
-#EXTINF:-1 group-title="LiTV立視" ,中天新聞
-rtmp://vip.huahong.pro/live/xingjiaoge-ztxw2
+http://iptv.4666888.xyz/iptv2A.php?id=48
+#EXTINF:-1 group-title="LiTV立視" ,緯來電影
+http://iptv.4666888.xyz/iptv2A.php?id=54
+#EXTINF:-1 group-title="LiTV立視" ,龍華電影
+http://iptv.4666888.xyz/iptv2A.php?id=45
+#EXTINF:-1 group-title="LiTV立視" ,龍華洋片
+http://iptv.4666888.xyz/iptv2A.php?id=60
+#EXTINF:-1 group-title="LiTV立視" ,風雲恐怖電影
+http://iptv.4666888.xyz/iptv2A.php?id=59
+#EXTINF:-1 group-title="LiTV立視" ,ROCK_Action
+http://iptv.4666888.xyz/iptv2A.php?id=50
+#EXTINF:-1 group-title="LiTV立視" ,夢工場動漫
+http://iptv.4666888.xyz/iptv2A.php?id=40
+#EXTINF:-1 group-title="LiTV立視" ,Duck TV兒童卡通
+http://iptv.4666888.xyz/iptv2A.php?id=39
+#EXTINF:-1 group-title="LiTV立視" ,MOMO親子
+http://iptv.4666888.xyz/iptv2A.php?id=49
+#EXTINF:-1 group-title="LiTV立視" ,金光布袋戲
+http://iptv.4666888.xyz/iptv2A.php?id=38
+#EXTINF:-1 group-title="LiTV立視" ,民視綜藝
+http://iptv.4666888.xyz/iptv2A.php?id=46
+#EXTINF:-1 group-title="LiTV立視" ,民視影劇
+http://iptv.4666888.xyz/iptv2A.php?id=53
+#EXTINF:-1 group-title="LiTV立視" ,TVBS精采
+http://iptv.4666888.xyz/iptv2A.php?id=47
+#EXTINF:-1 group-title="LiTV立視" ,台視綜合
+http://iptv.4666888.xyz/iptv2A.php?id=51
+#EXTINF:-1 group-title="LiTV立視" ,東森綜合
+http://iptv.4666888.xyz/iptv2A.php?id=58
+#EXTINF:-1 group-title="LiTV立視" ,八度空間
+http://iptv.4666888.xyz/iptv2A.php?id=52
+#EXTINF:-1 group-title="LiTV立視" ,韓流美食料理秀
+http://iptv.4666888.xyz/iptv2A.php?id=63
+#EXTINF:-1 group-title="LiTV立視" ,娛樂百分百
+http://iptv.4666888.xyz/iptv2A.php?id=64
+#EXTINF:-1 group-title="LiTV立視" ,綜藝大贏家
+http://iptv.4666888.xyz/iptv2A.php?id=65
+
 #EXTINF:-1 group-title="LiTV立視" ,CINEMAX
 http://125.227.210.55:1001/VideoInput/play.ts
 #EXTINF:-1 group-title="LiTV立視" ,CNBC
@@ -217,196 +292,6 @@ http://125.227.210.55:8163/VideoInput/play.ts
 http://125.227.210.55:8165/VideoInput/play.ts
 #EXTINF:-1 group-title="LiTV立視" ,博斯運動I
 http://125.227.210.55:8173/VideoInput/play.ts
-
-#EXTINF:-1 tvg-name="民視影劇台" group-title="LiTV立視",民視影劇台
-https://cdn12.178.indevs.in/163189/73d93f1c22fa91d7
-#EXTINF:-1 tvg-name="公視戲劇" group-title="LiTV立視",公視戲劇
-https://cdn12.178.indevs.in/163189/2973b910e7719c08
-#EXTINF:-1 tvg-name="采昌影劇台" group-title="LiTV立視",采昌影劇台
-https://cdn12.178.indevs.in/163189/0a6204ed0261460c
-#EXTINF:-1 tvg-name="靖天映畫" group-title="LiTV立視",靖天映畫
-https://cdn12.178.indevs.in/163189/bd4752bd7828b2bf
-#EXTINF:-1 tvg-name="靖天戲劇台" group-title="LiTV立視",靖天戲劇台
-https://cdn12.178.indevs.in/163189/177d541552f78003
-#EXTINF:-1 tvg-name="靖天電影台" group-title="LiTV立視",靖天電影台
-https://cdn12.178.indevs.in/163189/ed33509e03e78c7a
-#EXTINF:-1 tvg-name="靖洋戲劇台" group-title="LiTV立視",靖洋戲劇台
-https://cdn12.178.indevs.in/163189/25084ef5a2662aad
-#EXTINF:-1 tvg-name="影迷數位電影台" group-title="LiTV立視",影迷數位電影台
-https://cdn12.178.indevs.in/163189/a643783ec587540e
-#EXTINF:-1 tvg-name="amc電影台" group-title="LiTV立視",amc電影台
-https://cdn12.178.indevs.in/163189/0bcf9bb8c452e56a
-#EXTINF:-1 tvg-name="CinemaWorld頻道" group-title="LiTV立視",CinemaWorld
-https://cdn12.178.indevs.in/163189/6086cfe7a9756110
-#EXTINF:-1 tvg-name="My Cinema Europe" group-title="LiTV立視",My Cinema Europe
-https://cdn12.178.indevs.in/163189/5bda99f1c049edef
-#EXTINF:-1 tvg-name="經典電影台" group-title="LiTV立視",經典電影台
-https://cdn12.178.indevs.in/163189/61b8ea35ffce4630
-#EXTINF:-1 tvg-name="電影原聲台CMusic" group-title="LiTV立視",CMusic
-https://cdn12.178.indevs.in/163189/d396cb84b6c89889
-#EXTINF:-1 tvg-name="DreamWorks" group-title="LiTV立視",DreamWorks夢工廠動畫
-https://cdn12.178.indevs.in/163189/10395eb942c5a9b9
-#EXTINF:-1 tvg-name="精選動漫台" group-title="LiTV立視",精選動漫台
-https://cdn12.178.indevs.in/163189/e1d66f74bd2d4894
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",金光布袋戲
-https://cdn12.178.indevs.in/163189/5479c245d9d580b5
-#EXTINF:-1 tvg-name="龍華電影" group-title="LiTV立視",龍華電影
-http://cdn8.veryfast.filegear-sg.me/163189/lhdy
-#EXTINF:-1 tvg-name="龍華經典" group-title="LiTV立視",龍華經典
-http://cdn8.veryfast.filegear-sg.me/163189/lhjd
-#EXTINF:-1 tvg-name="龍華偶像" group-title="LiTV立視",龍華偶像
-http://cdn8.veryfast.filegear-sg.me/163189/lhox
-#EXTINF:-1 tvg-name="龍華日韓" group-title="LiTV立視",龍華日韓
-http://cdn8.veryfast.filegear-sg.me/163189/lhrh
-#EXTINF:-1 tvg-name="龍華戲劇" group-title="LiTV立視",龍華戲劇
-http://cdn8.veryfast.filegear-sg.me/163189/lhxj
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",金光布袋戲
-http://o11.163189.xyz/stream/live/jgbdx/
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",緯來電影
-https://smt.1678520.xyz/163189/wldy
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",緯來戲劇
-https://smt.1678520.xyz/163189/wlxj
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",緯來體育
-https://smt.1678520.xyz/163189/wlty
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",龍祥時代
-https://smt.1678520.xyz/163189/lxsd
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",東森電影
-https://smt.1678520.xyz/163189/dsdy
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",東森戲劇
-https://smt.1678520.xyz/163189/dsxj
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",東森洋片
-https://smt.1678520.xyz/163189/dsyp
-
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",ARIRANG
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=arl
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",DW
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=dw
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",TVBS
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=tvbs
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",TVBS新聞
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=tvbsxw
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",東森新聞
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=dsxw
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",東森財經新聞
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=dscjxw
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",非凡新聞
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=ffxw
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",寰宇新聞
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=hyxw
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",民視新聞
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=msxw
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",年代新聞
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=ndxw
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",台視新聞
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=tsxw
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",中視新聞
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=zsxw
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",中天新聞
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=ztxw
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",AXN
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=axn
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",DAZN1
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=dazn1
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",ELTA綜合
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=elta
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",EYE TV旅遊
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=eyely
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",EYE TV戲劇
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=eyexj
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",HBO HD
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=hbohd
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",HBO 原創
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=hbo
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",MTV Live
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=mtv
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",TLC
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=tlc
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",TVBS歡樂
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=tvbshl
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",八大第一
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=bddy
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",八大戲劇
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=bdxj
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",八大綜合
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=bdzh
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",博斯高球2
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=bsgqt2
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",博斯網球
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=bswqt
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",博斯無限
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=bswxt
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",博斯運動1
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=bsyd1
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",博斯運動2
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=bsyd2
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",大愛
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=da
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",東森電影
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=dsdy
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",東森戲劇
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=dsxj
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",東森洋片
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=dsyp
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",東森幼幼
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=yytv
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",東森綜合
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=dszh
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",公視台語
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=gsty
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",好萊塢電影
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=hlwd
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",好消息2
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=good2
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",華視
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=hs
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",華藝中文
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=hyzwt
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",靖天卡通
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=jtkt
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",龍華偶像
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=lhox
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",龍華戲劇
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=lhxj
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",龍祥時代
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=lxsd
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",美亞電影
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=mydy
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",民視
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=ms
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",民視台灣
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=mstwt
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",三立都會
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=sldh
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",三立台灣
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=sltw
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",三立戲劇
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=slxj
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",三立綜合
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=slzh
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",台視綜合
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=tszh
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",天映頻道
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=typd
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",緯來日本
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=wljp
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",緯來體育
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=wlty
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",緯來戲劇
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=wlxj
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",緯來育樂
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=wlyl
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",緯來綜合
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=wlzh
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",亞洲美食
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=afc
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",中視
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=zs
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",中天亞洲
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=ztyz
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",中天娛樂
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=ztyl
-#EXTINF:-1 tvg-name="金光布袋戲" group-title="LiTV立視",中天綜合
-http://kaniptv.com/xz/xz_277f8e103a/wwkds.php?id=ztzh
 
 #EXTINF:-1 tvg-id="1" tvg-name="民視第一台" tvg-logo="https://4gtvimg2.4gtv.tv/4gtv-Image/Channel/mobile/logo_4gtv_4gtv-4gtv003_mobile.png" group-title="綜合",民視第一台
 https://ha.msbot.dpdns.org/4gtv_api.php?id=1
