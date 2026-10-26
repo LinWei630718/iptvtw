@@ -21,6 +21,15 @@
             "filterable": 0,
             "changeable": 0
         },
+		{
+            "key": "py_4gtv",
+            "name": "四季",
+            "type": 3,
+            "api": "./python/4gtv_home_live.py",
+            "searchable": 1,
+            "filterable": 0,
+            "changeable": 0
+        },
         {
             "key": "php_Ole",
             "name": "🍎 歐樂影院(PHP)",
@@ -1245,11 +1254,6 @@
       "ext": "123.51.229.128:1888",
       "timeout": 30,
       "playerType": 1
-        },
-        {
-            "name": "4GTV",
-            "type": 3,
-            "url": "https://linwei630718.github.io/iptvtw/python/4gtv_home_live.py"
         },
         {
             "name": "直播嗅探",
