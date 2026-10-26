@@ -12,6 +12,15 @@
             "changeable": 0,
 			"ext":{"module_name":"DouYu"}
         },
+		{
+            "key": "py_red",
+            "name": "🍎紅果短劇",
+            "type": 3,
+            "api": "./python/red.py",
+            "searchable": 1,
+            "filterable": 0,
+            "changeable": 0
+        },
         {
             "key": "php_Ole",
             "name": "🍎 歐樂影院(PHP)",
@@ -1238,9 +1247,9 @@
       "playerType": 1
         },
         {
-            "name": "海馬",
+            "name": "4GTV",
             "type": 3,
-            "url": "https://tang.hz.cz/api/user?token=35a3f7a2"
+            "url": "https://linwei630718.github.io/iptvtw/python/4gtv_home_live.py"
         },
         {
             "name": "直播嗅探",
