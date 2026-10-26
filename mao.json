@@ -23,7 +23,7 @@
         },
 		{
             "key": "py_4gtv",
-            "name": "四季",
+            "name": "四季直播",
             "type": 3,
             "api": "./python/4gtv_home_live.py",
             "searchable": 1,
