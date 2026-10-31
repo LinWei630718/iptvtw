@@ -16,7 +16,25 @@
             "key": "py_red",
             "name": "🍎紅果短劇",
             "type": 3,
-            "api": "./python/red.py",
+            "api": "./python/redfruit.py",
+            "searchable": 1,
+            "filterable": 0,
+            "changeable": 0
+        },
+		{
+            "key": "py_speed",
+            "name": "極速追劇",
+            "type": 3,
+            "api": "./python/speed.py",
+            "searchable": 1,
+            "filterable": 0,
+            "changeable": 0
+        },
+		{
+            "key": "py_small",
+            "name": "小寶影院",
+            "type": 3,
+            "api": "./python/small.py",
             "searchable": 1,
             "filterable": 0,
             "changeable": 0
