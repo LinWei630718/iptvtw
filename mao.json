@@ -4,13 +4,22 @@
     "sites": [
         {
             "key": "php_DouYu",
-            "name": "🍎 斗鱼直播(PHP)",
+            "name": "🐟斗鱼直播(PHP)",
             "type": 4,
             "api": "https://php.doube.eu.org/php/",
             "searchable": 1,
             "quickSearch": 0,
             "changeable": 0,
 			"ext":{"module_name":"DouYu"}
+        },
+		{
+            "key": "py_hgtv",
+            "name": "🍎紅果短劇🍎",
+            "type": 3,
+            "api": "./python/hgtv.py",
+            "searchable": 1,
+            "filterable": 0,
+            "changeable": 0
         },
 		{
             "key": "py_red",
@@ -23,7 +32,7 @@
         },
 		{
             "key": "py_speed",
-            "name": "極速追劇",
+            "name": "🚵極速追劇",
             "type": 3,
             "api": "./python/speed.py",
             "searchable": 1,
