@@ -14,18 +14,9 @@
         },
 		{
             "key": "py_hgtv",
-            "name": "🍎紅果短劇🍎",
-            "type": 3,
-            "api": "./python/hgtv.py",
-            "searchable": 1,
-            "filterable": 0,
-            "changeable": 0
-        },
-		{
-            "key": "py_red",
             "name": "🍎紅果短劇",
             "type": 3,
-            "api": "./python/redfruit.py",
+            "api": "./python/hgtv.py",
             "searchable": 1,
             "filterable": 0,
             "changeable": 0
