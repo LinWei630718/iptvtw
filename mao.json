@@ -13,10 +13,46 @@
 			"ext":{"module_name":"DouYu"}
         },
 		{
-            "key": "py_hgtv",
+            "key": "hgtv",
             "name": "🍎紅果短劇",
             "type": 3,
             "api": "./python/hgtv.py",
+            "searchable": 1,
+            "filterable": 0,
+            "changeable": 0
+        },
+		{
+            "key": "py_hgtv",
+            "name": "🍎紅果短劇(顯季優化版)",
+            "type": 3,
+            "api": "./python/py_hgtv.py",
+            "searchable": 1,
+            "filterable": 0,
+            "changeable": 0
+        },
+		{
+            "key": "py_apple",
+            "name": "小蘋果🍎",
+            "type": 3,
+            "api": "./python/py_apple.py",
+            "searchable": 1,
+            "filterable": 0,
+            "changeable": 0
+        },
+		{
+            "key": "omofun",
+            "name": "OmoFun動漫",
+            "type": 3,
+            "api": "./python/OmoFun.py",
+            "searchable": 1,
+            "filterable": 0,
+            "changeable": 0
+        },
+		{
+            "key": "animexin",
+            "name": "animexin動漫",
+            "type": 3,
+            "api": "./python/animexin.py",
             "searchable": 1,
             "filterable": 0,
             "changeable": 0
