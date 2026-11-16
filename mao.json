@@ -22,15 +22,6 @@
             "changeable": 0
         },
 		{
-            "key": "py_apple",
-            "name": "小蘋果🍎",
-            "type": 3,
-            "api": "./python/py_apple.py",
-            "searchable": 1,
-            "filterable": 0,
-            "changeable": 0
-        },
-		{
             "key": "omofun",
             "name": "OmoFun動漫",
             "type": 3,
@@ -481,15 +472,6 @@
             "order_num": 0,
             "ext": ""
         },
-        {
-         "key":"嗷呜小苹果",
-         "name":"🍎嗷嗚小蘋果",
-         "type":3,
-         "api":"./python/py_pingguo.py",
-         "searchable":1,
-         "filterable":0,
-         "changeable":1
-      },
       {
          "key":"aidianying",
          "name":"🎞️愛電影",
