@@ -16,7 +16,7 @@
             "key": "hgtv",
             "name": "🍎紅果短劇",
             "type": 3,
-            "api": "https://clun.top/py/hongguo.py",
+            "api": "./python/hgtv.py",
             "searchable": 1,
             "filterable": 0,
             "changeable": 0
