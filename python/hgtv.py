@@ -1,29 +1,9 @@
-# -*- coding: utf-8 -*-
-# ============================================================================
-# 2026-11-24 v3：把「切换每一季」与「预约下一季」并进同一份详情页
-#   ① 基底：红果短剧(修复版)v2.py（当天并入 v5 签名链的那份），详情页每季一条线路，
-#      换季后集数跟着该季自己的 vid_list 变；
-#   ② 新增「预约下一季」：季号最大值 +1 那一季站点还没上线时，详情页多一条「预约下一季」
-#      线路（点名「预约第N季」），点按就把基名+季号登记到 hg_reserve.json，并当场按基名
-#      现搜一次；搜到那一季就直接起播它的第 1 集，搜不到就留在预约表里，下次进详情仍在；
-#   ③ 取流仍是 v5 → hiker_medusa → hiker → sixgod 轮换，v5 排首位，原三套一行未删。
-#
-# 2026-11-24 并入 v5 播放取流签名（原 2026-11-10 修复版的链路一行未删）
-#   ① 老端点 multi_video_model/v1 已整段失效：hiker / sixgod × 主备两 host 恒回 200 空体；
-#   ② 新增 _video_model_v5()：a 域名 player/v1 + gzip body + x-khronos / x-helios /
-#      x-medusa（medusa wire field21=312），设备参数 74332 / 7.4.3.32 / vivo_8662_64 / PGT-AN10；
-#   ③ _video_model() 增加 sign_mode="v5" 分发，_video_model_rotating 的签名顺序
-#      改为 v5 → hiker → sixgod，任一套能通就走哪套。
-# 实测：非免费第 5 集 vid=7704580191372201022，v5 回 24178 字节模型，本机 /hg.mp4
-#      Range 0-1023 回 206，解密后 ftypisom / 2 条 trak / hvc1，总长 9724413。
-# ============================================================================
 from __future__ import annotations
 import base64
 import binascii
 import bisect
 import hashlib
 import json
-import gzip
 import os
 import lzma
 import random
@@ -35,6 +15,7 @@ import threading
 import time
 from collections.abc import Mapping
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from html.parser import HTMLParser
 from typing import Any
 from urllib.parse import parse_qs, quote, urlencode, urlparse
 import requests
@@ -385,18 +366,18 @@ def _hg_cache_cleanup(force: bool = False) -> None:
         pass
 
 
-
-def _hg_cached_ok(body: Any) -> bool:
-    """旧的整集缓存可能是 bvc2（黑屏有声），吐出去之前先验一下视轨编码。"""
+def _hg_cache_clear_all() -> None:
     try:
-        if not body:
-            return False
-        i = bytes(body).find(b"stsd")
-        if i < 0:
-            return True
-        return bytes(body)[i + 16 : i + 20] in _DECODABLE_ENTRIES
+        root = _hg_cache_dir()
+        for name in os.listdir(root):
+            fp = os.path.join(root, name)
+            try:
+                if os.path.isfile(fp):
+                    os.remove(fp)
+            except Exception:
+                pass
     except Exception:
-        return True
+        pass
 
 
 def _hg_cache_get(vid: str, quality: str) -> bytes | None:
@@ -570,7 +551,6 @@ _HG_CONTENT_TYPES = [
         ("apocalypse", "末世"), ("wealthy-family", "豪门"), ("wonder", "奇幻"),
         ("sci-fi", "科幻"), ("adventure", "冒险"),
     ]),
-    ("comic", "漫画", [("", "全部")]),
 ]
 _HG_ROUTES = {k: v for k, v in ((a, b) for a, b, _ in _HG_CONTENT_TYPES)}
 _HG_ALIAS = {
@@ -604,52 +584,112 @@ def _hg_category_page(route, cat, page):
     p = ((v.get("loaderData") or {}).get("category_$") or {})
     return p
 
-VIDEO_URL = "https://api5-normal-sinfonlineb.fqnovel.com/novel/player/multi_video_model/v1/"
-VIDEO_URL_ALT = "https://api5-normal-lf.fqnovel.com/novel/player/multi_video_model/v1/"
-
-# 取流诊断日志：壳会吞掉 playerContent 之后的异常，只弹一句通用提示，
-# 所以源自己把取流每一步落到手机能取到的纯文本文件里，方便定位。
-_DIAG_LOG_CANDIDATES = (
-    "/sdcard/红果短剧_取流日志.txt",
-    "/storage/emulated/0/红果短剧_取流日志.txt",
+# 首页“推荐”榜单：banner 横幅 + homeSections 热播榜（all/human/comic/ai）
+_HG_RECOMMEND_TABS = (
+    ("all", "热播短剧"),
+    ("human", "热播真人剧"),
+    ("comic", "热播漫剧"),
+    ("ai", "热播AI剧"),
 )
-_DIAG_LOG_LOCK = threading.Lock()
-_DIAG_LOG_PATH: list[str] = []
 
-def _diag_path() -> str | None:
-    if _DIAG_LOG_PATH:
-        return _DIAG_LOG_PATH[0]
-    for candidate in _DIAG_LOG_CANDIDATES:
-        try:
-            directory = os.path.dirname(candidate) or "."
-            if os.path.isdir(directory) and os.access(directory, os.W_OK):
-                _DIAG_LOG_PATH.append(candidate)
-                return candidate
-        except Exception:
-            continue
-    try:
-        fallback = os.path.join(tempfile.gettempdir(), "红果短剧_取流日志.txt")
-        _DIAG_LOG_PATH.append(fallback)
-        return fallback
-    except Exception:
-        return None
+def _hg_recommend_tab(tab):
+    t = str(tab or "").strip().lower()
+    if t in ("human", "真人", "热播真人剧"):
+        return "human"
+    if t in ("comic", "漫剧", "热播漫剧"):
+        return "comic"
+    if t in ("ai", "ai剧", "热播ai剧"):
+        return "ai"
+    return "all"
 
-def _diag(message: str) -> None:
-    """把取流诊断同时写进壳日志和手机上的纯文本文件。"""
+def _hg_recommend_rows(tab="all"):
+    """首页推荐：banner 横幅在前，热播榜在后，按 series_id 去重。
+    默认“热播短剧”合并四个榜单（短剧/真人剧/漫剧/AI剧，约 31 条）；
+    选了具体榜单时只取该榜（约 13 条）。"""
+    tab = _hg_recommend_tab(tab)
+    page = ((_data(SITE + "/").get("loaderData") or {}).get("page") or {})
+    rows = []
+    seen = set()
+    for src in (page.get("bannerList") or []):
+        sid = str((src or {}).get("series_id") or "")
+        if sid and sid not in seen:
+            seen.add(sid)
+            rows.append(src)
+    sections = page.get("homeSections") or []
+    wanted = ["all", "human", "comic", "ai"] if tab == "all" else [tab]
+    for want in wanted:
+        for section in sections:
+            if str((section or {}).get("tab_type") or "") != want:
+                continue
+            for src in (section.get("video_list") or []):
+                sid = str((src or {}).get("series_id") or "")
+                if sid and sid not in seen:
+                    seen.add(sid)
+                    rows.append(src)
+    if not rows:
+        raise HongguoPluginError("首页没有推荐数据")
+    return rows
+
+# 排行榜与新剧：官网 /rank/{route}?page=N，数据在 _ROUTER_DATA 的 content.rankList（每页 20 条）
+_HG_RANK_ROUTES = (
+    ("hot-drama", "热播榜"),
+    ("hot-real-drama", "热播真人剧"),
+    ("hot-comic-drama", "热播漫剧"),
+    ("hot-ai-drama", "热播AI剧"),
+)
+_HG_RANK_ROUTE_SET = {r for r, _ in _HG_RANK_ROUTES}
+
+def _hg_rank_page(route, page):
+    route = str(route or "hot-drama").strip()
+    if route not in _HG_RANK_ROUTE_SET and route != "new-drama":
+        route = "hot-drama"
+    sess = requests.Session()
+    sess.trust_env = False
+    sess.headers.update({"User-Agent": UA, "Referer": SITE + "/"})
+    r = sess.get(SITE + "/rank/" + route, params={"page": str(max(1, int(page or 1)))}, timeout=25)
+    html = r.text or ""
+    m = re.search(r"(?:window\.)?_ROUTER_DATA\s*=\s*", html)
+    if not m:
+        raise HongguoPluginError("排行榜页没有路由数据")
+    v, _ = json.JSONDecoder().raw_decode(html[m.end():])
+    ld = v.get("loaderData") or {}
+    d = None
+    for k, val in ld.items():
+        if k.startswith("rank_") and k.endswith("/page") and isinstance(val, dict):
+            d = val
+            break
+    if not isinstance(d, dict):
+        raise HongguoPluginError("排行榜页没有数据")
+    content = d.get("content") or {}
+    return content.get("rankList") or []
+
+def _rank_item(x, show_rank=True):
+    x = x or {}
+    sid = str(x.get("seriesId") or x.get("series_id") or "")
+    name = str(x.get("title") or x.get("series_title") or "未命名")
+    pic = str(x.get("cover") or x.get("series_cover") or "")
     try:
-        print("[红果取流] " + str(message))
-    except Exception:
-        pass
-    path = _diag_path()
-    if not path:
-        return
-    try:
-        line = "%s %s\n" % (time.strftime("%Y-%m-%d %H:%M:%S"), message)
-        with _DIAG_LOG_LOCK:
-            with open(path, "a", encoding="utf-8") as handle:
-                handle.write(line)
-    except Exception:
-        pass
+        rk = int(x.get("rank") or 0)
+    except (TypeError, ValueError):
+        rk = 0
+    heat = str(x.get("primaryMetricText") or x.get("heatText") or "")
+    # 排行榜只显示名次，不显示热度；热度（新剧）只显示热度
+    remarks = ("第%s名" % rk) if (show_rank and rk) else ""
+    if heat and not show_rank:
+        remarks = (remarks + " · " + heat) if remarks else heat
+    if not remarks:
+        tags = x.get("statusTags") or []
+        if isinstance(tags, list) and tags:
+            remarks = str(tags[0])
+    return {
+        "vod_id": sid,
+        "vod_name": name,
+        "vod_pic": pic,
+        "vod_remarks": "影视交流群-"+remarks,
+        "vod_content": "",
+    }
+
+VIDEO_URL = "https://api5-normal-sinfonlineb.fqnovel.com/novel/player/multi_video_model/v1/"
 UA = "Mozilla/5.0 (Linux; Android 12) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36"
 APP_UA = "com.phoenix.read/71332 (Linux; U; Android 16; zh_CN; 25053RT47C; Build/BP2A.250605.031.A3; Cronet/TTNetVersion:04657795 2026-01-23 QuicVersion:c67e9834 2025-09-08)"
 MEDIA_UA = "com.phoenix.read/71332"
@@ -695,20 +735,31 @@ def _first(*values: Any) -> str:
 
 def _json_response(response: requests.Response) -> Any:
     response.raise_for_status()
-    # 上游取流接口偶发 HTTP 200 + 空体（Content-Length: 0），
-    # 直接 .json() 只会抛 JSONDecodeError，日志里看不出根因，这里单独点明。
-    try:
-        body = response.content
-    except Exception:
-        body = b""
-    if not body:
-        raise HongguoPluginError(
-            "上游取流接口返回空响应（HTTP %s）" % getattr(response, "status_code", "?")
-        )
     try:
         return response.json()
     except ValueError as exc:
         raise HongguoPluginError("上游响应不是 JSON") from exc
+
+def _get_html(url: str, *, attempts: int = _HTML_FETCH_ATTEMPTS) -> str:
+    last_error: Exception | None = None
+    for attempt in range(max(1, attempts)):
+        try:
+            response = requests.get(
+                url,
+                headers={
+                    "User-Agent": UA,
+                    "Accept-Language": "zh-CN,zh;q=0.9",
+                },
+                timeout=30,
+            )
+            response.raise_for_status()
+            response.encoding = response.encoding or "utf-8"
+            return response.text
+        except Exception as error:  # transient proxy/DNS/read failures
+            last_error = error
+            if attempt + 1 < max(1, attempts):
+                time.sleep(_HTML_FETCH_BACKOFF_SECONDS * (attempt + 1))
+    raise HongguoPluginError(f"fetch failed: {url}") from last_error
 
 def _router_data(html: str) -> dict[str, Any]:
     match = re.search(r"(?:window\.)?_ROUTER_DATA\s*=\s*", html)
@@ -863,6 +914,15 @@ def _parse_track(
     )
     return sizes, offsets, chunk_samples, aux_sizes, aux_offset, sample_count
 
+def _replace_fourcc(data: bytearray, old: bytes, new: bytes) -> None:
+    position = 0
+    while True:
+        position = data.find(old, position)
+        if position < 0:
+            return
+        data[position : position + len(old)] = new
+        position += len(new)
+
 def _replace_sinf(data: bytearray) -> None:
     # sinf 盒的首个子盒必为 frma（CENC 规范：frma/schm/schi）。
     # 这里校验后再清零，避免把 avcC/hvcC 配置数据里恰好出现的 "sinf" 字节
@@ -940,17 +1000,15 @@ def decrypt_mp4_cenc(data: bytes, content_key: bytes) -> bytes:
     moov_buffer = bytearray(result[moov_start : moov_start + moov_size])
     _restore_cenc_codecs(moov_buffer)
     _replace_sinf(moov_buffer)
+    _patch_hvc_level(moov_buffer)
     result[moov_start : moov_start + moov_size] = moov_buffer
     return bytes(result)
 
 MEDIA_HEADERS = {"User-Agent": MEDIA_UA, "Referer": "https://novel.snssdk.com/"}
 
 _STREAM_PORT_RANGE = (10010, 10030)
-# 每块越小，播放器拿到首字节越快：CENC 是整块解密完才吐，1MB 一块在纯 Python
-# AES 下要 2~8 秒才出声（真机表现为一直转圈、进度条不动）。128KB 一块首字节不到 1 秒，
-# 总吞吐不变（下游按 64KB 连续写）。
-_STREAM_CHUNK = 1 << 17
-_STREAM_HEAD_PROBE = 1 << 16
+_STREAM_CHUNK = 1 << 20
+_STREAM_HEAD_PROBE = 1 << 18  # 256KB：短剧 moov 约 150KB，一次探针即可含住，省一次往返；更大 moov 仍走二次拉取
 _STREAM_TTL_SECONDS = 900
 _STREAM_MAX_SESSIONS = 4
 _STREAM_INFLIGHT_WAIT = 60
@@ -975,29 +1033,16 @@ def _toplevel_boxes(buf: bytes) -> list[tuple[int, int, bytes]]:
     return boxes
 
 
-_MEDIA_TLS = threading.local()
-
-
-def _media_session() -> "requests.Session":
-    """拉媒体分片用的线程本地 session（keep-alive），省掉每块重新握手。"""
-    ses = getattr(_MEDIA_TLS, "s", None)
-    if ses is None:
-        ses = requests.Session()
-        ses.trust_env = False
-        ses.headers.update(MEDIA_HEADERS)
-        _MEDIA_TLS.s = ses
-    return ses
-
-
-def _range_get(url: str, start: int, end: int) -> tuple[bytes, int]:
-    headers = {"Range": "bytes=%d-%d" % (start, end)}
+def _range_get(url: str, start: int, end: int, timeout: int = 60) -> tuple[bytes, int]:
+    headers = dict(MEDIA_HEADERS)
+    headers["Range"] = "bytes=%d-%d" % (start, end)
     expected = end - start + 1
     last_error: Exception | None = None
     for attempt in range(_RANGE_FETCH_ATTEMPTS):
         if attempt:
             time.sleep(_RANGE_FETCH_BACKOFF_SECONDS * attempt)
         try:
-            response = _media_session().get(url, headers=headers, timeout=60)
+            response = requests.get(url, headers=headers, timeout=timeout)
         except requests.RequestException as error:
             last_error = error
             continue
@@ -1027,7 +1072,7 @@ def _range_get(url: str, start: int, end: int) -> tuple[bytes, int]:
 
 
 def _fetch_moov(url: str) -> tuple[int, int, bytes]:
-    probe, total = _range_get(url, 0, _STREAM_HEAD_PROBE - 1)
+    probe, total = _range_get(url, 0, _STREAM_HEAD_PROBE - 1, timeout=20)
     if not total:
         raise HongguoPluginError("媒体总长度未知")
     moov_start = 0
@@ -1043,7 +1088,7 @@ def _fetch_moov(url: str) -> tuple[int, int, bytes]:
         raise HongguoPluginError("moov 越界")
     if moov_start + moov_size <= len(probe):
         return total, moov_start, bytes(probe[moov_start : moov_start + moov_size])
-    moov, _ = _range_get(url, moov_start, moov_start + moov_size - 1)
+    moov, _ = _range_get(url, moov_start, moov_start + moov_size - 1, timeout=20)
     if len(moov) != moov_size:
         raise HongguoPluginError("moov 分片长度不符")
     return total, moov_start, moov
@@ -1084,8 +1129,6 @@ def _format_from_config_box(blob: bytes, kind: bytes) -> bytes:
 
 
 def _original_format_near(data: bytearray, entry_pos: int, default: bytes, kind: bytes = b"encv") -> bytes:
-    """从 sample entry 后的 sinf/frma 读取原始四字符码（avc1/hvc1/mp4a 等）。
-    frma 缺失/无效时回退到配置盒探测，而不是一律兜底 avc1。"""
     blob = bytes(data[entry_pos : min(len(data), entry_pos + 800)])
     idx = 0
     while True:
@@ -1101,9 +1144,19 @@ def _original_format_near(data: bytearray, entry_pos: int, default: bytes, kind:
     return probed or default
 
 
+def _patch_hvc_level(data: bytearray, max_level_idc: int = 123) -> None:
+    pos = 0
+    while True:
+        pos = data.find(b"hvcC", pos)
+        if pos < 0:
+            break
+        level_pos = pos + 16
+        if 0 <= level_pos < len(data) and data[level_pos] > max_level_idc:
+            data[level_pos] = max_level_idc
+        pos += 4
+
+
 def _restore_cenc_codecs(data: bytearray) -> None:
-    """把 encv/enca 还原为真实编码（frma 优先，其次按 avcC/hvcC 等配置盒判定）。
-    避免一律改成 avc1/hvc1 导致非对应编码的视轨解不出画面。"""
     pos = 0
     while True:
         pos = data.find(b"encv", pos)
@@ -1143,6 +1196,7 @@ def _rewrite_moov(moov: bytes) -> bytes:
     result = bytearray(moov)
     _restore_cenc_codecs(result)
     _replace_sinf(result)
+    _patch_hvc_level(result)
     return bytes(result)
 
 
@@ -1185,173 +1239,6 @@ def _sample_table(moov: bytes, moov_start: int) -> list[tuple[int, int, bytes]]:
         raise HongguoPluginError("moov 中没有可解密的 CENC 样本")
     samples.sort()
     return samples
-
-
-
-_HG_Q_TO_QTYPE = {"1080": "1", "720": "10", "540": "20", "480": "30", "360": "40"}
-_Q_LABEL = {"1080": "超清", "720": "高清", "540": "标准", "480": "流畅", "360": "极速"}
-_QTYPE_TO_Q = {"1": "1080", "10": "720", "20": "540", "30": "480", "40": "360"}
-# 壳里播放器认得的标准视轨四字符码；bvc2（ByteVC2）不在其中，只出声音不出画面
-_DECODABLE_ENTRIES = (b"hvc1", b"hev1", b"avc1", b"avc3")
-
-
-def _hg_entry_is_bytevc2(item: Any) -> bool:
-    """单个清晰度条目是不是 ByteVC2（壳解不了，会黑屏只有声音）。"""
-    return isinstance(item, Mapping) and "bytevc2" in str(item.get("gear_des_key") or "")
-
-
-def _hg_is_bytevc2(rows: Any) -> bool:
-    try:
-        return any(_hg_entry_is_bytevc2(x) for x in (rows or []))
-    except Exception:
-        return False
-
-
-_VIDEO_FOURCCS = (b"hvc1", b"hev1", b"hvc2", b"hev2", b"avc1", b"avc3",
-                  b"bvc2", b"bv2C", b"av01", b"vp09", b"encv")
-
-
-def _hg_moov_fourcc(moov: bytes) -> bytes:
-    """从 moov 的 stsd 里取视轨 sample entry 四字符码。
-
-    注意 moov 里音轨、视轨各有一个 stsd，谁在前不固定（实测《反向拿捏2》第 8 集
-    兜底直链的 moov 是音轨 mp4a 在前）。只认第一个 stsd 会把 hvc1 误判成 mp4a，
-    于是明明能播的 hvc1 直链被验成不可播。这里按顺序找第一个「视频类」四字符码。
-    """
-    first = b""
-    i = moov.find(b"stsd")
-    pos = 0
-    while i >= 0:
-        j = i + 4 + 8
-        cc = bytes(moov[j + 4 : j + 8])
-        if not first:
-            first = cc
-        if cc in _VIDEO_FOURCCS:
-            return cc
-        pos = i + 4
-        i = moov.find(b"stsd", pos)
-    return first
-
-
-def _hg_plain_candidates(model: Mapping[str, Any], quality: str = "1080", strict: bool = False) -> list:
-    """备用接口（codec_type=1）的标准 hvc1 直链候选。
-
-    只收非 bytevc2 且能解出地址的条目；返回 [(url, size), ...]。
-    strict=True 时只认这一档自己的清晰度，绝不跨档串用（防止 1080 被换成 720）。
-    """
-    fb = _fallback_api_value(model.get("fallback_api") if isinstance(model, Mapping) else None)
-    if not fb:
-        return []
-    api = re.sub(r"codec_type=\d+", "codec_type=1", fb)
-    if "codec_type=" not in api:
-        api = api + ("&" if "?" in api else "?") + "codec_type=1"
-    j = None
-    for _i in range(2):
-        try:
-            r = requests.get(api, headers={"User-Agent": APP_UA}, timeout=8)
-            if r.status_code == 200:
-                j = r.json()
-                if isinstance(j, Mapping):
-                    break
-        except Exception:
-            j = None
-        try:
-            time.sleep(0.3)
-        except Exception:
-            pass
-    if not isinstance(j, Mapping):
-        return []
-    data = j
-    for key in ("video_info", "data"):
-        if isinstance(data.get(key), Mapping):
-            data = data[key]
-    if isinstance(data.get("data"), Mapping):
-        data = data["data"]
-    raw_list = data.get("video_list") or {}
-    items = list(raw_list.values()) if isinstance(raw_list, Mapping) else [x for x in raw_list if isinstance(x, Mapping)]
-    if not items:
-        return []
-    seed = _key_seed_from_model(data)
-    first = _HG_Q_TO_QTYPE.get(str(quality), "1")
-    if strict:
-        order = [first]
-    else:
-        order = [first] + [q for q in ("1", "10", "20", "30", "40") if q != first]
-    out = []
-    seen = set()
-    for qt in order:
-        for it in items:
-            if not isinstance(it, Mapping) or _hg_entry_is_bytevc2(it):
-                continue
-            if str(it.get("quality_type") or "") != qt:
-                continue
-            raw = _text(it.get("main_url"))
-            pick = raw
-            if seed and raw and not raw.startswith("http"):
-                try:
-                    pick = _decrypt_spade_url(raw, seed) or raw
-                except Exception:
-                    pick = raw
-            if not pick.startswith("http") or pick in seen:
-                continue
-            seen.add(pick)
-            out.append((pick, int(it.get("size") or 0)))
-    return out
-
-
-def _hg_entry_size(item: Any) -> int:
-    """从模型条目里取字节数（video_meta.size 优先，缺了看顶层 size）。"""
-    try:
-        if not isinstance(item, Mapping):
-            return 0
-        vm = item.get("video_meta")
-        if isinstance(vm, Mapping) and vm.get("size"):
-            return int(vm.get("size") or 0)
-        return int(item.get("size") or 0)
-    except Exception:
-        return 0
-
-
-def _hg_plain_url_session(url: str, size: int = 0) -> Any:
-    """上游本就是未加密直链时，验成标准 hvc1/avc1 且中段 206 才返回直通会话。
-
-    站点对部分集数给的是 1:normal（没有 encrypt_info）：这类流不需要解密，
-    但同样不能把 bytevc2 或加密壳丢给播放器，所以沿用同一套四字符码 + 视频轨 + 中段校验。
-    """
-    if not isinstance(url, str) or not url.startswith("http"):
-        return None
-    try:
-        total, _moov_start, moov = _fetch_moov(url)
-    except Exception:
-        return None
-    if _hg_moov_fourcc(moov) not in _DECODABLE_ENTRIES:
-        return None
-    if not _moov_has_video_track(moov):
-        return None
-    mid = max((total or size) // 2, 1024)
-    try:
-        head = requests.get(
-            url,
-            headers={"Range": "bytes=%d-%d" % (mid, mid + 1023), "User-Agent": MEDIA_UA},
-            timeout=8,
-        )
-        if head.status_code != 206:
-            return None
-    except Exception:
-        return None
-    return _PlainSession(url, total or size)
-
-
-def _hg_plain_session(model: Mapping[str, Any], quality: str = "1080", strict: bool = True) -> Any:
-    """挑一条确认是标准 hvc1/avc1、且能按 Range 取中段（可 seek）的直通流。
-
-    三条候选都验不过就返回 None，交给调用方报错重试，绝不把 bvc2 丢给播放器。
-    """
-    for url, size in _hg_plain_candidates(model, quality, strict)[:3]:
-        sess = _hg_plain_url_session(url, size)
-        if sess is not None:
-            return sess
-    return None
 
 
 class _StreamSession:
@@ -1441,9 +1328,10 @@ def _is_empty_model_error(err: BaseException) -> bool:
         "video_model 数据为空" in text
         or "video_model 为空" in text
         or "上游响应不是 JSON" in text
-        or "返回空响应" in text
         or "播放模型没有清晰度" in text
         or "播放模型缺少地址或密钥材料" in text
+        or "HTTP 200 空响应" in text
+        or "App 接口未返回 data" in text
     )
 
 
@@ -1497,86 +1385,16 @@ def _working_device_pair() -> dict[str, str] | None:
 
 
 def _video_model_rotating(video_id: str, config: Mapping[str, Any]) -> dict[str, Any]:
-    last_err: BaseException | None = None
-    # 2026-11-10 18:39 真机取流日志 + 沙箱实测（同一分钟里换 5 个 vid 各试 5 次、
-    # 两个 host 交替、每次现场注册新设备号，全部 HTTP 200 + 空体；80 秒后再试仍空，
-    # 而 5 分钟前同一个 vid 一次就回 23791 字节 JSON）证明：空体是站点侧成波出现的，
-    # 不是设备号被风控、也不是某个 vid 坏了。短重试只能抓住「波刚到尾巴」这种运气，
-    # 所以这里给 5 轮（每轮新设备号 + 两个 host 交替 + 逐步退避，总耗时压在 3 秒级），
-    # 拿不到就快速失败，由上层挂后台继续试，别让播放器干等十几秒。
-    for attempt in range(5):
-        endpoint = VIDEO_URL if attempt % 2 == 0 else VIDEO_URL_ALT
-        # 每一轮先按海阔那套签名（只带 ladon/argus/stub）打一次，空了再回落到原来的六神签名，
-        # 两种签名的请求参数和 body 完全相同，只换签名头，方便日志里看出是哪套过了。
-        for sign_mode in ("v5", "hiker_medusa", "hiker", "sixgod"):
-            try:
-                model = _video_model(video_id, config, endpoint, sign_mode)
-                _diag("取流成功 sign=%s host=%s" % (sign_mode, urlparse(endpoint).netloc))
-                return model
-            except Exception as err:
-                last_err = err
-                if not _is_empty_model_error(err):
-                    raise
-                if "返回空响应" in str(err):
-                    _diag(
-                        "取流第 %d/5 轮 sign=%s 被站点空体拒绝 vid=%s host=%s：HTTP 200 空体"
-                        % (attempt + 1, sign_mode, video_id, urlparse(endpoint).netloc)
-                    )
-        try:
-            time.sleep(min(0.2 * (attempt + 1), 0.6))
-        except Exception:
-            pass
-        pair = _rotate_stream_device()
-        try:
-            config["device_id"] = pair["device_id"]
-            config["install_id"] = pair["install_id"]
-        except (TypeError, AttributeError):
-            config = pair
-    raise last_err if last_err is not None else HongguoPluginError("video_model 为空")
-
-
-# ===== 空体高峰期的后台重试 =====
-# 2026-11-10 实测：站点空体是成波来的（18:41~18:43 连续 16 次、跨 80 秒全空），
-# 在播放器那一次请求里死等救不回来。失败后挂一个后台线程按秒继续试，
-# 一旦拿到非空 JSON 就把会话放进缓存，用户再点一次立刻起播。
-_WARM_LOCK = threading.Lock()
-_WARM_ACTIVE: set = set()
-_WARM_WINDOW = 180.0
-_WARM_INTERVAL = 4.0
-
-
-def _warm_burst(video_id: str, config: Mapping[str, Any], quality: str) -> None:
-    key = "%s|%s" % (video_id, quality)
-    with _WARM_LOCK:
-        if key in _WARM_ACTIVE or len(_WARM_ACTIVE) >= 2:
-            return
-        _WARM_ACTIVE.add(key)
-
-    def _run() -> None:
-        deadline = time.time() + _WARM_WINDOW
-        try:
-            while time.time() < deadline:
-                time.sleep(_WARM_INTERVAL)
-                try:
-                    _stream_session(video_id, dict(config or {}), quality)
-                except Exception:
-                    continue
-                _diag(
-                    "后台重试成功 vid=%s 档位=%s：站点空体高峰已过，再点一次即可起播"
-                    % (video_id, quality)
-                )
-                return
-            _diag("后台重试放弃 vid=%s 档位=%s：站点空体已持续 %d 秒"
-                  % (video_id, quality, int(_WARM_WINDOW)))
-        finally:
-            with _WARM_LOCK:
-                _WARM_ACTIVE.discard(key)
-
+    # v5 优先：旧版六头签名已被上游拒收（HTTP 200 空响应），空响应不再走旧路。
     try:
-        threading.Thread(target=_run, daemon=True, name="hg-warm").start()
-    except Exception:
-        with _WARM_LOCK:
-            _WARM_ACTIVE.discard(key)
+        return _video_model_v5(video_id, config)
+    except _V5EmptyResponse:
+        raise
+    except Exception as err_v5:
+        try:
+            return _video_model(video_id, config)
+        except Exception:
+            raise err_v5
 
 
 def _stream_session(video_id: str, config: Mapping[str, Any], quality: str = "1080") -> "_StreamSession":
@@ -1607,65 +1425,22 @@ def _stream_session(video_id: str, config: Mapping[str, Any], quality: str = "10
     last_err = None
     try:
         # 上游偶发抖动（同一集首次 502、重试即通）——冷启动这里做短重试。
-        for _attempt in range(2):
+        for _attempt in range(3):
             try:
                 model = _video_model_rotating(video_id, config)
                 rows = _video_list_from_model(model)
                 key_seed = _key_seed_from_model(model) or ""
-                # 按模型里真实存在的档位排，按与用户所选档的接近程度降序，绝不跳档乱配
-                avail: list = []
-                for _row in rows:
-                    _q = _QTYPE_TO_Q.get(str(_row.get("quality_type") or "")) if isinstance(_row, Mapping) else None
-                    if _q and _q not in avail:
-                        avail.append(_q)
-                if quality not in avail:
-                    avail.insert(0, quality)
-                _rank = {q: i for i, q in enumerate(_QUALITY_ORDER)}
-                _base = _rank.get(quality, 99)
-                avail.sort(key=lambda q: (0 if q == quality else 1, abs(_rank.get(q, 99) - _base)))
-                wanted_order = avail
+                # 视轨校验：个别清晰度的流不带视轨（只有声音），
+                # 此时按清晰度顺序回退到确实带视轨的那条，避免「切到低清就没画面」。
+                wanted_order = [quality] + [q for q in _QUALITY_ORDER if q != quality]
                 seen_urls = set()
                 reason = "媒体会话创建失败"
                 probed = 0
-
-                def _take(sess: Any, want: str) -> Any:
-                    """缓存并按档位返回会话；真的降了档就在日志里说清楚。"""
-                    try:
-                        sess.quality = want
-                    except Exception:
-                        pass
-                    if want != quality:
-                        try:
-                            print(
-                                "[红果] %s 的%s档拿不到壳能解的编码，降到%s档播出"
-                                % (video_id, _Q_LABEL.get(quality, quality), _Q_LABEL.get(want, want))
-                            )
-                        except Exception:
-                            pass
-                    with _STREAM_LOCK:
-                        store = _STREAM_STATE["sessions"]
-                        while len(store) >= _STREAM_MAX_SESSIONS:
-                            store.pop(next(iter(store)), None)
-                        store[cache_key] = sess
-                    return sess
-
                 for want in wanted_order:
                     _, item = _select_quality(rows, want)
-                    # 这一档是 ByteVC2：只在这一档上要标准 hvc1，不跨档串
-                    if _hg_entry_is_bytevc2(item):
-                        plain_session = None
-                        try:
-                            plain_session = _hg_plain_session(model, want, strict=True)
-                        except Exception:
-                            plain_session = None
-                        if plain_session is not None:
-                            return _take(plain_session, want)
-                        reason = "该档只有 bytevc2，同档 hvc1 也没取到 q=%s" % want
-                        continue
-                    # 这一档本来就是标准编码：走解密路，验不过再回同一档取直通
                     raw_url = _media_url(item)
                     spade = _spade_value(item)
-                    if not raw_url:
+                    if not raw_url or not spade:
                         reason = reason if reason != "媒体会话创建失败" else "播放模型缺少地址或密钥材料 q=%s" % want
                         continue
                     if raw_url in seen_urls:
@@ -1677,43 +1452,35 @@ def _stream_session(video_id: str, config: Mapping[str, Any], quality: str = "10
                             url = _decrypt_spade_url(raw_url, key_seed) or raw_url
                         except HongguoPluginError:
                             url = raw_url
-                    # 这一档上游没有加密材料（gear_des_key 是 1:normal、无 encrypt_info）：
-                    # 本来就是未加密直链，直通转发即可，不能再当成「缺密钥」判失败
-                    if not spade:
-                        plain_url_session = _hg_plain_url_session(url, _hg_entry_size(item))
-                        if plain_url_session is not None:
-                            return _take(plain_url_session, want)
-                        reason = "该档未加密但验不过标准编码 q=%s" % want
+                    total, moov_start, moov = _fetch_moov(url)
+                    if b"bvc2" in moov:
+                        # ByteVC 私有编码：只有 1080 是标准 hvc1，其余清晰度
+                        # 的视频配置盒是 bvc2，手机标准 HEVC 解码器不认，
+                        # 表现为有声音没画面。按无视轨处理，回退到可解的清晰度。
+                        reason = "该清晰度为 ByteVC 私有编码 q=%s" % want
+                        probed += 1
+                        if probed >= 2:
+                            break
                         continue
-                    total = 0
-                    moov = b""
-                    moov_start = 0
-                    try:
-                        total, moov_start, moov = _fetch_moov(url)
-                    except Exception:
-                        total, moov = 0, b""
-                    if total and _moov_has_video_track(moov):
-                        session = _StreamSession(url, derive_content_key(spade), total, moov_start, moov)
-                        # 解密后吐给播放器的视轨必须是他认得的编码，bvc2 这种一律不交
-                        _sfc = _hg_moov_fourcc(session.moov_plain)
-                        if not _sfc or _sfc in _DECODABLE_ENTRIES:
-                            return _take(session, want)
-                        reason = "视轨编码 %s 壳解不了 q=%s" % (_sfc.decode("latin-1"), want)
-                    else:
-                        reason = "该清晰度没有视轨 q=%s" % want
+                    if _moov_has_video_track(moov):
+                        session = _StreamSession(url, _v5n_content_key_bytes_for(item), total, moov_start, moov)
+                        with _STREAM_LOCK:
+                            sessions = _STREAM_STATE["sessions"]
+                            while len(sessions) >= _STREAM_MAX_SESSIONS:
+                                sessions.pop(next(iter(sessions)), None)
+                            sessions[cache_key] = session
+                        return session
+                    reason = "该清晰度没有视轨 q=%s" % want
                     probed += 1
-                    plain_session = None
-                    try:
-                        plain_session = _hg_plain_session(model, want, strict=True)
-                    except Exception:
-                        plain_session = None
-                    if plain_session is not None:
-                        return _take(plain_session, want)
-                    if probed >= 3:
+                    # 最多多探 2 条，避免冷启动被拖慢
+                    if probed >= 2:
                         break
                 raise HongguoPluginError(reason)
             except Exception as err:
                 last_err = err
+                if isinstance(err, _V5EmptyResponse):
+                    # 服务端已明确回空/无数据（如 101113），重试同一链路也拿不到，立即失败
+                    break
                 try:
                     time.sleep(0.4 * (_attempt + 1))
                 except Exception:
@@ -1754,43 +1521,6 @@ def _parse_range(value: str, total: int) -> Any:
     if start >= total or start > end:
         return _RANGE_UNSATISFIABLE
     return start, end
-
-
-class _PlainSession:
-    """直通会话：上游是标准 hvc1 MP4（未加密），按 Range 原样转发。"""
-
-    def __init__(self, url: str, total: int) -> None:
-        self.url = url
-        self.total = int(total)
-        self.created = time.time()
-
-    def expired(self) -> bool:
-        return time.time() - self.created > _STREAM_TTL_SECONDS
-
-    def iter_range(self, start: int, end: int, chunk: int = 512 * 1024):
-        position = start
-        while position <= end:
-            stop = min(end, position + chunk - 1)
-            response = requests.get(
-                self.url,
-                headers={
-                    "Range": "bytes=%d-%d" % (position, stop),
-                    "User-Agent": MEDIA_UA,
-                    "Referer": "https://novel.snssdk.com/",
-                },
-                timeout=30,
-                stream=True,
-            )
-            try:
-                if response.status_code not in (200, 206):
-                    raise HongguoPluginError("直通上游返回 %s" % response.status_code)
-                for block in response.iter_content(64 * 1024):
-                    if block:
-                        yield block
-            finally:
-                response.close()
-            position = stop + 1
-
 
 
 class _StreamHandler(BaseHTTPRequestHandler):
@@ -1848,12 +1578,7 @@ class _StreamHandler(BaseHTTPRequestHandler):
             _DM_HIT[vid] = time.time()
         except Exception:
             pass
-        _prior = _dm_state(vid)
-        if not (_prior.get("items") or []) and _prior.get("error"):
-            # 上次是失败（多半撞了限流），播放器这次真来要，就再试一次
-            state = _dm_get(vid, sid, did, iid, wait=min(_DM_WAIT, 10), force=True)
-        else:
-            state = _dm_get(vid, sid, did, iid, wait=_DM_WAIT)
+        state = _dm_get(vid, sid, did, iid, wait=_DM_WAIT)
         items = state.get("items") or []
         if parsed.path.rstrip("/").endswith("debug"):
             payload = {
@@ -1895,10 +1620,6 @@ class _StreamHandler(BaseHTTPRequestHandler):
             self._fail(400, b"missing vid")
             return
         try:
-            _DM_STREAM_HIT[str(params["vid"])] = time.time()
-        except Exception:
-            pass
-        try:
             session = _stream_session(
                 params["vid"],
                 {
@@ -1907,26 +1628,8 @@ class _StreamHandler(BaseHTTPRequestHandler):
                 },
                 params["quality"],
             )
-        except Exception as exc:
-            # 把真实原因回吐给壳的播放日志，避免只看到一句没头没脑的
-            # media session failed 就去猜是源写错了。
-            reason = str(exc or "").strip() or exc.__class__.__name__
-            _diag(
-                "本机流建会话失败 vid=%s 档位=%s 原因=%s 日志=%s"
-                % (params["vid"], params["quality"], reason, _diag_path() or "无")
-            )
-            # 空体是成波来的：这里快速失败，同时挂后台继续试，用户过 1 分钟再点就命中缓存
-            if _is_empty_model_error(exc if isinstance(exc, BaseException) else Exception(str(exc))):
-                try:
-                    _warm_burst(
-                        params["vid"],
-                        {"device_id": params["device_id"], "install_id": params["install_id"]},
-                        params["quality"],
-                    )
-                    reason = reason + "（站点正处在空体高峰，后台已在自动重试，过 1 分钟再点一次即可）"
-                except Exception:
-                    pass
-            self._fail(502, ("media session failed: " + reason).encode("utf-8"))
+        except Exception:
+            self._fail(502, b"media session failed")
             return
         raw_range = self.headers.get("Range") or ""
         requested = _parse_range(raw_range, session.total)
@@ -3888,7 +3591,7 @@ def _ror64(value: int, count: int) -> int:
     count %= 64
     return ((value >> count) | (value << (64 - count))) & 0xFFFFFFFFFFFFFFFF
 
-def _encrypt_helios(khronos: int, rand_value: int = 0) -> str:
+def _encrypt_helios(khronos: int, rand_value: int = 0, license_id: str = "1588093228") -> str:
     value = rand_value or random.randint(0, 0xFFFFFFFF)
     seed = value.to_bytes(4, "little") + b"8662"
     digest = hashlib.md5(seed).digest()
@@ -3906,7 +3609,7 @@ def _encrypt_helios(khronos: int, rand_value: int = 0) -> str:
         value2 &= 0xFFFFFFFFFFFFFFFF
         table.append(value2)
         first, second = value2, words.pop(0)
-    raw = (f"{khronos}-1588093228-8662").encode()
+    raw = (f"{khronos}-{license_id}-8662").encode()
     pad = 16 - len(raw) % 16
     raw += bytes([pad]) * pad
     output = bytearray()
@@ -4064,449 +3767,7 @@ def _device_config(config: Mapping[str, Any]) -> dict[str, str]:
         "ua": APP_UA,
     }
 
-def _hiker_query(params: Mapping[str, Any]) -> str:
-    """海阔视界 hgPhxQuery() 的等价实现：原样拼接，不做 URL 编码（resolution 里的 * 保留字面）。"""
-    parts = []
-    for key, value in params.items():
-        parts.append("%s=%s" % (key, value))
-    return "&".join(parts)
-
-
-# ===== v5 播放取流（2026-11-24 移植自已实测通过的 红果(破壳)(修复版).py）=====
-# 老端点 multi_video_model/v1 自 2026-11-24 起对任何签名都恒回 HTTP 200 空体，
-# 上游播放取流已迁到 a 域名的 v5 端点：gzip body + x-khronos / x-helios / x-medusa，
-# medusa wire field21=312。v5 排在轮换首位，hiker / sixgod 原链路一行未删。
-V5_PLAYER_URL = "https://api5-normal-sinfonlinea.fqnovel.com/novel/player/multi_video_model/player/v1"
-V5_PLAYER_UA = "com.phoenix.read/73932 (Linux; U; Android 12; zh_CN_#Hans; PGT-AN10; Build/V417IR;tt-ok/3.12.13.20)"
-U32 = 0xFFFFFFFF
-U64 = 0xFFFFFFFFFFFFFFFF
-
-def _video_model_v5(video_id: str, config: Mapping[str, Any]) -> dict[str, Any]:
-    """v5 播放取流：a 域名 player/v1 + gzip body + x-khronos / x-helios / x-medusa。
-    2026-11-24 实测拿到真模型（非免费集 vid=7704580191372201022，HTTP 200 / 24213 字节）。"""
-    devices = _device_config(config)
-    values = {
-        "aid": "8662", "app_name": "novelread", "version_code": "74332",
-        "version_name": "7.4.3.32", "channel": "vivo_8662_64",
-        "device_platform": "android", "device_type": "PGT-AN10", "os_version": "12",
-        "update_version_code": "74332", "device_id": devices["device_id"],
-        "iid": devices["install_id"], "ac": "wifi", "os": "android", "ssmix": "a",
-        "device_brand": "vivo", "language": "zh", "os_api": "31",
-        "manifest_version_code": "74332", "resolution": "1080*2400", "dpi": "480",
-        "host_abi": "arm64-v8a", "dragon_device_type": "phone",
-        "compliance_status": "0", "need_personal_recommend": "1",
-        "player_so_load": "1", "is_android_pad_screen": "0",
-    }
-    payload = {"biz_param": {"detail_page_version": 0, "device_level": 1,
-                             "disable_digg_stat": False, "disable_video_relate_book": True,
-                             "dr_scene": "player", "need_all_video_definition": True,
-                             "need_mp4_align": False, "use_os_player": False,
-                             "use_server_dns": False, "video_platform": 1024},
-               "mixed_video_id_map": {"1004": [video_id]}}
-    body = json.dumps(payload, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
-    packed = gzip.compress(body)
-    signed_url, sig_headers = sign_playback_v5(V5_PLAYER_URL, values, packed,
-                                               int(time.time() * 1000))
-    headers = {"User-Agent": V5_PLAYER_UA, "Content-Encoding": "gzip",
-               "Accept": "application/json", "sdk-version": "2",
-               "x-tt-request-tag": "t=0;n=0"}
-    headers.update(sig_headers)
-    _diag("v5 取流请求 vid=%s iid=%s device_id=%s" % (video_id, devices["install_id"], devices["device_id"]))
-    response = requests.post(signed_url, headers=headers, data=packed, timeout=30)
-    raw = response.content or b""
-    _diag("v5 取流响应 HTTP %s len=%d 前200字节=%r" % (response.status_code, len(raw), raw[:200]))
-    root = _json_response(response)
-    data = (root or {}).get("data") if isinstance(root, Mapping) else None
-    if not isinstance(data, Mapping):
-        raise HongguoPluginError("video_model 数据为空")
-    entry = data.get(video_id)
-    if entry is None:
-        bucket = data.get("1004")
-        if isinstance(bucket, Mapping):
-            entry = bucket.get(video_id)
-            if entry is None and bucket:
-                entry = next(iter(bucket.values()))
-    if entry is None:
-        entry = data
-    raw_model = entry.get("video_model") if isinstance(entry, Mapping) else None
-    if isinstance(raw_model, str):
-        raw_model = json.loads(raw_model)
-    if not isinstance(raw_model, Mapping):
-        raise HongguoPluginError("video_model 为空")
-    return dict(raw_model)
-
-
-_PUBLIC_LOCK = threading.Lock()
-_PUBLIC_CACHE: dict[str, tuple[float, str]] = {}
-_PUBLIC_QUALITIES = ("1080p", "720p", "540p", "480p", "360p")
-
-
-def _rotl(x, n):
-    k = n & 31
-    return ((x << k) | (x >> ((32 - k) & 31))) & U32
-
-def _ror(x, n):
-    k = n & 31
-    return ((x >> k) | (x << ((32 - k) & 31))) & U32
-
-def _ror64(x, n):
-    return ((x >> n) | (x << (64 - n))) & U64
-
-def _le32(x):
-    return (x & U32).to_bytes(4, "little")
-
-def _rnd_int32():
-    v = int.from_bytes(random.getrandbits(32).to_bytes(4, "little"), "little")
-    return v - 0x100000000 if v >= 0x80000000 else v
-
-V5_MAGIC = bytes.fromhex("2d4b4fca49750d433fb5ae2c226dcc56")
-V5_LICENSE = "646637794"
-V5_FIELD21 = 312
-V5_SIGN_KEY = bytes.fromhex("b23c2a470a20d105dc3f8c4438f8272ed46d6c89ffdcdedd5108698d26e9489d")
-V5_SBOX = bytes.fromhex(
-    "53290fe9e51f316f90f74a7e034d367784ab49237cd0135cdc632c322fd3be0e"
-    "2624a417ecd9151a7ff64f60730a87f9445ec6ada2f865d22b696c4188f24c0d"
-    "f37b75510b939f6bc2fe6883e68bc8c722181ba0bdb08c9871b50c9a16b46ee"
-    "a8eed20ba4b8a14e0fcf1468dbbef05a93e5a9d7dcf06898635c1fd99f5de287a"
-    "80c594daaab19b6279fbd75070cb52eb2555c456e39e7839853874e2f0013ac0"
-    "b64742d8ca10e4b79c955de8b843ce4ed464a6a72ed508091c92e7b3eedd1e1d"
-    "d12afac321618fa3d65f9167c982f43d66a53c6a1997585b346dbf9672ff37cd"
-    "bc073b2dae11453304df00815476b2a13fccdb30b957a8acafe1274002485912"
-    "38922563e36406d37a24100b7902a028044e218453c2a399199c9d13dc40c55b"
-    "a67e502273850ebdc1a2e2188b8f2d9e3cb909b8c46a2a9f4a6dd93007eafa65"
-    "b7b3a881aa908cc74f0ad76bbbb58617c37012ca05a469fd44e62eecf1e4272c"
-    "e860c0ae5eadf99b20d8f0234174006f3f110d7657d01645d4eff8f71471cbfe"
-    "1cb2f52648727bf3c9de55153e031b4d61757db63dbf7782eeafe9018a889136"
-    "2fb14759ac32bab03b349aeb5a377c5156be4c8dfbe13a684bda39cf836697c8"
-    "94545fe0f2491acea9fc6252f4ff1e0fe72bd2df6e67a7f635e5bcc6d1a5dd95"
-    "1d89960887a18eb40c785cdb1f80ed42299333ab98cdd67f316cd54346585dcc"
-    "d759fb722789b08807cc0fda293f7e5e1819bb0353517020b31d3d00374952be"
-    "a2c421e862040a9ec892a05b266b7a0d0cc316f483b81af39715657ffe32ad8d"
-    "e0c13077646035236ee5363e5f900e9a7cf850a81cd9960b6df73317226f99ea"
-    "a6fff15cec34acb98246639b918ab2851466a7cdfc4ad1b52c2ae95a58d3734e"
-    "47ddd5b7560193f644ef9c408b7dee39b4d6aabf4de761e3252d4c7ba3843187"
-    "745d55e6a5db05d42b45caed43c0c5d0b64bfa9d94a4a9d8f2f0e1a108dcfd28"
-    "8fd2bc1fc7bd675412138169cb09249875ba3b68cfb11180afae104fc9789571"
-    "c6dfce02413886796ae21e3c488cc21b9f423a066c2eabf98e2fdeeb5776e4f5"
-    "d09a515ba58cbbab3e37b09fd4f6d9244df80512e84cd7956be301cf64f1429d"
-    "58577cc241f3a2c655144f81aaf95a4e108da894b38970561ae9002619fbbac9"
-    "1fa922ed202bfc62cb08e0de2a7f3631435f8b47c8a3c563b4db4071ce74c46d"
-    "a6fa696a9e282d1e825d663b93bfd56c48dce1884bb10fccea063929f746443f"
-    "d830a4232e53da21a1f2d1bdfebc3a02c10a1b8ad31d04fd616590d272ac737e"
-    "98eb33af60528716bee78ec0ee8699031177277d9cff32542c67caf5f4459168"
-    "1335ae0e178f3409a7803db83892dde5b9b7f0c750e24aef077badd678a09b85"
-    "0b84ec1597e4963cb5e675df1c0d6fb618496ecd76c35c798325590c2fb27a5e")
-
-HASH_TABLE = [
-    0xebb64faf, 0x07aadcc2, 0xcf3187bf, 0xe01138ff, 0x6d0bfcff, 0x5a30a3be, 0xb41ad638, 0x34180eb8,
-    0xf233eb6f, 0xb1a584cc, 0xccc30dc7, 0x47d1db51, 0xd55653de, 0x70a84fa1, 0x57473c12, 0xf76f0288,
-    0x2c077f0a, 0xda0dcad0, 0xfbb86f6c, 0xfdc4cf00, 0x688a020d, 0xe676c6a6, 0x8cd6338b, 0x1a3c8d0e,
-    0xcce8b06b, 0x6ad0ed0b, 0xa0522717, 0xdc71ac83, 0x2285db71, 0xd5b4dda6, 0x736f8650, 0x6560306c,
-    0x617ce2a6, 0xe423417e, 0x0a40e143, 0x544e4032, 0x88dffb2a, 0x716c1ae0, 0x4c467a88, 0x05b23bb3,
-    0xe1d0b866, 0xbaa3dcb8, 0xae3374d3, 0xc3381a50, 0x1702f75b, 0xfe6da368, 0xf0b4cf48, 0x4e0ffbb8,
-    0x72aad10d, 0x26c53a3d, 0xf2bce0f6, 0xb4557581, 0x4a257fdd, 0x8c3182a2, 0xab0b3b86, 0x3d5dfb14,
-    0x4f103634, 0xd37b52d7, 0x444eff16, 0xeb0a33d1, 0x6ca86f6e, 0x0284ba7, 0x08387cfa, 0x5fb37586]
-
-def _sm3(data: bytes) -> bytes:
-    return SM3(data).digest()
-
-def helios_v5(khronos: int, license_id: str = V5_LICENSE, rand_value: int = 0) -> str:
-    value = rand_value or random.getrandbits(32)
-    digest = hashlib.md5(_le32(value) + b"8662").digest()
-    keys = b"".join(("%02x" % item).encode() for item in digest)
-    words = [int.from_bytes(keys[i:i + 8], "little") for i in range(0, 32, 8)]
-    table = [words[0]]
-    first, second = words[0], words[1]
-    queue = [words[2], words[3]]
-    for index in range(0x22):
-        value2 = (_ror64(second, 8) + first) & U64
-        value2 ^= index
-        queue.append(value2)
-        value2 = (value2 ^ _ror64(first, 61)) & U64
-        table.append(value2)
-        first, second = value2, queue.pop(0)
-    raw = ("%d-%s-8662" % (khronos, license_id or "1588093228")).encode()
-    pad = 16 - len(raw) % 16
-    raw += bytes([pad]) * pad
-    out = bytearray()
-    for off in range(0, len(raw), 16):
-        left = int.from_bytes(raw[off:off + 8], "little")
-        right = int.from_bytes(raw[off + 8:off + 16], "little")
-        for index in range(0x22):
-            right = (table[index] ^ ((left + _ror64(right, 8)) & U64)) & U64
-            left = (right ^ _ror64(left, 61)) & U64
-        out += left.to_bytes(8, "little") + right.to_bytes(8, "little")
-    return base64.b64encode(_le32(value) + bytes(out)).decode()
-
-def hash_f13_v5(query_sm3: bytes, body_md5: bytes, ts_bytes: bytes, khronos: int) -> bytes:
-    iv_v1 = 0x9d4a97c2
-    count_v1 = (iv_v1 + khronos + 1) & 255
-    count_v2 = (iv_v1 + khronos) & U32
-    tt = [_ror(x, count_v1) for x in HASH_TABLE]
-    n0 = (count_v2 + 2) & 7
-    seed = [0xfa, 0x45, 0x61, 0xd7]
-    pad = bytes((((s | (s << 8)) >> n0) & 255) for s in seed)
-    data = query_sm3 + body_md5 + ts_bytes + pad + bytes.fromhex("00000000000001a0")
-    di = [0] * ((len(data) // 4) + 112 + 16)
-    di_len = 0
-    for i in range(0, len(data) - 3, 4):
-        di[di_len] = int.from_bytes(data[i:i + 4], "big")
-        di_len += 1
-    di_0 = di[0]
-    for i in range(112):
-        di_1 = di[i + 1]
-        di_14 = di[i + 14]
-        r1 = _rotl(di_1, 14) ^ _rotl(di_1, 25) ^ (di_1 >> 3)
-        r2 = _rotl(di_14, 13) ^ _rotl(di_14, 15) ^ (di_14 >> 10)
-        di[di_len] = (di_0 + di[i + 9] + r1 + r2) & U32
-        di_0 = di_1
-        di_len += 1
-    init_raw = [0x7aba4fc8, 0x67166507, 0x6403fa00, 0x340f512f,
-                984304912, 3005047866, 2874125293, 2152413264]
-    init = [_ror(x, count_v2 & 31) for x in init_raw]
-    chosen = [96, 1, 3, 4, 0, 6, 5, 2, 0, 7, 7]
-    d = list(init)
-    for i in range(chosen[0]):
-        base = (iv_v1 + i) & U32
-        n0v = di[base & 127]
-        n1 = ((d[chosen[3]] ^ d[chosen[4]]) & d[chosen[1]]) ^ d[chosen[3]]
-        n2 = _rotl(d[chosen[1]], 26) ^ _rotl(d[chosen[1]], 21) ^ _rotl(d[chosen[1]], 7)
-        n4 = (n0v + n1 + n2 + tt[base & 63] + d[chosen[5]]) & U32
-        n5 = _rotl(d[chosen[2]], 30) ^ _rotl(d[chosen[2]], 19) ^ _rotl(d[chosen[2]], 10)
-        n6 = (d[chosen[2]] & d[chosen[6]]) | ((d[chosen[2]] | d[chosen[6]]) & d[chosen[7]])
-        n7 = (n5 + n6) & U32
-        old = d[chosen[9]]
-        last = d[-1]
-        d[1:] = d[:-1]
-        d[0] = last
-        d[chosen[10]] = (n7 + n4) & U32
-        d[chosen[8]] = (old + n4) & U32
-    ret = bytearray(32)
-    for i in range(8):
-        ret[i * 4:i * 4 + 4] = ((d[i] + init[i]) & U32).to_bytes(4, "big")
-    for i in range(16):
-        ret[i] ^= ret[i + 16]
-    head = bytes(ret[:16])
-    tail = sum_md5(head) | 0x20
-    return head + _le32(tail)
-
-class AesV5:
-    CON2 = [[2, 0, 3, 1], [1, 3, 2, 0], [3, 2, 1, 0], [2, 3, 1, 0]]
-    ORDER = [[0, 9, 14, 15, 4, 13, 2, 7, 8, 1, 6, 3, 12, 5, 10, 11],
-             [0, 9, 14, 11, 4, 13, 2, 3, 8, 1, 6, 15, 12, 5, 10, 7],
-             [0, 9, 14, 3, 4, 13, 2, 15, 8, 1, 6, 11, 12, 5, 10, 7],
-             [0, 9, 14, 15, 4, 13, 2, 3, 8, 1, 6, 11, 12, 5, 10, 7]]
-    WIRE = [6, 5, 3, 4, 2, 7, 1, 0]
-    COMPACT = [1, 7, 3, 6, 2, 0, 4, 5]
-    INIT = [0xbbb5de72, 0xd4638d5b, 0x92a5f73b, 0x89f8a1c9]
-
-    def __init__(self, key: bytes, khronos: int):
-        self.word_size = khronos & 3
-        self.box = V5_SBOX[self.word_size * 256:(self.word_size + 1) * 256]
-        self.con2 = self.CON2[self.word_size]
-        self.order = self.ORDER[self.word_size]
-        init = self.INIT[self.word_size]
-        initial = b"".join(_le32(init) for _ in range(4))
-        mk = bytes(a ^ b for a, b in zip(initial, key))
-        expanded = bytearray(mk + bytes(32))
-        rounds = 8
-        for i in range(4, 12):
-            at = 4 * (i - 1)
-            a, b, c, d = expanded[at], expanded[at + 1], expanded[at + 2], expanded[at + 3]
-            if i & 3 == 0:
-                t = ((init >> (rounds & 24)) ^ self.box[b]) & 255
-                b = self.box[c]
-                c = self.box[d]
-                d = self.box[a]
-                a = t
-            rounds += 2
-            expanded[at + 4] = (a ^ expanded[at - 12]) & 255
-            expanded[at + 5] = (b ^ expanded[at - 11]) & 255
-            expanded[at + 6] = (c ^ expanded[at - 10]) & 255
-            expanded[at + 7] = (d ^ expanded[at - 9]) & 255
-        self.keys = [[expanded[i * 4 + j] & 255 for j in range(4)] for i in range(12)]
-
-    @staticmethod
-    def _matrix(value):
-        return [[value[i * 4 + j] & 255 for j in range(4)] for i in range(4)]
-
-    @staticmethod
-    def _flat(rows):
-        return bytes(rows[i][j] & 255 for i in range(4) for j in range(4))
-
-    def _add(self, rows, key):
-        for i in range(4):
-            for j in range(4):
-                rows[i][j] ^= key[i][j]
-
-    def _add_con(self, rows, ks):
-        for i in range(4):
-            for j in range(4):
-                rows[i][j] ^= ks[i][self.con2[j]]
-
-    def _sub(self, rows):
-        for i in range(4):
-            for j in range(4):
-                rows[i][j] = self.box[rows[i][j]]
-        old = [list(r) for r in rows]
-        for i in range(4):
-            rows[i] = old[self.con2[i]]
-
-    def _shift(self, rows):
-        b = self._flat(rows)
-        for i in range(16):
-            rows[i // 4][i % 4] = b[self.order[i]]
-
-    def _shift_con(self, rows):
-        old = [list(r) for r in rows]
-        for i in range(4):
-            for j in range(4):
-                rows[i][j] = old[i][self.con2[j]]
-
-    def _sub_keys(self, start):
-        return [list(self.keys[start + i]) for i in range(4)]
-
-    def _block(self, value: bytes) -> bytes:
-        rows = self._matrix(value)
-        self._add_con(rows, self._sub_keys(0))
-        for i in range(1, 3):
-            self._sub(rows)
-            self._shift(rows)
-            if i == 1:
-                self._shift_con(rows)
-                _aes_mix(rows)
-            self._add_con(rows, self._sub_keys(i * 4))
-        self._add(rows, self._sub_keys(4))
-        return self._flat(rows)
-
-    def encrypt(self, data: bytes, iv: bytes) -> bytes:
-        plaintext = bytearray(32)
-        for i in range(31):
-            at = i * 8
-            acc = 0
-            for j in range(8):
-                byte = data[at + j] if at + j < len(data) else 0
-                acc |= (((byte >> self.WIRE[j]) & 1) << self.COMPACT[j])
-            plaintext[i] = acc & 255
-        plaintext[31] = 1
-        blocks = []
-        previous = bytes(iv)
-        for i in range(0, 32, 16):
-            chunk = bytes(x ^ y for x, y in zip(plaintext[i:i + 16], previous))
-            previous = self._block(chunk)
-            blocks.append(previous)
-        key = b"".join(blocks)
-        out = bytearray(data)
-        for i in range(31):
-            at = i * 8
-            k = key[i]
-            for j in range(8):
-                bit = self.WIRE[j]
-                mask = (1 << bit) & 255
-                if at + j < len(out):
-                    out[at + j] = (out[at + j] & (~mask & 255)) | (((k >> self.COMPACT[j]) & 1) << bit)
-        return key[-1:] + bytes(out)
-
-def _aes_xt(x):
-    return ((x << 1) ^ (0x1b if x & 128 else 0)) & 255
-
-def _aes_mix(rows):
-    for i in range(4):
-        t = rows[0][i] ^ rows[1][i] ^ rows[2][i] ^ rows[3][i]
-        u = rows[0][i]
-        rows[0][i] ^= t ^ _aes_xt(rows[0][i] ^ rows[1][i])
-        rows[1][i] ^= t ^ _aes_xt(rows[1][i] ^ rows[2][i])
-        rows[2][i] ^= t ^ _aes_xt(rows[2][i] ^ rows[3][i])
-        rows[3][i] ^= t ^ _aes_xt(rows[3][i] ^ u)
-
-def _query_of(url: str) -> str:
-    return url.split("?", 1)[1] if "?" in url else ""
-
-def medusa_v5(url: str, body: bytes | None, khronos: int, who) -> str:
-    body_md5 = hashlib.md5(body).digest() if body else bytes(16)
-    query = _query_of(url)
-    query_sm3 = _sm3(query.encode())
-    f13 = hash_f13_v5(query_sm3, body_md5, _le32(khronos), khronos)
-    version = who.get("version_name", "7.4.3.32")
-    nonce = base64.urlsafe_b64encode(bytes(random.getrandbits(8) for _ in range(18))).decode().rstrip("=")
-    started = int(time.time() * 1000)
-    device_info = _proto([
-        (1, 1, "sint32"), (2, 2, "sint32"), (3, "8662", "string"),
-        (4, who.get("device_id", ""), "string"), (5, nonce, "string"), (6, "!noperm!", "string"),
-        (12, "Asia/Shanghai,8", "string"), (13, "zh_CN", "string"),
-        (22, who.get("os_version", "12"), "string"), (25, started, "sint64"),
-        (30, who.get("device_type", "PGT-AN10"), "string"), (31, "HONOR", "string"),
-        (32, who.get("device_type", "PGT-AN10"), "string"), (34, "HONOR", "string")])
-    env = _proto([
-        (6, "v04.10.03.04-bugfix", "string"), (8, who.get("channel", "vivo_8662_64"), "string"),
-        (12, device_info, "message"), (14, version, "string")])
-    message = _proto([
-        (1, V5_MAGIC, "bytes"), (2, 5, "sint32"), (3, _rnd_int32(), "sint32"),
-        (4, "8662", "string"), (5, who.get("device_id", ""), "string"), (6, V5_LICENSE, "string"),
-        (7, version, "string"), (8, "v04.10.03-ml-android", "string"),
-        (9, 0x040A0300, "sint32"), (10, bytes(8), "bytes"),
-        (12, khronos, "sint64"), (13, f13, "bytes"), (14, query_sm3[:6], "bytes"),
-        (15, _proto([(1, 1, "sint32"), (2, 1, "sint32"), (3, 1, "sint32"), (5, 1, "sint32")]), "message"),
-        (17, khronos, "sint64"), (20, "none", "string"), (21, V5_FIELD21, "sint32"),
-        (23, env, "message"),
-        (24, '{"cmr":16777216,"cmr2":16777216,"un_h":11,"vpn":0,"kd":0,"dyn":"","do":1,"tk":true}', "string")])
-    sign_nonce = _rnd_int32() & U32
-    hash_bytes, seed = get_key_hash(V5_SIGN_KEY, sign_nonce)
-    transformed = bytearray(_xmxor(message, hash_bytes))
-    transformed = bytearray(bytes(8) + bytes(transformed))
-    transformed.reverse()
-    for i in range(len(transformed)):
-        transformed[i] = (transformed[i] ^ seed[(~i) & 3]) & 255
-    check = (((query_sm3[0] & 63) << 14) | 0x18000001 | ((f13[0] & 63) << 8)) & U32
-    packed = (bytes([0xca]) + _le32(_rnd_int32() & U32) + _le32(check) + bytes(transformed)
-              + bytes([(sign_nonce >> 16) & 255, (sign_nonce >> 24) & 255]))
-    encrypted = AesV5(hashlib.md5(V5_SIGN_KEY[:16]).digest(), khronos).encrypt(
-        packed, hashlib.md5(V5_SIGN_KEY[16:32]).digest())
-    prefix = bytearray(_le32(5) + V5_MAGIC)
-    ts_le = _le32(khronos)
-    for i in range(len(prefix)):
-        prefix[i] ^= ts_le[i & 3]
-    return base64.b64encode(bytes(prefix)
-                           + bytes([sign_nonce & 255, (sign_nonce >> 8) & 255, 0, 1])
-                           + encrypted).decode()
-
-def encode_v5_query(values) -> str:
-    def enc(v):
-        out = quote(str(v), safe="-_.!~*'()")
-        for ch, rep in (("!", "%21"), ("'", "%27"), ("(", "%28"), (")", "%29")):
-            out = out.replace(ch, rep)
-        return out
-    return "&".join(enc(k) + "=" + enc(v) for k, v in values.items())
-
-def branch_v5(query: str, body: bytes | None, khronos: int) -> int:
-    body_md5 = hashlib.md5(body).digest() if body else bytes(16)
-    q = _sm3(query.encode())
-    iv = get_iv(0x20230928, q)
-    iv = get_iv(iv, body_md5)
-    iv = get_iv(iv, _le32(khronos))
-    return 0 if (iv & 15) == 12 else 1
-
-def sign_playback_v5(base: str, values, body: bytes | None, now_ms: int):
-    ts = now_ms // 1000
-    for offset in range(1024):
-        ticket = now_ms + offset
-        merged = dict(values)
-        merged["_rticket"] = str(ticket)
-        query = encode_v5_query(merged)
-        if branch_v5(query, body, ts) != 0:
-            continue
-        url = base + "?" + query
-        headers = {"x-khronos": str(ts), "x-helios": helios_v5(ts), "x-medusa": medusa_v5(url, body, ts, values)}
-        if body:
-            headers["Content-Type"] = "application/json; charset=utf-8"
-            headers["x-ss-stub"] = hashlib.md5(body).hexdigest().upper()
-        return url, headers
-    raise RuntimeError("无法生成播放签名")
-
-def _video_model(video_id: str, config: Mapping[str, Any], video_url: str | None = None,
-                 sign_mode: str = "sixgod") -> dict[str, Any]:
-    if sign_mode == "v5":
-        return _video_model_v5(video_id, config)
+def _video_model(video_id: str, config: Mapping[str, Any]) -> dict[str, Any]:
     devices = _device_config(config)
     params = {
         "iid": devices["install_id"],
@@ -4563,81 +3824,19 @@ def _video_model(video_id: str, config: Mapping[str, Any], video_url: str | None
     }
     if devices.get("cookie"):
         request_headers["Cookie"] = devices["cookie"]
-    endpoint = video_url or VIDEO_URL
-    _diag(
-        "取流请求 vid=%s iid=%s device_id=%s host=%s"
-        % (video_id, devices["install_id"], devices["device_id"], urlparse(endpoint).netloc)
+    signed_headers, signed_url = _core_sixgod(
+        VIDEO_URL,
+        params,
+        devices,
+        payload,
+        request_headers,
     )
     body = json.dumps(payload, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
-    if sign_mode in ("hiker", "hiker_medusa"):
-        # 2026-11-10 20:11 同机同网现场：海阔视界能播、狼壳空体。逐字比对两边请求，
-        # 参数、UA、body 完全一致，唯一实质差异在签名头：
-        #   海阔 FQ.signHeaders(qs, body, false, 8662, 1611921764) 只产出
-        #     x-ladon / x-argus / x-ss-stub / x-khronos / x-ss-req-ticket；
-        #   我们走 _core_sixgod，额外塞了 x-gorgon / x-medusa / x-helios / x-tt-dt
-        #     这类视频接口并不认的六神签名。本函数按海阔那套只签 ladon+argus。
-        query = _hiker_query(params)
-        _hiker_sig = _dm_sign_headers(
-            query,
-            body,
-            str(devices.get("device_id") or ""),
-            str(devices.get("install_id") or ""),
-            8662,
-            1611921764,
-        )
-        signed_headers = {
-            "User-Agent": APP_UA,
-            "Accept": "application/json; charset=utf-8,application/x-protobuf",
-            "Content-Type": "application/json",
-            "x-xs-from-web": "0",
-            "sdk-version": "2",
-        }
-        signed_headers.update(_hiker_sig)
-        if sign_mode == "hiker_medusa":
-            # 2026-11-16 从 红果(破壳)(修复版).py 整段搬来：海阔五头之上再带一个 x-medusa。
-            # 同 vid 背靠背 A/B 三轮：纯海阔 0 字节 / 带 medusa 19KB 真数据。
-            try:
-                _medusa_ts = int(_hiker_sig.get("x-khronos") or time.time())
-                _medusa_url, _medusa_params = _get_params_encrypturl(endpoint, params, devices)
-                signed_headers["x-medusa"] = _gen_medusa(
-                    _medusa_url, _medusa_params, devices, payload, _medusa_ts, "application/json"
-                )
-            except Exception:
-                pass
-        if devices.get("cookie"):
-            signed_headers["Cookie"] = str(devices["cookie"])
-        signed_url = endpoint + "?" + query
-    else:
-        signed_headers, signed_url = _core_sixgod(
-            endpoint,
-            params,
-            devices,
-            payload,
-            request_headers,
-        )
-    try:
-        response = requests.post(
-            signed_url,
-            headers=signed_headers,
-            data=body,
-            timeout=30,
-        )
-    except Exception as exc:
-        _diag("取流请求异常 %s: %s" % (exc.__class__.__name__, exc))
-        raise
-    try:
-        raw_body = response.content or b""
-    except Exception:
-        raw_body = b""
-    _diag(
-        "取流响应 HTTP %s Content-Length=%s Content-Type=%s 实际长度=%d 前200字节=%r"
-        % (
-            response.status_code,
-            response.headers.get("Content-Length"),
-            response.headers.get("Content-Type"),
-            len(raw_body),
-            raw_body[:200],
-        )
+    response = requests.post(
+        signed_url,
+        headers=signed_headers,
+        data=body,
+        timeout=30,
     )
     response_data = _json_response(response)
     data = response_data.get("data") or {}
@@ -4665,6 +3864,2174 @@ def _video_model(video_id: str, config: Mapping[str, Any], video_url: str | None
     if not isinstance(raw_model, Mapping):
         raise HongguoPluginError("video_model 为空")
     return dict(raw_model)
+_V5_MAGIC = bytes.fromhex("2d4b4fca49750d433fb5ae2c226dcc56")
+_V5_LICENSE = "646637794"
+_V5_FIELD21 = 312
+_V5_SIGN_KEY = bytes.fromhex(
+    "b23c2a470a20d105dc3f8c4438f8272ed46d6c89ffdcdedd5108698d26e9489d")
+_V5_SBOX = bytes.fromhex("53290fe9e51f316f90f74a7e034d367784ab49237cd0135cdc632c322fd3be0e2624a417ecd9151a7ff64f60730a87f9445ec6ada2f865d22b696c4188f24c0df37b75510b939f6bc2fe6883e68bc8c722181ba0bdb08c9871b50c9a16b46eea8eed20ba4b8a14e0fcf1468dbbef05a93e5a9d7dcf06898635c1fd99f5de287a80c594daaab19b6279fbd75070cb52eb2555c456e39e7839853874e2f0013ac0b64742d8ca10e4b79c955de8b843ce4ed464a6a72ed508091c92e7b3eedd1e1dd12afac321618fa3d65f9167c982f43d66a53c6a1997585b346dbf9672ff37cdbc073b2dae11453304df00815476b2a13fccdb30b957a8acafe127400248591238922563e36406d37a24100b7902a028044e218453c2a399199c9d13dc40c55ba67e502273850ebdc1a2e2188b8f2d9e3cb909b8c46a2a9f4a6dd93007eafa65b7b3a881aa908cc74f0ad76bbbb58617c37012ca05a469fd44e62eecf1e4272ce860c0ae5eadf99b20d8f0234174006f3f110d7657d01645d4eff8f71471cbfe1cb2f52648727bf3c9de55153e031b4d61757db63dbf7782eeafe9018a8891362fb14759ac32bab03b349aeb5a377c5156be4c8dfbe13a684bda39cf836697c894545fe0f2491acea9fc6252f4ff1e0fe72bd2df6e67a7f635e5bcc6d1a5dd951d89960887a18eb40c785cdb1f80ed42299333ab98cdd67f316cd54346585dccd759fb722789b08807cc0fda293f7e5e1819bb0353517020b31d3d00374952bea2c421e862040a9ec892a05b266b7a0d0cc316f483b81af39715657ffe32ad8de0c13077646035236ee5363e5f900e9a7cf850a81cd9960b6df73317226f99eaa6fff15cec34acb98246639b918ab2851466a7cdfc4ad1b52c2ae95a58d3734e47ddd5b7560193f644ef9c408b7dee39b4d6aabf4de761e3252d4c7ba3843187745d55e6a5db05d42b45caed43c0c5d0b64bfa9d94a4a9d8f2f0e1a108dcfd288fd2bc1fc7bd675412138169cb09249875ba3b68cfb11180afae104fc9789571c6dfce02413886796ae21e3c488cc21b9f423a066c2eabf98e2fdeeb5776e4f5d09a515ba58cbbab3e37b09fd4f6d9244df80512e84cd7956be301cf64f1429d58577cc241f3a2c655144f81aaf95a4e108da894b38970561ae9002619fbbac91fa922ed202bfc62cb08e0de2a7f3631435f8b47c8a3c563b4db4071ce74c46da6fa696a9e282d1e825d663b93bfd56c48dce1884bb10fccea063929f746443fd830a4232e53da21a1f2d1bdfebc3a02c10a1b8ad31d04fd616590d272ac737e98eb33af60528716bee78ec0ee8699031177277d9cff32542c67caf5f44591681335ae0e178f3409a7803db83892dde5b9b7f0c750e24aef077badd678a09b850b84ec1597e4963cb5e675df1c0d6fb618496ecd76c35c798325590c2fb27a5e")
+_V5_SBOX_CON2 = [[2, 0, 3, 1], [1, 3, 2, 0], [3, 2, 1, 0], [2, 3, 1, 0]]
+_V5_SBOX_ORDER = [
+    [0, 9, 14, 15, 4, 13, 2, 7, 8, 1, 6, 3, 12, 5, 10, 11],
+    [0, 9, 14, 11, 4, 13, 2, 3, 8, 1, 6, 15, 12, 5, 10, 7],
+    [0, 9, 14, 3, 4, 13, 2, 15, 8, 1, 6, 11, 12, 5, 10, 7],
+    [0, 9, 14, 15, 4, 13, 2, 3, 8, 1, 6, 11, 12, 5, 10, 7],
+]
+_V5_SBOX_INIT = [0xBBB5DE72, 0xD4638D5B, 0x92A5F73B, 0x89F8A1C9]
+_V5_WIRE = [6, 5, 3, 4, 2, 7, 1, 0]
+_V5_COMPACT = [1, 7, 3, 6, 2, 0, 4, 5]
+_V5_HASH_TABLE = [
+    0xEBB64FAF, 0x07AADCC2, 0xCF3187BF, 0xE01138FF, 0x6D0BFCFF, 0x5A30A3BE,
+    0xB41AD638, 0x34180EB8, 0xF233EB6F, 0xB1A584CC, 0xCCC30DC7, 0x47D1DB51,
+    0xD55653DE, 0x70A84FA1, 0x57473C12, 0xF76F0288, 0x2C077F0A, 0xDA0DCAD0,
+    0xFBB86F6C, 0xFDC4CF00, 0x688A020D, 0xE676C6A6, 0x8CD6338B, 0x1A3C8D0E,
+    0xCCE8B06B, 0x6AD0ED0B, 0xA0522717, 0xDC71AC83, 0x2285DB71, 0xD5B4DDA6,
+    0x736F8650, 0x6560306C, 0x617CE2A6, 0xE423417E, 0x0A40E143, 0x544E4032,
+    0x88DFFB2A, 0x716C1AE0, 0x4C467A88, 0x05B23BB3, 0xE1D0B866, 0xBAA3DCB8,
+    0xAE3374D3, 0xC3381A50, 0x1702F75B, 0xFE6DA368, 0xF0B4CF48, 0x4E0FFBB8,
+    0x72AAD10D, 0x26C53A3D, 0xF2BCE0F6, 0xB4557581, 0x4A257FDD, 0x8C3182A2,
+    0xAB0B3B86, 0x3D5DFB14, 0x4F103634, 0xD37B52D7, 0x444EFF16, 0xEB0A33D1,
+    0x6CA86F6E, 0x0284BA7, 0x08387CFA, 0x5FB37586,
+]
+# 进程级 nonce（18 随机字节的 base64url）与进程启动毫秒时间戳，供 medusa 使用。
+_V5_PROCESS_NONCE = base64.urlsafe_b64encode(os.urandom(18)).decode("ascii")
+_V5_PROCESS_STARTED = int(time.time() * 1000)
+_V5_PLAYER_API = (
+    "https://api5-normal-sinfonlinea.fqnovel.com"
+    "/novel/player/multi_video_model/player/v1"
+)
+_V5_VIDEO_TAB_API = (
+    "https://api5-normal-sinfonlineb.fqnovel.com"
+    "/reading/bookapi/video_tab/multi_video_model/v1/"
+)
+# JS 蜘蛛 v1.1.4 play 的 video_tab 双 host 与路径（2026-11-27 改走这条路取流）。
+_V5_VIDEO_TAB_HOSTS = (
+    "api5-normal-sinfonlineb.fqnovel.com",
+    "api5-normal-hl.fqnovel.com",
+)
+_V5_VIDEO_TAB_PATH = "/reading/bookapi/video_tab/multi_video_model/v1/"
+# JS 版 VIDEO_TAB_UA（73932）与 WEB_UA（iPhone Safari）。
+_V5_VIDEO_TAB_UA = (
+    "com.phoenix.read/73932 (Linux; U; Android 16; zh_CN; 25053RT47C; "
+    "Build/BP2A.250605.031.A3; Cronet/TTNetVersion:04657795 2026-01-23 "
+    "QuicVersion:c67e9834 2025-09-08)"
+)
+_V5_WEB_UA = (
+    "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) "
+    "AppleWebKit/605.1.15 Version/17.0 Mobile/15E148 Safari/604.1"
+)
+_V5_FALLBACK_PLAY_INFO_URL = (
+    "https://hongguoduanju.com/api/video/protected/fallback-play-info"
+)
+# iDuanJu 公开协议配置（2026-11-25 拉取）：
+#   https://cdn.jsdelivr.net/gh/my-name-is-alan/iDuanJu@main/configs/hongguo-protocol.json
+# 关键结论：服务端自 2026-11-23 起软拦截“全新匿名设备”（HTTP 200 空响应），
+# 播放必须用配置里给定的固定 fallback 身份 + preload/v1 端点。
+# 用户真机身份（2026-11-27 从手机 App 数据目录提取，App 内能正常播放）：
+#   通用设备 hongguo_device.json 全套（deviceId/iid/cdid/openudid）
+# 注意：这是用户自己手机的注册身份，别外传；若服务端以后封掉它，需重新提取。
+_V5_FALLBACK_IDENTITY = {
+    "device_id": "1624456208323876",
+    "iid": "1624456208327972",
+    "cdid": "91d56f7e-c027-4ce9-9a3c-229d59a13c3b",
+    "openudid": "56a962410c494bba",
+}
+_V5_PRELOAD_HOSTS = (
+    "reading.snssdk.com",
+    "api5-normal-sinfonlinea.fqnovel.com",
+    "api5-normal-sinfonlineb.fqnovel.com",
+)
+_V5_PRELOAD_PATH = "/novel/player/multi_video_model/preload/v1"
+_V5_PRELOAD_DEVICE = {
+    "aid": "8662", "app_name": "novelread", "version_code": "74532",
+    "version_name": "7.4.5.32", "update_version_code": "74532",
+    "manifest_version_code": "74532", "os": "android", "ssmix": "a",
+    "channel": "update_64", "device_platform": "android",
+    "device_type": "25053RT47C", "device_brand": "Redmi",
+    "os_version": "16", "os_api": "36", "ac": "wifi", "language": "zh",
+    "host_abi": "arm64-v8a",
+}
+_V5_PRELOAD_UA = (
+    "com.phoenix.read/74532 (Linux; U; Android 16; zh_CN; 25053RT47C; "
+    "Build/BP2A.250605.031.A3; Cronet/TTNetVersion:04657795 2026-01-23 "
+    "QuicVersion:c67e9834 2025-09-08)"
+)
+_V5_PLAYER_UA = (
+    "com.phoenix.read/73932 (Linux; U; Android 12; zh_CN_#Hans; "
+    "PGT-AN10; Build/V417IR;tt-ok/3.12.13.20)"
+)
+_V5_VIDEO_UA = (
+    "com.phoenix.read/71332 (Linux; U; Android 16; zh_CN; 25053RT47C; "
+    "Build/BP2A.250605.031.A3; Cronet/TTNetVersion:04657795 2026-01-23 "
+    "QuicVersion:c67e9834 2025-09-08)"
+)
+_V5_PLAYER_DEVICE = {
+    "aid": "8662",
+    "app_name": "novelread",
+    "version_code": "74332",
+    "version_name": "7.4.3.32",
+    "channel": "vivo_8662_64",
+    "device_platform": "android",
+    "device_type": "PGT-AN10",
+    "os_version": "12",
+    "update_version_code": "74332",
+}
+_V5_TAB_DEVICE = {
+    "ac": "wifi",
+    "channel": "update_64",
+    "aid": "8662",
+    "app_name": "novelread",
+    "version_code": "73932",
+    "version_name": "7.3.9.32",
+    "device_platform": "android",
+    "os": "android",
+    "ssmix": "a",
+    "device_type": "25053RT47C",
+    "device_brand": "Redmi",
+    "language": "zh",
+    "os_api": "36",
+    "os_version": "16",
+    "manifest_version_code": "73932",
+    "resolution": "1280*2772",
+    "dpi": "520",
+    "update_version_code": "73932",
+    "host_abi": "arm64-v8a",
+    "dragon_device_type": "phone",
+    "pv_player": "73932",
+    "compliance_status": "0",
+    "need_personal_recommend": "1",
+    "player_so_load": "1",
+    "is_android_pad_screen": "0",
+}
+_V5_REGISTER_URL = (
+    "https://log5-applog-lf.fqnovel.com/service/2/device_register/"
+    "?tt_data=a&cronet_version=8d40f833_2026-03-03"
+    "&ttnet_version=4.2.243.31-douyin&use_store_region_cookie=1"
+)
+_V5_KDF_SALT = bytes.fromhex(
+    "4dd4c2e6b83162090e52b3c7a6733ba41cb2462b829ab58a196b39db57177524"
+    "f49baf7f08e8d68d26a72e37c1a95a2f1f05a51892aef2949732b62a38aadd58"
+)
+_V5_REGISTER_UA = (
+    "com.phoenix.read/72232 (Linux; U; Android 16; zh_CN; 25053RT47C; "
+    "Build/BP2A.250605.031.A3)"
+)
+_V5_PACE_LOCK = threading.Lock()
+_V5_LAST_FETCH_MS = [0]
+
+
+class _V5EmptyResponse(HongguoPluginError):
+    """v5 播放接口的 HTTP 200 空响应（可尝试 video_tab 恢复）。"""
+
+    def __init__(self, message: str, backoff: bool = False) -> None:
+        super().__init__(message)
+        self.backoff = backoff
+
+
+class _AesV3V5:
+    """AesV3 的 v5 变体：S 盒/换表/初值/位抽吸映射均为 v5 常量。"""
+
+    def __init__(self, key: bytes, khronos: int) -> None:
+        self.word_size = khronos & 3
+        self.box = _V5_SBOX[self.word_size * 256:(self.word_size + 1) * 256]
+        self.con2 = _V5_SBOX_CON2[self.word_size]
+        self.order = _V5_SBOX_ORDER[self.word_size]
+        self.wire = _V5_WIRE
+        self.compact = _V5_COMPACT
+        init = _V5_SBOX_INIT[self.word_size]
+        initial = bytearray(16)
+        for i in range(4):
+            initial[i * 4:i * 4 + 4] = (init & 0xFFFFFFFF).to_bytes(4, "little")
+        mk = bytearray(a ^ b for a, b in zip(initial, key))
+        expanded = bytearray(mk) + bytearray(32)
+        rounds = 8
+        for i in range(4, 12):
+            at = 4 * (i - 1)
+            a, b, c, d = expanded[at], expanded[at + 1], expanded[at + 2], expanded[at + 3]
+            if (i & 3) == 0:
+                t = ((((init & 0xFFFFFFFF) >> (rounds & 24)) ^ self.box[b]) & 0xFF)
+                b = self.box[c]
+                c = self.box[d]
+                d = self.box[a]
+                a = t
+            rounds += 2
+            expanded[at + 4] = (a ^ expanded[at - 12]) & 0xFF
+            expanded[at + 5] = (b ^ expanded[at - 11]) & 0xFF
+            expanded[at + 6] = (c ^ expanded[at - 10]) & 0xFF
+            expanded[at + 7] = (d ^ expanded[at - 9]) & 0xFF
+        self.keys = [list(expanded[i * 4:i * 4 + 4]) for i in range(12)]
+
+    def _sub_keys(self, start: int) -> list[list[int]]:
+        return [self.keys[start + i][:] for i in range(4)]
+
+    @staticmethod
+    def _add(rows: list[list[int]], key: list[list[int]]) -> None:
+        for i in range(4):
+            for j in range(4):
+                rows[i][j] ^= key[i][j]
+
+    def _add_con(self, rows: list[list[int]], ks: list[list[int]]) -> None:
+        for i in range(4):
+            for j in range(4):
+                rows[i][j] ^= ks[i][self.con2[j]]
+
+    def _sub(self, rows: list[list[int]]) -> None:
+        for i in range(4):
+            for j in range(4):
+                rows[i][j] = self.box[rows[i][j]] & 0xFF
+        old = [row[:] for row in rows]
+        for i in range(4):
+            rows[i] = old[self.con2[i]]
+
+    def _shift(self, rows: list[list[int]]) -> None:
+        flat = [rows[i][j] for i in range(4) for j in range(4)]
+        for i in range(16):
+            rows[i // 4][i % 4] = flat[self.order[i]] & 0xFF
+
+    def _shift_con(self, rows: list[list[int]]) -> None:
+        old = [row[:] for row in rows]
+        for i in range(4):
+            for j in range(4):
+                rows[i][j] = old[i][self.con2[j]]
+
+    @staticmethod
+    def _mix(rows: list[list[int]]) -> None:
+        for i in range(4):
+            t = rows[0][i] ^ rows[1][i] ^ rows[2][i] ^ rows[3][i]
+            u = rows[0][i]
+            rows[0][i] ^= t ^ _AesV3V5._xt(rows[0][i] ^ rows[1][i])
+            rows[1][i] ^= t ^ _AesV3V5._xt(rows[1][i] ^ rows[2][i])
+            rows[2][i] ^= t ^ _AesV3V5._xt(rows[2][i] ^ rows[3][i])
+            rows[3][i] ^= t ^ _AesV3V5._xt(rows[3][i] ^ u)
+
+    @staticmethod
+    def _xt(x: int) -> int:
+        return ((x << 1) ^ (0x1B if (x & 128) else 0)) & 0xFF
+
+    def _block(self, value: bytes) -> bytes:
+        rows = [[value[i * 4 + j] & 0xFF for j in range(4)] for i in range(4)]
+        self._add_con(rows, self._sub_keys(0))
+        for i in range(1, 3):
+            self._sub(rows)
+            self._shift(rows)
+            if i == 1:
+                self._shift_con(rows)
+                self._mix(rows)
+            self._add_con(rows, self._sub_keys(i * 4))
+        self._add(rows, self._sub_keys(4))
+        return bytes(rows[i][j] & 0xFF for i in range(4) for j in range(4))
+
+    def encrypt(self, data: bytes, iv: bytes) -> bytes:
+        wire = self.wire
+        compact = self.compact
+        plaintext = bytearray(32)
+        for i in range(31):
+            at = i * 8
+            acc = 0
+            for j in range(8):
+                src = data[at + j] if at + j < len(data) else 0
+                acc |= (((src >> wire[j]) & 1) << compact[j])
+            plaintext[i] = acc & 0xFF
+        plaintext[31] = 1
+        blocks = []
+        previous = bytes(iv)
+        for i in range(0, 32, 16):
+            value = self._block(bytes(a ^ b for a, b in zip(plaintext[i:i + 16], previous)))
+            blocks.append(value)
+            previous = value
+        key = b"".join(blocks)
+        out = bytearray(data)
+        for i in range(31):
+            at = i * 8
+            k = key[i] & 0xFF
+            for j in range(8):
+                bit = wire[j]
+                mask = (1 << bit) & 0xFF
+                idx = at + j
+                if 0 <= idx < len(out):
+                    out[idx] = (out[idx] & ((~mask) & 0xFF)) | (((k >> compact[j]) & 1) << bit)
+        return key[-1:] + bytes(out)
+
+
+def _hash_f13_v5(query_sm3: bytes, body_md5: bytes, ts_bytes: bytes, khronos: int) -> bytes:
+    iv_v1 = 0x9D4A97C2
+    count_v1 = (iv_v1 + khronos + 1) & 0xFF
+    count_v2 = (iv_v1 + khronos) & 0xFFFFFFFF
+    tt = [ror32(x, count_v1) for x in _V5_HASH_TABLE]
+    n0 = (count_v2 + 2) & 7
+    seed = bytes([0xFA, 0x45, 0x61, 0xD7])
+    pad = bytes((((seed[i] | (seed[i] << 8)) >> n0) & 0xFF) for i in range(4))
+    data = query_sm3 + body_md5 + ts_bytes + pad + bytes.fromhex("00000000000001a0")
+    di = [0] * ((len(data) // 4) + 112 + 16)
+    di_len = 0
+    for i in range(0, len(data) - 3, 4):
+        di[di_len] = int.from_bytes(data[i:i + 4], "big")
+        di_len += 1
+    di0 = di[0]
+    for i in range(112):
+        di1 = di[i + 1]
+        di14 = di[i + 14]
+        r1 = rol(di1, 14) ^ rol(di1, 25) ^ (di1 >> 3)
+        r2 = rol(di14, 13) ^ rol(di14, 15) ^ (di14 >> 10)
+        di[di_len] = (di0 + di[i + 9] + r1 + r2) & 0xFFFFFFFF
+        di_len += 1
+        di0 = di1
+    init_raw = [
+        0x7ABA4FC8, 0x67166507, 0x6403FA00, 0x340F512F,
+        984304912, 3005047866, 2874125293, 2152413264,
+    ]
+    init = [ror32(x, count_v2 & 31) for x in init_raw]
+    chosen = [96, 1, 3, 4, 0, 6, 5, 2, 0, 7, 7]
+    d = list(init)
+    for i in range(chosen[0]):
+        base = (iv_v1 + i) & 0xFFFFFFFF
+        n0v = di[base & 127]
+        n1 = ((d[chosen[3]] ^ d[chosen[4]]) & d[chosen[1]]) ^ d[chosen[3]]
+        n2 = rol(d[chosen[1]], 26) ^ rol(d[chosen[1]], 21) ^ rol(d[chosen[1]], 7)
+        n4 = (n0v + n1 + n2 + tt[base & 63] + d[chosen[5]]) & 0xFFFFFFFF
+        n5 = rol(d[chosen[2]], 30) ^ rol(d[chosen[2]], 19) ^ rol(d[chosen[2]], 10)
+        n6 = (d[chosen[2]] & d[chosen[6]]) | ((d[chosen[2]] | d[chosen[6]]) & d[chosen[7]])
+        n7 = (n5 + n6) & 0xFFFFFFFF
+        old = d[chosen[9]]
+        last = d[-1]
+        for k in range(len(d) - 1, 0, -1):
+            d[k] = d[k - 1]
+        d[0] = last
+        d[chosen[10]] = (n7 + n4) & 0xFFFFFFFF
+        d[chosen[8]] = (old + n4) & 0xFFFFFFFF
+    ret = bytearray(32)
+    for i in range(8):
+        ret[i * 4:i * 4 + 4] = ((d[i] + init[i]) & 0xFFFFFFFF).to_bytes(4, "big")
+    for i in range(16):
+        ret[i] ^= ret[i + 16]
+    return bytes(ret[:16]) + ((sum_md5(bytes(ret[:16])) | 0x20) & 0xFFFFFFFF).to_bytes(4, "little")
+
+
+def _branch_v5(query_str: str, body: bytes | None, khronos: int) -> int:
+    body_md5 = hashlib.md5(body).digest() if body else bytes(16)
+    q = SM3(query_str.encode("utf-8")).digest()
+    iv = get_iv(get_iv(get_iv(0x20230928, q), body_md5),
+                (khronos & 0xFFFFFFFF).to_bytes(4, "little"))
+    return 0 if (iv & 15) == 12 else 1
+
+
+def _medusa_v5(url: str, body: bytes | None, khronos: int, who: Mapping[str, Any]) -> str:
+    body_md5 = hashlib.md5(body).digest() if body else bytes(16)
+    query = url.split("?", 1)[1] if "?" in url else ""
+    query_sm3 = SM3(query).digest()
+    ts = (khronos & 0xFFFFFFFF).to_bytes(4, "little")
+    f13 = _hash_f13_v5(query_sm3, body_md5, ts, khronos)
+    version = str(who["version_name"])
+    device_info = _proto([
+        (1, 1, "sint32"), (2, 2, "sint32"), (3, "8662", "string"),
+        (4, str(who["device_id"]), "string"), (5, _V5_PROCESS_NONCE, "string"),
+        (6, "!noperm!", "string"), (12, "Asia/Shanghai,8", "string"),
+        (13, "zh_CN", "string"), (22, str(who["os_version"]), "string"),
+        (25, _V5_PROCESS_STARTED, "sint64"),
+        (30, str(who["device_type"]), "string"), (31, "HONOR", "string"),
+        (32, str(who["device_type"]), "string"), (34, "HONOR", "string"),
+    ])
+    env = _proto([
+        (6, "v04.10.03.04-bugfix", "string"), (8, str(who["channel"]), "string"),
+        (12, device_info, "message"), (14, version, "string"),
+    ])
+    message = _proto([
+        (1, _V5_MAGIC, "bytes"), (2, 5, "sint32"),
+        (3, random.randint(0, 0xFFFFFFFF), "sint32"),
+        (4, "8662", "string"), (5, str(who["device_id"]), "string"),
+        (6, _V5_LICENSE, "string"), (7, version, "string"),
+        (8, "v04.10.03-ml-android", "string"), (9, 0x040A0300, "sint32"),
+        (10, bytes(8), "bytes"), (12, khronos, "sint32"), (13, f13, "bytes"),
+        (14, query_sm3[:6], "bytes"),
+        (15, _proto([(1, 1, "sint32"), (2, 1, "sint32"), (3, 1, "sint32"),
+                     (5, 1, "sint32")]), "message"),
+        (17, khronos, "sint32"), (20, "none", "string"),
+        (21, _V5_FIELD21, "sint32"), (23, env, "message"),
+        (24, '{"cmr":16777216,"cmr2":16777216,"un_h":11,"vpn":0,"kd":0,'
+              '"dyn":"","do":1,"tk":true}', "string"),
+    ])
+    nonce = random.randint(0, 0xFFFFFFFF)
+    key, seed = get_key_hash(_V5_SIGN_KEY, nonce)
+    transformed = _xmxor(message, key)
+    transformed = bytes(8) + bytes(transformed)
+    transformed = bytearray(transformed[::-1])
+    for i in range(len(transformed)):
+        transformed[i] ^= seed[(~i) & 3]
+    check = (((query_sm3[0] & 63) << 14) | 0x18000001 | ((f13[0] & 63) << 8)) & 0xFFFFFFFF
+    xm_rand = random.randint(0, 0xFFFFFFFF)
+    packed = (
+        b"\xca" + (xm_rand & 0xFFFFFFFF).to_bytes(4, "little")
+        + check.to_bytes(4, "little") + bytes(transformed)
+        + bytes([(nonce >> 16) & 0xFF, (nonce >> 24) & 0xFF])
+    )
+    encrypted = _AesV3V5(
+        hashlib.md5(_V5_SIGN_KEY[:16]).digest(), khronos
+    ).encrypt(packed, hashlib.md5(_V5_SIGN_KEY[16:32]).digest())
+    prefix = bytearray((5).to_bytes(4, "little") + _V5_MAGIC)
+    for i in range(len(prefix)):
+        prefix[i] ^= ts[i & 3]
+    return base64.b64encode(
+        bytes(prefix) + bytes([nonce & 0xFF, (nonce >> 8) & 0xFF, 0, 1]) + encrypted
+    ).decode("ascii")
+
+
+def _v5_encode(value: Any) -> str:
+    return quote(str(value), safe="!~*'()").replace("!", "%21").replace(
+        "'", "%27").replace("(", "%28").replace(")", "%29")
+
+
+# V5 新签名 profile（i短剧 JS 蜘蛛 v1.1.4，V5_PROFILE_B64，解码 3428 字节）。
+_V5_PROFILE_B64 = "sjwqRwog0QXcP4xEOPgnLtRtbIn/3N7dUQhpjSbpSJ0tS0/KSXUNQz+1riwibcxWUykP6eUfMW+Q90p+A002d4SrSSN80BNc3GMsMi/Tvg4mJKQX7NkVGn/2T2BzCof5RF7GraL4ZdIraWxBiPJMDfN7dVELk59rwv5og+aLyMciGBugvbCMmHG1DJoWtG7qju0gukuKFOD88UaNu+8FqT5anX3PBomGNcH9mfXeKHqAxZTaqrGbYnn711Bwy1LrJVXEVuOeeDmFOHTi8AE6wLZHQtjKEOS3nJVd6LhDzk7UZKanLtUICRyS57Pu3R4d0Sr6wyFhj6PWX5FnyYL0PWalPGoZl1hbNG2/lnL/N828BzstrhFFMwTfAIFUdrKhP8zbMLlXqKyv4SdAAkhZEjiSJWPjZAbTeiQQC3kCoCgETiGEU8KjmRmcnRPcQMVbpn5QInOFDr3BouIYi48tnjy5CbjEaiqfSm3ZMAfq+mW3s6iBqpCMx08K12u7tYYXw3ASygWkaf1E5i7s8eQnLOhgwK5erfmbINjwI0F0AG8/EQ12V9AWRdTv+PcUccv+HLL1Jkhye/PJ3lUVPgMbTWF1fbY9v3eC7q/pAYqIkTYvsUdZrDK6sDs0mutaN3xRVr5MjfvhOmhL2jnPg2aXyJRUX+DySRrOqfxiUvT/Hg/nK9Lfbmen9jXlvMbRpd2VHYmWCIehjrQMeFzbH4DtQimTM6uYzdZ/MWzVQ0ZYXczXWftyJ4mwiAfMD9opP35eGBm7A1NRcCCzHT0AN0lSvqLEIehiBAqeyJKgWyZreg0Mwxb0g7ga85cVZX/+Mq2N4MEwd2RgNSNu5TY+X5AOmnz4UKgc2ZYLbfczFyJvmeqm//Fc7DSsuYJGY5uRirKFFGanzfxK0bUsKulaWNNzTkfd1bdWAZP2RO+cQIt97jm01qq/Tedh4yUtTHujhDGHdF1V5qXbBdQrRcrtQ8DF0LZL+p2UpKnY8vDhoQjc/SiP0rwfx71nVBITgWnLCSSYdbo7aM+xEYCvrhBPyXiVccbfzgJBOIZ5auIePEiMwhufQjoGbC6r+Y4v3utXduT10JpRW6WMu6s+N7Cf1PbZJE34BRLoTNeVa+MBz2TxQp1YV3zCQfOixlUUT4Gq+VpOEI2olLOJcFYa6QAmGfu6yR+pIu0gK/xiywjg3ip/NjFDX4tHyKPFY7TbQHHOdMRtpvppap4oLR6CXWY7k7/VbEjc4YhLsQ/M6gY5KfdGRD/YMKQjLlPaIaHy0b3+vDoCwQobitMdBP1hZZDScqxzfpjrM69gUocWvueOwO6GmQMRdyd9nP8yVCxnyvX0RZFoEzWuDhePNAmngD24OJLd5bm38MdQ4krvB3ut1nigm4ULhOwVl+SWPLXmdd8cDW+2GEluzXbDXHmDJVkML7J6XnLetbtbjWPUO/elksmh+IkAAAAAAAAAAHmJNTDIcNh68hJrYJDhsPWLm15QWJFoj4+2QZhz5TjA9j90qLuV4Lp9pCr44wSINQQtH8grdFBPdf4UaLTsKKsMdyFYfJzw0YfsfwgkDZhe/mVKOOx9QCT6SFXwxwkQa4PBYMAPecgRCFo+kFfooJ5x0wugn5h45IFvvog7/wh9+OaLuPOP0AdzfdXoqx64iAr04NhjbmDyDtn/EEgaML13UMoggGrox/zLlHDY+4BIhUKhQBCLWDL0kargjxMg1o0Yn9BHY/isBoPBgB/ykCN/CvSw14JIWXsn63j89hgWAq7eSDSGwGyJNYAYbBeo4/C8tSikZ3CZAt98EXf+Efp7Vkkhv47JgPDNF3HnH6EPiUQiQS9veXWNaT2JBBspOvTgCLnMa/FAf3tW6ZT6mc8G8mPZXIpBtXchaHnDEjlRDqhdSQti4SuFMwMZU/OJpPy6Nimbg1He+Jcp4bD3AZGBHhzReIfZ6wqFQoEgFrFkcwx3sehmaR6DsMKZTAEZh/o596mEccH9caKp+dzgqXIIK5zJFJBxCAwGgwE/5CFHdY+2MfeU+T3+FOhhrwWRsoed3VFndUnI9k7W8fjtMSyPx+PBMJ3pVgRcvZFoDIHZfdWIoaB8WaN5+JdpiwgJ7ABxollDeNGWi+r8CRvpuRnyY8k505lhY28tbnq92nrfFqRbSnWqoqWdPwUaLTvKKuS2MCrlSxJQ4Jsv4s4/Qh+ZEhrSBk+aZRKJRIJe3vLqawBxspauKpAa03oSCTZSdGNaTyLBRooO6MERcpnX4oGRSCRCUac6+5VlO4p602q07OwOurKjss5nd1Dq6jLaQR7+ZdoiQgI77kLQ8oYlcqKXy+XCTlWq2BxQu5IWxMJXZdmOot60Gi1h9JFq9cBKYhh9pFo9sJIYk+b6CmUh+pfqb886rVEi7Zu8xJoyyVoJ4jXxqvq5gnNprq/6oijq/BAnmspqWDKGFAqFAkEsYsltg7AyiVy6s+YY7mLRzdI8n5HbUhm9CkZt8hJryiRrJRR7J1sCVLNfn+B5C1rF29DmaUw7krUDquJEU/O5wVPlm81mw3Gxi58QVjiTKSDjEGnfDaPhUDtqGAwGA37IQ45hhTMztrib9OoebWPuKfN7k5dYUyZZKwGXukebDS17Tu4zcqvFXaM0Zags+53My7scIRnLVbwTweydrOPx22NYlRSZ0zmruyIej8eDYTrTrWcG8rOpSgvXYyvte4I+W5gaothLSk6D4pE5hhsS3+tt6LCzK9qvMxeZY7iLRTdL8+DqjbuNR5OJa3HT69XW+wYS+ObbHaYjfBbV+RM20nMzb1zMI/6iq0nkx5JzpjPDxp1Op0NuQxu8tclLrCmTrJXMQH6c4eN070fbIMy5chxgPlIV/HECxBo6fwo0WnaUVUP2PwSSBkwvyG1hVMqXJKCx5FRkAuf82sA3X8Sdf4Q+ub5q9FUPXEQyJTSkDZ40y0usAZTF7uyxT4EeXO6avP42CCtsJupkhL2TdTx+ewwLxBpADLYL1HE0pvUkEmyk6E0vwBTaHHySxrSeRIKNFB2/Pat0Sv3MZ7sQtLxhiZwowpmBjKn5RFJJAt/c8Wgs3TCL6uw5GPSnQVjhTKaAjEM40dR8bvBUObNKiiw2YTy2ysO/HP4R5MzO7qDU1WW0g7dnleQdFWz5PPzLtEWEBHZFdf6EjfTcDLcWN71ebb1vzp8CjZYdZRVFBFzdzowNmjyNae0G/NXgOKB2JS2Iha9BKUMV5fhd1cqyHUW9aTVaszsodXUZ7SDC6CPV6oGVxLthFuUi8U2+MPpItXpgJTFJc32FshD9S01eYk2ZZK0ENNdXfVEUdX6/TAktCYUd8cbFPB3B9cWLNnmJNWWStRJP8LwFreJtaMRr4lX1cwXnveLXZT0D3Z25z8itFneN0sBG/Z3eB1WoS92jzYaWPScyVJb9TublXUOHnV3Rfp25Og6obRkORcOxlfY9QZ8tTMgcww2J7/U2zDHcxaKbpXm1uOn1aut9Az4jt6UyehWMR6qClfoKzfba5CXWlEnWSqNtEOZcOQ4wKPZOtgSoZr9Rf3uGzNi+xVVSZE7nrO6KLNtRfi/cNvCnQA8ud01ef97JOh6/PYYFrxoxviCl/uHWkwSO6NUmm10IWt6wRE4UJIFv7ng0lm4grHAmU0DGIVklRRabMB5b0r4bRsOhdtSrNy52C9GurluLm16vtt43IgKubmfGBk2pmfA+P1duwtAQxQ73J7a41D3axtxT5vettO/2FCM+jSYvsaZMslYCX6aEloTCjngudY82G1r2nFf8ugbTKi7m3GfkVou7Rmml7tFmQ8ueE6HDzq5ov85c2Er7nqDPFiZT0aXO+F5+qSpYkP4wLqbT2DtZx+O3x7Chsmz3K8cfyiopMqdzVndFU6AHl7smrz9XjRhfkFL/cC4ELW9YIicKpZ9zPwCzT4XcFkYPyMOX/63FTa9XW+8b1Ex4n58rN2Ff1ybPx7pf7iZeE/8PyoeUInMMNyS+19tb+jkH7M4PodBhZ1e0X2cuqehSZ3wvv1RZVOdP2EjPzSDd0n8QOBe3q0aML0ipfzjSz7kfgNmnQtbipterrfcNr2uT52PdL3ck8M23O0xH+F15+IfzPJ+CLKrzJ2yk52ZVI8YXpNQ/HN64mEf8RVeTpzGtdzQ1j+mjHLK/H0HfptqVh4/XMQfcUQ7Z34+gb1Moh+zvR9C3KchPunoHZRZnAPoDZC9RDzQQTas6OmQds+2rT6tQOEuAr0+268Lcqge/hzHP/zgR4P/8C22+ozBaONYatLgOGDRv6zPyzISlsccNw8xR29FH3lNW1aFPqHASPEdXiAJv9wp/ByzQyg3abG+4+wDPxP0NAopopsZ25osz1owOjTwaa7DozAvt0GoXJ1Kgg6xx3HHbhSKm3bTVUIZvc2wwYGWm4nxhfkEj5EPhQAoyQE5UKvvfiOAabHGIekZMszuyBWa40OG43KO603QzrlAaOMNb9wIXaKNt/kjPtPC4+w9ODdGqcj06xSb24LzygXVVtN1/JUqigjGMhjsLqxT7XT00NhBP11J70xb/TkTRMwrrbm+obKdLKAD6fDgIhnWzX/pFYdc="
+
+
+_V5N_MASK32 = 0xFFFFFFFF
+_V5N_MASK64 = 0xFFFFFFFFFFFFFFFF
+
+# ---------------------------------------------------------------- helpers
+def _v5n_u32(x):
+    return x & _V5N_MASK32
+
+def _v5n_rol32(x, n):
+    n &= 0x1F
+    x &= _V5N_MASK32
+    if n == 0:
+        return x
+    return ((x << n) | (x >> (32 - n))) & _V5N_MASK32
+
+def _v5n_ror32(x, n):
+    n &= 0x1F
+    x &= _V5N_MASK32
+    if n == 0:
+        return x
+    return ((x >> n) | (x << (32 - n))) & _V5N_MASK32
+
+def _v5n_ror64(x, n):
+    n = int(n) & 0x3F
+    x &= _V5N_MASK64
+    if n == 0:
+        return x
+    return ((x >> n) | (x << (64 - n))) & _V5N_MASK64
+
+def _v5n_u32le(x):
+    x &= _V5N_MASK32
+    return [x & 0xFF, (x >> 8) & 0xFF, (x >> 16) & 0xFF, (x >> 24) & 0xFF]
+
+def _v5n_u32be(x):
+    x &= _V5N_MASK32
+    return [(x >> 24) & 0xFF, (x >> 16) & 0xFF, (x >> 8) & 0xFF, x & 0xFF]
+
+def _v5n_rdle32(arr, off):
+    return (arr[off] | (arr[off + 1] << 8) | (arr[off + 2] << 16) | (arr[off + 3] << 24)) & _V5N_MASK32
+
+def _v5n_rdbe32(arr, off):
+    return ((arr[off] << 24) | (arr[off + 1] << 16) | (arr[off + 2] << 8) | arr[off + 3]) & _V5N_MASK32
+
+def _v5n_rdle64(arr, off):
+    return _v5n_rdle32(arr, off) | (_v5n_rdle32(arr, off + 4) << 32)
+
+def _v5n_wrle64(x):
+    lo = x & _V5N_MASK32
+    hi = (x >> 32) & _V5N_MASK32
+    return _v5n_u32le(lo) + _v5n_u32le(hi)
+
+def _v5n_utf8(s):
+    return list(str(s).encode("utf-8"))
+
+def _v5n_hex2bytes(h):
+    return list(bytes.fromhex(h))
+
+def _v5n_bytes2hex(b):
+    return "".join("%02x" % (x & 0xFF) for x in b)
+
+def _v5n_b642bytes(s):
+    return list(base64.b64decode(s))
+
+def _v5n_bytes2b64(b):
+    return base64.b64encode(bytes(bytearray(b))).decode("ascii")
+
+def _v5n_md5(data):
+    return list(hashlib.md5(bytes(bytearray(data))).digest())
+
+def _v5n_rand(n):
+    return list(os.urandom(n))
+
+def _v5n_enc(s):
+    # JS encV5: keep [A-Za-z0-9-_.~*], percent-encode rest as %XX uppercase
+    out = []
+    for b in _v5n_utf8(s):
+        if (0x41 <= b <= 0x5A) or (0x61 <= b <= 0x7A) or (0x30 <= b <= 0x39) or b in (0x2D, 0x5F, 0x2E, 0x7E, 0x2A):
+            out.append(chr(b))
+        else:
+            out.append("%%%02X" % b)
+    return "".join(out)
+
+def _v5n_varint(out, value):
+    v = int(value)
+    while v > 0x7F:
+        out.append((v & 0x7F) | 0x80)
+        v >>= 7
+    out.append(v & 0xFF)
+
+def _v5n_tagb(out, field, data):
+    _v5n_varint(out, (field << 3) | 2)
+    _v5n_varint(out, len(data))
+    out.extend(data)
+
+def _v5n_psint(field, value):
+    v = int(value)
+    zz = ((v << 1) ^ (v >> 63)) & _V5N_MASK64
+    out = []
+    _v5n_varint(out, field << 3)
+    _v5n_varint(out, zz)
+    return out
+
+def _v5n_pstr(field, s):
+    return _v5n_pbytes(field, _v5n_utf8(s))
+
+def _v5n_pbytes(field, data):
+    if not data:
+        return []
+    out = []
+    _v5n_tagb(out, field, data)
+    return out
+
+def _v5n_getiv(seed, data):
+    s = seed & _V5N_MASK32
+    for i, b in enumerate(data):
+        if (i & 1) == 0:
+            s = (((s >> 4) ^ s ^ ((s << 6) & _V5N_MASK32) ^ b)) & _V5N_MASK32
+        else:
+            s = (~((s >> 7) ^ s ^ (b | ((s << 12) & _V5N_MASK32)))) & _V5N_MASK32
+    return s & _V5N_MASK32
+
+# ---------------------------------------------------------------- SM3
+_V5N_SM3_IV = [0x7380166f, 0x4914b2b9, 0x172442d7, 0xda8a0600,
+           0xa96f30bc, 0x163138aa, 0xe38dee4d, 0xb0fb0e4e]
+
+def _v5n_sm3(data):
+    if isinstance(data, (bytes, bytearray)):
+        data = list(data)
+    v = list(_V5N_SM3_IV)
+    msg = list(data)
+    msg.append(0x80)
+    while len(msg) % 64 != 56:
+        msg.append(0)
+    bitlen = len(data) * 8
+    for i in range(7, -1, -1):
+        msg.append((bitlen >> (i * 8)) & 0xFF)
+    for off in range(0, len(msg), 64):
+        w = [0] * 68
+        w2 = [0] * 64
+        for j in range(16):
+            w[j] = _v5n_rdbe32(msg, off + j * 4)
+        for j in range(16, 68):
+            t = (w[j - 16] ^ w[j - 9] ^ _v5n_rol32(w[j - 3], 15)) & _V5N_MASK32
+            t = (t ^ _v5n_rol32(t, 15) ^ _v5n_rol32(t, 23)) & _V5N_MASK32
+            w[j] = (t ^ _v5n_rol32(w[j - 13], 7) ^ w[j - 6]) & _V5N_MASK32
+        for j in range(64):
+            w2[j] = (w[j] ^ w[j + 4]) & _V5N_MASK32
+        a, b, c, d, e, f, g, h = v
+        for j in range(64):
+            tj = 0x79cc4519 if j < 16 else 0x7a879d8a
+            ss1 = _v5n_rol32((_v5n_rol32(a, 12) + e + _v5n_rol32(tj, j)) & _V5N_MASK32, 7)
+            ss2 = (ss1 ^ _v5n_rol32(a, 12)) & _V5N_MASK32
+            if j < 16:
+                ff = (a ^ b ^ c) & _V5N_MASK32
+                gg = (e ^ f ^ g) & _V5N_MASK32
+            else:
+                ff = ((a & b) | (a & c) | (b & c)) & _V5N_MASK32
+                gg = ((e & f) | (((~e) & _V5N_MASK32) & g)) & _V5N_MASK32
+            tt1 = (ff + d + ss2 + w2[j]) & _V5N_MASK32
+            tt2 = (gg + h + ss1 + w[j]) & _V5N_MASK32
+            d = c
+            c = _v5n_rol32(b, 9)
+            b = a
+            a = tt1
+            h = g
+            g = _v5n_rol32(f, 19)
+            f = e
+            e = (tt2 ^ _v5n_rol32(tt2, 9) ^ _v5n_rol32(tt2, 17)) & _V5N_MASK32
+        v[0] = (v[0] ^ a) & _V5N_MASK32
+        v[1] = (v[1] ^ b) & _V5N_MASK32
+        v[2] = (v[2] ^ c) & _V5N_MASK32
+        v[3] = (v[3] ^ d) & _V5N_MASK32
+        v[4] = (v[4] ^ e) & _V5N_MASK32
+        v[5] = (v[5] ^ f) & _V5N_MASK32
+        v[6] = (v[6] ^ g) & _V5N_MASK32
+        v[7] = (v[7] ^ h) & _V5N_MASK32
+    out = []
+    for x in v:
+        out.extend(_v5n_u32be(x))
+    return out
+
+# ---------------------------------------------------------------- v5 profile
+_V5N_CON = [[0x2, 0x0, 0x3, 0x1], [0x1, 0x3, 0x2, 0x0],
+           [0x3, 0x2, 0x1, 0x0], [0x2, 0x3, 0x1, 0x0]]
+_V5N_ORDER = [[0x0, 0x9, 0xe, 0xf, 0x4, 0xd, 0x2, 0x7, 0x8, 0x1, 0x6, 0x3, 0xc, 0x5, 0xa, 0xb],
+             [0x0, 0x9, 0xe, 0xb, 0x4, 0xd, 0x2, 0x3, 0x8, 0x1, 0x6, 0xf, 0xc, 0x5, 0xa, 0x7],
+             [0x0, 0x9, 0xe, 0x3, 0x4, 0xd, 0x2, 0xf, 0x8, 0x1, 0x6, 0xb, 0xc, 0x5, 0xa, 0x7],
+             [0x0, 0x9, 0xe, 0xf, 0x4, 0xd, 0x2, 0x3, 0x8, 0x1, 0x6, 0xb, 0xc, 0x5, 0xa, 0x7]]
+
+_v5n_prof_cache = None
+
+def _v5n_prof(profile_b64):
+    global _v5n_prof_cache
+    if _v5n_prof_cache is not None:
+        return _v5n_prof_cache
+    raw = _v5n_b642bytes(profile_b64)
+    boxes = []
+    for i in range(4):
+        boxes.append(raw[0x30 + i * 0x100: 0x30 + (i + 1) * 0x100])
+    initial = []
+    for i in range(4):
+        initial.append(raw[0x430 + i * 0x4: 0x434 + i * 0x4])
+    factor_iv = []
+    for i in range(8):
+        factor_iv.append(_v5n_rdle32(raw, 0xc40 + i * 0x4))
+    factor_table = []
+    for i in range(0x40):
+        factor_table.append(_v5n_rdle32(raw, 0xc60 + i * 0x4))
+    _v5n_prof_cache = {
+        "material": raw[0x0:0x20],
+        "header": raw[0x20:0x30],
+        "boxes": boxes,
+        "initial": initial,
+        "factorIV": factor_iv,
+        "factorTable": factor_table,
+        "padding": raw[0xd60:0xd64],
+    }
+    return _v5n_prof_cache
+
+# ---------------------------------------------------------------- sumMD5 / xmxor
+def _v5n_summd5(arr):
+    s = 0x20220420
+    for i in range(0xC):
+        if (i & 1) == 0:
+            t = ((s >> 3) ^ s) & _V5N_MASK32
+            s = (arr[i] ^ ((s << 7) & _V5N_MASK32)) & _V5N_MASK32
+        else:
+            t = ((s >> 5) ^ s) & _V5N_MASK32
+            s = (~(arr[i] | ((s << 11) & _V5N_MASK32))) & _V5N_MASK32
+        s = (s ^ t) & _V5N_MASK32
+    return ((s | 0x4) ^ 0x1000000) & _V5N_MASK32
+
+def _v5n_xmxor(data, key):
+    n = len(data)
+    out = [0] * n
+    for i in range(n):
+        k = (i * 0x4) & 0x1C
+        k0 = key[k]
+        k1 = key[k + 1]
+        b = ((data[i] << 0x4) | (data[i] >> 0x4)) & 0xFF
+        v = (b + k0) & 0xFF
+        v = ((~v) ^ k1) & 0xFF
+        v = ((v << 0x3) | (v >> 0x5)) & 0xFF
+        v = (v + k1) & 0xFF
+        v = (v ^ k0) & 0xFF
+        out[n - i - 1] = (~v) & 0xFF
+    a = out[n - 1] ^ out[n - 2]
+    b0 = out[0]
+    out[0] = (((~a) & 0xFF) + b0) & 0xFF
+    out[1] = ((out[0] ^ out[n - 1] ^ 0xFE) + out[1]) & 0xFF
+    c = ((out[1] << 0x3) | (out[1] >> 0x5)) & 0xFF
+    out[2] = (out[2] + ((((a - b0) & 0xFF) ^ (c ^ 0x2)))) & 0xFF
+    for i in range(n - 4):
+        d = ((out[i + 2] << 0x3) | (out[i + 2] >> 0x5)) & 0xFF
+        e = (d ^ out[i + 1] ^ ((i + 3) & 0xFF)) & 0xFF
+        out[i + 3] = (((~e) & 0xFF) + out[i + 3]) & 0xFF
+    out[n - 1] ^= out[n - 2]
+    s = 0
+    for i in range(1, n):
+        s = (s + out[i]) & 0xFF
+    out[0] = ((out[0] ^ out[1]) + s) & 0xFF
+    return out
+
+# ---------------------------------------------------------------- v5Transform
+def _v5n_transform(data, key1, key2, idx, profile_b64):
+    prof = _v5n_prof(profile_b64)
+    box = prof["boxes"][idx]
+    init_val = _v5n_rdle32(prof["initial"][idx], 0)
+    sched = [0] * 0x30
+    for i in range(0x10):
+        sched[i] = key1[i] ^ prof["initial"][idx][i % 0x4]
+    shift = 0x8
+    for r in range(0x4, 0xC):
+        base = 0x4 * (r - 0x1)
+        a0 = sched[base]
+        a1 = sched[base + 1]
+        a2 = sched[base + 2]
+        a3 = sched[base + 3]
+        if (r & 0x3) == 0:
+            t = a0
+            a0 = ((init_val >> (shift & 0x18)) ^ box[a1]) & 0xFF
+            a1 = box[a2]
+            a2 = box[a3]
+            a3 = box[t]
+        shift += 0x2
+        tmp = [a0, a1, a2, a3]
+        for k in range(0x4):
+            sched[base + 0x4 + k] = tmp[k] ^ sched[base - 0xC + k]
+    pad_len = 0x10 - len(data) % 0x10
+    padded = list(data) + [pad_len] * pad_len
+    iv = list(key2)
+    out = []
+    con = _V5N_CON[idx]
+    order = _V5N_ORDER[idx]
+    for off in range(0, len(padded), 0x10):
+        block = [0] * 0x10
+        for i in range(0x10):
+            block[i] = padded[off + i] ^ iv[i] ^ sched[0x4 * (i >> 0x2) + con[i & 0x3]]
+        for rnd in (0x1, 0x2):
+            tmp = list(block)
+            for i in range(0x10):
+                block[i] = box[tmp[con[i >> 0x2] * 0x4 + (i & 0x3)]]
+            tmp = list(block)
+            for i in range(0x10):
+                block[i] = tmp[order[i]]
+            if rnd == 0x1:
+                tmp = list(block)
+                for i in range(0x10):
+                    block[i] = tmp[0x4 * (i >> 0x2) + con[i & 0x3]]
+                for c in range(0x4):
+                    x = block[c] ^ block[0x4 + c] ^ block[0x8 + c] ^ block[0xC + c]
+                    first = block[c]
+                    for r2 in range(0x4):
+                        nxt = block[(r2 + 1) * 0x4 + c] if r2 < 0x3 else first
+                        diff = block[r2 * 0x4 + c] ^ nxt
+                        dbl = ((diff << 0x1) ^ (0x1B if (diff & 0x80) else 0x0)) & 0xFF
+                        block[r2 * 0x4 + c] ^= (x ^ dbl)
+            for i in range(0x10):
+                block[i] ^= sched[0x10 * rnd + 0x4 * (i >> 0x2) + con[i & 0x3]]
+        iv = [block[i] ^ sched[0x10 + i] for i in range(0x10)]
+        out.extend(iv)
+    return out
+
+# ---------------------------------------------------------------- heliosToken
+def _v5n_helios(khronos, license_id="646637794", aid="8662", rand4=None):
+    r = list(rand4) if rand4 is not None else _v5n_rand(0x4)
+    seed = _v5n_utf8(_v5n_bytes2hex(_v5n_md5(r + _v5n_utf8(aid))))
+    s0 = [_v5n_rdle64(seed, 0)]
+    a = s0[0]
+    b = _v5n_rdle64(seed, 8)
+    s1 = [_v5n_rdle64(seed, 0x10), _v5n_rdle64(seed, 0x18)]
+    for i in range(0x22):
+        t = (((( _v5n_ror64(b, 0x8) + a) & _V5N_MASK64) ^ i)) & _V5N_MASK64
+        s1.append(t)
+        t = (t ^ _v5n_ror64(a, 0x3D)) & _V5N_MASK64
+        s0.append(t)
+        a = t
+        b = s1.pop(0)
+    plain = _v5n_utf8(str(khronos) + "-" + str(license_id) + "-" + str(aid))
+    pad = 0x10 - len(plain) % 0x10
+    plain = plain + [pad] * pad
+    out = []
+    for off in range(0, len(plain), 0x10):
+        x = _v5n_rdle64(plain, off)
+        y = _v5n_rdle64(plain, off + 8)
+        for j in range(0x22):
+            y = (s0[j] ^ ((x + _v5n_ror64(y, 0x8)) & _V5N_MASK64)) & _V5N_MASK64
+            x = (y ^ _v5n_ror64(x, 0x3D)) & _V5N_MASK64
+        out.extend(_v5n_wrle64(x))
+        out.extend(_v5n_wrle64(y))
+    return _v5n_bytes2b64(r + out[:0x20])
+
+# ---------------------------------------------------------------- signPlaybackV5
+def _v5n_sign(pairs, profile_b64, proc_nonce, proc_started,
+                     now_ms=None, rand16=None):
+    """Port of JS signPlaybackV5.
+    pairs: list of [key, value] (strings), in order (V5_APP_QUERY + identity/video fields).
+    profile_b64: V5_PROFILE_B64 string.
+    proc_nonce / proc_started: process-level constants (JS PROC_NONCE / PROC_STARTED).
+    now_ms: Date.now() in ms (None -> current time).
+    rand16: 16 random bytes (None -> os.urandom(16)).
+    Returns dict {query, headers:{x-khronos, x-helios, x-medusa}}.
+    """
+    prof = _v5n_prof(profile_b64)
+    rand = list(rand16) if rand16 is not None else _v5n_rand(0x10)
+    now = int(now_ms) if now_ms is not None else int(time.time() * 1000)
+    filtered = [p for p in pairs if p[0] != "_rticket"]
+    ts = (now // 0x3E8) & _V5N_MASK32
+    empty_md5 = _v5n_md5([])
+    ts_le = _v5n_u32le(ts)
+    for offset in range(0x400):
+        trial = filtered + [["_rticket", str(now + offset)]]
+        query = "&".join(_v5n_enc(k) + "=" + _v5n_enc(v) for k, v in trial)
+        h = _v5n_sm3(_v5n_utf8(query))
+        branch = _v5n_getiv(_v5n_getiv(_v5n_getiv(0x20230928, h), empty_md5), ts_le) & 0xF
+        if branch != 0xC:
+            continue
+        c_const = 0x9D4A97C2
+        t1 = (c_const + ts) & _V5N_MASK32
+        factor_table2 = [_v5n_ror32(x, (t1 + 1) & 0x1F) for x in prof["factorTable"]]
+        shift = (t1 + 2) & 0x7
+        pad = [((x | (x << 0x8)) >> shift) & 0xFF for x in prof["padding"]]
+        msg = h + empty_md5 + ts_le + pad + [0, 0, 0, 0, 0, 0, 1, 0xA0]
+        words = []
+        for j in range(0, len(msg), 4):
+            words.append(_v5n_rdbe32(msg, j))
+        prev = words[0]
+        for r in range(0x70):
+            a = words[r + 1]
+            b = words[r + 0xE]
+            s1 = (_v5n_rol32(a, 0xE) ^ _v5n_rol32(a, 0x19) ^ (a >> 0x3)) & _V5N_MASK32
+            s2 = (_v5n_rol32(b, 0xD) ^ _v5n_rol32(b, 0xF) ^ (b >> 0xA)) & _V5N_MASK32
+            words.append((prev + words[r + 0x9] + s1 + s2) & _V5N_MASK32)
+            prev = a
+        factor_iv2 = [_v5n_ror32(x, t1 & 0x1F) for x in prof["factorIV"]]
+        state = list(factor_iv2)
+        idx = [0x60, 0x1, 0x3, 0x4, 0x0, 0x6, 0x5, 0x2, 0x0, 0x7, 0x7]
+        for k in range(idx[0]):
+            kk = (c_const + k) & _V5N_MASK32
+            w = words[kk & 0x7F]
+            f1 = (((state[idx[3]] ^ state[idx[4]]) & state[idx[1]]) ^ state[idx[3]]) & _V5N_MASK32
+            g1 = (_v5n_rol32(state[idx[1]], 0x1A) ^ _v5n_rol32(state[idx[1]], 0x15) ^ _v5n_rol32(state[idx[1]], 0x7)) & _V5N_MASK32
+            tmp = (w + f1 + g1 + factor_table2[kk & 0x3F] + state[idx[5]]) & _V5N_MASK32
+            f2 = (_v5n_rol32(state[idx[2]], 0x1E) ^ _v5n_rol32(state[idx[2]], 0x13) ^ _v5n_rol32(state[idx[2]], 0xA)) & _V5N_MASK32
+            g2 = ((state[idx[2]] & state[idx[6]]) | ((state[idx[2]] | state[idx[6]]) & state[idx[7]])) & _V5N_MASK32
+            last = state[idx[9]]
+            popped = state.pop()
+            state.insert(0, popped)
+            state[idx[0xA]] = (f2 + g2 + tmp) & _V5N_MASK32
+            state[idx[0x8]] = (last + tmp) & _V5N_MASK32
+        out = []
+        for m in range(0x8):
+            out.extend(_v5n_u32be((state[m] + factor_iv2[m]) & _V5N_MASK32))
+        x = []
+        for n in range(0x10):
+            x.append(out[n] ^ out[n + 0x10])
+        med = x + _v5n_u32le((_v5n_summd5(x) | 0x20) & _V5N_MASK32)
+        obj = dict(trial)
+        inner = []
+        inner += _v5n_psint(0x1, 0x1)
+        inner += _v5n_psint(0x2, 0x2)
+        inner += _v5n_pstr(0x3, "8662")
+        inner += _v5n_pstr(0x4, obj.get("device_id", ""))
+        inner += _v5n_pstr(0x5, proc_nonce)
+        inner += _v5n_pstr(0x6, "!noperm!")
+        inner += _v5n_pstr(0xC, "Asia/Shanghai,8")
+        inner += _v5n_pstr(0xD, "zh_CN")
+        inner += _v5n_pstr(0x16, obj.get("os_version", ""))
+        inner += _v5n_psint(0x19, proc_started)
+        inner += _v5n_pstr(0x1E, obj.get("device_type", ""))
+        inner += _v5n_pstr(0x1F, "HONOR")
+        inner += _v5n_pstr(0x20, obj.get("device_type", ""))
+        inner += _v5n_pstr(0x22, "HONOR")
+        mid = []
+        mid += _v5n_pstr(0x6, "v04.10.03.04-bugfix")
+        mid += _v5n_pstr(0x8, obj.get("channel", ""))
+        mid += _v5n_pbytes(0xC, inner)
+        mid += _v5n_pstr(0xE, obj.get("version_name", ""))
+        blob = []
+        blob += _v5n_pbytes(0x1, prof["header"])
+        blob += _v5n_psint(0x2, 0x5)
+        blob += _v5n_psint(0x3, _v5n_rdle32(rand, 0x0))
+        blob += _v5n_pstr(0x4, "8662")
+        blob += _v5n_pstr(0x5, obj.get("device_id", ""))
+        blob += _v5n_pstr(0x6, "646637794")
+        blob += _v5n_pstr(0x7, obj.get("version_name", ""))
+        blob += _v5n_pstr(0x8, "v04.10.03-ml-android")
+        blob += _v5n_psint(0x9, 0x40A0300)
+        blob += _v5n_pbytes(0xA, [0, 0, 0, 0, 0, 0, 0, 0])
+        blob += _v5n_psint(0xC, ts)
+        blob += _v5n_pbytes(0xD, med)
+        blob += _v5n_pbytes(0xE, h[0:6])
+        blob += _v5n_pbytes(0xF, _v5n_psint(0x1, 0x1) + _v5n_psint(0x2, 0x1) + _v5n_psint(0x3, 0x1) + _v5n_psint(0x5, 0x1))
+        blob += _v5n_psint(0x11, ts)
+        blob += _v5n_pstr(0x14, "none")
+        blob += _v5n_psint(0x15, 0x138)
+        blob += _v5n_pbytes(0x17, mid)
+        blob += _v5n_pstr(0x18, '{"cmr":16777216,"cmr2":16777216,"un_h":11,"vpn":0,"kd":0,"dyn":"","do":1,"tk":true}')
+        r1 = _v5n_rdle32(rand, 0x8)
+        h2 = _v5n_sm3(prof["material"] + _v5n_u32le(r1) + prof["material"])
+        b = (r1 >> 0x10) & 0xFF
+        acc = ((b << 0xB) | ((r1 >> 0x18) ^ (b >> 0x5) ^ b)) & _V5N_MASK32
+        mask = _v5n_u32le((~acc) & _V5N_MASK32)
+        enc = [0, 0, 0, 0, 0, 0, 0, 0] + _v5n_xmxor(blob, h2)
+        enc = enc[::-1]
+        for q in range(len(enc)):
+            enc[q] ^= mask[(~q) & 0x3]
+        tag = (0x18000001 | ((h[0] & 0x3F) << 0xE) | ((med[0] & 0x3F) << 0x8)) & _V5N_MASK32
+        medusa_raw = [0xCA] + _v5n_u32le(_v5n_rdle32(rand, 0xC)) + _v5n_u32le(tag) + enc + [(r1 >> 0x10) & 0xFF, (r1 >> 0x18) & 0xFF]
+        p1 = [0x6, 0x5, 0x3, 0x4, 0x2, 0x7, 0x1, 0x0]
+        p2 = [0x1, 0x7, 0x3, 0x6, 0x2, 0x0, 0x4, 0x5]
+        bits = [0] * 0x1F
+        for t in range(0xF8):
+            bits[t >> 0x3] |= ((medusa_raw[t] >> p1[t & 0x7]) & 0x1) << p2[t & 0x7]
+        transformed = _v5n_transform(bits, _v5n_md5(prof["material"][0:0x10]), _v5n_md5(prof["material"][0x10:0x20]), ts & 0x3, profile_b64)
+        out2 = list(medusa_raw)
+        for t in range(0xF8):
+            out2[t] = (out2[t] & (~(0x1 << p1[t & 0x7]) & 0xFF)) | (((transformed[t >> 0x3] >> p2[t & 0x7]) & 0x1) << p1[t & 0x7])
+        head = _v5n_u32le(0x5) + prof["header"]
+        ts_le2 = _v5n_u32le(ts)
+        for z in range(len(head)):
+            head[z] ^= ts_le2[z & 0x3]
+        medusa = _v5n_bytes2b64(head + [r1 & 0xFF, (r1 >> 0x8) & 0xFF, 0x0, 0x1, transformed[0x1F]] + out2)
+        return {
+            "query": query,
+            "headers": {
+                "x-khronos": str(ts),
+                "x-helios": _v5n_helios(ts, "646637794", "8662", _v5n_u32le(_v5n_rdle32(rand, 0x4))),
+                "x-medusa": medusa,
+            },
+        }
+    raise RuntimeError("v5 签名分支搜索失败")
+
+# directory/all_items 链路移植（i短剧 JS 蜘蛛 v1.1.4 -> Python）
+# 对照：~/workspace/hg3/v114port/detail/fn_*.js（buildPlainPB/medusaTransform32 等已逐项验过）
+# 复用本文件已有的 _v5n_*（sm3/md5/helios/varint/tagb/utf8/u32le/u32be/rdle32/rdle64/popcount32）。
+_HG_DIR_UA = "com.phoenix.read/72133 (Linux; U; Android 10; zh_CN_#Hans; EML-AL00; Build/HUAWEIEML-AL00; Cronet/TTNetVersion:04657795 2026-01-23 QuicVersion:c67e9834 2025-09-08)"
+_HG_DIR_HELIOS_LICENSE = "1611921764"  # heliosToken 单参数调用时的缺省 license（JS 默认值；_v5n_helios 的缺省是签 V5 用的 646637794，不能直接用）
+_HG_DIR_HEAD_C = [0x16, 0x6f, 0x80, 0x75, 0xe2, 0x85, 0xb2, 0x36, 0xbc, 0xeb, 0x84, 0xca, 0x26, 0xcb, 0x43, 0xe8]
+_HG_DIR_KS_SEED = [0xac, 0x1a, 0xda, 0xae, 0x95, 0xa7, 0xaf, 0x94, 0xa5, 0x11, 0x4a, 0xb3, 0xb3, 0xa9, 0x7d, 0xd8, 0x0, 0x50, 0xaa, 0xa, 0x39, 0x31, 0x4c, 0x40, 0x52, 0x8c, 0xae, 0xc9, 0x52, 0x56, 0xc2, 0x8c]
+_HG_DIR_M_LANE = [0x1, 0x7, 0x2, 0x6, 0x3, 0x4, 0x0, 0x5]
+_HG_DIR_BIT_PERM = [0x5, 0x4, 0x0, 0x2, 0x1, 0x6, 0x3, 0x7]
+_HG_DIR_IDENT_PERM = [0x0, 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7]
+_HG_DIR_R0_WIRE = [[0x0, 0x8], [0x1, 0xc], [0x4, 0x9], [0x5, 0xd], [0x8, 0xa], [0x9, 0xe], [0xc, 0xb], [0xd, 0xf]]
+_HG_DIR_IN1_IDX = [0x2, 0x3, 0x6, 0x7, 0xa, 0xb, 0xe, 0xf]
+_HG_DIR_OUT_LO = [[0x1, 0x8, 0x95, 0x0], [0x1, 0xe, 0xf3, 0x0], [0x2, 0x3, 0xed, 0x0], [0x2, 0x5, 0x37, 0x0], [0x1, 0x9, 0xa2, 0x0], [0x1, 0xf, 0xd0, 0x0], [0x2, 0x0, 0xaa, 0x0], [0x2, 0x6, 0x8a, 0x0], [0x1, 0xa, 0xeb, 0x0], [0x1, 0xc, 0x35, 0x0], [0x2, 0x1, 0x77, 0x0], [0x2, 0x7, 0x9b, 0x0], [0x1, 0xb, 0x4e, 0x0], [0x1, 0xd, 0x13, 0x0], [0x2, 0x2, 0x54, 0x0], [0x2, 0x4, 0x9c, 0x0]]
+_HG_DIR_OUT_HI = [[0x3, 0x8, 0x95, 0x0], [0x3, 0xe, 0xf3, 0x0], [0x4, 0x3, 0xed, 0x0], [0x4, 0x5, 0x37, 0x0], [0x3, 0x9, 0xa2, 0x0], [0x3, 0xf, 0xd0, 0x0], [0x4, 0x0, 0xaa, 0x0], [0x4, 0x6, 0x8a, 0x0], [0x3, 0xa, 0xeb, 0x0], [0x3, 0xc, 0x35, 0x0], [0x4, 0x1, 0x77, 0x0], [0x4, 0x7, 0x9b, 0x0], [0x3, 0xb, 0x4e, 0x0], [0x3, 0xd, 0x13, 0x0], [0x4, 0x2, 0x54, 0x0], [0x4, 0x4, 0x87, 0x1]]
+_HG_DIR_MEDUSA_TABLES_B64 = "SEdNRFRGMDICAAQAAACzMX4c4tBPbE5pADEVdJyrsnrINQNNjKeC0QwXwdgJOAfd18n1PVAmLeBVEX2DUkh8SdmsIs3Qh2rc8YZtBMaBDx2rDm+2FNXjdg147ML2fqE0mjL7s9L/n0O16u5FGO0uL2UgiZBx8kyZtECdoin5kWkQoHvpS97m6AFi+h8sNgULqF9mpkLkU3dE2q5riMXOYfet22NYAsNP/BY+o7sI345cIRyTNxPLypZnEn/USldeBiTiXRtG63TTWc+bnFSecCvEOceNt9bwZDozjzCXqr5OinJgFYDvpScqhSNubHMKqRqxlK8oR8Dl/laVvOG4ACX4aD9RmPO5hMySWx55dVrnuhmLpDu9MUGw/Tz0vwQCVzECA1IwVgNJTjHBAIAABAAEAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAQAAAAAAAAAgIEBAQAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAACBgwICAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIGBAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAhIwICAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAACImBAQAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAABAwICAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAIGBAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAwICAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGAgQEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAoGDAgAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAEAgYEAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAiEjAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEIiYEAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAgEDAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAgYEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgEDAgAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAABAYCBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAICgYMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAQCBgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAICISMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAQiJgAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAICAQMAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAABAQCBgAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAICAQMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgQEBgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACDAgKBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYEBAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAjAgIhAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAACYEBCIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAgIBAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAYEBAIAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAADAgIBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAYCBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAICgYMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAQCBgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAICISMAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAABAQiJgAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAICAQMAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAABAQCBgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAICAQMAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAgQEBgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACDAgKBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYEBAIAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAjAgIhAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACYEBCIAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAADAgIBAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAYEBAIAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAADAgIBAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAICBAQEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgYMCAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACBgQEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAISMCAgAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAiJgQEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQMCAgAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAACBgQEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQMCAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABgIEBAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAKBgwIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAIGBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIhIwIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABCImBAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAIBAwIAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAABAIGBAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAIBAwIAAAAAAAAAAAAAAAAAAAAAAAlcyAgNSMVYDSU4y+QCAAAQAgQEBgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGDAgKBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYEBAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAjAgIhAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGYEBCIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAATAgIBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABYEBAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAgIBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAICBAQEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABgYMCAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAECBgQEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYSMCAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABiJgQEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQMCAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAASBgQEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQMCAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEBgIEBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKBgwIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAIGBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIhIwIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABCImBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABIBAwIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFAIGBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYBAwIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQGAgQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAoGDAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQEAgYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABCAiEjAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEQEIiYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAgEDAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABQEAgYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGAgEDAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABgIEBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAKBgwIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAABAIGBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAIhIwIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABCImBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIBAwIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAABAIGBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAIBAwIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAQGAgQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAoGDAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAQEAgYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAiEjAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQEIiYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAgEDAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAQEAgYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAgEDAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIEBAYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAgwICgQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGBAQCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIwICIQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAmBAQiAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAwICAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAGBAQCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwICAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAgQEBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAIGDAgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAgYEBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAACEjAgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAIiYEBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEDAgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgYEBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAEDAgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAgAAAAAAAAAQAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAEAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAgAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAEAAAAAAAAAAAAAAEAAAAAAAAAAAACAAAAAAAAAAAAABAAAAAAAAAAAAAAAQAAAAAAAAAAAAQAAAAAAAAAAAAACAAAAAAAAAAAAAABAAAAAAAAAAAACAAAAAAAAAAAAABAAAAAAAAAAAAAAAEAAAAAAAAAAAAQAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAQAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAQAAAAAAAABAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAgAAAAAAAAEAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAABAAAAAAAAAQAAAAAAAAAAAABAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAgAAAEAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAQAAAAQAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAEAAAEAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAABAAAEAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAIAABAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAABAAACAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAIAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAIAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAIAAAAQAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAABAAAAgAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAIAAAIAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAEAAAAAAAQAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAgAAAAAAEAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAEAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAgAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAgAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAABAAAAAAAAQAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAQAAAAAAABAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAQAAAAAAAAQAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAACAAAAAAABAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAIAAAAAAAAQAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAACAAAAAAAABAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAEAAEAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAIAAAQJXMwIDUjJWA0lOMvkAgAAEAAAAAAEAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAQAAAAgAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAABAAAAEAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAEAAAAgAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAABAAAAgAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAABBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAYAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAABAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAABAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAQAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQBAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAEAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAQAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgEAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAEAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAQAAAAAAAgAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAQAAAAAAEAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAABAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAEAAAAAAAACAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAQAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAEAAAAAAACAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAABAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAQAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAQAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAEAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAACAgQEBAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAIGDAgIAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAgYEBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACEjAgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIiYEBAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAEDAgIAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAgYEBAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAEDAgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYCBAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACgYMCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQCBgQAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAACISMCAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAQiJgQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAQMCAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAQCBgQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAQMCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEBgIEAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAgKBgwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEBAIGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgIhIwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEBCImAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgIBAwAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAEBAIGAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAgIBAwAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAACBAQGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIMCAoEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABgQEAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACMCAiEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJgQEIgAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAMCAgEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABgQEAgAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAMCAgEAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAEBgIEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgKBgwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEBAIGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgIhIwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEBCImAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAgIBAwAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAEBAIGAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAgIBAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACBAQGAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAIMCAoEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABgQEAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACMCAiEAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAJgQEIgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMCAgEAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAABgQEAgAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAMCAgEAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAgIEBAQAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAACBgwICAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIGBAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAhIwICAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACImBAQAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAABAwICAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIGBAQAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAABAwICAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGAgQEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAoGDAgAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAEAgYEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAiEjAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEIiYEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgEDAgAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAEAgYEAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAgEDAgAAAAAAAAAAAAAAAAAAAAAECVzQBA1IzVoEAQAADAIEBAYAAAAAAAAAAAAAAAAABAAAAAAAAAIMCAoEAAAAAAAAAAAAAAAAAAAAAAAAAAAYEBAIAAAAAAAAAAAAAAAAAAAAAAAAAAIwICIQAAAAAAAAAAAAAAAABAAAAAAAAAJgQEIgAAAAAAAAAAAAAAAABAAAAAAAAADAgIBAAAAAAAAAAAAAAAAABAAAAAAAAAGBAQCAAAAAAAAAAAAAAAAAAAAAAAAAAAMCAgEAAAAAAAAAAAAAAAAAAAAAAAAAAAICBAQEAAAAAAAAAAAAAAAABAAAAAAAAAIGDAgIAAAAAAAAAAAAAAAABAAAAAAAAAAIGBAQAAAAAAAAAAAAAAAABAAAAAAAAAISMCAgAAAAAAAAAAAAAAAABAAAAAAAAAIiYEBAAAAAAAAAAAAAAAAAAAAAAAAAAABAwICAAAAAAAAAAAAAAAAABAAAAAAAAACBgQEAAAAAAAAAAAAAAAAAAAAAAAAAAAEDAgIAAAAAAAAAAAAAAAAABAAAAAAAAAAGAgQEAAAAAAAAAAAAAAAAAAAAAAAAAAAKBgwIAAAAAAAAAAAAAAAAAAAAAAAAAAAQCBgQAAAAAAAAAAAAAAAAAAAAAAAAAAAiEjAgAAAAAAAAAAAAAAAAAAAAAAAAAABCImBAAAAAAAAAAAAAAAAABAAAAAAAAACAQMCAAAAAAAAAAAAAAAAABAAAAAAAAAEAgYEAAAAAAAAAAAAAAAAABAAAAAAAAAIBAwIAAAAAAAAAAAAAAAAAAAAAAAAAAAAEBgIEAAAAAAAAAAAAAAAAAAAAAAAAAAAICgYMAAAAAAAAAAAAAAAAAAAAAAAAAAAQEAgYAAAAAAAAAAAAAAAABAAAAAAAAAAgIhIwAAAAAAAAAAAAAAAABAAAAAAAAABAQiJgAAAAAAAAAAAAAAAAAAAAAAAAAACAgEDAAAAAAAAAAAAAAAAABAAAAAAAAAEBAIGAAAAAAAAAAAAAAAAABAAAAAAAAAICAQMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABgIEBAAAAAAAAAAABAAAAAAAAAAAAAAACgYMCAAAAAAAAAAABAAAAAAAAAAAAAAAEAgYEAAAAAAAAAAABAAAAAAAAAAAAAAAIhIwIAAAAAAAAAAAAAAAAAAAAAAAAAAAQiJgQAAAAAAAAAAAAAAAAAAAAAAAAAAAgEDAgAAAAAAAAAAABAAAAAAAAAAAAAABAIGBAAAAAAAAAAAABAAAAAAAAAAAAAACAQMCAAAAAAAAAAAABAAAAAAAAAAAAAAABAYCBAAAAAAAAAAAAAAAAAAAAAAAAAAACAoGDAAAAAAAAAAABAAAAAAAAAAAAAAAEBAIGAAAAAAAAAAAAAAAAAAAAAAAAAAAICISMAAAAAAAAAAAAAAAAAAAAAAAAAAAQEIiYAAAAAAAAAAAAAAAAAAAAAAAAAAAgIBAwAAAAAAAAAAABAAAAAAAAAAAAAABAQCBgAAAAAAAAAAAAAAAAAAAAAAAAAACAgEDAAAAAAAAAAAAAAAAAAAAAAAAAAACBAQGAAAAAAAAAAAABAAAAAAAAAAAAAACDAgKBAAAAAAAAAAAAAAAAAAAAAAAAAAAGBAQCAAAAAAAAAAAAAAAAAAAAAAAAAACMCAiEAAAAAAAAAAAAAAAAAAAAAAAAAACYEBCIAAAAAAAAAAABAAAAAAAAAAAAAAAwICAQAAAAAAAAAAABAAAAAAAAAAAAAABgQEAgAAAAAAAAAAAAAAAAAAAAAAAAAADAgIBAAAAAAAAAAAAAAAAAAAAAAAAAAACAgQEBAAAAAAAAAAABAAAAAAAAAAAAAACBgwICAAAAAAAAAAABAAAAAAAAAAAAAAACBgQEAAAAAAAAAAABAAAAAAAAAAAAAACEjAgIAAAAAAAAAAABAAAAAAAAAAAAAACImBAQAAAAAAAAAAAAAAAAAAAAAAAAAAAQMCAgAAAAAAAAAAAAAAAAAAAAAAAAAAAgYEBAAAAAAAAAAAABAAAAAAAAAAAAAABAwICAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEBYIldpQoQM0Az0P1dBApRkTuWF8kBEwnUoTfc+C7d+rKHnqX1tmD5BndmEd6RrnTSYuU+vVLkJbXosx6vMoZa843mSTk9FWiFu1SwDQh6gGNxUOnjoPExJgLBfrTi6w+DMIsk7PdbA63KOBRdG6ROU9fwbf8EB9h2UZO4/VcpTSeZ6jOJOgtAqAw2+51r1cty1peIINB4GXuOYVXDbshFITy5XnNZq/TOosQ/b4TTEpofff51bJXGus++LGV8qoFHNCNfGsVKo+2pAB3Aj0zn0Q4KcEHCGPKKzMeslDXNQ7GmSJCSZ0vZWFwojH/2gp/amyq3HGoiFiu/eS3f21a84KfvQkT8mE8vEO5kBWmcRuEKAldhAgNSMFYDSU4xwQBAAAQAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAACV2IBB1NCT1hfTE9BACAAAgAAAAAAgQEBgAAAAAAAAAAAAAAAAIMCAoEAAAAAAAAAAAAAAAAGBAQCAAAAAAAAAAAAAAAAjAgIhAEAAAAAAAAAAAAAAJgQEIgBAAAAAAAAAAAAAAAwICAQAQAAAAAAAAAAAAAAYEBAIAAAAAAAAAAAAAAAAMCAgEABAAAAAAAAAAAAAACAgQEBAAAAAAAAAAAAAAAAgYMCAgEAAAAAAAAAAAAAAAIGBAQBAAAAAAAAAAAAAACEjAgIAQAAAAAAAAAAAAAAiJgQEAEAAAAAAAAAAAAAABAwICAAAAAAAAAAAAAAAAAgYEBAAQAAAAAAAAAAAAAAQMCAgAAAAAAAAAAAAAAAAAGAgQEAAAAAAAAAAAAAAAACgYMCAQAAAAAAAAAAAAAABAIGBAEAAAAAAAAAAAAAAAiEjAgBAAAAAAAAAAAAAAAQiJgQAAAAAAAAAAAAAAAAIBAwIAEAAAAAAAAAAAAAAEAgYEABAAAAAAAAAAAAAACAQMCAAAAAAAAAAAAAAAAAAQGAgQEAAAAAAAAAAAAAAAICgYMBAAAAAAAAAAAAAAAEBAIGAAAAAAAAAAAAAAAACAiEjAAAAAAAAAAAAAAAABAQiJgBAAAAAAAAAAAAAAAgIBAwAQAAAAAAAAAAAAAAQEAgYAAAAAAAAAAAAAAAAICAQMAAAAAAAAAAAAJXYwEDUjBWgQAgAAMAAQAAAAAAAACBAQGAAAAAAAAAAAAAAAAAAQAAAAAAAACDAgKBAAAAAAAAAAAAAAAAAAAAAAAAAAAGBAQCAAAAAAAAAAAAAAAAAQAAAAAAAACMCAiEAAAAAAAAAAAAAAAAAAAAAAAAAACYEBCIAAAAAAAAAAAAAAAAAAAAAAAAAAAwICAQAAAAAAAAAAAAAAAAAAAAAAAAAABgQEAgAAAAAAAAAAAAAAAAAAAAAAAAAADAgIBAAAAAAAAAAAAAAAAAAAAAAAAAAACAAYEBAAAAAAAAAAAAAAAAAAAAAAAAAACBAoMCAAAAAAAAAAAAAAAAAQAAAAAAAAACBAYEAAAAAAAAAAAAAAAAAQAAAAAAAACECIwIAAAAAAAAAAAAAAAAAAAAAAAAAACIEJgQAAAAAAAAAAAAAAAAAQAAAAAAAAAQIDAgAAAAAAAAAAAAAAAAAQAAAAAAAAAgQGBAAAAAAAAAAAAAAAAAAQAAAAAAAABAgMCAAAAAAAAAAAAAAAAAAQAAAAAAAAABgYABAAAAAAAAAAAAAAAAAAAAAAAAAAACg4ECAAAAAAAAAAAAAAAAAAAAAAAAAAAEBgIEAAAAAAAAAAAAAAAAAQAAAAAAAAAIjIQIAAAAAAAAAAAAAAAAAQAAAAAAAAAQmIgQAAAAAAAAAAAAAAAAAAAAAAAAAAAgMBAgAAAAAAAAAAAAAAAAAAAAAAAAAABAYCBAAAAAAAAAAAAAAAAAAQAAAAAAAACAwECAAAAAAAAAAAAAAAAAAAAAAAAAAAABgAGBAAAAAAAAAAAAAAAAAAAAAAAAAAACgQKDAAAAAAAAAAAAAAAAAAAAAAAAAAAEAgQGAAAAAAAAAAAAAAAAAAAAAAAAAAAIhAiMAAAAAAAAAAAAAAAAAQAAAAAAAAAQiBCYAAAAAAAAAAAAAAAAAAAAAAAAAAAgECAwAAAAAAAAAAAAAAAAAAAAAAAAAABAIEBgAAAAAAAAAAAAAAAAAAAAAAAAAACAQIDAAAAAAAAAAAAAAAAAA1cyYQIDUjFWA1IwVgEBQAAFAAGAAYEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACgQKDAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAIEBgAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAiECIwAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQiBCYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIBAgMAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAgQGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAQIDAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgQEBgAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIMCAoEAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGBAQCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAjAgIhAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJgQEIgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwICAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYEBAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMCAgEAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAYEBAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgQKDAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIEBgQAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACECIwIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAiBCYEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAgMCAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgQGBAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQIDAgAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGBgAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACg4ECAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAYCBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAiMhAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQmIgQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIDAQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEBgIEAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAwECAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAGBgAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAACg4ECAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAYCBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAiMhAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQmIgQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIDAQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAEBgIEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAwECAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAYABgQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKBAoMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAgQGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACIQIjAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABCIEJgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgECAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQCBAYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIBAgMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACBAQGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAgwICgQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYEBAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAACMCAiEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAmBAQiAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAADAgIBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAABgQEAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwICAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIABgQEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAACBAoMCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgQGBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAIQIjAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACIEJgQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAECAwIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACBAYEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAgMCAAAAAAAAAAAADVzJiAgNSMVYDSU4y+QBAAAQAAAAAAAAAAAAAAAABAAAAAAQAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAIAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAIAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAIAAAAAEAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAABAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAABAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAABAAAAAACAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAIAAAAAAgAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAQAAAAAAAAAAAAAABAAAAAAAAAAAAAABAAAAAAAAAAACAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAEAAAAAAAAAAAQAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAQAAAAAAAAAAAAAABAAAAAAAAAAAQAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAQAAAAAAAAAAQAAAAAAAAAAAAAAAIAAAAAAAAAAAAAABAAAAAAAAAACAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAABAAAAAAAAABAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAACAAAAAAAAAEAAAAAAAAAAAAACAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAQAAAAAAAAEAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAIAAAAAAAAABAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAQAAAEAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAgAAAQAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAABAAABAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAACAAAAEAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAQAABAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAACAAAQAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAQAAAgAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAACAAAQAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAQAAACAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAACAAAAEAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAQAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAACAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAQAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAABAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAQAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAQAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAQAAAAAAAAAAgAAAAAAAAAAAAAQAAAAAAAAAAAAAAAACAAAAAAAAAAIAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAEAAAAAAAAQAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAgAAAAAAAAQAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAQAAEAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAgAAQAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAQAABAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAACAAAADVzNhAgNSMlYDSU4y+QBAAAQAAAEAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAEAAgAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAQAgAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAABAEAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAEAAAAEAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAABAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAEAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAQAAAEAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAEBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAABIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAQAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgBAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAQAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAEAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAABAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAQAAAAAAAAAIAAAAAAAAAAAAAABAAAAAAAAAAAAAAAABAAAAAAAAABAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAEAAAAAAAAAIAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAABAAAAAAAAAIAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAQAAAAACAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAABAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAEAAAAACAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAQAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAEAAAAAQAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAABAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAQAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAEAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADVzNiAQdTQk9YX0xPQQAgAAIAAAAAAIEBAYAAAAAAAAAAAAAAAACDAgKBAAAAAAAAAAAAAAAABgQEAgAAAAAAAAAAAAAAAIwICIQBAAAAAAAAAAAAAACYEBCIAQAAAAAAAAAAAAAAMCAgEAEAAAAAAAAAAAAAAGBAQCAAAAAAAAAAAAAAAADAgIBAAQAAAAAAAAAAAAAAgIEBAQAAAAAAAAAAAAAAAIGDAgIBAAAAAAAAAAAAAAACBgQEAQAAAAAAAAAAAAAAhIwICAEAAAAAAAAAAAAAAIiYEBABAAAAAAAAAAAAAAAQMCAgAAAAAAAAAAAAAAAAIGBAQAEAAAAAAAAAAAAAAEDAgIAAAAAAAAAAAAAAAAABgIEBAAAAAAAAAAAAAAAAAoGDAgEAAAAAAAAAAAAAAAQCBgQBAAAAAAAAAAAAAAAIhIwIAQAAAAAAAAAAAAAAEIiYEAAAAAAAAAAAAAAAACAQMCABAAAAAAAAAAAAAABAIGBAAQAAAAAAAAAAAAAAgEDAgAAAAAAAAAAAAAAAAAEBgIEBAAAAAAAAAAAAAAACAoGDAQAAAAAAAAAAAAAABAQCBgAAAAAAAAAAAAAAAAgIhIwAAAAAAAAAAAAAAAAQEIiYAQAAAAAAAAAAAAAAICAQMAEAAAAAAAAAAAAAAEBAIGAAAAAAAAAAAAAAAACAgEDAAAAAAAAAAAADVzNjAQNSMlaBACAAAwAAAAAAAAAAAIEBAYAAAAAAAQAAAAAAAAAAAAAAAAAAAIMCAoEAAAAAAQAAAAAAAAAAAAAAAAAAAAYEBAIAAAAAAAAAAAAAAAAAAAAAAAAAAIwICIQAAAAAAQAAAAAAAAAAAAAAAAAAAJgQEIgAAAAAAAAAAAAAAAAAAAAAAAAAADAgIBAAAAAAAAAAAAAAAAAAAAAAAAAAAGBAQCAAAAAAAAAAAAAAAAAAAAAAAAAAAMCAgEAAAAAAAAAAAAAAAAAAAAAAAAAAAIABgQEAAAAAAAAAAAAAAAAAAAAAAAAAAIECgwIAAAAAAAAAAAAAAAAAAAAAAAAAAAIEBgQAAAAAAQAAAAAAAAAAAAAAAAAAAIQIjAgAAAAAAQAAAAAAAAAAAAAAAAAAAIgQmBAAAAAAAAAAAAAAAAAAAAAAAAAAABAgMCAAAAAAAQAAAAAAAAAAAAAAAAAAACBAYEAAAAAAAQAAAAAAAAAAAAAAAAAAAECAwIAAAAAAAQAAAAAAAAAAAAAAAAAAAAGBgAEAAAAAAQAAAAAAAAAAAAAAAAAAAAKDgQIAAAAAAAAAAAAAAAAAAAAAAAAAAAQGAgQAAAAAAAAAAAAAAAAAAAAAAAAAAAiMhAgAAAAAAQAAAAAAAAAAAAAAAAAAABCYiBAAAAAAAQAAAAAAAAAAAAAAAAAAACAwECAAAAAAAAAAAAAAAAAAAAAAAAAAAEBgIEAAAAAAAAAAAAAAAAAAAAAAAAAAAIDAQIAAAAAAAQAAAAAAAAAAAAAAAAAAAAGAAYEAAAAAAAAAAAAAAAAAAAAAAAAAAAKBAoMAAAAAAAAAAAAAAAAAAAAAAAAAAAQCBAYAAAAAAAAAAAAAAAAAAAAAAAAAAAiECIwAAAAAAAAAAAAAAAAAAAAAAAAAABCIEJgAAAAAAQAAAAAAAAAAAAAAAAAAACAQIDAAAAAAAAAAAAAAAAAAAAAAAAAAAEAgQGAAAAAAAAAAAAAAAAAAAAAAAAAAAIBAgMAAAAAAAAAAAAAAAAADVzRhAQNSM1aBACAAAwABgAGBAAAAAAAAAAAAAAAAAAAAAAAAAAACgQKDAAAAAAAAAAAAAAAAAAAAAAAAAAAEAgQGAAAAAAAAAAAAAAAAAQAAAAAAAAAIhAiMAAAAAAAAAAAAAAAAAQAAAAAAAAAQiBCYAAAAAAAAAAAAAAAAAAAAAAAAAAAgECAwAAAAAAAAAAAAAAAAAQAAAAAAAABAIEBgAAAAAAAAAAAAAAAAAAAAAAAAAACAQIDAAAAAAAAAAAAAAAAAAQAAAAAAAACBAQGAAAAAAAAAAAAAAAAAAQAAAAAAAACDAgKBAAAAAAAAAAAAAAAAAQAAAAAAAAAGBAQCAAAAAAAAAAAAAAAAAAAAAAAAAACMCAiEAAAAAAAAAAAAAAAAAAAAAAAAAACYEBCIAAAAAAAAAAAAAAAAAAAAAAAAAAAwICAQAAAAAAAAAAAAAAAAAAAAAAAAAABgQEAgAAAAAAAAAAAAAAAAAAAAAAAAAADAgIBAAAAAAAAAAAAAAAAAAQAAAAAAAACAAYEBAAAAAAAAAAAAAAAAAQAAAAAAAACBAoMCAAAAAAAAAAAAAAAAAAAAAAAAAAACBAYEAAAAAAAAAAAAAAAAAQAAAAAAAACECIwIAAAAAAAAAAAAAAAAAAAAAAAAAACIEJgQAAAAAAAAAAAAAAAAAAAAAAAAAAAQIDAgAAAAAAAAAAAAAAAAAQAAAAAAAAAgQGBAAAAAAAAAAAAAAAAAAQAAAAAAAABAgMCAAAAAAAAAAAAAAAAAAQAAAAAAAAABgYABAAAAAAAAAAAAAAAAAAAAAAAAAAACg4ECAAAAAAAAAAAAAAAAAAAAAAAAAAAEBgIEAAAAAAAAAAAAAAAAAAAAAAAAAAAIjIQIAAAAAAAAAAAAAAAAAAAAAAAAAAAQmIgQAAAAAAAAAAAAAAAAAAAAAAAAAAAgMBAgAAAAAAAAAAAAAAAAAAAAAAAAAABAYCBAAAAAAAAAAAAAAAAAAQAAAAAAAACAwECAAAAAAAAAAAAAAAAAAAAAAAAAAAADVzRiAgNSM1YDUjJWAQEgAAUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGBgAEBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACg4ECAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAYCBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAiMhAgBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQmIgQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIDAQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEBgIEABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAwECAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYABgQEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKBAoMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAgQGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACIQIjAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABCIEJgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgECAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQCBAYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIBAgMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACBAQGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgwICgQEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYEBAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACMCAiEAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAmBAQiAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAgIBABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABgQEAgAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwICAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIABgQEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACBAoMCAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgQGBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIQIjAgBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACIEJgQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAECAwIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACBAYEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAgMCAAAAAAAAAAAAKdGFiMV9zcGxpdAp0YWIxX3NwbGl0B1IxVitSMFYHUjFWK0lOMgNSM1YHUjNWK1IyVgsOERcIDRMUCg8QFQkMEhYrLjE3KC0zNCovMDUpLDI2BQQAAgEGAwcFBAACAQYDBwUEAAIBBgMHBQQAAgEGAwcFBAACAQYDBwUEAAIBBgMHBQQAAgEGAwcFBAACAQYDBwUEAAIBBgMHBQQAAgEGAwcFBAACAQYDBwUEAAIBBgMHBQQAAgEGAwcFBAACAQYDBwUEAAIBBgMHBQQAAgEGAwcFBAACAQYDBwUEAAIBBgMHBQQAAgEGAwcFBAACAQYDBwUEAAIBBgMHBQQAAgEGAwcFBAACAQYDBwUEAAIBBgMHBQQAAgEGAwcFBAACAQYDBwUEAAIBBgMHBQQAAgEGAwcFBAACAQYDBwUEAAIBBgMHBQQAAgEGAwcAAQIDBAUGBwuVR5DMDI4tmr8aX0mct2ELlUeQzAyOLZq/Gl9JnLdoAgGcVmu/iAvw2PgDsb/3PSJzx9gUBUWbDTh8PRuGtBm5Ub6dZVcKOSRo+N2Ensiyw7bpzZkpc6GccDS1MxgcA/uY8+OD6MGvvWBddeuzWbrOwrsPcgsIIRY1hQEreAfuT6f85+WjRmmi9HQqDKuqTA5aWI0iFWTi2eqCOsk8khM3f4ssMUNekdGmY+RUEWGM72oo9Yku8C1H7K1uqGfet7Ajd/aXSmIdSXs/8aVEMMCua2ZLnxon/tQyULjW3FUJ+fdSLx6V4NCWQuYEvz5cy9IXALwfW6BfQEHfkxD9ElbM0wbbz//tNn4mqTt2gG19eU6QxoqPjtrhhyCxU8ryTWwCSMVxpHqaJcSUiKxv1YH61wgCV2ECA1IwVgNJTjHBAEAABAAQAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAJXYgEHU0JPWF9MT0EAQAACAAGAgQEAAAAAAAAAAAAAAAACgYMCAAAAAAEAAAAAAAAABAIGBAAAAAABAAAAAAAAAAiEjAgAAAAAAQAAAAAAAAAQiJgQAAAAAAAAAAAAAAAAIBAwIAAAAAABAAAAAAAAAEAgYEAAAAAAAAAAAAAAAACAQMCAAAAAAAAAAAAAAAAAAQGAgQAAAAABAAAAAAAAAAICgYMAAAAAAQAAAAAAAAAEBAIGAAAAAAAAAAAAAAAACAiEjAAAAAABAAAAAAAAABAQiJgAAAAAAQAAAAAAAAAgIBAwAAAAAAAAAAAAAAAAQEAgYAAAAAAAAAAAAAAAAICAQMAAAAAAAAAAAAAAAACBAQGAAAAAAAEAAAAAAAAAgwICgQAAAAABAAAAAAAAAAYEBAIAAAAAAQAAAAAAAACMCAiEAAAAAAAAAAAAAAAAmBAQiAAAAAAAAAAAAAAAADAgIBAAAAAAAQAAAAAAAABgQEAgAAAAAAEAAAAAAAAAwICAQAAAAAAAAAAAAAAAAICBAQEAAAAAAAAAAAAAAACBgwICAAAAAAAAAAAAAAAAAgYEBAAAAAAAAAAAAAAAAISMCAgAAAAAAQAAAAAAAACImBAQAAAAAAEAAAAAAAAAEDAgIAAAAAAAAAAAAAAAACBgQEAAAAAAAQAAAAAAAABAwICAAAAAAAEAAAAAAAAAAAAAAAGAgQEBAAAAAAAAAAAAAAACgYMCAAAAAAAAAAAAAAAABAIGBAEAAAAAAAAAAAAAAAiEjAgBAAAAAAAAAAAAAAAQiJgQAAAAAAAAAAAAAAAAIBAwIAAAAAAAAAAAAAAAAEAgYEABAAAAAAAAAAAAAACAQMCAAAAAAAAAAAAAAAAAAQGAgQEAAAAAAAAAAAAAAAICgYMAAAAAAAAAAAAAAAAEBAIGAQAAAAAAAAAAAAAACAiEjAEAAAAAAAAAAAAAABAQiJgBAAAAAAAAAAAAAAAgIBAwAAAAAAAAAAAAAAAAQEAgYAAAAAAAAAAAAAAAAICAQMABAAAAAAAAAAAAAACBAQGAAQAAAAAAAAAAAAAAgwICgQEAAAAAAAAAAAAAAAYEBAIAAAAAAAAAAAAAAACMCAiEAQAAAAAAAAAAAAAAmBAQiAEAAAAAAAAAAAAAADAgIBAAAAAAAAAAAAAAAABgQEAgAAAAAAAAAAAAAAAAwICAQAEAAAAAAAAAAAAAAICBAQEAAAAAAAAAAAAAAACBgwICAAAAAAAAAAAAAAAAAgYEBAAAAAAAAAAAAAAAAISMCAgAAAAAAAAAAAAAAACImBAQAQAAAAAAAAAAAAAAEDAgIAEAAAAAAAAAAAAAACBgQEABAAAAAAAAAAAAAABAwICAAQAAAAAAAAADVzJhAgNSMVYDUjBWAQFAAAUAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAQGAgQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAICgYMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAEBAIGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAACAiEjAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAQiJgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgIBAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAQEAgYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAICAQMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAACBAQGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAgwICgQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAYEBAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACMCAiEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAmBAQiAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAADAgIBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAABgQEAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAwICAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAICBAQEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACBgwICAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAgYEBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAISMCAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAACImBAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEDAgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAACBgQEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAwICAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAYCBAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAKBgwIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAgYEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAACISMCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABCImBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgEDAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQCBgQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIBAwIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAgIEBAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIGDAgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAACBgQEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAhIwICAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAIiYEBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAQMCAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIGBAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEDAgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAABgIEBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAoGDAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQCBgQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIhIwIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEIiYEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAQMCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAIGBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAgEDAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEBgIEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAoGDAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAABAQCBgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgIhIwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAQEIiYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAICAQMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEBAIGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAgEDAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgQEBgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIMCAoEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGBAQCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAjAgIhAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJgQEIgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwICAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYEBAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAMCAgEAAAAAAAAAAAANXMmICA1IxVgNJTjL5AEAABAAAAAAAAAAAAAAAAQAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAACAAAAAAAQAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAQAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAQAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAQAAAAAAACAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAACAAAAAAAAEAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAQAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAACAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAABAAAAAAAAAAAEAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAIAAAAAAAAAABAAAAAAAAAAAAAAAQAAAAAAAAAAAAAABAAAAAAAAAAACAAAAAAAAAAAAAABAAAAAAAAAAAAAAAIAAAAAAAAAABAAAAAAAAAAAAAAAEAAAAAAAAAAAAAABAAAAAAAAAAAAIAAAAAAAAAAAAAAQAAAAAAAAAAAAAAIAAAAAAAAAAAAQAAAAAAAAAAAAABAAAAAAAAAAAAAABAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAIAAAAAAAAAAAAAAAQAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAQAAAAAAAABAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAEAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAEAAAAAAAAABAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAEAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAQAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAQAAABAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAgAAAEAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAACAAABAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAEAAAEAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAQAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAQAAAAAEAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAACAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAIAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAACAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAQAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAIAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAIAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAIAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAABAAAAAAAAQAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAQAAAAAAABAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAgAAAAAAAEAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAQAAAAAAAAQAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAACAAAAAAABAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAIAAAAAAAAQAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAACAAAAAAAABAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAABAAAQAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAACAABAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAABAAAEAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAIAAQAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAgAAEAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAIAAAQNXM2ECA1IyVgNJTjL5AEAABAAAAQAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAABAAQAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAQAQAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAEAQAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAABAAABAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAEAAAIAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAQAABAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAQAAIAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAQAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAQAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAARAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAABAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAEAAAAAAAIAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAQAAAAAABAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAQAAAAAAIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAABAAAAAABAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAEAAAAAAIAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAQAAAAAAAAEAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAQAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAEAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAQAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAQAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAABAAAAABAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAEAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQNXM2IBB1NCT1hfTE9BAEAAAgABgIEBAAAAAAAAAAAAAAAAAoGDAgAAAAABAAAAAAAAAAQCBgQAAAAAAQAAAAAAAAAIhIwIAAAAAAEAAAAAAAAAEIiYEAAAAAAAAAAAAAAAACAQMCAAAAAAAQAAAAAAAABAIGBAAAAAAAAAAAAAAAAAgEDAgAAAAAAAAAAAAAAAAAEBgIEAAAAAAQAAAAAAAAACAoGDAAAAAAEAAAAAAAAABAQCBgAAAAAAAAAAAAAAAAgIhIwAAAAAAQAAAAAAAAAQEIiYAAAAAAEAAAAAAAAAICAQMAAAAAAAAAAAAAAAAEBAIGAAAAAAAAAAAAAAAACAgEDAAAAAAAAAAAAAAAAAgQEBgAAAAAABAAAAAAAAAIMCAoEAAAAAAQAAAAAAAAAGBAQCAAAAAAEAAAAAAAAAjAgIhAAAAAAAAAAAAAAAAJgQEIgAAAAAAAAAAAAAAAAwICAQAAAAAAEAAAAAAAAAYEBAIAAAAAABAAAAAAAAAMCAgEAAAAAAAAAAAAAAAACAgQEBAAAAAAAAAAAAAAAAgYMCAgAAAAAAAAAAAAAAAAIGBAQAAAAAAAAAAAAAAACEjAgIAAAAAAEAAAAAAAAAiJgQEAAAAAABAAAAAAAAABAwICAAAAAAAAAAAAAAAAAgYEBAAAAAAAEAAAAAAAAAQMCAgAAAAAABAAAAAAAAAAAAAAABgIEBAQAAAAAAAAAAAAAAAoGDAgAAAAAAAAAAAAAAAAQCBgQBAAAAAAAAAAAAAAAIhIwIAQAAAAAAAAAAAAAAEIiYEAAAAAAAAAAAAAAAACAQMCAAAAAAAAAAAAAAAABAIGBAAQAAAAAAAAAAAAAAgEDAgAAAAAAAAAAAAAAAAAEBgIEBAAAAAAAAAAAAAAACAoGDAAAAAAAAAAAAAAAABAQCBgEAAAAAAAAAAAAAAAgIhIwBAAAAAAAAAAAAAAAQEIiYAQAAAAAAAAAAAAAAICAQMAAAAAAAAAAAAAAAAEBAIGAAAAAAAAAAAAAAAACAgEDAAQAAAAAAAAAAAAAAgQEBgAEAAAAAAAAAAAAAAIMCAoEBAAAAAAAAAAAAAAAGBAQCAAAAAAAAAAAAAAAAjAgIhAEAAAAAAAAAAAAAAJgQEIgBAAAAAAAAAAAAAAAwICAQAAAAAAAAAAAAAAAAYEBAIAAAAAAAAAAAAAAAAMCAgEABAAAAAAAAAAAAAACAgQEBAAAAAAAAAAAAAAAAgYMCAgAAAAAAAAAAAAAAAAIGBAQAAAAAAAAAAAAAAACEjAgIAAAAAAAAAAAAAAAAiJgQEAEAAAAAAAAAAAAAABAwICABAAAAAAAAAAAAAAAgYEBAAQAAAAAAAAAAAAAAQMCAgAEAAAAAAAAAA1c0YQIDUjNWA1IyVgEBIAAFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEBgIEAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAoGDAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAQCBgAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgIhIwAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQEIiYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAICAQMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEBAIGAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAgEDAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgQEBgAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIMCAoEAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGBAQCAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAjAgIhAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJgQEIgAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwICAQAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYEBAIAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMCAgEAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAgQEBAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgYMCAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIGBAQAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACEjAgIAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAiJgQEAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAwICAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgYEBAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQMCAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGAgQEAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACgYMCAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAIGBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAiEjAgAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQiJgQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIBAwIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAgYEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAQMCAAAAAAAAAAAAAAAAAA1c0YgIDUjNWA1IyVgEBIAAFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAgQEBAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgYMCAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIGBAQBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACEjAgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAiJgQEAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAwICABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgYEBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQMCAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGAgQEBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACgYMCAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAIGBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAiEjAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQiJgQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIBAwIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAgYEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAQMCAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQGAgQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAICgYMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEBAIGAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAiEjAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAQiJgBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgIBAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQEAgYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAICAQMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACBAQGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgwICgQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYEBAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACMCAiEAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAmBAQiAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAgIBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABgQEAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwICAQAEAAAAAAAAAB2hpOF9sb1YHaGk4X2xvVgdSMVYrUjBWB1IxVitJTjIHUjNWK1IyVgdSM1YrUjJWCgwRFQsNEhYIDhMXCQ8QFCosMTUrLTI2KC4zNykvMDQFBAACAQYDBwUEAAIBBgMHBQQAAgEGAwcFBAACAQYDBwUEAAIBBgMHBQQAAgEGAwcFBAACAQYDBwUEAAIBBgMHBQQAAgEGAwcFBAACAQYDBwUEAAIBBgMHBQQAAgEGAwcFBAACAQYDBwUEAAIBBgMHBQQAAgEGAwcFBAACAQYDBwUEAAIBBgMHBQQAAgEGAwcFBAACAQYDBwUEAAIBBgMHBQQAAgEGAwcFBAACAQYDBwUEAAIBBgMHBQQAAgEGAwcFBAACAQYDBwUEAAIBBgMHBQQAAgEGAwcFBAACAQYDBwUEAAIBBgMHBQQAAgEGAwcFBAACAQYDBwABAgMEBQYHxftlptCu1ZA85tCC5I9bN8X7ZabQrtWQPObQguSPW3MDAbqgOhqVQOFpVLeaOq99/QKXKCTax1guGJY0SPPXY959HQ/Kcb3/38shKwq/8Bbp+W6rZmeuoof0GlaM/WIMMP5gcnkCiEk+U/iyjYuEmycTazZvz/oHI/aDdn5EToBQwEcZQtvtZTJt0NJcmeJAwwjJ1fLCvNxhWpDovns6mjf8O08eaoWBgqo4KQQb3a2gJaOkd7FG4xWOAFSctTHBfCxwQZMFH/dVuQnWul/YpazZsyYqUeRoQ3jUaanMp3XE4LuoitHsiZ7vjxBdxnRLM+dkLRcSoeEvTerrEQ2vAT3myFkiIM6w5bcGSnM1TPFFFJ+2fwsD7pG4bA5XtJI5lM0c9cXTnftSP3pePKaVhphbCAJXYQIDUjBWA0lOMcEAQAAEAAEAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAldiAQdTQk9YX0xPQQBAAAIAAAAAAAGBAYABAAAAAAAAAAAAAAACgwKBAAAAAAAAAAAAAAAABAYEAgEAAAAAAAAAAAAAAAiMCIQBAAAAAAAAAAAAAAAQmBCIAAAAAAAAAAAAAAAAIDAgEAAAAAAAAAAAAAAAAEBgQCAAAAAAAAAAAAAAAACAwIBAAAAAAAAAAAAAAAAAAYCBAQAAAAAAAAAAAAAAAAKBgwIAAAAAAAAAAAAAAAAEAgYEAQAAAAAAAAAAAAAACISMCAEAAAAAAAAAAAAAABCImBAAAAAAAAAAAAAAAAAgEDAgAAAAAAAAAAAAAAAAQCBgQAAAAAAAAAAAAAAAAIBAwIABAAAAAAAAAAAAAACBAYABAQAAAAAAAAAAAAAAgwKBAgEAAAAAAAAAAAAAAAYEAgQAAAAAAAAAAAAAAACMCIQIAQAAAAAAAAAAAAAAmBCIEAEAAAAAAAAAAAAAADAgECAAAAAAAAAAAAAAAABgQCBAAQAAAAAAAAAAAAAAwIBAgAEAAAAAAAAAAAAAAIABAYEBAAAAAAAAAAAAAACBAgKDAAAAAAAAAAAAAAAAAgQEBgAAAAAAAAAAAAAAAIQICIwAAAAAAAAAAAAAAACIEBCYAAAAAAAAAAAAAAAAECAgMAEAAAAAAAAAAAAAACBAQGABAAAAAAAAAAAAAABAgIDAAQAAAAAAAAABgAGBAAAAAAAAAAAAAAAAAoECgwAAAAABAAAAAAAAAAQCBAYAAAAAAAAAAAAAAAAIhAiMAAAAAAEAAAAAAAAAEIgQmAAAAAABAAAAAAAAACAQIDAAAAAAAQAAAAAAAABAIEBgAAAAAAAAAAAAAAAAgECAwAAAAAAAAAAAAAAAAAEBgYAAAAAAAAAAAAAAAAACAoOBAAAAAAEAAAAAAAAABAQGAgAAAAAAAAAAAAAAAAgIjIQAAAAAAQAAAAAAAAAQEJiIAAAAAAAAAAAAAAAAICAwEAAAAAABAAAAAAAAAEBAYCAAAAAAAAAAAAAAAACAgMBAAAAAAAEAAAAAAAAAgQGAAQAAAAABAAAAAAAAAIMCgQIAAAAAAQAAAAAAAAAGBAIEAAAAAAAAAAAAAAAAjAiECAAAAAAAAAAAAAAAAJgQiBAAAAAAAQAAAAAAAAAwIBAgAAAAAAEAAAAAAAAAYEAgQAAAAAABAAAAAAAAAMCAQIAAAAAAAAAAAAAAAACAgQEBAAAAAAEAAAAAAAAAgYMCAgAAAAAAAAAAAAAAAAIGBAQAAAAAAAAAAAAAAACEjAgIAAAAAAEAAAAAAAAAiJgQEAAAAAAAAAAAAAAAABAwICAAAAAAAQAAAAAAAAAgYEBAAAAAAAEAAAAAAAAAQMCAgAAAAAAAAAAAAAAAAANXMmECA1IxVgNSMFYBAUAABQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAYGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAgKDgQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQEBgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAICIyEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAEBCYiAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAACAgMBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAABAQGAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgIDAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIEBgAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACDAoECAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAABgQCBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAIwIhAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAACYEIgQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAMCAQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGBAIEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAADAgECAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgIEBAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIGDAgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACBgQEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAhIwICAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIiYEBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAQMCAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAIGBAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAEDAgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABgAGBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAoECgwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQCBAYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIhAiMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEIgQmAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAQIDAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAABAIEBgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgECAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAgQEBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAgYMCAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAIGBAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAACEjAgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAiJgQEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAwICAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgYEBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQMCAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGAAYEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAACgQKDAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAABAIEBgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAiECIwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAQiBCYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIBAgMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAgQGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAACAQIDAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAQGBgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAICg4EAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAEBAYCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAACAiMhAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAQmIgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAgIDAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQEBgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAICAwEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAACBAYABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgwKBAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAYEAgQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACMCIQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAmBCIEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAgECAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABgQCBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAwIBAgAAAAAAAAAAAA1cyYgIDUjFWA0lOMvkAQAAEAAAAAAAAAAAAAAAAAQAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAABAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAQAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAABAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAQAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAQAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAQAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAIAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAQAAAAAAAAAAAAQAAAAAAAAAAAAAAQAAAAAAAAAAAAACAAAAAAAAAAAAEAAAAAAAAAAAAAABAAAAAAAAAAAAAAQAAAAAAAAAAAAIAAAAAAAAAAAAAAEAAAAAAAAAAAAACAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAgAAAAAAAAAAAAABAAAAAAAAAAAAACAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAACAAAAAAAAAAAAAAAQAAAAAAAAAAAACAAAAAAAAAAAAAgAAAAAAAAAAAAAABAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAQAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAgAAAAAAAABAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAQAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAABAAAAEAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAABAAAABAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAQAAAQAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAIAAAAEAAAAAAAAAAAAAAAABAAAAAAQAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAIAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAIAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAIAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAgAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAIAAAAAABAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAABAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAQAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAEAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAEAAAAAAAAAAAABAAAAAAAAAAAAAAAAAEAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAEAAAAAAABAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAABAAAAAAAAEAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAQAAAAAAAQAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAIAAAAAAAAEAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAQAAQAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAEAABAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAgABAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAABAAEAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAgAABA1czYQIDUjJWA0lOMvkAQAAEAAABAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAEABAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAABABAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAQAAAAIAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAEAAAAIAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAQAAABAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAABAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAQAAAIAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAABAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAQAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAABAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAQAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAABAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAEAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgEgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACABgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAEAAAAAAAAAAQAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAQAAAAAAAAACAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAABAAAAAAAAAAQAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAACAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAQAAAAAAAAAQAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAEAAAAAAAAAQAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAQAAAAAAAACAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAABAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAABAAAAAAAIAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAABAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAEAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAABAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAQAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAABAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAEAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAQAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABA1czYgEHU0JPWF9MT0EAQAACAAAAAAABgQGAAQAAAAAAAAAAAAAAAoMCgQAAAAAAAAAAAAAAAAQGBAIBAAAAAAAAAAAAAAAIjAiEAQAAAAAAAAAAAAAAEJgQiAAAAAAAAAAAAAAAACAwIBAAAAAAAAAAAAAAAABAYEAgAAAAAAAAAAAAAAAAgMCAQAAAAAAAAAAAAAAAAAGAgQEAAAAAAAAAAAAAAAACgYMCAAAAAAAAAAAAAAAABAIGBAEAAAAAAAAAAAAAAAiEjAgBAAAAAAAAAAAAAAAQiJgQAAAAAAAAAAAAAAAAIBAwIAAAAAAAAAAAAAAAAEAgYEAAAAAAAAAAAAAAAACAQMCAAQAAAAAAAAAAAAAAgQGAAQEAAAAAAAAAAAAAAIMCgQIBAAAAAAAAAAAAAAAGBAIEAAAAAAAAAAAAAAAAjAiECAEAAAAAAAAAAAAAAJgQiBABAAAAAAAAAAAAAAAwIBAgAAAAAAAAAAAAAAAAYEAgQAEAAAAAAAAAAAAAAMCAQIABAAAAAAAAAAAAAACAAQGBAQAAAAAAAAAAAAAAgQICgwAAAAAAAAAAAAAAAAIEBAYAAAAAAAAAAAAAAACECAiMAAAAAAAAAAAAAAAAiBAQmAAAAAAAAAAAAAAAABAgIDABAAAAAAAAAAAAAAAgQEBgAQAAAAAAAAAAAAAAQICAwAEAAAAAAAAAAYABgQAAAAAAAAAAAAAAAAKBAoMAAAAAAQAAAAAAAAAEAgQGAAAAAAAAAAAAAAAACIQIjAAAAAABAAAAAAAAABCIEJgAAAAAAQAAAAAAAAAgECAwAAAAAAEAAAAAAAAAQCBAYAAAAAAAAAAAAAAAAIBAgMAAAAAAAAAAAAAAAAABAYGAAAAAAAAAAAAAAAAAAgKDgQAAAAABAAAAAAAAAAQEBgIAAAAAAAAAAAAAAAAICIyEAAAAAAEAAAAAAAAAEBCYiAAAAAAAAAAAAAAAACAgMBAAAAAAAQAAAAAAAABAQGAgAAAAAAAAAAAAAAAAgIDAQAAAAAABAAAAAAAAAIEBgAEAAAAAAQAAAAAAAACDAoECAAAAAAEAAAAAAAAABgQCBAAAAAAAAAAAAAAAAIwIhAgAAAAAAAAAAAAAAACYEIgQAAAAAAEAAAAAAAAAMCAQIAAAAAABAAAAAAAAAGBAIEAAAAAAAQAAAAAAAADAgECAAAAAAAAAAAAAAAAAgIEBAQAAAAABAAAAAAAAAIGDAgIAAAAAAAAAAAAAAAACBgQEAAAAAAAAAAAAAAAAhIwICAAAAAABAAAAAAAAAIiYEBAAAAAAAAAAAAAAAAAQMCAgAAAAAAEAAAAAAAAAIGBAQAAAAAABAAAAAAAAAEDAgIAAAAAAAAAAAAAAAAADVzRhAQNSMlaBACAAAwAAAAAAAAAAAAEBgYAAAAAAAAAAAAAAAAAAAAAAAAAAAAICg4EAAAAAAQAAAAAAAAAAAAAAAAAAAAQEBgIAAAAAAAAAAAAAAAAAAAAAAAAAAAgIjIQAAAAAAAAAAAAAAAAAAAAAAAAAABAQmIgAAAAAAQAAAAAAAAAAAAAAAAAAACAgMBAAAAAAAQAAAAAAAAAAAAAAAAAAAEBAYCAAAAAAAQAAAAAAAAAAAAAAAAAAAICAwEAAAAAAAAAAAAAAAAAAAAAAAAAAAIEBgAEAAAAAAAAAAAAAAAAAAAAAAAAAAIMCgQIAAAAAAAAAAAAAAAAAAAAAAAAAAAYEAgQAAAAAAQAAAAAAAAAAAAAAAAAAAIwIhAgAAAAAAQAAAAAAAAAAAAAAAAAAAJgQiBAAAAAAAQAAAAAAAAAAAAAAAAAAADAgECAAAAAAAQAAAAAAAAAAAAAAAAAAAGBAIEAAAAAAAAAAAAAAAAAAAAAAAAAAAMCAQIAAAAAAAQAAAAAAAAAAAAAAAAAAAICBAQEAAAAAAAAAAAAAAAAAAAAAAAAAAIGDAgIAAAAAAAAAAAAAAAAAAAAAAAAAAAIGBAQAAAAAAAAAAAAAAAAAAAAAAAAAAISMCAgAAAAAAAAAAAAAAAAAAAAAAAAAAIiYEBAAAAAAAAAAAAAAAAAAAAAAAAAAABAwICAAAAAAAQAAAAAAAAAAAAAAAAAAACBgQEAAAAAAAQAAAAAAAAAAAAAAAAAAAEDAgIAAAAAAAQAAAAAAAAAAAAAAAAAAAAGAAYEAAAAAAAAAAAAAAAAAAAAAAAAAAAKBAoMAAAAAAAAAAAAAAAAAAAAAAAAAAAQCBAYAAAAAAAAAAAAAAAAAAAAAAAAAAAiECIwAAAAAAAAAAAAAAAAAAAAAAAAAABCIEJgAAAAAAAAAAAAAAAAAAAAAAAAAACAQIDAAAAAAAAAAAAAAAAAAAAAAAAAAAEAgQGAAAAAAAQAAAAAAAAAAAAAAAAAAAIBAgMAAAAAAAAAAAAAAAAADVzRiAQNSMlaBACAAAwAAAAAAAAAAAAAAAACAgQEBAAAAAAAAAAAAAAAAAAAAAAAAAACBgwICAQAAAAAAAAAAAAAAAAAAAAAAAAACBgQEAQAAAAAAAAAAAAAAAAAAAAAAAACEjAgIAQAAAAAAAAAAAAAAAAAAAAAAAACImBAQAAAAAAAAAAAAAAAAAAAAAAAAAAAQMCAgAAAAAAAAAAAAAAAAAAAAAAAAAAAgYEBAAAAAAAAAAAAAAAAAAAAAAAAAAABAwICAAAAAAAAAAAAAAAAAAAAAAAAAAAABgAGBAAAAAAAAAAAAAAAAAAAAAAAAAAACgQKDAQAAAAAAAAAAAAAAAAAAAAAAAAAEAgQGAQAAAAAAAAAAAAAAAAAAAAAAAAAIhAiMAQAAAAAAAAAAAAAAAAAAAAAAAAAQiBCYAQAAAAAAAAAAAAAAAAAAAAAAAAAgECAwAAAAAAAAAAAAAAAAAAAAAAAAAABAIEBgAAAAAAAAAAAAAAAAAAAAAAAAAACAQIDAAQAAAAAAAAAAAAAAAAAAAAAAAAABAYGAAQAAAAAAAAAAAAAAAAAAAAAAAAACAoOBAQAAAAAAAAAAAAAAAAAAAAAAAAAEBAYCAQAAAAAAAAAAAAAAAAAAAAAAAAAICIyEAQAAAAAAAAAAAAAAAAAAAAAAAAAQEJiIAAAAAAAAAAAAAAAAAAAAAAAAAAAgIDAQAQAAAAAAAAAAAAAAAAAAAAAAAABAQGAgAAAAAAAAAAAAAAAAAAAAAAAAAACAgMBAAAAAAAAAAAAAAAAAAAAAAAAAAACBAYABAQAAAAAAAAAAAAAAAAAAAAAAAACDAoECAAAAAAAAAAAAAAAAAAAAAAAAAAAGBAIEAQAAAAAAAAAAAAAAAAAAAAAAAACMCIQIAAAAAAAAAAAAAAAAAAAAAAAAAACYEIgQAQAAAAAAAAAAAAAAAAAAAAAAAAAwIBAgAAAAAAAAAAAAAAAAAAAAAAAAAABgQCBAAAAAAAAAAAAAAAAAAAAAAAAAAADAgECAAQAAAAAAAAAHaGk4X2xvVgdoaThfbG9WB1IxVitSMFYHUjFWK0lOMgNSMlYDUjJWCwwRFwoNExUIDxIWCQ4QFCssMTcqLTM1KC8yNikuMDQFBAACAQYDBwUEAAIBBgMHBQQAAgEGAwcFBAACAQYDBwUEAAIBBgMHBQQAAgEGAwcFBAACAQYDBwUEAAIBBgMHBQQAAgEGAwcFBAACAQYDBwUEAAIBBgMHBQQAAgEGAwcFBAACAQYDBwUEAAIBBgMHBQQAAgEGAwcFBAACAQYDBwUEAAIBBgMHBQQAAgEGAwcFBAACAQYDBwUEAAIBBgMHBQQAAgEGAwcFBAACAQYDBwUEAAIBBgMHBQQAAgEGAwcFBAACAQYDBwUEAAIBBgMHBQQAAgEGAwcFBAACAQYDBwUEAAIBBgMHBQQAAgEGAwcFBAACAQYDBwABAgMEBQYHCpBf9TrDFqumc1HIgsUjFQqQX/U6wxarpnNRyILFIyM="
+
+
+def _hg_dir_s32(x):
+    return ((int(x) + 0x80000000) % 0x100000000) - 0x80000000
+
+
+def _hg_dir_tagv(out, field, value):
+    _v5n_varint(out, field << 3)
+    _v5n_varint(out, value)
+
+
+def _hg_dir_tags(out, field, s):
+    _v5n_tagb(out, field, _v5n_utf8(s))
+
+
+def _hg_dir_tagf32(out, field, b4):
+    _v5n_varint(out, (field << 3) | 5)
+    out.extend(list(b4)[:4])
+
+
+def _hg_dir_popcount64(x):
+    x &= _V5N_MASK64
+    return _v5n_popcount32(x & _V5N_MASK32) + _v5n_popcount32((x >> 32) & _V5N_MASK32)
+
+
+def _hg_dir_bitrev8(x):
+    r = 0
+    for i in range(8):
+        if x & (1 << i):
+            r |= 1 << (7 - i)
+    return r
+
+
+def _hg_dir_broken_rc4(key, n):
+    # JS brokenRC4：KSA 里是 S[i] = S[j]（单向拷贝，不是交换），照原样移植。
+    s = list(range(256))
+    j = 0
+    for i in range(256):
+        j = (j + s[i] + key[i & 7]) & 0xFF
+        s[i] = s[j]
+    i2 = 0
+    j2 = 0
+    out = []
+    for _ in range(n):
+        i2 = (i2 + 1) & 0xFF
+        j2 = (j2 + s[i2]) & 0xFF
+        t = s[j2]
+        s[i2] = t
+        out.append(s[(s[i2] + t) & 0xFF] & 0xFF)
+    return out
+
+
+def _hg_dir_xgorgon(query, ts, body=None, rand16=None):
+    r16 = int(rand16) if rand16 is not None else random.randint(0, 0xFFFF)
+    body_md5 = _v5n_md5(body)[:4] if body else [0, 0, 0, 0]
+    q = _v5n_md5(_v5n_utf8(query))[:4] + body_md5 + [0, 0, 0, 0, 0, 3, 0xA, 0x4] + _v5n_u32be(ts & _V5N_MASK32)
+    key = [0x4A, 0x44, 0x16, r16 & 0xFF, 0x47, 0x6C, 0x81, (r16 >> 8) & 0xFF]
+    ks = _hg_dir_broken_rc4(key, 20)
+    x = [q[i] ^ ks[i] for i in range(20)]
+    for i in range(20):
+        x[i] = ((x[i] & 0xF) << 4) | ((x[i] >> 4) & 0xF)
+        c = x[i] ^ x[(i + 1) % 20]
+        x[i] = (0x14 ^ (~_hg_dir_bitrev8(c))) & 0xFF
+    return _v5n_bytes2hex([0x84, 0x4, (r16 >> 8) & 0xFF, r16 & 0xFF, 0x44, 0x81] + x)
+
+
+def _hg_dir_xargus(ts):
+    return _v5n_bytes2b64(_v5n_u32le(ts & _V5N_MASK32))
+
+
+_hg_dir_medusa_tabs_cache = None
+
+
+def _hg_dir_medusa_tabs():
+    global _hg_dir_medusa_tabs_cache
+    if _hg_dir_medusa_tabs_cache is not None:
+        return _hg_dir_medusa_tabs_cache
+    raw = _v5n_b642bytes(_HG_DIR_MEDUSA_TABLES_B64)
+    pos = [10]
+
+    def u8():
+        v = raw[pos[0]]
+        pos[0] += 1
+        return v
+
+    def u16le():
+        v = raw[pos[0]] | (raw[pos[0] + 1] << 8)
+        pos[0] += 2
+        return v
+
+    def take(n):
+        v = raw[pos[0]:pos[0] + n]
+        pos[0] += n
+        return list(v)
+
+    def read_str():
+        return bytes(take(u8())).decode("utf-8")
+
+    count = u16le()
+    tabs = [None] * 4
+    for _ in range(count):
+        tid = u8()
+        half = u8() == 1
+        base = take(16)
+        sbox = take(256)
+        nmat = u8()
+        mat = {}
+        for _ in range(nmat):
+            name = read_str()
+            nparts = u8()
+            parts = [read_str() for _ in range(nparts)]
+            rows = u16le()
+            cols = u16le()
+            words = u16le()
+            bits = []
+            for _ in range(cols):
+                row = []
+                for _ in range(words):
+                    row.append(_v5n_rdle64(raw, pos[0]))
+                    pos[0] += 8
+                bits.append(row)
+            mat[name] = {"name": name, "parts": parts, "rows": rows, "cols": cols, "words": words, "bits": bits}
+        r1_rest = read_str()
+        r3_rest = read_str()
+        for _ in range(4):
+            read_str()
+        out_src = []
+        out_p = []
+        out_m = []
+        if half:
+            out_src = take(32)
+            blob = take(256)
+            for i in range(32):
+                out_p.append(blob[i * 8:(i + 1) * 8])
+            out_m = take(32)
+        tabs[tid] = {"id": tid, "half": half, "base": base, "sbox": sbox, "mat": mat,
+                     "r1Rest": r1_rest, "r3Rest": r3_rest,
+                     "outSrc": out_src, "outP": out_p, "outM": out_m}
+    _hg_dir_medusa_tabs_cache = tabs
+    return tabs
+
+
+def _hg_dir_apply_mat(mat, parts):
+    flat = []
+    for p in parts:
+        flat.extend(p)
+    flat.append(1)
+    flat.extend([0] * (mat["words"] * 8))
+    words = [_v5n_rdle64(flat, w * 8) for w in range(mat["words"])]
+    out = [0] * ((mat["cols"] + 7) >> 3)
+    for c in range(mat["cols"]):
+        acc = 0
+        row = mat["bits"][c]
+        for k in range(len(row)):
+            acc ^= _hg_dir_popcount64(words[k] & row[k])
+        if acc & 1:
+            out[c >> 3] |= 1 << (c & 7)
+    return out
+
+
+def _hg_dir_medusa_transform32(arr, idx):
+    tab = _hg_dir_medusa_tabs()[idx]
+    sbox = tab["sbox"]
+
+    def bitperm(b):
+        r = 0
+        for j in range(8):
+            if b & (1 << j):
+                r |= 1 << _HG_DIR_BIT_PERM[j]
+        return r
+
+    def sbox_map(a):
+        return [sbox[x] for x in a]
+
+    def in1(a):
+        return [a[i] for i in _HG_DIR_IN1_IDX]
+
+    def in2(a):
+        return a[0x10:0x1F]
+
+    def gather(src, posi, const, perm):
+        v = src[posi] if posi < len(src) else 0
+        r = 0
+        for j in range(8):
+            if v & (1 << perm[j]):
+                r |= 1 << j
+        return r ^ const
+
+    base = list(tab["base"][0:16])
+    for (si, di) in _HG_DIR_R0_WIRE:
+        base[di] ^= bitperm(arr[si])
+    r0 = sbox_map(base)
+    if not tab["half"]:
+        w1 = sbox_map(_hg_dir_apply_mat(tab["mat"]["W1"], [r0, in1(arr)]))
+        w2 = sbox_map(_hg_dir_apply_mat(tab["mat"]["W2"], [w1, in2(arr)]))
+        w3 = sbox_map(_hg_dir_apply_mat(tab["mat"]["W3"], [w2, in2(arr)]))
+        w4 = sbox_map(_hg_dir_apply_mat(tab["mat"]["W4"], [w3]))
+        seq = [None, w1, w2, w3, w4]
+        out = []
+        for (t, posi, c, _flag) in _HG_DIR_OUT_LO:
+            out.append(gather(seq[t], posi, c, _HG_DIR_BIT_PERM))
+        for (t, posi, c, flag) in _HG_DIR_OUT_HI:
+            out.append(gather(seq[t], posi, c, _HG_DIR_IDENT_PERM if flag else _HG_DIR_BIT_PERM))
+        return out
+
+    def pick(mat, r1=None, r2=None, r3=None, sbox_lo=None):
+        parts = []
+        for p in mat["parts"]:
+            if p == "R0V":
+                parts.append(r0)
+            elif p == "R1V":
+                parts.append(r1 if r1 is not None else [])
+            elif p == "R2V":
+                parts.append(r2 if r2 is not None else [])
+            elif p == "R3V":
+                parts.append(r3 if r3 is not None else [])
+            elif p == "IN1":
+                parts.append(in1(arr))
+            elif p == "IN2":
+                parts.append(in2(arr))
+            elif p == "SBOX_LO":
+                parts.append(sbox_lo if sbox_lo is not None else [])
+            else:
+                parts.append([])
+        return _hg_dir_apply_mat(mat, parts)
+
+    d1 = pick(tab["mat"]["Wa"])
+    r1 = d1 + pick(tab["mat"]["Wb"], sbox_lo=sbox_map(d1))
+    if tab["r1Rest"] == "tab1_split":
+        r1 = r1 + pick(tab["mat"]["Wc"])
+    s1 = sbox_map(r1)
+    if "W2a" in tab["mat"]:
+        w2 = pick(tab["mat"]["W2a"], s1) + pick(tab["mat"]["W2b"], s1)
+    else:
+        w2 = pick(tab["mat"]["W2"], s1)
+    s2 = sbox_map(w2)
+    w3a = pick(tab["mat"]["W3a"], s1, s2)
+    w3 = w3a + pick(tab["mat"]["W3b"], s1, s2, sbox_lo=sbox_map(w3a))
+    if tab["r3Rest"] == "tab1_split":
+        w3 = w3 + pick(tab["mat"]["W3c"], s1, s2)
+    s3 = sbox_map(w3)
+    w4 = sbox_map(pick(tab["mat"]["W4a"], s1, s2, s3) + pick(tab["mat"]["W4b"], s1, s2, s3))
+    allb = s1 + s2 + s3 + w4
+    return [gather(allb, tab["outSrc"][i], tab["outM"][i], tab["outP"][i]) for i in range(32)]
+
+
+def _hg_dir_build_plain_pb(url, ts, entropy):
+    k = (int(ts) ^ 0x4) & _V5N_MASK32
+    c1 = 0x1530BE
+    c2 = 0x1E847D
+    a = (2 * k) & _V5N_MASK32
+    b = (2 * k - c1) & _V5N_MASK32
+    query = url.split("?", 1)[1] if "?" in url else ""
+    qh = _v5n_sm3(_v5n_utf8(query))[0:6]
+    head = list(_HG_DIR_HEAD_C)
+    for i in (0, 4, 8, 12):
+        head[i] ^= 0x4
+    sub1 = []
+    _hg_dir_tagv(sub1, 0x1, 0x2)
+    for f in range(0x2, 0x6):
+        _hg_dir_tagv(sub1, f, c1)
+    sub2 = []
+    _hg_dir_tagv(sub2, 0x1, 0x2)
+    _hg_dir_tags(sub2, 0x3, "3019")
+    _hg_dir_tags(sub2, 0x5, "!notset!")
+    _hg_dir_tags(sub2, 0x6, "!notset!")
+    for f in range(0x7, 0xB):
+        _hg_dir_tagv(sub2, f, c2)
+    _hg_dir_tags(sub2, 0xB, "!notset!")
+    _hg_dir_tags(sub2, 0xC, "!notset!")
+    _hg_dir_tags(sub2, 0xD, "!notset!")
+    _hg_dir_tagv(sub2, 0xE, c2)
+    _hg_dir_tags(sub2, 0xF, "!notset!")
+    for f in range(0x10, 0x16):
+        _hg_dir_tagf32(sub2, f, [0xF0, 0x23, 0x74, 0xC9])
+    _hg_dir_tags(sub2, 0x16, "!notset!")
+    for f in (0x17, 0x18, 0x19, 0x1B):
+        _hg_dir_tagv(sub2, f, c2)
+    _hg_dir_tagv(sub2, 0x1C, 0x3411225C2E4)
+    _hg_dir_tagv(sub2, 0x1D, c2)
+    for f in range(0x1E, 0x26):
+        _hg_dir_tags(sub2, f, "!notset!")
+    _hg_dir_tagv(sub2, 0x26, c2)
+    _hg_dir_tagv(sub2, 0x28, 0x3411225B49C)
+    sub3 = []
+    _hg_dir_tagv(sub3, 0x1, b)
+    _hg_dir_tagv(sub3, 0x2, c1)
+    _hg_dir_tagv(sub3, 0x3, c1)
+    _hg_dir_tagv(sub3, 0x7, 0x2FB8)
+    _v5n_tagb(sub3, 0xC, sub2)
+    _v5n_tagb(sub3, 0xD, [])
+    _hg_dir_tags(sub3, 0xE, "!notset!")
+    _hg_dir_tagv(sub3, 0xF, 0x2FB8)
+    _hg_dir_tagv(sub3, 0x12, 0x138D8DB2A)
+    _hg_dir_tagv(sub3, 0x13, 0xD544221A)
+    _hg_dir_tagv(sub3, 0x14, 0xF127353A)
+    _hg_dir_tagv(sub3, 0x16, c1)
+    pb = []
+    _v5n_tagb(pb, 0x1, head)
+    _hg_dir_tagv(pb, 0x2, 0x8)
+    _hg_dir_tagv(pb, 0x3, 0x1E10D5D4)
+    _hg_dir_tags(pb, 0x4, "3019")
+    _hg_dir_tags(pb, 0x6, "1611921764")
+    _hg_dir_tags(pb, 0x7, "6.8.1.32")
+    _hg_dir_tags(pb, 0x8, "v04.07.01-ml-android")
+    _hg_dir_tagv(pb, 0x9, 0x80E0200)
+    _v5n_tagb(pb, 0xA, [0, 0, 0, 0, 0, 0, 0, 0])
+    _hg_dir_tagv(pb, 0xC, a)
+    _v5n_tagb(pb, 0xD, list(entropy))
+    _v5n_tagb(pb, 0xE, qh)
+    _v5n_tagb(pb, 0xF, sub1)
+    _hg_dir_tags(pb, 0x14, "none")
+    _hg_dir_tagv(pb, 0x15, 0x2E2)
+    _v5n_tagb(pb, 0x17, sub3)
+    _hg_dir_tags(pb, 0x18, '{"cmr":16777216,"cmr2":16777216,"un_h":0,"vpn":0,"kd":694367,"fkd":2980190854,"pd":539550637,"dyn":"","do":0,"tk":true}')
+    mid = (int(entropy[0]) & 0x3F | (qh[0] & 0x3F) << 6) & 0xFFFF
+    return pb, mid
+
+
+def _hg_dir_mint_medusa(ts, url, entropy):
+    ts_u = int(ts) & _V5N_MASK32
+    seed = (ts_u ^ 0x4) & _V5N_MASK32
+    cur = seed if seed != 0 else 1
+    tab = [0] * 31
+    tab[0] = cur
+    for i in range(1, 31):
+        q, r = divmod(cur, 127773)
+        v = _hg_dir_s32(0x41A7 * r - 0xB14 * q)
+        if v < 0:
+            v = _hg_dir_s32(v + 0x7FFFFFFF)
+        cur = v & _V5N_MASK32
+        tab[i] = cur
+    i3 = [3]
+    i0 = [0]
+
+    def step():
+        s = (tab[i3[0]] + tab[i0[0]]) & _V5N_MASK32
+        tab[i3[0]] = s
+        i3[0] = (i3[0] + 1) % 31
+        i0[0] = (i0[0] + 1) % 31
+        return (s >> 1) & 0x7FFFFFFF
+
+    for _ in range(0x136):
+        step()
+    draws = [step() for _ in range(7)]
+    r5 = _v5n_u32le(draws[5])
+    r6 = draws[6]
+    pb, mid = _hg_dir_build_plain_pb(url, int(ts), entropy)
+    h = _v5n_sm3(list(_HG_DIR_KS_SEED) + r5[0:4] + list(_HG_DIR_KS_SEED))
+    n = len(pb)
+    out = [0x20] * n
+    for i in range(n):
+        p = pb[i]
+        k1 = h[(i << 2) % 0x20]
+        k2 = h[((i << 2) | 1) % 0x20]
+        t = ((p >> 4) | (p << 4)) & _V5N_MASK32
+        u = (~(((t + k1) & _V5N_MASK32) ^ k2)) & _V5N_MASK32
+        v = (((u << 3) & 0xFFFFFFF8) | ((u >> 5) & 0x7)) & _V5N_MASK32
+        out[n - 1 - i] = (~(k1 ^ ((v + k2) & _V5N_MASK32))) & 0xFF
+    last = out[n - 1]
+    second = out[n - 2]
+    out[0] = (out[0] + ((~(last ^ second)) & 0xFF)) & 0xFF
+    out[1] = ((out[0] ^ last ^ 0xFE) + out[1]) & 0xFF
+    for i in range(2, n - 1):
+        r = (((out[i - 1] >> 5) & 0x7) | (out[i - 1] << 3)) & 0xFF
+        out[i] = (out[i] + ((~(out[i - 2] ^ r ^ i)) & 0xFF)) & 0xFF
+    out[n - 1] ^= out[n - 2]
+    s = 0
+    for i in range(1, n):
+        s += out[i]
+    out[0] = ((out[0] ^ out[1]) + (s & 0xFF)) & 0xFF
+    inner = (((r5[2] << 0xB) | r5[3]) ^ r5[2] ^ (r5[2] >> 5)) & _V5N_MASK32
+    mask = _v5n_u32be((~inner) & _V5N_MASK32)
+    buf = [0] * 8 + out
+    xored = [mask[i % 4] ^ buf[len(buf) - 1 - i] for i in range(len(buf))]
+    body = [0xA6] + _v5n_u32le(r6) + [0x1, mid & 0xFF, (mid >> 8) & 0xFF, 0x18] + xored + [r5[2], r5[3]]
+    bits32 = [0] * 32
+    for t in range(31):
+        acc = 0
+        for j in range(8):
+            idx = 8 * t + j
+            acc |= ((body[idx] >> _HG_DIR_M_LANE[idx % 8]) & 1) << j
+        bits32[t] = acc
+    transformed = _hg_dir_medusa_transform32(bits32, ts_u & 0x3)
+    out2 = list(body)
+    for t in range(31):
+        tr = transformed[t]
+        for j in range(8):
+            idx = 8 * t + j
+            bit = 1 << _HG_DIR_M_LANE[j]
+            out2[idx] = (out2[idx] & (~bit & 0xFF)) | (((tr >> j) & 1) << _HG_DIR_M_LANE[j])
+    head = _v5n_u32le(ts_u)
+    for i in range(16):
+        head.append(_HG_DIR_HEAD_C[i] ^ head[i % 4])
+    return head + [r5[0], r5[1], 0, 1, transformed[31]] + out2
+
+
+def _hg_dir_full_headers(url, device, now_s=None, helios_rand4_a=None, helios_rand4_b=None, gorgon_rand16=None):
+    ts = int(now_s) if now_s is not None else int(time.time())
+    khronos = ts ^ 4
+    query = url.split("?", 1)[1] if "?" in url else ""
+    medusa = _hg_dir_mint_medusa(ts, url, _v5n_hex2bytes(device["sessionEntropy"]))
+    return {"X-Khronos": str(khronos),
+            "X-Helios": _v5n_helios(khronos, _HG_DIR_HELIOS_LICENSE, "8662", helios_rand4_a),
+            "X-Ladon": _v5n_helios(khronos, _HG_DIR_HELIOS_LICENSE, "8662", helios_rand4_b),
+            "X-Medusa": _v5n_bytes2b64(medusa),
+            "X-Argus": _hg_dir_xargus(khronos),
+            "X-Gorgon": _hg_dir_xgorgon(query, khronos, None, gorgon_rand16)}
+
+
+def _hg_dir_basic_headers(query, body=None, now_s=None, gorgon_rand16=None):
+    ts = int(now_s) if now_s is not None else int(time.time())
+    return {"X-Khronos": str(ts),
+            "X-Gorgon": _hg_dir_xgorgon(query, ts, body, gorgon_rand16),
+            "X-Argus": _hg_dir_xargus(ts)}
+
+
+def _hg_dir_list_query(device, now_ms=None):
+    ms = int(now_ms) if now_ms is not None else int(time.time() * 1000)
+    return ("iid=" + str(device["iid"]) + "&device_id=" + str(device["deviceId"])
+            + "&ac=wifi&channel=ry_hongguo_offlinestore_04&aid=8662&app_name=novelread"
+            + "&version_code=73332&version_name=7.3.3.32&device_platform=android&os=android&ssmix=a"
+            + "&device_type=sdk_gphone64_arm64&device_brand=google&language=zh&os_api=35&os_version=15"
+            + "&manifest_version_code=73332&resolution=1080*2400&dpi=420&update_version_code=73332"
+            + "&_rticket=" + str(ms)
+            + "&host_abi=arm64-v8a&dragon_device_type=phone&pv_player=73332&compliance_status=0"
+            + "&need_personal_recommend=1&player_so_load=1&is_android_pad_screen=0"
+            + "&rom_version=sdk_gphone64_arm64-userdebug+15+AE3A.240806.043+12960925+dev-keys"
+            + "&cdid=" + str(device["cdid"]))
+
+
+def _hg_dir_rand_digits(n):
+    s = str(1 + int(random.random() * 9))
+    while len(s) < n:
+        s += str(int(random.random() * 10))
+    return s
+
+
+def _hg_dir_uuid4(rand16=None):
+    b = list(rand16) if rand16 is not None else _v5n_rand(16)
+    b[6] = (b[6] & 0xF) | 0x40
+    b[8] = (b[8] & 0x3F) | 0x80
+    h = _v5n_bytes2hex(b)
+    return h[0:8] + "-" + h[8:12] + "-" + h[12:16] + "-" + h[16:20] + "-" + h[20:32]
+
+
+def _hg_dir_register_request(device, now_ms=None, gorgon_rand16=None):
+    """设备注册的请求构造（query + body + headers），不含网络；供 ensure 与测试共用。"""
+    ms = int(now_ms) if now_ms is not None else int(time.time() * 1000)
+    query = ("aid=8662&app_name=novelread&version_code=73332&version_name=7.3.3.32"
+             "&device_platform=android&os=android&ssmix=a&language=zh&channel=ry_hongguo_offlinestore_04"
+             "&device_type=sdk_gphone64_arm64&device_brand=google&resolution=1080*2400&dpi=420"
+             "&host_abi=arm64-v8a&manifest_version_code=73332&update_version_code=73332"
+             "&ac=wifi&app_type=normal&cpu_support64=true"
+             "&device_id=" + str(device["deviceId"]) + "&iid=" + str(device["iid"])
+             + "&cdid=" + str(device["cdid"]) + "&openudid=" + str(device["openudid"]))
+    body_obj = {"_gen_time": ms // 1000,
+                "header": {"aid": 8662, "app_version": "7.3.3.32", "cdid": str(device["cdid"]),
+                           "channel": "ry_hongguo_offlinestore_04", "clientudid": _hg_dir_uuid4(),
+                           "cpu_abi": "arm64-v8a", "density_dpi": 420, "device_brand": "google",
+                           "device_manufacturer": "Google", "device_model": "sdk_gphone64_arm64",
+                           "display_density": "xhdpi", "display_name": "红果短剧", "google_aid": "",
+                           "language": "zh", "manifest_version_code": 73332, "openudid": str(device["openudid"]),
+                           "os": "Android", "os_api": 35, "os_version": "15", "package": "com.phoenix.read",
+                           "region": "CN", "release_build": "AE3A.240806.043", "req_id": _hg_dir_uuid4(),
+                           "resolution": "1080x2400", "sdk_target_version": 35, "sdk_version": "3.9.5",
+                           "timezone": 8, "tz_name": "Asia/Shanghai", "update_version_code": 73332,
+                           "version_code": 73332},
+                "magic_tag": "ss_app_log"}
+    body = json.dumps(body_obj, separators=(",", ":"), ensure_ascii=False)
+    headers = {"User-Agent": _HG_DIR_UA, "Content-Type": "application/json; charset=utf-8", "sdk-version": "2"}
+    headers.update(_hg_dir_basic_headers(query, _v5n_utf8(body), now_s=ms // 1000, gorgon_rand16=gorgon_rand16))
+    return "https://log.snssdk.com/service/2/device_register/?" + query, body, headers
+
+
+_HG_DIR_DEVICE_CACHE = {}
+_HG_DIR_DEVICE_LOCK = threading.Lock()
+
+
+def _hg_dir_warm_device():
+    """后台预热 directory 设备注册（失败静默，调用方仍按原路重试/回落）。"""
+    try:
+        _hg_dir_ensure_device()
+    except Exception:
+        pass
+
+
+def _hg_dir_ensure_device():
+    """JS ensureDevice 移植：进程内缓存；没有就随机生成设备并向 log.snssdk.com 注册。
+    注册失败抛错，调用方回落；不用用户真机身份，不读 App storage。
+    注册超时 10 秒（JS 用 15 秒；这里收紧，避免详情页被注册拖住）。"""
+    if _HG_DIR_DEVICE_CACHE.get("device"):
+        return _HG_DIR_DEVICE_CACHE["device"]
+    with _HG_DIR_DEVICE_LOCK:
+        if _HG_DIR_DEVICE_CACHE.get("device"):
+            return _HG_DIR_DEVICE_CACHE["device"]
+        return _hg_dir_ensure_device_locked()
+
+
+def _hg_dir_ensure_device_locked():
+    dev = {"deviceId": _hg_dir_rand_digits(19), "iid": _hg_dir_rand_digits(19),
+           "cdid": _hg_dir_uuid4(), "openudid": _v5n_bytes2hex(_v5n_rand(8)),
+           "sessionEntropy": _v5n_bytes2hex(_v5n_rand(20))}
+    url, body, headers = _hg_dir_register_request(dev)
+    resp = requests.post(url, data=body.encode("utf-8"), headers=headers, timeout=10)
+    if resp.status_code < 200 or resp.status_code >= 300:
+        raise RuntimeError("红果设备注册失败 HTTP %d" % resp.status_code)
+    data = resp.json()
+    did = str(data.get("device_id_str") or data.get("device_id") or "")
+    iid = str(data.get("install_id_str") or data.get("install_id") or data.get("iid") or "")
+    if not did or did == "0" or not iid or iid == "0":
+        raise RuntimeError("红果设备注册失败")
+    dev["deviceId"] = did
+    dev["iid"] = iid
+    _HG_DIR_DEVICE_CACHE["device"] = dev
+    return dev
+
+
+def _hg_dir_signed_get(url, device, timeout=15):
+    headers = {"User-Agent": _HG_DIR_UA, "Accept": "application/json; charset=utf-8",
+               "x-ss-dp": "8662", "comment-source": "1506", "lc": "101"}
+    headers.update(_hg_dir_full_headers(url, device))
+    resp = requests.get(url, headers=headers, timeout=timeout)
+    if resp.status_code < 200 or resp.status_code >= 300:
+        raise RuntimeError("HTTP %d" % resp.status_code)
+    return resp.json()
+
+
+_HG_DIR_ITEMS_CACHE = {}
+
+
+def _hg_dir_items(series_id, timeout=15):
+    """directory/all_items 取选集：返回 [(item_id, title)]；失败抛错，调用方回落到官网 vid_list。"""
+    sid = str(series_id)
+    hit = _HG_DIR_ITEMS_CACHE.get(sid)
+    if hit and time.time() - hit[0] < 900:
+        return hit[1]
+    dev = _hg_dir_ensure_device()
+    url = ("https://api5-normal-sinfonlinea.fqnovel.com/reading/bookapi/directory/all_items/v?book_id="
+           + quote(sid, safe="") + "&need_version=true&" + _hg_dir_list_query(dev))
+    data = _hg_dir_signed_get(url, dev, timeout=timeout)
+    raw_items = ((data or {}).get("data") or {}).get("item_data_list") or []
+    out = []
+    for i, it in enumerate(raw_items):
+        if not isinstance(it, dict):
+            continue
+        vid = str(it.get("item_id") or it.get("vid") or "").strip()
+        if not vid:
+            continue
+        title = str(it.get("title") or ("第%d集" % (i + 1)))
+        out.append((vid, title))
+    if not out:
+        raise RuntimeError("directory/all_items 空选集")
+    _HG_DIR_ITEMS_CACHE[sid] = (time.time(), out)
+    return out
+
+def _sign_playback_v5(base: str, values: Mapping[str, Any],
+                      body: bytes | None, now_ms: int) -> tuple[str, dict[str, str]]:
+    """V5 新签名（i短剧 JS 蜘蛛 v1.1.4 的 signPlaybackV5 移植：SM3 + PoW + V5 profile）。
+
+    输入 values 是有序映射（保持插入顺序），内部转成 [key, value] 对；
+    body 不参与签名计算（与 JS 版一致），仅在有 body 时补 Content-Type 与 x-ss-stub。
+    """
+    pairs = [[k, str(v)] for k, v in values.items()]
+    signed = _v5n_sign(pairs, _V5_PROFILE_B64, _V5_PROCESS_NONCE,
+                       _V5_PROCESS_STARTED, now_ms=int(now_ms))
+    url = base + "?" + signed["query"]
+    headers = dict(signed["headers"])
+    if body:
+        headers["Content-Type"] = "application/json; charset=utf-8"
+        headers["x-ss-stub"] = hashlib.md5(body).hexdigest().upper()
+    return url, headers
+
+
+def _register_playback_device() -> dict[str, str]:
+    """ttEncrypt 匿名设备注册：每次取流用全新身份（随机身份会被软拦截）。"""
+    import gzip as _gzip
+    import uuid as _uuid
+
+    now = int(time.time() * 1000)
+    cdid = str(_uuid.uuid4())
+    header = {
+        "display_name": "红果免费短剧", "update_version_code": 73932,
+        "manifest_version_code": 73932, "app_version_minor": "7.3.9.32",
+        "aid": 8662, "channel": "update_64", "package": "com.phoenix.read",
+        "app_version": "7.3.9.32", "version_code": 73932,
+        "sdk_version": "3.7.0-rc.34-fanqie-xiaoshuo", "sdk_target_version": 29,
+        "git_hash": "3a88f4e", "os": "Android", "os_version": "16", "os_api": 36,
+        "device_model": "25053RT47C", "device_brand": "Redmi",
+        "device_manufacturer": "Redmi", "cpu_abi": "arm64-v8a",
+        "release_build": "b5e187f", "density_dpi": 520, "display_density": "mdpi",
+        "resolution": "1280x2772", "language": "zh", "timezone": 8,
+        "access": "wifi", "not_request_sender": 0, "carrier": "CHINA MOBILE",
+        "mcc_mnc": "46000", "rom": "eng.root.20231116.160340",
+        "rom_version": "W528JS release-keys", "cdid": cdid,
+        "sig_hash": "56a962410c494bbaf0b58dba20cae56f", "openudid": os.urandom(8).hex(),
+        "clientudid": str(_uuid.uuid4()), "ipv6_list": [], "region": "CN",
+        "tz_name": "Asia/Shanghai", "tz_offset": 28800, "sim_region": "cn",
+        "sim_serial_number": [], "oaid_may_support": False,
+        "req_id": str(_uuid.uuid4()), "device_platform": "android",
+        "custom": {"account_region_src": "fallback", "account_region": "cn",
+                   "host_bit": 64, "dragon_device_type": "phone"},
+        "pre_installed_channel": "", "apk_first_install_time": now,
+        "is_system_app": 0, "sdk_flavor": "china", "guest_mode": 0,
+    }
+    compressed = _gzip.compress(json.dumps(
+        {"magic_tag": "ss_app_log", "header": header, "_gen_time": now},
+        ensure_ascii=False, separators=(",", ":")).encode("utf-8"))
+    rand = os.urandom(32)
+    derived = hashlib.sha512(
+        hashlib.sha512(rand).digest() + _V5_KDF_SALT).digest()
+    plaintext = hashlib.sha512(compressed).digest() + compressed
+    body = (bytes.fromhex("746305100000") + rand
+            + _dm_aes_cbc_encrypt(derived[:16], derived[16:32], _dm_pkcs7(plaintext)))
+    resp = requests.post(
+        _V5_REGISTER_URL, data=body, timeout=8, allow_redirects=False,
+        headers={
+            "User-Agent": _V5_REGISTER_UA,
+            "Accept": "application/json",
+            "Content-Type": "application/octet-stream;tt-data=a",
+            "log-encode-type": "gzip",
+            "x-ss-dp": "8662",
+            "x-ss-req-ticket": str(now),
+            "x-vc-bdturing-sdk-version": "4.0.3.cn",
+            "lc": "101",
+            "sdk-version": "2",
+            "passport-sdk-version": "5051452",
+            "x-neptune": "-8|50:51:59:30:40:47:49:39",
+            "x-ss-stub": hashlib.md5(body).hexdigest().upper(),
+        },
+    )
+    if resp.status_code != 200:
+        raise HongguoPluginError("匿名播放设备注册失败：HTTP %s" % resp.status_code)
+    try:
+        data = resp.json()
+    except ValueError:
+        raise HongguoPluginError("匿名播放设备注册失败：响应不是 JSON") from None
+    if not isinstance(data, Mapping):
+        raise HongguoPluginError("匿名播放设备注册失败：响应格式错误")
+    device_id = str(data.get("device_id_str") or data.get("device_id") or "")
+    iid = str(data.get("install_id_str") or data.get("install_id") or "")
+    code = int(data.get("code", data.get("Code", 0)) or 0)
+    if not device_id.isdigit() or not iid.isdigit() or code != 0:
+        raise HongguoPluginError("匿名播放设备注册失败：无效的注册响应")
+    return {"device_id": device_id, "iid": iid, "cdid": cdid}
+
+
+def _v5_pace() -> None:
+    """两次播放取流至少间隔 1 秒（上游 6.9 同款节奏）。"""
+    with _V5_PACE_LOCK:
+        now = int(time.time() * 1000)
+        wait = _V5_LAST_FETCH_MS[0] + 1000 - now
+        if wait > 0:
+            time.sleep(wait / 1000.0)
+        _V5_LAST_FETCH_MS[0] = int(time.time() * 1000)
+
+
+def _extract_v5_model(payload: Mapping[str, Any], video_id: str) -> dict[str, Any]:
+    data = payload.get("data")
+    if not isinstance(data, Mapping):
+        raise HongguoPluginError("App 接口未返回 data")
+    entries = data.get("1004")
+    if not isinstance(entries, Mapping):
+        entries = data
+    entry = entries.get(str(video_id)) if isinstance(entries, Mapping) else None
+    if not isinstance(entry, Mapping) or not entry:
+        raise HongguoPluginError("App 接口未返回所选分集")
+    raw_model = entry.get("video_model")
+    if isinstance(raw_model, str):
+        try:
+            raw_model = json.loads(raw_model)
+        except ValueError:
+            raise HongguoPluginError("video_model JSON 无效") from None
+    if not isinstance(raw_model, Mapping) or not raw_model:
+        raise HongguoPluginError("video_model 为空")
+    return dict(raw_model)
+
+
+# ---- JS 蜘蛛 v1.1.4 play 的 video_model 解析移植（_v5n_ 前缀）----
+# 对应 play/parseVideoModel_plain.js、decodeMediaUrl_plain.js、
+# contentKey_plain.js、unwrapSpade_plain.js（去混淆后逐行翻译）。
+
+def _v5n_popcount32(value: int) -> int:
+    """JS popcount32（照 JS 位运算写以便对照；与 bin(x).count("1") 等价）。"""
+    n = int(value) & 0xFFFFFFFF
+    n = (n - ((n >> 1) & 0x55555555)) & 0xFFFFFFFF
+    n = ((n & 0x33333333) + ((n >> 2) & 0x33333333)) & 0xFFFFFFFF
+    return ((((n + (n >> 4)) & 0xF0F0F0F) * 0x1010101) & 0xFFFFFFFF) >> 24
+
+
+def _v5n_decode_media_url(value: Any) -> str:
+    """JS decodeMediaUrl：已是 http(s) 直接返回（http 转 https）；否则 base64 解码，
+    解出来是 http(s) 链接才返回，否则 ''。"""
+    if not value or not isinstance(value, str):
+        return ""
+    if re.match(r"^https?://", value, re.IGNORECASE):
+        return re.sub(r"^http://", "https://", value, flags=re.IGNORECASE)
+    try:
+        decoded = _b64(value).decode("utf-8", errors="replace")
+    except Exception:
+        return ""
+    if re.match(r"^https?://", decoded, re.IGNORECASE):
+        return re.sub(r"^http://", "https://", decoded, flags=re.IGNORECASE)
+    return ""
+
+
+def _v5n_unwrap_spade(raw: bytes) -> str | None:
+    """JS unwrapSpade：spade 解包（字节异或 + 换位 + 减法），返回 key 的 hex 字符串原文，
+    失败返回 None。"""
+    data = bytes(raw)
+    n = len(data)
+    if n < 4:
+        return None
+    head = data[0] ^ data[1] ^ data[2]
+    tag_len = head - 0x30
+    if tag_len < 1:
+        return None
+    body_len = n - head + 0x2F
+    if body_len < 1 or 1 + body_len > n:
+        return None
+    body = list(data[1:1 + body_len])
+    tail_idx = n - tag_len - 2
+    if tail_idx < 0 or tail_idx + 1 >= n:
+        return None
+    tail_xor = data[tail_idx] ^ data[tail_idx + 1]
+    prefix = [tail_xor ^ data[n - tag_len + i] for i in range(tag_len)]
+    tag = bytes(prefix[:6]).decode("utf-8", errors="replace")
+    is_v2 = tag in ("app_v2", "web_v2")
+
+    def _swap_pairs(arr):
+        out = list(arr)
+        for i in range(0, len(out) - 1, 2):
+            out[i], out[i + 1] = out[i + 1], out[i]
+        return out
+
+    if is_v2:
+        swapped = _swap_pairs(body)
+        va, vb = 0x55, 0xFA
+        out = []
+        for i, byte in enumerate(swapped):
+            if i % 2 == 0:
+                x, y = vb, va
+                vb = byte
+            else:
+                x, y = va, vb
+                va = byte
+            out.append(((x ^ byte) - y - 0x15 - _v5n_popcount32(i)) & 0xFF)
+        decoded = _swap_pairs(out)
+    else:
+        va, vb = 0x55, 0xFA
+        out = []
+        for i, byte in enumerate(body):
+            if i % 2 == 0:
+                x = vb
+                vb = byte
+            else:
+                x = va
+                va = byte
+            out.append(((x ^ byte) - 0x15 - _v5n_popcount32(i)) & 0xFF)
+        decoded = out
+    if not decoded:
+        return None
+    first = decoded[0]
+    if 0x30 <= first <= 0x39:
+        digit = first - 0x30
+    elif 0x61 <= first <= 0x66:
+        digit = first - 0x57
+    else:
+        return None
+    end = body_len - digit
+    if end < 2 or end > len(decoded):
+        return None
+    return bytes(decoded[1:end]).decode("utf-8", errors="replace")
+
+
+def _v5n_content_key(spade_b64: Any) -> str:
+    """JS contentKey：spade_a（base64url）解包后是 32 位 hex 则返回小写，否则 ''。"""
+    text = _text(spade_b64)
+    if not text:
+        return ""
+    b64 = text.replace("-", "+").replace("_", "/")
+    while len(b64) % 4:
+        b64 += "="
+    try:
+        raw = _b64(b64)
+    except Exception:
+        return ""
+    try:
+        out = _v5n_unwrap_spade(raw)
+    except Exception:
+        return ""
+    if out and re.fullmatch(r"[0-9a-f]{32}", out, re.IGNORECASE):
+        return out.lower()
+    return ""
+
+
+def _v5n_parse_video_model(model: Any) -> list[dict[str, Any]]:
+    """JS parseVideoModel：取 video_list（数组或对象 values），跳过 bytevc2、无 URL、
+    CENC 但解不出 key 的条目；按高度降序、h264 优先排序。
+    返回每条 {'name', 'url', 'format', 'key', '_row'}，_row 是原始条目（供重建 video_list 用）。"""
+    rows: list[Any] = []
+    if isinstance(model, Mapping):
+        video_list = model.get("video_list")
+        if isinstance(video_list, list):
+            rows = video_list
+        elif isinstance(video_list, Mapping):
+            rows = list(video_list.values())
+    streams: list[dict[str, Any]] = []
+    for item in rows:
+        if not item or not isinstance(item, Mapping):
+            continue
+        meta = item.get("video_meta")
+        if not isinstance(meta, Mapping):
+            meta = {}
+        enc = item.get("encrypt_info")
+        if not isinstance(enc, Mapping):
+            enc = {}
+        codec = _text(meta.get("codec_type") or item.get("codec_type") or "").lower()
+        if codec == "bytevc2" or "bytevc2" in _text(item.get("gear_des_key") or "").lower():
+            continue
+        url = _v5n_decode_media_url(item.get("main_url")) or _v5n_decode_media_url(item.get("backup_url"))
+        if not url:
+            continue
+        spade = _text(enc.get("spade_a") or item.get("spade_a") or "")
+        key = ""
+        if spade or enc.get("encrypt") or enc.get("encryption_method") == "cenc-aes-ctr":
+            key = _v5n_content_key(spade)
+            if not key:
+                continue
+        definition = _text(meta.get("definition") or item.get("definition") or "720p")
+        height = _int(re.sub(r"[^0-9]", "", definition))
+        name = definition + (" " + codec if codec else "")
+        streams.append({
+            "name": name,
+            "url": url,
+            "format": "cenc" if key else "mp4",
+            "key": key,
+            "_h": height,
+            "_h264": 1 if codec in ("h264", "avc1") else 0,
+            "_row": item,
+        })
+    streams.sort(key=lambda s: (-s["_h"], -s["_h264"]))
+    for stream in streams:
+        stream.pop("_h", None)
+        stream.pop("_h264", None)
+    return streams
+
+
+def _v5n_content_key_bytes_for(item: Mapping[str, Any]) -> bytes:
+    """取一条播放条目的 CENC 密钥（16 字节）：优先用 video_tab 预计算的 key hex
+    （支持 app_v2/web_v2 spade），否则走原有 derive_content_key。"""
+    hexkey = _text(item.get("_v5n_key_hex") or "")
+    if hexkey:
+        try:
+            raw = bytes.fromhex(hexkey)
+            if len(raw) == 16:
+                return raw
+        except Exception:
+            pass
+    return derive_content_key(_spade_value(item))
+
+
+def _video_model_v5_tab(video_id: str, identity: Mapping[str, str]) -> dict[str, Any]:
+    """空响应恢复：同一注册身份签名 GET video_tab，只认本集。"""
+    vid = str(video_id)
+    values = dict(_V5_TAB_DEVICE)
+    values.update({
+        "iid": identity["iid"], "cdid": identity["cdid"],
+        "device_id": identity["device_id"], "video_id": vid,
+        "video_id_type": "0", "device_level": "1",
+        "need_all_video_definition": "1", "need_mp4_align": "0",
+        "use_os_player": "0", "video_platform": "1024",
+        "source": "0", "from_video_id": "",
+    })
+    url, headers = _sign_playback_v5(
+        _V5_VIDEO_TAB_API, values, None, int(time.time() * 1000))
+    req_headers = {
+        "User-Agent": _V5_VIDEO_UA,
+        "Accept-Language": "zh-CN,zh;q=0.9",
+    }
+    req_headers.update(headers)
+    resp = requests.get(url, headers=req_headers, timeout=15, allow_redirects=False)
+    if resp.status_code != 200:
+        raise HongguoPluginError("App 接口 HTTP %s" % resp.status_code)
+    text = resp.text or ""
+    if not text.strip():
+        raise _V5EmptyResponse("video_tab 空响应")
+    try:
+        payload = json.loads(text)
+    except ValueError:
+        raise _V5EmptyResponse("video_tab 响应不是 JSON") from None
+    if not isinstance(payload, Mapping):
+        raise _V5EmptyResponse("video_tab 响应格式错误")
+    code = int(payload.get("Code", payload.get("code", 0)) or 0)
+    if code != 0:
+        raise HongguoPluginError("App 接口暂未提供本集播放信息")
+    data = payload.get("data")
+    if not isinstance(data, Mapping):
+        raise _V5EmptyResponse("video_tab 未返回 data")
+    rows = data.get("video_model_data")
+    if not isinstance(rows, Mapping):
+        rows = data
+    entry = rows.get(vid) if isinstance(rows, Mapping) else None
+    if not isinstance(entry, Mapping):
+        raise _V5EmptyResponse("video_tab 未返回所选分集")
+    raw_model = entry.get("video_model")
+    if isinstance(raw_model, str):
+        try:
+            raw_model = json.loads(raw_model)
+        except ValueError:
+            raise _V5EmptyResponse("video_model JSON 无效") from None
+    if not isinstance(raw_model, Mapping) or not raw_model:
+        raise _V5EmptyResponse("video_tab 未返回 video_model")
+    return dict(raw_model)
+
+
+def _v5n_model_from_streams(raw_model: Mapping[str, Any], streams: list[dict[str, Any]]) -> dict[str, Any]:
+    """把 parseVideoModel 的流列表重建成下游可用的 video_model：video_list 行保留原始
+    条目（definition/codec/spade 都在），main_url 换成解码后的地址；CENC 行带
+    _v5n_key_hex，明文行标 _v5n_plain_mp4。key_seed 等顶层字段一并保留。"""
+    rows: list[dict[str, Any]] = []
+    for stream in streams:
+        row = dict(stream.get("_row") or {})
+        row["main_url"] = stream["url"]
+        # backup_url 若是 base64 密文会被 _media_url 误取，先去掉（main_url 已是解码后的地址）
+        row.pop("backup_url", None)
+        row.pop("backup_url_1", None)
+        if stream.get("format") == "cenc" and stream.get("key"):
+            row["_v5n_key_hex"] = stream["key"]
+        elif stream.get("format") == "mp4":
+            row["_v5n_plain_mp4"] = True
+        rows.append(row)
+    model: dict[str, Any] = {"video_list": rows}
+    key_seed = _text(raw_model.get("key_seed") or "")
+    if key_seed:
+        model["key_seed"] = key_seed
+    return model
+
+
+def _v5n_fallback_play_info(video_id: str) -> dict[str, Any]:
+    """JS play 的 fallback-play-info：POST 取一条明文 mp4，返回单行 video_model。"""
+    vid = str(video_id)
+    body = json.dumps(
+        {"force_refresh": False, "item_id": vid},
+        ensure_ascii=False, separators=(",", ":"))
+    req_headers = {
+        "User-Agent": _V5_WEB_UA,
+        "Content-Type": "application/json; charset=utf-8",
+        "Accept": "application/json",
+        "Origin": "https://hongguoduanju.com",
+        "Referer": "https://hongguoduanju.com/",
+    }
+    resp = requests.post(
+        _V5_FALLBACK_PLAY_INFO_URL, headers=req_headers,
+        data=body.encode("utf-8"), timeout=10, allow_redirects=False)
+    if resp.status_code != 200:
+        raise HongguoPluginError("fallback-play-info HTTP %s" % resp.status_code)
+    text = resp.text or ""
+    if not text.strip():
+        raise _V5EmptyResponse("fallback-play-info 空响应")
+    try:
+        payload = json.loads(text)
+    except ValueError:
+        raise _V5EmptyResponse("fallback-play-info 响应不是 JSON") from None
+    if not isinstance(payload, Mapping):
+        raise _V5EmptyResponse("fallback-play-info 响应格式错误")
+    data = payload.get("data")
+    info = data if isinstance(data, Mapping) and data else payload
+    url = _text(info.get("play_url") or info.get("main_url") or info.get("url") or "")
+    url = re.sub(r"^http://", "https://", url, flags=re.IGNORECASE)
+    if not url.startswith("https://"):
+        raise _V5EmptyResponse("fallback-play-info 未返回播放地址")
+    definition = _text(info.get("definition") or "360p")
+    return {"video_list": [{
+        "main_url": url,
+        "definition": definition,
+        "codec_type": "h264",
+        "_v5n_plain_mp4": True,
+    }]}
+
+
+def _video_model_v5_tab_new(video_id: str) -> dict[str, Any]:
+    """JS 蜘蛛 v1.1.4 play 同款取流：GET video_tab multi_video_model/v1（固定 fallback
+    身份 + V5_APP_QUERY + 新签名），依次试 sinfonlineb / hl 两个 host；都失败再试
+    fallback-play-info POST。返回归一化后的 video_model，下游 _select_quality /
+    CENC 解密链路原样复用。"""
+    vid = str(video_id)
+    values = dict(_V5_PRELOAD_DEVICE)
+    values.update({
+        "iid": _V5_FALLBACK_IDENTITY["iid"],
+        "cdid": _V5_FALLBACK_IDENTITY["cdid"],
+        "device_id": _V5_FALLBACK_IDENTITY["device_id"],
+        "video_id": vid,
+        "video_id_type": "0",
+        "device_level": "1",
+        "need_all_video_definition": "1",
+        "need_mp4_align": "0",
+        "use_os_player": "0",
+        "video_platform": "1024",
+        "source": "0",
+        "from_video_id": "",
+    })
+    last_err: Exception | None = None
+
+    def _fetch_one(host):
+        base = "https://" + host + _V5_VIDEO_TAB_PATH
+        url, headers = _sign_playback_v5(
+            base, values, None, int(time.time() * 1000))
+        req_headers = {
+            "User-Agent": _V5_VIDEO_TAB_UA,
+            "Accept": "application/json; charset=utf-8",
+            "Accept-Language": "zh-CN,zh;q=0.9",
+        }
+        req_headers.update(headers)
+        resp = requests.get(url, headers=req_headers, timeout=10, allow_redirects=False)
+        if resp.status_code != 200:
+            raise HongguoPluginError("video_tab HTTP %s" % resp.status_code)
+        text = resp.text or ""
+        if not text.strip():
+            raise _V5EmptyResponse("video_tab 空响应")
+        try:
+            payload = json.loads(text)
+        except ValueError:
+            raise _V5EmptyResponse("video_tab 响应不是 JSON") from None
+        if not isinstance(payload, Mapping):
+            raise _V5EmptyResponse("video_tab 响应格式错误")
+        data = payload.get("data")
+        if not isinstance(data, Mapping):
+            data = {}
+        rows = data.get("video_model_data") or data.get("1004") or data
+        if not isinstance(rows, Mapping):
+            raise _V5EmptyResponse("video_tab 未返回 video_model_data")
+        entry = rows.get(vid)
+        if not isinstance(entry, Mapping):
+            raise _V5EmptyResponse("video_tab 未返回所选分集")
+        raw_model = entry.get("video_model")
+        if isinstance(raw_model, str):
+            try:
+                raw_model = json.loads(raw_model)
+            except ValueError:
+                raise _V5EmptyResponse("video_model JSON 无效") from None
+        if not isinstance(raw_model, Mapping) or not raw_model:
+            raise _V5EmptyResponse("video_tab 未返回 video_model")
+        streams = _v5n_parse_video_model(raw_model)
+        if not streams:
+            raise _V5EmptyResponse("video_tab 未解析出可用流")
+        return _v5n_model_from_streams(raw_model, streams)
+
+    # 双 host 并行竞速：先成功者胜出，慢的直接取消；单 host 超时 10 秒，总等 12 秒。
+    _result = None
+    _deadline = time.time() + 12
+    _ex = concurrent.futures.ThreadPoolExecutor(max_workers=len(_V5_VIDEO_TAB_HOSTS))
+    try:
+        _futs = {_ex.submit(_fetch_one, _h): _h for _h in _V5_VIDEO_TAB_HOSTS}
+        while _futs and _result is None:
+            _wait = max(0.1, _deadline - time.time())
+            _done, _ = concurrent.futures.wait(
+                list(_futs), timeout=_wait,
+                return_when=concurrent.futures.FIRST_COMPLETED)
+            if not _done:
+                break
+            for _f in list(_done):
+                _futs.pop(_f, None)
+                try:
+                    _result = _f.result(timeout=0.1)
+                    break
+                except Exception as exc:
+                    last_err = exc
+                    continue
+    finally:
+        try:
+            _ex.shutdown(wait=False, cancel_futures=True)
+        except Exception:
+            _ex.shutdown(wait=False)
+    if _result is not None:
+        return _result
+    # 两个 host 都失败：fallback-play-info POST（JS play 同款）
+    try:
+        return _v5n_fallback_play_info(vid)
+    except Exception as exc:
+        if last_err is not None:
+            raise last_err
+        raise exc
+
+
+def _v5n_plain_url_for(video_id: str, quality: str) -> str:
+    """取模型里指定清晰度的明文 mp4 直链（无 spade 的流），没有则返回 ''。
+    只供 playerContent 在 CENC 会话建不起来时直出明文地址用。"""
+    try:
+        model = _video_model_rotating(str(video_id), {})
+    except Exception:
+        return ""
+    try:
+        rows = _video_list_from_model(model)
+        _defn, item = _select_quality(rows, quality)
+    except Exception:
+        return ""
+    if not isinstance(item, Mapping) or not item.get("_v5n_plain_mp4"):
+        return ""
+    url = _media_url(item)
+    return url if url.startswith("https://") else ""
+
+
+def _video_model_v5_preload(video_id: str, identity: Mapping[str, str]) -> dict[str, Any]:
+    """preload/v1 播放取流（固定 fallback 身份，逐 host 试）。
+    服务端软拦截全新匿名设备，preload + 固定身份是当前唯一可用路径。"""
+    import gzip as _gzip
+
+    vid = str(video_id)
+    payload = {
+        "biz_param": {
+            "detail_page_version": 0, "device_level": 2,
+            "disable_digg_stat": False, "disable_video_relate_book": False,
+            "need_all_video_definition": True, "need_mp4_align": False,
+            "use_os_player": False, "use_server_dns": False,
+            "video_platform": 1024,
+        },
+        "mixed_video_id_map": {"1004": [vid]},
+        "dr_scene": "preload",
+    }
+    body = _gzip.compress(json.dumps(
+        payload, ensure_ascii=False, separators=(",", ":")).encode("utf-8"))
+    values = dict(_V5_PRELOAD_DEVICE)
+    values["iid"] = identity["iid"]
+    values["cdid"] = identity["cdid"]
+    values["device_id"] = identity["device_id"]
+    last_err = None
+    for host in _V5_PRELOAD_HOSTS:
+        base = "https://" + host + _V5_PRELOAD_PATH
+        try:
+            url, headers = _sign_playback_v5(
+                base, values, body, int(time.time() * 1000))
+        except Exception as exc:
+            last_err = exc
+            continue
+        req_headers = {
+            "User-Agent": _V5_PRELOAD_UA,
+            "Accept": "application/json",
+            "Content-Encoding": "gzip",
+        }
+        req_headers.update(headers)
+        try:
+            resp = requests.post(url, headers=req_headers, data=body,
+                                 timeout=15, allow_redirects=False)
+        except Exception as exc:
+            last_err = exc
+            continue
+        if resp.status_code != 200:
+            last_err = HongguoPluginError("App 接口 HTTP %s" % resp.status_code)
+            continue
+        text = resp.text or ""
+        if not text.strip():
+            last_err = _V5EmptyResponse("preload 空响应")
+            continue
+        try:
+            data = json.loads(text)
+        except ValueError:
+            last_err = HongguoPluginError("上游响应不是 JSON")
+            continue
+        if not isinstance(data, Mapping):
+            last_err = HongguoPluginError("App 接口未返回 data")
+            continue
+        code = int(data.get("Code", data.get("code", 0)) or 0)
+        if code != 0:
+            last_err = HongguoPluginError("App 接口暂未提供本集播放信息")
+            continue
+        return _extract_v5_model(data, vid)
+    if last_err is not None:
+        raise last_err
+    raise _V5EmptyResponse("preload 无可用 host")
+
+
+def _video_model_v5(video_id: str, config: Mapping[str, Any] | None = None) -> dict[str, Any]:
+    """v5 播放取流（2026-11-27 改）：优先 JS 1.1.4 同款 video_tab GET +
+    fallback-play-info（固定 fallback 身份 + 新签名）；失败时回退 preload/v1，
+    最后回退旧 player/v1 + 全新注册身份 + 旧 video_tab。"""
+    import gzip as _gzip
+
+    _v5_pace()
+    vid = str(video_id)
+    try:
+        return _video_model_v5_tab_new(vid)
+    except Exception:
+        pass
+    try:
+        return _video_model_v5_preload(vid, _V5_FALLBACK_IDENTITY)
+    except Exception:
+        pass
+    identity = _register_playback_device()
+    payload = {
+        "biz_param": {
+            "detail_page_version": 0, "device_level": 1,
+            "disable_digg_stat": False, "disable_video_relate_book": False,
+            "need_all_video_definition": True, "need_mp4_align": False,
+            "use_os_player": False, "use_server_dns": False,
+            "video_platform": 1024,
+        },
+        "mixed_video_id_map": {"1004": [vid]},
+        "dr_scene": "player",
+    }
+    body = _gzip.compress(json.dumps(
+        payload, ensure_ascii=False, separators=(",", ":")).encode("utf-8"))
+    values = dict(_V5_PLAYER_DEVICE)
+    values["iid"] = identity["iid"]
+    values["cdid"] = identity["cdid"]
+    values["device_id"] = identity["device_id"]
+    url, headers = _sign_playback_v5(
+        _V5_PLAYER_API, values, body, int(time.time() * 1000))
+    req_headers = {
+        "User-Agent": _V5_PLAYER_UA,
+        "Accept": "application/json",
+        "Content-Encoding": "gzip",
+    }
+    req_headers.update(headers)
+    resp = requests.post(url, headers=req_headers, data=body,
+                         timeout=15, allow_redirects=False)
+    if resp.status_code != 200:
+        raise HongguoPluginError("App 接口 HTTP %s" % resp.status_code)
+    text = resp.text or ""
+    if not text.strip():
+        err = _V5EmptyResponse(
+            "App 接口未返回 data（HTTP 200 空响应）",
+            backoff=bool(resp.headers.get("Retry-After")),
+        )
+        if not err.backoff:
+            try:
+                return _video_model_v5_tab(vid, identity)
+            except Exception:
+                raise err from None
+        raise err
+    try:
+        data = json.loads(text)
+    except ValueError:
+        raise HongguoPluginError("上游响应不是 JSON") from None
+    if not isinstance(data, Mapping):
+        raise HongguoPluginError("App 接口未返回 data")
+    code = int(data.get("Code", data.get("code", 0)) or 0)
+    if code != 0:
+        raise HongguoPluginError("App 接口暂未提供本集播放信息")
+    return _extract_v5_model(data, vid)
+
 
 def _video_list_from_model(model: Mapping[str, Any]) -> Any:
     for key in ("video_list", "dynamic_video_list"):
@@ -4835,6 +6202,14 @@ def _decrypt_spade_url(value: str, key_seed: bytes) -> str:
             plaintext = plaintext[:-padding]
     return plaintext.rstrip(b"\0").decode("utf-8", errors="replace")
 
+def _parse_ref(value: str, prefix: str) -> str:
+    if not value.startswith(prefix):
+        raise HongguoPluginError("播放引用无效")
+    raw = value[len(prefix) :]
+    if not raw or not _VIDEO_ID.fullmatch(raw):
+        raise HongguoPluginError("播放引用格式无效")
+    return raw
+
 def _key_seed_from_model(model: Mapping[str, Any]) -> bytes:
     value = _text(model.get("key_seed"))
     if value:
@@ -4848,16 +6223,17 @@ def _key_seed_from_model(model: Mapping[str, Any]) -> bytes:
     return b""
 def _page(url):
     last_err = None
-    for attempt in range(2):
+    for attempt in range(2):  # 超时 15s x 2 次：失败最长 ~30 秒，不再空转 90 秒
         try:
-            # 复用线程本地 session（keep-alive），省掉每次新建连接 + TLS 握手的开销
-            r = _hg_session().get(
+            r = requests.get(
                 url,
                 headers={
+                    "User-Agent": UA,
+                    "Accept-Language": "zh-CN,zh;q=0.9",
                     "Accept": "text/html,application/xhtml+xml;q=0.9,*/*;q=0.8",
                     "Cache-Control": "no-cache",
                 },
-                timeout=8,
+                timeout=15,
             )
             r.raise_for_status()
             r.encoding = r.encoding or "utf-8"
@@ -4866,11 +6242,10 @@ def _page(url):
             return r.text
         except Exception as err:
             last_err = err
-            if attempt == 0:
-                try:
-                    time.sleep(0.3)
-                except Exception:
-                    pass
+            try:
+                time.sleep(0.6 * (attempt + 1))
+            except Exception:
+                pass
     raise RuntimeError("page fetch failed: %s" % last_err)
 
 def _data(url):
@@ -4903,594 +6278,57 @@ def _item(x):
     count = vd.get("episode_cnt") or x.get("episode_cnt") or 0
     pic = str(vd.get("series_cover") or x.get("series_cover") or "")
     intro = str(vd.get("series_intro") or x.get("series_intro") or "")
+    remarks = ("全%s集" % count) if count else ""
+    if not remarks:
+        # 首页横幅没有集数，用第一个标签（如“都市爱情”）当备注，避免空白
+        tags = vd.get("tags") or x.get("tags") or []
+        if isinstance(tags, list) and tags:
+            remarks = str(tags[0])
     return {
         "vod_id": sid,
         "vod_name": name,
         "vod_pic": pic,
-        "vod_remarks": ("全%s集" % count) if count else "",
+        "vod_remarks": "影视交流群-"+remarks,
         "vod_content": intro,
     }
 
 def _cat_item(x):
     return _item(x)
 
-# ===================== 分季 + 首页板块（本次改动） =====================
-_HG_TAB_MAP = {
-    "all": ("real-drama", u"热播短剧"),
-    "human": ("real-drama", u"热播真人剧"),
-    "comic": ("comic-drama", u"热播漫剧"),
-    "ai": ("ai-drama", u"热播AI剧"),
-}
-_HG_SEASON_CACHE = {}
-_HG_SEARCH_API = SITE + "/api/search/result/"
-_HG_SEASON_RE = re.compile(u"第\\s*([0-9]{1,3}|[一二三四五六七八九十]{1,3})\\s*[季部]")
-# 标题结尾的裸数字也当季号（如「……我终于发达了7」），数字前不能紧跟数字，避免把年份 1980 当季号
-_HG_TAIL_RE = re.compile(u"(?:[\\s·\\-—_：:.、]+)?(?<![0-9])([0-9]{1,3}|[一二三四五六七八九十]{1,3})\\s*$")
-# 「反向拿捏2：和闺蜜穿七零带着婆婆一起离」这类：季号贴在主标题末尾、后面接冒号副标题。
-# 只看冒号前的主标题尾部，1~2 位阿拉伯数字或半/全角括号数字；数字前不能紧跟数字（防 1980、2024）
-_HG_MAIN_TAIL_RE = re.compile(u"(?:[\\s·\\-—_]*)(?:[（(]\\s*([0-9]{1,2})\\s*[)）]|(?<![0-9])([0-9]{1,2}))\\s*$")
-_HG_CN = u"零一二三四五六七八九十"
-
-
-def _hg_cn(n):
-    try:
-        n = int(n)
-    except Exception:
-        return str(n)
-    if n <= 10:
-        return _HG_CN[n]
-    if n < 20:
-        return u"十" + _HG_CN[n % 10]
-    if n < 100:
-        return _HG_CN[n // 10] + u"十" + (_HG_CN[n % 10] if n % 10 else u"")
-    return str(n)
-
-
-def _hg_num(t):
-    t = str(t or "")
-    if t.isdigit():
-        return int(t)
-    if t == u"十":
-        return 10
-    if t.startswith(u"十"):
-        return 10 + (_HG_CN.index(t[1]) if len(t) > 1 and t[1] in _HG_CN else 0)
-    if u"十" in t:
-        a, _, b = t.partition(u"十")
-        return _HG_CN.index(a) * 10 + (_HG_CN.index(b) if b and b in _HG_CN else 0)
-    return _HG_CN.index(t) if t in _HG_CN else 0
-
-
-def _hg_season_no(name):
-    m = _HG_SEASON_RE.search(name or "")
-    if m:
-        return _hg_num(m.group(1))
-    t = _HG_TAIL_RE.search(name or "")
-    if t:
-        n = _hg_num(t.group(1))
-        return n if 0 < n <= 99 else 0
-    # 冒号副标题写法：季号在主标题末尾（第一部没有数字，按第一季处理）
-    main, sub = _hg_split_title(name)
-    if sub:
-        mm = _HG_MAIN_TAIL_RE.search(main)
-        if mm:
-            n = int(mm.group(1) or mm.group(2) or 0)
-            return n if 0 < n <= 99 else 0
-    return 0
-
-
-def _hg_bare_style(name):
-    """True 表示这部剧的季号是裸数字写法（标题里没有「第N季/部」）。"""
-    return not _HG_SEASON_RE.search(name or u"")
-
-
-def _hg_split_title(name):
-    """按第一个冒号拆成（主标题, 副标题）；没有冒号时副标题为空串。"""
-    raw = (name or u"").strip()
-    for sep in (u"：", u":"):
-        i = raw.find(sep)
-        if 0 < i < len(raw) - 1:
-            return raw[:i].strip(), raw[i + 1:].strip()
-    return raw, u""
-
-
-def _hg_main_style(name):
-    """「主标题+季号：副标题」写法里剥掉季号的主标题；不适用时返回空串。
-
-    只认这种形状：没有「第N季/部」、整个标题末尾没有裸数字（那是「道印入体：…7」
-    的写法，季号挂在副标题后面）、冒号前的主标题 4~12 个字。这样普通带副标题的剧
-    不会被拉去多探两轮。
-    """
-    raw = (name or u"").strip()
-    main, sub = _hg_split_title(raw)
-    if not sub or not (4 <= len(main) <= 12):
-        return u""
-    if _HG_SEASON_RE.search(raw) or _HG_TAIL_RE.search(raw):
-        return u""
-    mn = _HG_MAIN_TAIL_RE.sub(u"", main).strip(u"：:·-—_ 　")
-    if mn == main and re.search(u"[0-9]", main[-2:]):
-        # 主标题自己就以数字结尾（重生1980、2024 这类），不是季号写法
-        return u""
-    return mn
-
-
-def _hg_probe_kws(base, n, name):
-    """缺失季的探测关键词。主标题带季号的写法要按原样拼，只搜基名搜不到。"""
-    mn = _hg_main_style(name)
-    if mn:
-        main, sub = _hg_split_title(name)
-        if _HG_MAIN_TAIL_RE.search(main):
-            # 手上已是第 N 部（主标题自带数字）：另一部靠基名搜索就能带出来，不必再探
-            return []
-        return [mn + str(n) + u"：" + sub]
-    if _hg_bare_style(name):
-        return [base + str(n)]
-    return [base + u"第%s季" % _hg_cn(n)]
-
-
-def _hg_base_name(name):
-    raw = (name or u"").strip()
-    b = _HG_SEASON_RE.sub(u"", raw).strip(u"：:·-—_ 　")
-    if b == raw:
-        # 裸数字结尾：剥掉数字再当基名，基名不足 4 个字就不剥（防「重生1980」这类误伤）
-        b2 = _HG_TAIL_RE.sub(u"", raw).strip(u"：:·-—_ 　")
-        if len(b2) >= 4 and b2 != raw:
-            b = b2
-    if len(b) < 4:
-        return u""
-    return b
-
-
-def _hg_group_id(sd):
-    si = sd.get("season_info") if isinstance(sd, dict) else None
-    if isinstance(si, dict):
-        g = si.get("series_group_id")
-        if g:
-            return str(g)
-    return u""
-
-
-_HG_TLS = threading.local()
-
-
-def _hg_session():
-    """每线程复用一条 requests 会话：keep-alive + gzip，省握手开销。"""
-    ses = getattr(_HG_TLS, "ses", None)
-    if ses is None:
-        ses = requests.Session()
-        ses.trust_env = False
-        ses.headers.update({
-            "User-Agent": UA,
-            "Referer": SITE + "/",
-            "Accept": "text/html,application/xhtml+xml,application/json;q=0.9,*/*;q=0.8",
-            "Accept-Language": "zh-CN,zh;q=0.9",
-            "Accept-Encoding": "gzip, deflate",
-        })
-        _HG_TLS.ses = ses
-    return ses
-
-
-def _hg_fetch_sd(sid, timeout=8):
-    """单次请求拉详情（不重试），失败返回 {}。"""
-    try:
-        r = _hg_session().get(SITE + "/detail?series_id=" + quote(str(sid), safe=u""), timeout=timeout)
-        if r.status_code != 200:
-            return {}
-        j = _router_data(r.text)
-        p = ((j.get(u"loaderData") or {}).get(u"detail_page") or {}) if isinstance(j, dict) else {}
-        return p.get(u"seriesDetail") or {}
-    except Exception:
-        return {}
-
-
-_HG_DISK_NAME = "hg_seasons_cache.json"
-
-
-def _hg_disk_path():
-    try:
-        d = _hg_cache_dir()
-        if d:
-            return os.path.join(d, _HG_DISK_NAME)
-    except Exception:
-        pass
-    return ""
-
-
-def _hg_slim(sd):
-    """只留拼线路要用的字段，控制缓存文件体积。"""
-    if not isinstance(sd, dict):
-        return {}
-    cele = [str(c.get("nickname") or "") for c in (sd.get("celebrities") or []) if isinstance(c, dict)]
-    return {
-        "series_id": str(sd.get("series_id") or ""),
-        "series_name": str(sd.get("series_name") or ""),
-        "series_cover": str(sd.get("series_cover") or ""),
-        "series_intro": str(sd.get("series_intro") or ""),
-        "episode_right_text": str(sd.get("episode_right_text") or ""),
-        "episode_cnt": sd.get("episode_cnt") or 0,
-        "tags": sd.get("tags") if isinstance(sd.get("tags"), list) else [],
-        "celebrities": [{"nickname": n} for n in cele if n],
-        "vid_list": [str(x) for x in (sd.get("vid_list") or [])],
-        "season_info": sd.get("season_info") if isinstance(sd.get("season_info"), dict) else {},
-    }
-
-
-def _hg_disk_load():
-    path = _hg_disk_path()
-    if not path:
-        return {}
-    try:
-        with open(path, "r", encoding="utf-8") as f:
-            d = json.load(f)
-        return d if isinstance(d, dict) else {}
-    except Exception:
-        return {}
-
-
-def _hg_disk_save(all_data):
-    path = _hg_disk_path()
-    if not path:
-        return
-    try:
-        items = sorted(all_data.items(), key=lambda kv: kv[1].get("ts", 0), reverse=True)[:120]
-        with open(path, "w", encoding="utf-8") as f:
-            json.dump(dict(items), f, ensure_ascii=False)
-    except Exception:
-        pass
-
-
-def _hg_sd(sid):
-    """单部详情：进程缓存 300s → 磁盘缓存 6h → 网络单次请求。"""
-    key = u"sd:" + str(sid)
-    hit = _HG_SEASON_CACHE.get(key)
-    if hit and time.time() - hit[0] < 300:
-        return hit[1]
-    sd = _hg_fetch_sd(sid)
-    if not sd:
-        sd = {}
-        _HG_SEASON_CACHE[key] = (time.time() - 240, sd)   # 失败短缓存 60 秒
-        return sd
-    _HG_SEASON_CACHE[key] = (time.time(), sd)
-    return sd
-
-
-def _hg_candidates(kw, pages=2, deadline=None):
-    """站内搜索取候选 (sid, name)，只认 query 参数，看 hasMore 翻页。"""
-    out = []
-    seen = set()
-    for pg in range(1, pages + 1):
-        if deadline is not None and time.time() > deadline:
-            break
-        try:
-            d = _search_api(kw, pg) or {}
-        except Exception:
-            break
-        rows = d.get(u"searchList") or []
-        for it in rows:
-            vd = it.get(u"video_data") if isinstance(it.get(u"video_data"), dict) else it
-            sid = str(vd.get(u"series_id") or it.get(u"series_id") or u"")
-            if not sid.isdigit() or sid in seen:
-                continue
-            seen.add(sid)
-            out.append((sid, str(it.get(u"name") or vd.get(u"series_title") or u"")))
-            if len(out) >= 40:
-                return out
-        if not d.get(u"hasMore"):
-            break
-    return out
-
-
-
-
-_HG_PRE_LOCK = threading.Lock()
-_HG_PRE_RUNNING = [0]
-_HG_PRE_MAX = 3
-
-
-def _hg_prefetch(sids, limit=3):
-    """后台预热：给刚出现的 series_id 预拉详情写缓存。绝不阻塞调用方，异常全吞。"""
-    if not sids:
-        return
-    todo = [str(x) for x in sids if str(x).isdigit()][:limit]
-    if not todo:
-        return
-    try:
-        disk = _hg_disk_load()
-    except Exception:
-        disk = {}
-
-    def _run():
-        for sid in todo:
-            with _HG_PRE_LOCK:
-                if _HG_PRE_RUNNING[0] >= _HG_PRE_MAX:
-                    return
-                _HG_PRE_RUNNING[0] += 1
-            try:
-                c = disk.get(sid)
-                if isinstance(c, dict):
-                    continue
-                sd = _hg_sd(sid)
-                if not sd:
-                    continue
-                seasons = _hg_seasons(sid, sd)
-                _all = _hg_disk_load()
-                _pl = {"v": 3, "ts": time.time(), "self": _hg_slim(sd),
-                       "seasons": [{"no": no, "sd": _hg_slim(d)} for no, d in seasons]}
-                _all[sid] = _pl
-                for _no, _d in seasons:
-                    _xid = str(_d.get("series_id") or u"")
-                    if _xid and _xid != sid:
-                        _all[_xid] = _pl
-                _hg_disk_save(_all)
-            except Exception:
-                pass
-            finally:
-                with _HG_PRE_LOCK:
-                    _HG_PRE_RUNNING[0] -= 1
-
-    try:
-        t = threading.Thread(target=_run, name="hg-prefetch")
-        t.daemon = True
-        t.start()
-    except Exception:
-        pass
-
-
-def _hg_seasons(sid, sd, budget=9.0):
-    """真分季：基名搜索一页 + 缺失季定向探测；探测与拉详情同池并发，命中即收敛。"""
-    ck = u"season:" + str(sid)
-    hit = _HG_SEASON_CACHE.get(ck)
-    if hit and time.time() - hit[0] < 900:
-        return hit[1]
-    gid = _hg_group_id(sd)
-    if not gid:
-        return [(0, sd)]
-    base = _hg_base_name(sd.get("series_name") or u"")
-    if not base:
-        return [(0, sd)]
-    t_end = time.time() + budget
-    _nm0 = sd.get("series_name") or u""
-    _bare = _hg_bare_style(_nm0)
-    # 「反向拿捏2：副标题」这类写法的主标题；非空才值得多探一轮
-    _main_ref = _hg_main_style(_nm0)
-    known = {(_hg_season_no(_nm0) or 1): str(sid)}
-    extra = []
-    try:
-        for csid, nm in _hg_candidates(base, 1, time.time() + min(3.0, budget)):
-            n = _hg_season_no(nm)
-            # 同一主标题、没有季号的那一部就是第一部
-            if not n and _main_ref and _hg_main_style(nm) == _main_ref:
-                n = 1
-            if n and n not in known:
-                known[n] = csid
-            elif not n:
-                extra.append(csid)
-    except Exception:
-        pass
-    found = {str(sid): sd}
-    pending = {}
-    probed = set()
-    with concurrent.futures.ThreadPoolExecutor(max_workers=12) as ex:
-        for cid in list(known.values()) + extra[:1]:
-            if cid != str(sid) and cid not in found and cid not in pending:
-                pending[ex.submit(_hg_sd, cid)] = (u"detail", cid)
-        while pending and time.time() < t_end:
-            done = None
-            try:
-                done, _ = concurrent.futures.wait(list(pending), timeout=0.1,
-                                                  return_when=concurrent.futures.FIRST_COMPLETED)
-            except Exception:
-                break
-            for f in done:
-                kind, key = pending.pop(f)
-                try:
-                    val = f.result(timeout=0.1)
-                except Exception:
-                    val = None
-                if kind == u"detail":
-                    if val:
-                        found[key] = val
-                        # 同名诱饵（标题像第 N 季但其实是别的剧）抓进来了：
-                        # 释放这一季的名额，让下面的缺口探测重新去找真身
-                        if str(key) != str(sid) and _hg_group_id(val) != gid:
-                            for _k, _v in list(known.items()):
-                                if str(_v) == str(key):
-                                    known.pop(_k, None)
-                else:
-                    for csid, nm in (val or [])[:4]:
-                        if _hg_season_no(nm) == key and csid not in found and csid not in known.values():
-                            known[key] = csid
-                            pending[ex.submit(_hg_sd, csid)] = (u"detail", csid)
-                            break
-            # 缺失季：1..max+1 里没着落的，补探测（每轮最多 4 个）
-            # 已从搜索里认到季号、详情还在路上的，也算有着落，不再重复探同一季
-            _ver = set(x for x in known.keys() if x)
-            for _k, _d in found.items():
-                if _d and (str(_k) == str(sid) or _hg_group_id(_d) == gid):
-                    _ver.add(_hg_season_no(_d.get(u"series_name") or u""))
-            if (len(probed) < 9 and time.time() < t_end
-                    and (len(_ver) >= 2 or _hg_season_no(_nm0) > 0 or bool(_main_ref))):
-                mx = max(_ver) if _ver else 1
-                for n in [x for x in range(1, mx + 2) if x not in _ver and x not in probed][:4]:
-                    probed.add(n)
-                    for _kw in _hg_probe_kws(base, n, _nm0):
-                        pending[ex.submit(_hg_candidates, _kw, 1,
-                                          time.time() + 3)] = (u"probe", n)
-    # 收尾补漏：诱饵被剔除后总会留下空洞，按缺的季号再定向探一次（最多 2 个）
-    _have = set()
-    for _x, _d in found.items():
-        if _d and (str(_x) == str(sid) or _hg_group_id(_d) == gid):
-            _have.add(_hg_season_no(_d.get(u"series_name") or u""))
-    _mx = max(_have) if _have else 1
-    _need = [x for x in range(1, _mx + 1) if x not in _have][:2]
-    if _need:
-        # 两个缺号并发探，不再一个搜完再搜下一个
-        _cand = {}
-        try:
-            _kwjobs = [(kw, _n) for _n in _need for kw in _hg_probe_kws(base, _n, _nm0)]
-            with concurrent.futures.ThreadPoolExecutor(max_workers=max(1, len(_kwjobs))) as _ex:
-                _fs = {_ex.submit(_hg_candidates, kw, 1, time.time() + 3): _n
-                       for kw, _n in _kwjobs}
-                for _f in list(_fs):
-                    try:
-                        _cand[_fs[_f]] = _f.result(timeout=4) or []
-                    except Exception:
-                        _cand[_fs[_f]] = []
-        except Exception:
-            _cand = {}
-        _jobs = []
-        for _n, _cl in _cand.items():
-            for _cid, _nm in (_cl or [])[:3]:
-                if _hg_season_no(_nm) == _n and _cid not in found:
-                    _jobs.append((_n, _cid))
-        if _jobs:
-            try:
-                with concurrent.futures.ThreadPoolExecutor(max_workers=min(4, len(_jobs))) as _ex:
-                    _fs2 = {_ex.submit(_hg_sd, _cid): _n for _n, _cid in _jobs}
-                    _got = set()
-                    for _f in list(_fs2):
-                        _n = _fs2[_f]
-                        if _n in _got:
-                            continue
-                        try:
-                            _d = _f.result(timeout=5)
-                        except Exception:
-                            continue
-                        if _d and _hg_group_id(_d) == gid:
-                            found[str(_d.get("series_id") or "")] = _d
-                            _got.add(_n)
-            except Exception:
-                pass
-    seasons = []
-    for x, d in found.items():
-        if not d:
-            continue
-        if x != str(sid) and _hg_group_id(d) != gid:
-            continue
-        seasons.append((_hg_season_no(d.get(u"series_name") or u""), d))
-    # 防误判：分集内容与当前剧或已收季高度重叠的（同一部的重复条目）一律剔除
-    def _vset(d):
-        return set(str(v) for v in (d.get("vid_list") or []))
-    _self_v = _vset(sd)
-    _uniq = []
-    for no, d in seasons:
-        v = _vset(d)
-        if not v:
-            continue
-        _is_self = (d is sd) or (str(d.get("series_id") or u"") == str(sid))
-        dup = False
-        if not _is_self and _self_v:
-            small = min(len(v), len(_self_v))
-            if small and len(v & _self_v) >= max(1, int(small * 0.5)):
-                dup = True
-        if not dup:
-            for _n2, _d2 in _uniq:
-                v2 = _vset(_d2)
-                small = min(len(v), len(v2)) if v2 else 0
-                if small and len(v & v2) >= max(1, int(small * 0.5)):
-                    dup = True
-                    break
-        if not dup:
-            _uniq.append((no, d))
-    seasons = _uniq
-    if len(seasons) < 2:
-        # 凑不出第二部同组剧就保持单线路原样，绝不凭空造季
-        _HG_SEASON_CACHE[ck] = (time.time(), [(0, sd)])
-        return [(0, sd)]
-    seasons.sort(key=lambda t: (t[0] if t[0] else 1))
-    if not any((d is sd) or (str(d.get("series_id") or "") == str(sid)) for _n, d in seasons):
-        seasons.insert(0, (0, sd))
-    _HG_SEASON_CACHE[ck] = (time.time(), seasons)
-    return seasons
-
-
-def _hg_cat_list(rows):
-    out = []
-    try:
-        for x in rows:
-            out.append(_cat_item(x))
-    except Exception:
-        pass
-    try:
-        _hg_prefetch([x.get("vod_id") for x in out], 6)
-    except Exception:
-        pass
-    return out
-
-
-def _hg_home_sections():
-    """按首页 homeSections 分板块出卡，标题取 tab_name，取不到给兜底名。"""
-    ck = u"home"
-    hit = _HG_SEASON_CACHE.get(ck)
-    if hit and time.time() - hit[0] < 900:
-        return hit[1]
-    out = []
-    seen = set()
-    try:
-        j = _data(SITE + u"/")
-        secs = (((j.get(u"loaderData") or {}).get(u"page") or {}).get(u"homeSections")) or []
-    except Exception:
-        secs = []
-    if isinstance(secs, list):
-        for sec in secs:
-            if not isinstance(sec, dict):
-                continue
-            tt = str(sec.get(u"tab_type") or u"")
-            tid, tname = _HG_TAB_MAP.get(tt, ("real-drama", u"红果热播"))
-            tn = str(sec.get(u"tab_name") or u"").strip()
-            if tn and tn.lower() not in (u"null", u"none", u"undefined"):
-                tname = tn
-            for x in (sec.get(u"video_list") or []):
-                it = _item(x)
-                vid = str(it.get("vod_id") or u"")
-                if not vid.isdigit() or vid in seen:
-                    continue
-                seen.add(vid)
-                it["type_id"] = tid
-                it["type_name"] = tname
-                out.append(it)
-    _HG_SEASON_CACHE[ck] = (time.time(), out)
-    return out
-
-
-
-_HG_SEARCH_PRIMED = [False]
+def _filter_group(key, name, values):
+    return {"key": key, "name": name, "value": [{"n": n, "v": v} for n, v in values]}
 
 
 def _search_api(key: str, page: int = 1) -> dict:
-    """官网搜索接口 /api/search/result（搜索页已改客户端渲染，SSR 无数据）。
-
-    原来每次搜索都先抓一遍 586KB 的首页拿 ttwid，一部十季剧要搜七八次，
-    白花七八个首页请求（实测每次 250~1200ms）。现在复用线程本地 session 直连搜索，
-    真的返回空列表时才补一次首页 cookie 重试，且每个进程只补一次。
-    """
+    """官网搜索接口 /api/search/result（搜索页已改客户端渲染，SSR 无数据）。"""
     empty = {"searchList": [], "totalCount": 0, "totalPages": 1, "hasMore": False}
-    params = {"aid": "8662", "query": str(key or ""), "page": str(max(1, int(page or 1)))}
-
-    def _once():
+    try:
+        session = requests.Session()
+        session.trust_env = False
+        session.headers.update(
+            {
+                "User-Agent": UA,
+                "Accept": "application/json, text/plain, */*",
+                "Referer": SITE + "/",
+            }
+        )
+        # 首访拿 ttwid，缺了上游只回空列表
         try:
-            r = _hg_session().get(SITE + "/api/search/result", params=params, timeout=8,
-                                  headers={"Accept": "application/json, text/plain, */*"})
-            if r.status_code != 200:
-                return None
-            return r.json()
+            session.get(SITE + "/", timeout=10)
         except Exception:
-            return None
-
-    data = _once()
-    try:
-        if not (isinstance(data, dict) and data.get("searchList")) and not _HG_SEARCH_PRIMED[0]:
-            # 极少数情况下上游要 ttwid 才回数据：补一次首页再试（仅一次）
-            _HG_SEARCH_PRIMED[0] = True
-            try:
-                _hg_session().get(SITE + "/", timeout=8)
-            except Exception:
-                pass
-            data = _once()
-    except Exception:
-        data = data if isinstance(data, dict) else None
-    if not isinstance(data, dict):
-        return empty
-    try:
+            pass
+        r = session.get(
+            SITE + "/api/search/result",
+            params={
+                "aid": "8662",
+                "query": str(key or ""),
+                "page": str(max(1, int(page or 1))),
+            },
+            timeout=20,
+        )
+        if r.status_code != 200:
+            return empty
+        data = r.json()
         rows = data.get("searchList") or []
         if not isinstance(rows, list) or not rows:
             return empty
@@ -5615,6 +6453,29 @@ def _hg_search_scan(key, page=1, max_pages=8):
     }
 
 
+def _category_loader(page: int, q: dict) -> dict:
+    """分类页带重试；page=1 偶发空列表时多试几次。"""
+    page = max(1, int(page or 1))
+    q = dict(q or {})
+    if page > 1:
+        q["page"] = str(page)
+    last = {}
+    for attempt in range(3):
+        try:
+            data = _data(SITE + "/category?" + urlencode(q))
+            p = (data.get("loaderData") or {}).get("category_$") or (data.get("loaderData") or {}).get("category_page") or {}
+            rows = p.get("recommendList") or []
+            if rows or page > 1:
+                return p
+            last = p or last
+        except Exception:
+            pass
+        try:
+            time.sleep(0.5 * (attempt + 1))
+        except Exception:
+            pass
+    return last
+
 # =============================================================================
 # 弹幕子系统（红果 App 评论 / 弹幕接口）
 #
@@ -5634,11 +6495,7 @@ _DM_ENABLED = True          # 总开关：关掉则 playerContent 不再挂弹�
 _DM_HOST = "api5-normal-lq.fqnovel.com"
 _DM_WINDOW_MS = 30000       # 每个取数窗口（毫秒）
 _DM_MAX_WINDOWS = 20        # 最多取 20 个窗口（约 10 分钟，覆盖短剧整集）
-_DM_TTL = 1800              # 弹幕缓存有效期（秒，只用于取到内容的成功结果）
-_DM_FAIL_TTL = 45          # 取失败的结果只压 45 秒，绝不把一次失败锁死半小时
-_DM_MIN_GAP = 0.28         # 两次弹幕请求之间的最小间隔（秒），削峰防接口限流
-_DM_PAGE_WORKERS = 2       # 每批并发的取数窗口数，降低瞬时并发
-_DM_RETRY_DELAY = 6.0      # 撞上限流后隔多久再补一次
+_DM_TTL = 1800              # 弹幕缓存有效期（秒）
 _DM_WAIT = 18               # 弹幕路由最多等取数完成多少秒
 _DM_IN_PLAYER = "list"      # playerContent 里 danmaku 字段形态: list / url / off
 _DM_PUSH_LOCAL = True       # 额外用壳的 127.0.0.1:9978/action 推一次（老壳兜底）
@@ -5646,10 +6503,7 @@ _DM_SID_MAP: dict[str, str] = {}
 _DM_CACHE: dict[str, dict[str, Any]] = {}
 _DM_EVENTS: dict[str, threading.Event] = {}
 _DM_LOCKS = threading.Lock()
-_DM_POST_LOCK = threading.Lock()
-_DM_POST_LAST = 0.0
-_DM_PUSHED: dict[str, float] = {}
-_DM_STREAM_HIT: dict[str, float] = {}
+_DM_PUSHED: set[str] = set()
 _DM_HIT: dict[str, float] = {}
 _DM_LAST_ERR = ""
 
@@ -6051,15 +6905,6 @@ def _dm_page(vid: str, series_id: str, start_ms: int, device_id: str,
     url = "https://%s/novel/commentapi/comment/list/%s/v1/?%s" % (_DM_HOST, vid, query)
     sess = requests.Session()
     sess.trust_env = False
-    global _DM_POST_LAST
-    with _DM_POST_LOCK:
-        _gap = _DM_MIN_GAP - (time.time() - _DM_POST_LAST)
-        if _gap > 0:
-            try:
-                time.sleep(_gap)
-            except Exception:
-                pass
-        _DM_POST_LAST = time.time()
     response = sess.post(url, data=body, headers=headers, timeout=20)
     data = _json_response(response)
     if isinstance(data, Mapping) and data.get("code") not in (0, None):
@@ -6104,14 +6949,14 @@ def _dm_fetch(vid: str, series_id: str, device_id: str, install_id: str = "") ->
     empty_batches = 0
     stop = False
     try:
-        pool = concurrent.futures.ThreadPoolExecutor(max_workers=_DM_PAGE_WORKERS)
+        pool = concurrent.futures.ThreadPoolExecutor(max_workers=4)
     except Exception:
         pool = None
     try:
-        for base in range(0, len(windows), _DM_PAGE_WORKERS):
+        for base in range(0, len(windows), 4):
             if stop:
                 break
-            batch = windows[base:base + _DM_PAGE_WORKERS]
+            batch = windows[base:base + 4]
             if pool is None:
                 results = []
                 for start in batch:
@@ -6187,20 +7032,15 @@ def _dm_state(vid: str) -> dict:
 
 def _dm_set_state(vid: str, items: list, error: str = "") -> None:
     with _DM_LOCKS:
-        _DM_CACHE[vid] = {"t": time.time(), "items": items, "error": error,
-                          "ttl": _DM_TTL if items else _DM_FAIL_TTL}
+        _DM_CACHE[vid] = {"t": time.time(), "items": items, "error": error}
         event = _DM_EVENTS.get(vid)
     if event is not None:
         event.set()
 
 
 def _dm_get(vid: str, series_id: str = "", device_id: str = "", install_id: str = "",
-            wait: float = 0, force: bool = False) -> dict:
-    """拿一集弹幕（带缓存 + 后台去重）。wait 秒内没取完就先返回当前状态。
-
-    force=True 时忽略缓存里「上次取失败」的结果，重新请求一次；
-    取到的内容仍然按 _DM_TTL 缓存，失败只按 _DM_FAIL_TTL 短存，避免一次限流就哑掉半小时。
-    """
+            wait: float = 0) -> dict:
+    """拿一集弹幕（带缓存 + 后台去重）。wait 秒内没取完就先返回当前状态。"""
     vid = str(vid or "")
     if not vid:
         return {"items": [], "error": "missing vid"}
@@ -6210,9 +7050,7 @@ def _dm_get(vid: str, series_id: str = "", device_id: str = "", install_id: str 
         return {"items": [], "error": "no sid"}
     with _DM_LOCKS:
         state = dict(_DM_CACHE.get(vid) or {})
-        _ttl = float(state.get("ttl") or _DM_TTL)
-        _fresh = state and (time.time() - float(state.get("t") or 0)) < _ttl
-        if _fresh and not (force and not (state.get("items") or [])):
+        if state and (time.time() - float(state.get("t") or 0)) < _DM_TTL:
             return state
         event = _DM_EVENTS.get(vid)
         need_spawn = event is None or event.is_set()
@@ -6226,15 +7064,6 @@ def _dm_get(vid: str, series_id: str = "", device_id: str = "", install_id: str 
                 items = _dm_fetch(vid, series_id, device_id, install_id)
                 if not items:
                     err = _DM_LAST_ERR or "empty"
-                    # 一次取空多半是撞了接口限流，歇一会儿补一次再下结论
-                    if "103001" in err or "参数错误" in err:
-                        try:
-                            time.sleep(_DM_RETRY_DELAY)
-                        except Exception:
-                            pass
-                        items = _dm_fetch(vid, series_id, device_id, install_id)
-                        if items:
-                            err = ""
             except Exception as exc:
                 items, err = [], str(exc)
             _dm_set_state(vid, items, err)
@@ -6319,221 +7148,442 @@ def _dm_to_json(items: list) -> bytes:
 
 
 def _dm_push_local(url: str, vid: str) -> None:
-    """老壳可能不读 playerContent.danmaku，用壳自己的本地接口补推一次。
-
-    短剧预载会在上一集还在播时先把下一集的 playerContent 要来（也会走到这里），
-    若当场就推，等于把下一集的弹幕源塞给正在播的这一集，切过去后壳反而不再来取。
-    所以推迟到「别的集已经几秒没有取流、这一集也没被播放器自己取过弹幕」时才推，
-    并且允许同一集隔一段时间重推（不再是一集一辈子一次）。
-    """
-    if not _DM_PUSH_LOCAL or not url or not vid:
+    """老壳可能不读 playerContent.danmaku，用壳自己的本地接口再推一次。"""
+    global _DM_PUSHED
+    if not _DM_PUSH_LOCAL or not url or vid in _DM_PUSHED:
         return
-    now = time.time()
-    if now - float(_DM_PUSHED.get(vid) or 0) < 240:
-        return
-    _DM_PUSHED[vid] = now
+    _DM_PUSHED.add(vid)
 
     def _run():
         try:
-            from urllib.parse import quote as _quote
-            for _i in range(8):
-                time.sleep(4.0)
-                if _DM_HIT.get(vid, 0) > time.time() - 30:
-                    return          # 播放器自己来取过了，不必推
-                _others = [t for k, t in list(_DM_STREAM_HIT.items()) if k != vid]
-                if _others and max(_others) > time.time() - 4.0:
-                    continue        # 还有别的集在取流，说明在预载/还没切过来
-                target = "http://127.0.0.1:9978/action?do=refresh&type=danmaku&path=" + _quote(url, safe="")
-                session = requests.Session()
-                session.trust_env = False
-                session.get(target, timeout=3)
+            time.sleep(2.5)
+            # 播放器已经自己来取过 /hg_dm 了，就不必再推一遍（免得弹幕闪一下）
+            if _DM_HIT.get(vid, 0) > time.time() - 30:
                 return
+            from urllib.parse import quote as _quote
+            target = "http://127.0.0.1:9978/action?do=refresh&type=danmaku&path=" + _quote(url, safe="")
+            session = requests.Session()
+            session.trust_env = False
+            session.get(target, timeout=3)
         except Exception:
             pass
+    threading.Thread(target=_run, daemon=True).start()
+
+
+# ---- 分季（自红果短剧版移植）：多季剧一季一条线路「第一季 超清」 ----
+_HG_SEASON_CACHE = {}
+_HG_SEASON_RE = re.compile(u"第\\s*([0-9]{1,3}|[一二三四五六七八九十]{1,3})\\s*[季部]")
+_HG_TAIL_RE = re.compile(u"(?:[\\s·\\-—_：:.、]+)?(?<![0-9])([0-9]{1,3}|[一二三四五六七八九十]{1,3})\\s*$")
+_HG_MAIN_TAIL_RE = re.compile(u"(?:[\\s·\\-—_]*)(?:[（(]\\s*([0-9]{1,2})\\s*[)）]|(?<![0-9])([0-9]{1,2}))\\s*$")
+_HG_CN = u"零一二三四五六七八九十"
+_HG_DISK_MEM: dict[str, Any] = {}
+
+
+def _hg_fetch_sd(sid, timeout=8):
+    """单次请求拉详情（不重试），失败返回 {}。用本文件的 _data 解析 _ROUTER_DATA。"""
     try:
-        threading.Thread(target=_run, daemon=True).start()
+        p = ((_data(SITE + "/detail?series_id=" + quote(str(sid), safe="")).get("loaderData") or {}).get("detail_page") or {})
+        return p.get("seriesDetail") or {}
+    except Exception:
+        return {}
+
+
+def _trim_store(store: Any, cap: int = 512, max_age: float = 0.0) -> None:
+    try:
+        if not isinstance(store, dict):
+            return
+        if max_age > 0:
+            cutoff = time.time() - max_age
+            for key in [k for k, v in store.items() if isinstance(v, (int, float)) and v < cutoff]:
+                store.pop(key, None)
+        while len(store) > cap:
+            try:
+                store.pop(next(iter(store)))
+            except StopIteration:
+                break
     except Exception:
         pass
 
 
-# ===================== 预约下一季（2026-11-24 合并）=====================
-# 详情页给一条「预约下一季」线路：季号最大值 +1 那一季站点还没上线时显示。
-# 点按 = 把（基名, 季号, 当前季 sid）登记进 hg_reserve.json，并当场按基名现搜一次；
-# 搜到那一季就直接播它的第 1 集，搜不到就留在表里，下次进详情仍是「已预约」。
-RESERVE_PREFIX = "hg-reserve-v1:"
-_HG_RESERVE_NAME = "hg_reserve.json"
-_HG_RESERVE_LOCK = threading.Lock()
-
-
-def _hg_reserve_path():
+def _hg_cn(n):
     try:
-        d = _hg_cache_dir()
-        if d:
-            return os.path.join(d, _HG_RESERVE_NAME)
+        n = int(n)
     except Exception:
-        pass
+        return str(n)
+    if n <= 10:
+        return _HG_CN[n]
+    if n < 20:
+        return u"十" + _HG_CN[n % 10]
+    if n < 100:
+        return _HG_CN[n // 10] + u"十" + (_HG_CN[n % 10] if n % 10 else u"")
+    return str(n)
+
+
+def _hg_num(t):
+    t = str(t or "")
+    if t.isdigit():
+        return int(t)
+    if t == u"十":
+        return 10
+    if t.startswith(u"十"):
+        return 10 + (_HG_CN.index(t[1]) if len(t) > 1 and t[1] in _HG_CN else 0)
+    if u"十" in t:
+        a, _, b = t.partition(u"十")
+        return _HG_CN.index(a) * 10 + (_HG_CN.index(b) if b and b in _HG_CN else 0)
+    return _HG_CN.index(t) if t in _HG_CN else 0
+
+
+def _hg_season_no(name):
+    m = _HG_SEASON_RE.search(name or "")
+    if m:
+        return _hg_num(m.group(1))
+    t = _HG_TAIL_RE.search(name or "")
+    if t:
+        n = _hg_num(t.group(1))
+        return n if 0 < n <= 99 else 0
+    # 冒号副标题写法：季号在主标题末尾（第一部没有数字，按第一季处理）
+    main, sub = _hg_split_title(name)
+    if sub:
+        mm = _HG_MAIN_TAIL_RE.search(main)
+        if mm:
+            n = int(mm.group(1) or mm.group(2) or 0)
+            return n if 0 < n <= 99 else 0
+    return 0
+
+
+def _hg_bare_style(name):
+    """True 表示这部剧的季号是裸数字写法（标题里没有「第N季/部」）。"""
+    return not _HG_SEASON_RE.search(name or u"")
+
+
+def _hg_split_title(name):
+    """按第一个冒号拆成（主标题, 副标题）；没有冒号时副标题为空串。"""
+    raw = (name or u"").strip()
+    for sep in (u"：", u":"):
+        i = raw.find(sep)
+        if 0 < i < len(raw) - 1:
+            return raw[:i].strip(), raw[i + 1:].strip()
+    return raw, u""
+
+
+def _hg_main_style(name):
+    """「主标题+季号：副标题」写法里剥掉季号的主标题；不适用时返回空串。
+
+    只认这种形状：没有「第N季/部」、整个标题末尾没有裸数字（那是「道印入体：…7」
+    的写法，季号挂在副标题后面）、冒号前的主标题 4~12 个字。这样普通带副标题的剧
+    不会被拉去多探两轮。
+    """
+    raw = (name or u"").strip()
+    main, sub = _hg_split_title(raw)
+    if not sub or not (4 <= len(main) <= 12):
+        return u""
+    if _HG_SEASON_RE.search(raw) or _HG_TAIL_RE.search(raw):
+        return u""
+    mn = _HG_MAIN_TAIL_RE.sub(u"", main).strip(u"：:·-—_ 　")
+    if mn == main and re.search(u"[0-9]", main[-2:]):
+        # 主标题自己就以数字结尾（重生1980、2024 这类），不是季号写法
+        return u""
+    return mn
+
+
+def _hg_probe_kws(base, n, name):
+    """缺失季的探测关键词。主标题带季号的写法要按原样拼，只搜基名搜不到。"""
+    mn = _hg_main_style(name)
+    if mn:
+        main, sub = _hg_split_title(name)
+        if _HG_MAIN_TAIL_RE.search(main):
+            # 手上已是第 N 部（主标题自带数字）：另一部靠基名搜索就能带出来，不必再探
+            return []
+        return [mn + str(n) + u"：" + sub]
+    if _hg_bare_style(name):
+        return [base + str(n)]
+    return [base + u"第%s季" % _hg_cn(n)]
+
+
+def _hg_base_name(name):
+    raw = (name or u"").strip()
+    b = _HG_SEASON_RE.sub(u"", raw).strip(u"：:·-—_ 　")
+    if b == raw:
+        # 裸数字结尾：剥掉数字再当基名，基名不足 4 个字就不剥（防「重生1980」这类误伤）
+        b2 = _HG_TAIL_RE.sub(u"", raw).strip(u"：:·-—_ 　")
+        if len(b2) >= 4 and b2 != raw:
+            b = b2
+    if len(b) < 4:
+        return u""
+    return b
+
+
+def _hg_group_id(sd):
+    si = sd.get("season_info") if isinstance(sd, dict) else None
+    if isinstance(si, dict):
+        g = si.get("series_group_id")
+        if g:
+            return str(g)
     return u""
 
 
-def _hg_reserve_load():
-    p = _hg_reserve_path()
-    if not p:
+_HG_TLS = threading.local()
+
+
+def _hg_slim(sd):
+    """只留拼线路要用的字段，控制缓存文件体积。"""
+    if not isinstance(sd, dict):
         return {}
+    cele = [str(c.get("nickname") or "") for c in (sd.get("celebrities") or []) if isinstance(c, dict)]
+    return {
+        "series_id": str(sd.get("series_id") or ""),
+        "series_name": str(sd.get("series_name") or ""),
+        "series_cover": str(sd.get("series_cover") or ""),
+        "series_intro": str(sd.get("series_intro") or ""),
+        "episode_right_text": str(sd.get("episode_right_text") or ""),
+        "episode_cnt": sd.get("episode_cnt") or 0,
+        "tags": sd.get("tags") if isinstance(sd.get("tags"), list) else [],
+        "celebrities": [{"nickname": n} for n in cele if n],
+        "vid_list": [str(x) for x in (sd.get("vid_list") or [])],
+        "season_info": sd.get("season_info") if isinstance(sd.get("season_info"), dict) else {},
+    }
+
+
+def _hg_disk_load():
+    """取进程内分季缓存（不读本地文件）。"""
     try:
-        with open(p, "r", encoding="utf-8") as f:
-            d = json.load(f)
-        return d if isinstance(d, dict) else {}
+        return _HG_DISK_MEM
     except Exception:
         return {}
 
 
-def _hg_reserve_save(all_data):
-    p = _hg_reserve_path()
-    if not p:
-        return
+def _hg_disk_save(all_data):
+    """只写进程内缓存：按用户要求不落盘，不生成 hg_seasons_cache.json。"""
     try:
-        with _HG_RESERVE_LOCK:
-            with open(p, "w", encoding="utf-8") as f:
-                json.dump(all_data, f, ensure_ascii=False)
+        items = sorted(all_data.items(), key=lambda kv: kv[1].get("ts", 0), reverse=True)[:120]
+        new = dict(items)
+    except Exception:
+        return
+    _HG_DISK_MEM.clear()
+    _HG_DISK_MEM.update(new)
+
+
+def _hg_sd(sid):
+    """单部详情：进程缓存 300s → 磁盘缓存 6h → 网络单次请求。"""
+    key = u"sd:" + str(sid)
+    hit = _HG_SEASON_CACHE.get(key)
+    if hit and time.time() - hit[0] < 300:
+        return hit[1]
+    sd = _hg_fetch_sd(sid)
+    if not sd:
+        sd = {}
+        _HG_SEASON_CACHE[key] = (time.time() - 240, sd)   # 失败短缓存 60 秒
+        _trim_store(_HG_SEASON_CACHE, cap=256)
+        return sd
+    _HG_SEASON_CACHE[key] = (time.time(), sd)
+    _trim_store(_HG_SEASON_CACHE, cap=256)
+    return sd
+
+
+def _hg_candidates(kw, pages=2, deadline=None):
+    """站内搜索取候选 (sid, name)，只认 query 参数，看 hasMore 翻页。"""
+    out = []
+    seen = set()
+    for pg in range(1, pages + 1):
+        if deadline is not None and time.time() > deadline:
+            break
+        try:
+            d = _search_api(kw, pg) or {}
+        except Exception:
+            break
+        rows = d.get(u"searchList") or []
+        for it in rows:
+            vd = it.get(u"video_data") if isinstance(it.get(u"video_data"), dict) else it
+            sid = str(vd.get(u"series_id") or it.get(u"series_id") or u"")
+            if not sid.isdigit() or sid in seen:
+                continue
+            seen.add(sid)
+            out.append((sid, str(it.get(u"name") or vd.get(u"series_title") or u"")))
+            if len(out) >= 40:
+                return out
+        if not d.get(u"hasMore"):
+            break
+    return out
+
+
+
+
+_HG_PRE_LOCK = threading.Lock()
+_HG_PRE_RUNNING = [0]
+_HG_PRE_MAX = 3
+
+
+def _hg_seasons(sid, sd, budget=9.0):
+    """真分季：基名搜索一页 + 缺失季定向探测；探测与拉详情同池并发，命中即收敛。"""
+    ck = u"season:" + str(sid)
+    hit = _HG_SEASON_CACHE.get(ck)
+    if hit and time.time() - hit[0] < 900:
+        return hit[1]
+    gid = _hg_group_id(sd)
+    if not gid:
+        return [(0, sd)]
+    base = _hg_base_name(sd.get("series_name") or u"")
+    if not base:
+        return [(0, sd)]
+    t_end = time.time() + budget
+    _nm0 = sd.get("series_name") or u""
+    _bare = _hg_bare_style(_nm0)
+    # 「反向拿捏2：副标题」这类写法的主标题；非空才值得多探一轮
+    _main_ref = _hg_main_style(_nm0)
+    known = {(_hg_season_no(_nm0) or 1): str(sid)}
+    extra = []
+    try:
+        for csid, nm in _hg_candidates(base, 1, time.time() + min(3.0, budget)):
+            n = _hg_season_no(nm)
+            # 同一主标题、没有季号的那一部就是第一部
+            if not n and _main_ref and _hg_main_style(nm) == _main_ref:
+                n = 1
+            if n and n not in known:
+                known[n] = csid
+            elif not n:
+                extra.append(csid)
     except Exception:
         pass
-
-
-def _hg_reserve_get(base):
-    rec = _hg_reserve_load().get(str(base or u""))
-    return rec if isinstance(rec, dict) else {}
-
-
-def _hg_reserve_put(base, rec):
-    key = str(base or u"").strip()
-    if not key:
-        return
-    d = _hg_reserve_load()
-    d[key] = dict(rec or {})
-    _hg_reserve_save(d)
-
-
-def _hg_season_nos(seasons, sd):
-    """把手上的季列表换算成季号集合（季号缺失时按标题回算）。"""
-    nos = []
-    for no, d in (seasons or []):
-        try:
-            n = int(no or 0)
-        except Exception:
-            n = 0
-        if n < 1:
+    found = {str(sid): sd}
+    pending = {}
+    probed = set()
+    with concurrent.futures.ThreadPoolExecutor(max_workers=12) as ex:
+        for cid in list(known.values()) + extra[:1]:
+            if cid != str(sid) and cid not in found and cid not in pending:
+                pending[ex.submit(_hg_sd, cid)] = (u"detail", cid)
+        while pending and time.time() < t_end:
+            done = None
             try:
-                n = int(_hg_season_no((d or {}).get("series_name") or u"") or 0)
+                done, _ = concurrent.futures.wait(list(pending), timeout=0.1,
+                                                  return_when=concurrent.futures.FIRST_COMPLETED)
             except Exception:
-                n = 0
-        if n >= 1:
-            nos.append(n)
-    if not nos and isinstance(sd, dict):
+                break
+            for f in done:
+                kind, key = pending.pop(f)
+                try:
+                    val = f.result(timeout=0.1)
+                except Exception:
+                    val = None
+                if kind == u"detail":
+                    if val:
+                        found[key] = val
+                        # 同名诱饵（标题像第 N 季但其实是别的剧）抓进来了：
+                        # 释放这一季的名额，让下面的缺口探测重新去找真身
+                        if str(key) != str(sid) and _hg_group_id(val) != gid:
+                            for _k, _v in list(known.items()):
+                                if str(_v) == str(key):
+                                    known.pop(_k, None)
+                else:
+                    for csid, nm in (val or [])[:4]:
+                        if _hg_season_no(nm) == key and csid not in found and csid not in known.values():
+                            known[key] = csid
+                            pending[ex.submit(_hg_sd, csid)] = (u"detail", csid)
+                            break
+            # 缺失季：1..max+1 里没着落的，补探测（每轮最多 4 个）
+            # 已从搜索里认到季号、详情还在路上的，也算有着落，不再重复探同一季
+            _ver = set(x for x in known.keys() if x)
+            for _k, _d in found.items():
+                if _d and (str(_k) == str(sid) or _hg_group_id(_d) == gid):
+                    _ver.add(_hg_season_no(_d.get(u"series_name") or u""))
+            if (len(probed) < 9 and time.time() < t_end
+                    and (len(_ver) >= 2 or _hg_season_no(_nm0) > 0 or bool(_main_ref))):
+                mx = max(_ver) if _ver else 1
+                for n in [x for x in range(1, mx + 2) if x not in _ver and x not in probed][:4]:
+                    probed.add(n)
+                    for _kw in _hg_probe_kws(base, n, _nm0):
+                        pending[ex.submit(_hg_candidates, _kw, 1,
+                                          time.time() + 3)] = (u"probe", n)
+    # 收尾补漏：诱饵被剔除后总会留下空洞，按缺的季号再定向探一次（最多 2 个）
+    _have = set()
+    for _x, _d in found.items():
+        if _d and (str(_x) == str(sid) or _hg_group_id(_d) == gid):
+            _have.add(_hg_season_no(_d.get(u"series_name") or u""))
+    _mx = max(_have) if _have else 1
+    _need = [x for x in range(1, _mx + 1) if x not in _have][:2]
+    if _need:
+        # 两个缺号并发探，不再一个搜完再搜下一个
+        _cand = {}
         try:
-            n = int(_hg_season_no(sd.get("series_name") or u"") or 0)
+            _kwjobs = [(kw, _n) for _n in _need for kw in _hg_probe_kws(base, _n, _nm0)]
+            with concurrent.futures.ThreadPoolExecutor(max_workers=max(1, len(_kwjobs))) as _ex:
+                _fs = {_ex.submit(_hg_candidates, kw, 1, time.time() + 3): _n
+                       for kw, _n in _kwjobs}
+                for _f in list(_fs):
+                    try:
+                        _cand[_fs[_f]] = _f.result(timeout=4) or []
+                    except Exception:
+                        _cand[_fs[_f]] = []
         except Exception:
-            n = 0
-        if n >= 1:
-            nos.append(n)
-    return nos
-
-
-def _hg_reserve_line(seasons, sid, sd):
-    """拼「预约下一季」那条线路：返回 (线路名, 集串)；没有可预约的季时返回空串。"""
-    try:
-        nos = _hg_season_nos(seasons, sd)
-        nxt = (max(nos) if nos else 1) + 1
-        name = str((sd or {}).get("series_name") or u"")
-        base = _hg_base_name(name) or name
-        if nxt < 2 or not base or not str(sid).isdigit():
-            return u"", u""
-        label = u"第%s季" % _hg_cn(nxt)
-        rec = _hg_reserve_get(base)
-        tip = u"预约%s" % label
-        if rec.get("no") and int(rec.get("no") or 0) >= nxt:
-            tip = u"%s（已预约）" % label
-        eps = u"%s$%s%s:%s" % (tip, RESERVE_PREFIX, str(sid), str(nxt))
-        return (u"预约下一季", eps)
-    except Exception:
-        return u"", u""
-
-
-def _hg_probe_season(base, no, name, sid=""):
-    """按基名 + 季号现搜一次：返回 (该季 sid, 详情) 或 None。"""
-    try:
-        no = int(no or 0)
-    except Exception:
-        no = 0
-    if no < 2 or not base:
-        return None
-    gid = u""
-    try:
-        cur = _hg_sd(str(sid)) if str(sid).isdigit() else {}
-        gid = _hg_group_id(cur) if cur else u""
-    except Exception:
-        gid = u""
-    kws = []
-    try:
-        kws = list(_hg_probe_kws(base, no, name) or [])
-    except Exception:
-        kws = []
-    kws += [base + u"第%s季" % _hg_cn(no), base + str(no)]
-    deadline = time.time() + 6.0
-    seen = set()
-    for kw in kws:
-        kw = str(kw or u"").strip()
-        if not kw or kw in seen or time.time() > deadline:
+            _cand = {}
+        _jobs = []
+        for _n, _cl in _cand.items():
+            for _cid, _nm in (_cl or [])[:3]:
+                if _hg_season_no(_nm) == _n and _cid not in found:
+                    _jobs.append((_n, _cid))
+        if _jobs:
+            try:
+                with concurrent.futures.ThreadPoolExecutor(max_workers=min(4, len(_jobs))) as _ex:
+                    _fs2 = {_ex.submit(_hg_sd, _cid): _n for _n, _cid in _jobs}
+                    _got = set()
+                    for _f in list(_fs2):
+                        _n = _fs2[_f]
+                        if _n in _got:
+                            continue
+                        try:
+                            _d = _f.result(timeout=5)
+                        except Exception:
+                            continue
+                        if _d and _hg_group_id(_d) == gid:
+                            found[str(_d.get("series_id") or "")] = _d
+                            _got.add(_n)
+            except Exception:
+                pass
+    seasons = []
+    for x, d in found.items():
+        if not d:
             continue
-        seen.add(kw)
-        try:
-            cands = _hg_candidates(kw, 1, deadline) or []
-        except Exception:
-            cands = []
-        for csid, nm in cands:
-            try:
-                if int(_hg_season_no(nm) or 0) != no:
-                    continue
-            except Exception:
-                continue
-            d = _hg_sd(str(csid))
-            if not d:
-                continue
-            if gid and _hg_group_id(d) and _hg_group_id(d) != gid:
-                continue
-            if str(d.get("series_id") or csid) == str(sid):
-                continue
-            return str(d.get("series_id") or csid), d
-    return None
+        if x != str(sid) and _hg_group_id(d) != gid:
+            continue
+        seasons.append((_hg_season_no(d.get(u"series_name") or u""), d))
+    # 防误判：分集内容与当前剧或已收季高度重叠的（同一部的重复条目）一律剔除
+    def _vset(d):
+        return set(str(v) for v in (d.get("vid_list") or []))
+    _self_v = _vset(sd)
+    _uniq = []
+    for no, d in seasons:
+        v = _vset(d)
+        if not v:
+            continue
+        _is_self = (d is sd) or (str(d.get("series_id") or u"") == str(sid))
+        dup = False
+        if not _is_self and _self_v:
+            small = min(len(v), len(_self_v))
+            if small and len(v & _self_v) >= max(1, int(small * 0.5)):
+                dup = True
+        if not dup:
+            for _n2, _d2 in _uniq:
+                v2 = _vset(_d2)
+                small = min(len(v), len(v2)) if v2 else 0
+                if small and len(v & v2) >= max(1, int(small * 0.5)):
+                    dup = True
+                    break
+        if not dup:
+            _uniq.append((no, d))
+    seasons = _uniq
+    if len(seasons) < 2:
+        # 凑不出第二部同组剧就保持单线路原样，绝不凭空造季
+        _HG_SEASON_CACHE[ck] = (time.time(), [(0, sd)])
+        _trim_store(_HG_SEASON_CACHE, cap=256)
+        return [(0, sd)]
+    seasons.sort(key=lambda t: (t[0] if t[0] else 1))
+    if not any((d is sd) or (str(d.get("series_id") or "") == str(sid)) for _n, d in seasons):
+        seasons.insert(0, (0, sd))
+    _HG_SEASON_CACHE[ck] = (time.time(), seasons)
+    _trim_store(_HG_SEASON_CACHE, cap=256)
+    return seasons
 
 
-def _hg_reserve_play(spider, token):
-    """「预约下一季」被点按：登记预约 → 现搜那一季 → 搜到就播第 1 集。"""
-    body = str(token or "")
-    if body.startswith(RESERVE_PREFIX):
-        body = body[len(RESERVE_PREFIX):]
-    sid, _, no_s = body.partition(":")
-    sid = str(sid or "")
-    try:
-        no = int(_hg_num(no_s)) if str(no_s).strip() else 0
-    except Exception:
-        no = 0
-    s = _hg_sd(sid) if sid.isdigit() else {}
-    name = str((s or {}).get("series_name") or u"")
-    base = _hg_base_name(name) or name or sid
-    _hg_reserve_put(base, {"sid": sid, "no": no, "name": name, "ts": time.time()})
-    _diag("预约登记 base=%s 第%s季（当前季 sid=%s）" % (base, no or u"?", sid))
-    hit = _hg_probe_season(base, no, name, sid)
-    if hit:
-        csid, cd = hit
-        vids = [str(v) for v in (cd.get("vid_list") or []) if str(v).isdigit()]
-        if vids:
-            _diag("预约命中：第%s季已上线 sid=%s 首集=%s，直接起播" % (no, csid, vids[0]))
-            return spider.playerContent(u"", EPISODE_PREFIX + "1080:" + vids[0])
-    _diag("预约已记下：%s 第%s季站点还没上线，上线后再点这一条即可直接播" % (base, no or u"?"))
-    return {"parse": 0, "jx": 0, "playUrl": u"", "url": u"", "header": {"User-Agent": UA}}
-
-
-class Spider(_BaseSpider):
+class _HongguoSpider(_BaseSpider):
     def __init__(self):
         self.device_id = str(random.randint(10**17, 10**18 - 1))
         self.install_id = str(random.randint(10**17, 10**18 - 1))
@@ -6603,9 +7653,11 @@ class Spider(_BaseSpider):
             "iid": self.install_id or "",
         })
         url = "http://127.0.0.1:%d/hg_dm?%s" % (port, query)
-        # 不在这里预取弹幕：短剧预载会提前替下一集调 playerContent，
-        # 于是两集弹幕请求在几百毫秒内挤在一起，最容易撞上接口限流（code=103001），
-        # 一旦那次失败被当成结论，切过去就再没有弹幕了。改由播放器真来取 /hg_dm 时再拉。
+        # 播放器起播后才会来取弹幕，这里先把取数线程跑起来（不阻塞出流）
+        try:
+            _dm_get(vid, sid, self.device_id or "", self.install_id or "", wait=0)
+        except Exception:
+            pass
         _dm_push_local(url, vid)
         label = "红果弹幕"
         if _DM_IN_PLAYER == "url":
@@ -6621,9 +7673,25 @@ class Spider(_BaseSpider):
             pass
 
     def homeContent(self, filter):
-        """分类=官方四套内容类型（真人剧/漫剧/AI剧/漫画），二级分类取官方分类路由。"""
-        class_list = [{"type_id": k, "type_name": n} for k, n, _ in _HG_CONTENT_TYPES]
-        filters = {}
+        """分类：推荐 + 真人剧/漫剧/AI剧 + 排行榜 + 热度（漫画已去掉，播不了）。"""
+        class_list = [
+            {"type_id": "recommend", "type_name": "推荐"},
+            {"type_id": "new-drama", "type_name": "热度"},
+            {"type_id": "rank", "type_name": "排行榜"},
+        ]
+        class_list += [{"type_id": k, "type_name": n} for k, n, _ in _HG_CONTENT_TYPES]
+        filters = {
+            "recommend": [{
+                "key": "tab",
+                "name": "推荐",
+                "value": [{"n": nm, "v": v} for v, nm in _HG_RECOMMEND_TABS],
+            }],
+            "rank": [{
+                "key": "rank",
+                "name": "榜单",
+                "value": [{"n": nm, "v": v} for v, nm in _HG_RANK_ROUTES],
+            }],
+        }
         for k, _n, cats in _HG_CONTENT_TYPES:
             if len(cats) > 1:
                 filters[k] = [{
@@ -6631,16 +7699,7 @@ class Spider(_BaseSpider):
                     "name": "分类",
                     "value": [{"n": nm, "v": v} for v, nm in cats],
                 }]
-        vlist = []
-        try:
-            vlist = _hg_home_sections()
-        except Exception:
-            vlist = []
-        try:
-            _hg_prefetch([x.get("vod_id") for x in vlist], 6)
-        except Exception:
-            pass
-        return {"class": class_list, "filters": filters, "list": vlist}
+        return {"class": class_list, "filters": filters}
 
     def categoryContent(self, tid, pg, filter, extend):
         """走官方分类页 /category/{route}/{item}?page=N，标题取官方 series_name。"""
@@ -6664,6 +7723,64 @@ class Spider(_BaseSpider):
                 cat = f2
         if cat in ("all", "全部", "0", "all_cat"):
             cat = ""
+        _tid = str(tid or "").strip()
+        if _tid in ("rank", "new-drama"):
+            if _tid == "new-drama":
+                route = "new-drama"
+            else:
+                route = str(ext.get("rank") or ext.get("榜单") or "").strip()
+                if isinstance(filter, dict):
+                    f2 = str(filter.get("rank") or filter.get("榜单") or "").strip()
+                    if f2 and not route:
+                        route = f2
+                if route not in _HG_RANK_ROUTE_SET:
+                    route = "hot-drama"
+            try:
+                rows = _hg_rank_page(route, page)
+            except Exception:
+                rows = _hg_rank_page("new-drama" if _tid == "new-drama" else "hot-drama", page)
+            # rankList 每页 20 条，未给总页数：满 20 条就允许再翻一页，不满即最后一页
+            pagecount = page + 1 if len(rows) >= 20 else page
+            show_rank = _tid != "new-drama"
+            return {
+                "page": page,
+                "pagecount": max(1, pagecount),
+                "limit": len(rows),
+                "total": len(rows),
+                "list": [_rank_item(x, show_rank=show_rank) for x in rows],
+            }
+        if str(tid or "").strip() == "recommend":
+            tab = str(ext.get("tab") or ext.get("推荐") or "").strip()
+            if isinstance(filter, dict):
+                tab2 = str(filter.get("tab") or filter.get("推荐") or "").strip()
+                if tab2 and not tab:
+                    tab = tab2
+            try:
+                rec_rows = _hg_recommend_rows(tab)
+            except Exception:
+                # 首页取不到推荐时回落到真人剧全部，避免推荐页空白
+                p = _hg_category_page("real-drama", cat, page)
+                rec_rows = p.get("recommendList") or []
+                page_data = p.get("pagination") or {}
+                return {
+                    "page": page,
+                    "pagecount": int(page_data.get("totalPages") or 1),
+                    "limit": len(rec_rows),
+                    "total": int(page_data.get("total") or len(rec_rows)),
+                    "list": [_cat_item(x) for x in rec_rows],
+                }
+            # 推荐一页多显示一点：首页推荐总共约 31 条，page_size 放大到 60 后第 1 页全出
+            page_size = 60
+            total = len(rec_rows)
+            pagecount = max(1, (total + page_size - 1) // page_size)
+            part = rec_rows[(page - 1) * page_size:page * page_size]
+            return {
+                "page": page,
+                "pagecount": pagecount,
+                "limit": len(part),
+                "total": total,
+                "list": [_cat_item(x) for x in part],
+            }
         try:
             p = _hg_category_page(route, cat, page)
         except Exception:
@@ -6675,7 +7792,7 @@ class Spider(_BaseSpider):
             "pagecount": int(page_data.get("totalPages") or 1),
             "limit": len(rows),
             "total": int(page_data.get("total") or len(rows)),
-            "list": _hg_cat_list(rows),
+            "list": [_cat_item(x) for x in rows],
         }
 
     def searchContent(self, key, quick=False, pg="1"):
@@ -6717,10 +7834,6 @@ class Spider(_BaseSpider):
             out.append(it)
         if not total:
             total = len(out)
-        try:
-            _hg_prefetch([x.get("vod_id") for x in out], 2)
-        except Exception:
-            pass
         return {
             "page": page,
             "pagecount": max(1, min(50, total_pages if total_pages else 1)),
@@ -6733,6 +7846,12 @@ class Spider(_BaseSpider):
     def detailContent(self, ids):
         sid = str(ids[0] if isinstance(ids, (list, tuple)) else ids)
         sid = sid.replace("hg-series-v1:", "")
+        # 设备注册与官网详情/分季并行：后台先把 directory 用的设备注册好
+        # （进程内缓存，首次约 1.5 秒），预热选集时直接命中，不用串行等。
+        try:
+            threading.Thread(target=_hg_dir_warm_device, daemon=True).start()
+        except Exception:
+            pass
         s = {}
         seasons = []
         # 磁盘缓存（6 小时）：同一部剧二次进入零请求
@@ -6771,6 +7890,45 @@ class Spider(_BaseSpider):
             except Exception:
                 pass
         vids = s.get("vid_list") or []
+        # directory/all_items 优先取选集：video_tab 要的是 item_id 这种“视频 ID”，
+        # 官网 seriesDetail.vid_list 是播放页 ID，会回 101113 CHAPTER_INFO_GET_ERROR。
+        # 各季并发预热（总预算 7 秒），拿到且全是纯数字才用；失败/为空/非数字一律回落 vid_list。
+        _dir_map = {}
+        try:
+            _dir_sids = []
+            for _no, _d in seasons:
+                _x = str(_d.get("series_id") or "")
+                if _x and _x not in _dir_sids:
+                    _dir_sids.append(_x)
+            if _dir_sids:
+                _ex = concurrent.futures.ThreadPoolExecutor(max_workers=min(8, len(_dir_sids)))
+                try:
+                    _fs = {_ex.submit(_hg_dir_items, _x, 6): _x for _x in _dir_sids}
+                    concurrent.futures.wait(list(_fs), timeout=7,
+                                            return_when=concurrent.futures.ALL_COMPLETED)
+                    for _f, _x in list(_fs.items()):
+                        if not _f.done():
+                            continue
+                        try:
+                            _items = _f.result(timeout=0.1) or []
+                        except Exception:
+                            continue
+                        _vs = [str(v) for v, _t in _items]
+                        if _vs and all(v.isdigit() for v in _vs):
+                            _dir_map[_x] = _vs
+                finally:
+                    try:
+                        _ex.shutdown(wait=False, cancel_futures=True)
+                    except Exception:
+                        _ex.shutdown(wait=False)
+        except Exception:
+            pass
+
+        def _dir_eps(d):
+            _x = str(d.get("series_id") or "")
+            if _x in _dir_map:
+                return list(_dir_map[_x])
+            return [str(v) for v in (d.get("vid_list") or []) if str(v).isdigit()]
         actors = [str(x.get("nickname")) for x in (s.get("celebrities") or []) if isinstance(x, dict) and x.get("nickname")]
         # 弹幕映射：把每一季的每一集都登记到本剧
         try:
@@ -6780,6 +7938,9 @@ class Spider(_BaseSpider):
                     _dm_remember_series(_one, sid)
             for _one in vids:
                 _dm_remember_series(_one, sid)
+            for _no, _d in seasons:
+                for _one in _dir_eps(_d):
+                    _dm_remember_series(_one, sid)
             _dm_series_save()
         except Exception:
             pass
@@ -6799,8 +7960,19 @@ class Spider(_BaseSpider):
                     return True
                 return str(d.get("series_id") or u"") == str(sid)
             ordered = [x for x in seq if _is_self(x[1])] + [x for x in seq if not _is_self(x[1])]
+            # 全季连播：各季按季号顺序拼成一条线，集号连续 1..N，画质固定超清（1080），排第一默认选中
+            _all_eps = []
+            for _no, _d in seq:
+                _all_eps.extend(_dir_eps(_d))
+            if _all_eps:
+                _eps_all = "#".join(
+                    "%d%s%s%s:%s" % (i + 1, "$", EPISODE_PREFIX, "1080", v)
+                    for i, v in enumerate(_all_eps)
+                )
+                play_from.append(u"全季连播 %d集" % len(_all_eps))
+                play_url.append(_eps_all)
             for no, d in ordered:
-                evids = [str(v) for v in (d.get("vid_list") or []) if str(v).isdigit()]
+                evids = _dir_eps(d)
                 if not evids or tuple(evids) in used:
                     continue
                 used.add(tuple(evids))
@@ -6818,7 +7990,7 @@ class Spider(_BaseSpider):
             for q, line_name in _HG_QUALITY_LINES:
                 eps = "#".join(
                     "%d%s%s%s%s:%s" % (i + 1, "$", EPISODE_PREFIX, q, "", str(v))
-                    for i, v in enumerate(vids)
+                    for i, v in enumerate(_dir_eps(s))
                 )
                 play_from.append(line_name)
                 play_url.append(eps)
@@ -6837,17 +8009,9 @@ class Spider(_BaseSpider):
                 _dm_series_save()
         except Exception:
             pass
-        # ── 预约下一季（与「每一季」同屏，2026-11-24 合并）──
-        _rsv_from, _rsv_url = _hg_reserve_line(seasons, sid, s)
-        if _rsv_from and _rsv_url:
-            play_from.append(_rsv_from)
-            play_url.append(_rsv_url)
-        return {"list": [{"vod_id": sid, "vod_name": str(s.get("series_name") or ""), "vod_pic": str(s.get("series_cover") or ""), "vod_year": "", "vod_area": "", "vod_director": "", "vod_actor": ",".join(actors), "vod_content": str(s.get("series_intro") or ""), "vod_remarks": str(s.get("episode_right_text") or ""), "vod_play_from": "$$$".join(play_from), "vod_play_url": "$$$".join(play_url)}]}
-
+        return {"list": [{"vod_id": sid, "vod_name": str(s.get("series_name") or ""), "vod_pic": str(s.get("series_cover") or ""), "vod_year": "", "vod_area": "", "vod_director": "", "vod_actor": ",".join(actors), "vod_content": str(s.get("series_intro") or ""), "vod_remarks": "影视交流群-"+str(s.get("episode_right_text") or ""), "vod_play_from": "$$$".join(play_from), "vod_play_url": "$$$".join(play_url)}]}
     def playerContent(self, flag, id, vipFlags=None):
         self._adopt_working_pair()
-        if str(id or "").startswith(RESERVE_PREFIX):
-            return _hg_reserve_play(self, id)
         # 从线路名（flag，如“红果超清/红果高清”）与集 token 双路解析清晰度。
         # token 已是 'hg-episode-v1:<q>:<vid>'，flag 用于旧壳只传线路名时兜底。
         token_q, vid = _split_episode_token(id)
@@ -6866,27 +8030,30 @@ class Spider(_BaseSpider):
                 "url": SITE + "/",
                 "header": {"User-Agent": UA},
             }
-        # 取流优先级：本机 Range 流服务 > 壳代理。
-        # 壳代理（fongmi / OK影视 的 /proxy?do=py）实测会忽略 Range：对 bytes=0-1023
-        # 也回 200 + 整片 + chunked，既无 Content-Range 也无 Accept-Ranges，且必须
-        # 等整片下载 + CENC 解密完成后才吐首字节（单集 12~17MB，实测 8.7s / 16.3s，
-        # 超过播放器默认 8s 读超时）。首集常因缓存或重试侥幸起播，切到第二集时播放器
-        # 按新 URL 重新请求即超时失败，表现为“第 1 集能放、第 2 集不能放”。
-        # 本机流服务支持 206 / Content-Range / Accept-Ranges，首字节约 1s，切集稳定。
-        # 会话构建（取 video_model + 拉 moov）在冷启动时约 3~18s，若等到播放器连上来
-        # 才建会话，响应头会被拖延到读超时。这里先异步预热会话，让播放器连接时命中缓存。
-        def _warm_session():
-            try:
-                _stream_session(vid, {
-                    "device_id": self.device_id or "",
-                    "install_id": self.install_id or "",
-                }, q)
-            except Exception:
-                pass
+        _prewarmed = False
         try:
-            threading.Thread(target=_warm_session, daemon=True).start()
+            _stream_session(vid, {
+                "device_id": self.device_id or "",
+                "install_id": self.install_id or "",
+            }, q)
+            _prewarmed = True
         except Exception:
-            pass
+            _prewarmed = False
+        if not _prewarmed:
+            # video_tab/fallback-play-info 只拿到明文 mp4（无 spade）时，本地流服务器
+            # 需要 CENC 密钥建会话，走不通；直接把明文地址交给壳播。
+            _plain_url = _v5n_plain_url_for(vid, q)
+            if _plain_url:
+                return {
+                    "parse": 0,
+                    "jx": 0,
+                    "playUrl": "",
+                    "url": _plain_url,
+                    "header": {
+                        "User-Agent": MEDIA_UA,
+                        "Referer": "https://novel.snssdk.com/",
+                    },
+                }
         try:
             port = _start_stream_server()
         except Exception:
@@ -7002,14 +8169,14 @@ class Spider(_BaseSpider):
                 primary = quals
             for q in primary:
                 cached = _hg_cache_get(vid, q)
-                if cached and _hg_cached_ok(cached):
+                if cached:
                     return [200, "video/mp4", cached]
 
             model = None
             rows = None
             for _round in range(4):
                 try:
-                    model = _video_model(vid, cfg)
+                    model = _video_model_rotating(vid, cfg)
                 except Exception as err:
                     if not _is_empty_model_error(err) or _round >= 3:
                         raise
@@ -7035,34 +8202,8 @@ class Spider(_BaseSpider):
                 try:
                     # 再查一次该清晰度缓存（model 解析后）
                     cached = _hg_cache_get(vid, wanted)
-                    if cached and _hg_cached_ok(cached):
+                    if cached:
                         return [200, "video/mp4", cached]
-
-                    if _hg_is_bytevc2(rows):
-                        # 只认这一档自己验过的标准 hvc1 直通流；encv 是加密壳，不能直接回吐
-                        try:
-                            plain_sess = _hg_plain_session(model, wanted, True)
-                        except Exception:
-                            plain_sess = None
-                        if plain_sess is not None:
-                            body = b""
-                            try:
-                                body = _multi_download(
-                                    plain_sess.url,
-                                    headers={"User-Agent": MEDIA_UA, "Referer": "https://novel.snssdk.com/"},
-                                    timeout=150 if _aes_is_fast() else 120,
-                                    workers=4,
-                                )
-                            except Exception as dl_err:
-                                last_err = "plain download failed q=%s err=%s" % (wanted, dl_err)
-                                body = b""
-                            _i = body.find(b"stsd") if body else -1
-                            if body and (_i < 0 or body[_i + 16 : _i + 20] in _DECODABLE_ENTRIES):
-                                try:
-                                    _hg_cache_put(vid, wanted, body)
-                                except Exception:
-                                    pass
-                                return [200, "video/mp4", body]
 
                     _, item = _select_quality(rows, wanted)
                     url = _media_url(item)
@@ -7102,11 +8243,10 @@ class Spider(_BaseSpider):
                         last_err = "skip large %s without native AES size=%s" % (wanted, len(body))
                         continue
 
-                    plain = decrypt_mp4_cenc(body, derive_content_key(spade))
+                    plain = decrypt_mp4_cenc(body, _v5n_content_key_bytes_for(item))
                     if len(plain) < 64 or (b"ftyp" not in plain[:64] and b"moov" not in plain[:4096]):
                         last_err = "bad mp4 after decrypt q=%s" % wanted
                         continue
-                    # 视轨校验：个别清晰度解出来只有音轨，换下一个清晰度，避免播出「只有声音」的片
                     _mo, _ms = _find_box(memoryview(plain), b"moov", 0)
                     if _mo >= 0 and _ms > 8 and not _moov_has_video_track(bytes(plain[_mo : _mo + _ms])):
                         last_err = "no video track q=%s" % wanted
@@ -7126,3 +8266,464 @@ class Spider(_BaseSpider):
             msg = "hg localProxy failed: %s\n%s" % (exc, traceback.format_exc())
             return [500, "text/plain; charset=utf-8", msg.encode("utf-8")]
 
+
+# coding=utf-8
+import json
+import re
+import sys
+import time
+import urllib.parse
+
+try:
+    sys.path.append('..')
+    from base.spider import Spider as _BaseSpider
+except Exception:
+    _BaseSpider = object
+
+try:
+    import requests
+except Exception:
+    requests = None
+
+
+class _HuangjuSpider(_BaseSpider):
+    def init(self, extend=""):
+        self.site_url = "https://huangju.net"
+        # 站方 seed 配置里的 API 域名（主 + 备用），按顺序轮询
+        self.api_hosts = [
+            "https://api.huangju.net",
+            "https://api.yanyushorttv.cc",
+            "https://api.yanyushorttv.top",
+        ]
+        self.headers = {
+            "User-Agent": "Mozilla/5.0 (Linux; Android 13; Pixel 7) "
+                          "AppleWebKit/537.36 (KHTML, like Gecko) "
+                          "Chrome/120.0.0.0 Mobile Safari/537.36",
+            "Referer": self.site_url + "/",
+            "Origin": self.site_url,
+            "Accept": "application/json, text/plain, */*",
+            "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8",
+        }
+        self.timeout = 15
+        self._categories_cache = None  # 分类缓存
+        self._play_cache = {}    # episodeId -> playerContent 结果
+
+    def getName(self):
+        return "红果黄剧"
+
+    # ================= 底层请求 =================
+
+    def _api_get(self, path, params=None, need_cookies=False):
+        """调站方 API，轮询多个域名。返回 (data, cookie_header)。
+        need_cookies=True 时用独立 Session，收集响应下发的 Cookie。"""
+        if requests is None:
+            return None, ""
+        query = ("?" + urllib.parse.urlencode(params)) if params else ""
+        last_err = None
+        for host in self.api_hosts:
+            url = host + path + query
+            try:
+                if need_cookies:
+                    sess = requests.Session()
+                    resp = sess.get(url, headers=self.headers,
+                                    timeout=self.timeout)
+                    if resp.status_code != 200:
+                        last_err = "HTTP %s" % resp.status_code
+                        continue
+                    cookie = "; ".join(
+                        "%s=%s" % (c.name, c.value)
+                        for c in sess.cookies)
+                    return resp.json(), cookie
+                resp = requests.get(url, headers=self.headers,
+                                    timeout=self.timeout)
+                if resp.status_code != 200:
+                    last_err = "HTTP %s" % resp.status_code
+                    continue
+                return resp.json(), ""
+            except Exception as e:
+                last_err = e
+                continue
+        print("[红果黄剧] API 请求失败(%s): %s" % (path, last_err))
+        return None, ""
+
+    def _item(self, d):
+        """列表里的一个剧 -> TVBox vod 条目"""
+        if not isinstance(d, dict):
+            return None
+        slug = str(d.get("slug") or "")
+        vid = d.get("id")
+        if not vid or not slug:
+            return None
+        total = d.get("totalEpisodes") or 0
+        remark = ""
+        if total:
+            remark = "共%s集" % total
+        if d.get("status") == "completed":
+            remark = (remark + " " if remark else "") + "已完结"
+        elif d.get("status") == "ongoing" and total:
+            remark = (remark + " " if remark else "") + "连载中"
+        score = d.get("score")
+        if score:
+            remark = (remark + " " if remark else "") + "★%s" % score
+        return {
+            "vod_id": "%s-%s" % (slug, vid),
+            "vod_name": d.get("title") or "",
+            "vod_pic": d.get("coverUrl") or "",
+            "vod_remarks": "影视交流群-"+remark.strip(),
+        }
+
+    def _list_result(self, data, page):
+        """{total, page, pageSize, items} -> TVBox 分类返回"""
+        if not isinstance(data, dict):
+            return {"list": [], "page": page, "pagecount": 1,
+                    "limit": 20, "total": 0}
+        items = [x for x in (self._item(d) for d in (data.get("items") or []))
+                 if x]
+        total = int(data.get("total") or 0)
+        page_size = int(data.get("pageSize") or 20) or 20
+        pagecount = max(1, (total + page_size - 1) // page_size)
+        return {"list": items, "page": page, "pagecount": pagecount,
+                "limit": page_size, "total": total}
+
+    def _sort_of(self, extend):
+        """从 extend 里读排序：latest（默认）/ hot"""
+        if isinstance(extend, str):
+            try:
+                extend = json.loads(extend) if extend else {}
+            except Exception:
+                extend = {}
+        if isinstance(extend, dict):
+            sort = str(extend.get("sort") or extend.get("排序") or "").strip()
+            if sort in ("hot", "latest"):
+                return sort
+        return "latest"
+
+    # ================= 分类 =================
+
+    def _categories(self):
+        return [{"type_id": "all", "type_name": "全部"}]
+
+    def _sort_filter(self):
+        return [{"key": "sort", "name": "排序",
+                 "value": [{"n": "最新", "v": "latest"},
+                           {"n": "最热", "v": "hot"}]}]
+
+    # ================= TVBox 接口 =================
+
+    def homeContent(self, filter=False):
+        cats = self._categories()
+        result = {"class": cats, "list": [], "filters": {}}
+        if filter:
+            result["filters"] = {c["type_id"]: self._sort_filter()
+                                 for c in cats}
+        return result
+
+    def homeVideoContent(self):
+        return self.homeContent(False)
+
+    def categoryContent(self, tid, pg, filter=False, extend=None):
+        page = int(pg) if pg else 1
+        tid = str(tid or "all")
+        params = {"page": page, "pageSize": 20}
+        if tid and tid != "all":
+            params["category"] = tid
+        if self._sort_of(extend) == "hot":
+            params["sort"] = "hot"
+        data, _ = self._api_get("/dramas", params)
+        return self._list_result(data, page)
+
+    def detailContent(self, ids):
+        vid = ids[0] if isinstance(ids, list) else ids
+        if not vid:
+            return {"list": []}
+        data, _ = self._api_get("/dramas/%s" % urllib.parse.quote(str(vid)))
+        if not isinstance(data, dict) or not data.get("title"):
+            return {"list": []}
+        episodes = []
+        for ep in (data.get("episodes") or []):
+            if not isinstance(ep, dict) or not ep.get("playable", True):
+                continue
+            ep_id = ep.get("id")
+            ep_no = ep.get("epNo")
+            if not ep_id or not ep_no:
+                continue
+            name = "第%s集" % ep_no
+            dur = ep.get("durationSec") or 0
+            if dur:
+                name += " (%d分%02d秒)" % (dur // 60, dur % 60)
+            episodes.append("%s$%s" % (name, ep_id))
+        total = data.get("totalEpisodes") or len(episodes)
+        status = data.get("status") or ""
+        remark = "共%s集" % total if total else ""
+        if status == "completed":
+            remark += " 已完结"
+        elif status == "ongoing":
+            remark += " 连载中"
+        score = data.get("score")
+        if score:
+            remark += " ★%s" % score
+        category = data.get("category") or {}
+        vod = {
+            "vod_id": str(vid),
+            "vod_name": data.get("title") or "",
+            "vod_pic": data.get("coverUrl") or "",
+            "vod_content": (data.get("description") or "").strip(),
+            "vod_year": str(data.get("publishedAt") or "")[:4],
+            "vod_area": "",
+            "vod_actor": "",
+            "vod_director": "",
+            "vod_remarks": "影视交流群-"+remark.strip(),
+            "vod_type": category.get("name") or "",
+            "vod_play_from": "在线播放",
+            "vod_play_url": "#".join(episodes),
+        }
+        return {"list": [vod]}
+
+    def searchContent(self, key, quick=False, pg="1"):
+        page = int(pg) if pg else 1
+        if not key:
+            return {"list": [], "page": page, "pagecount": 1}
+        data, _ = self._api_get("/dramas", {"q": key, "page": page,
+                                            "pageSize": 20})
+        res = self._list_result(data, page)
+        return {"list": res["list"], "page": res["page"],
+                "pagecount": res["pagecount"]}
+
+    # ================= 播放 =================
+
+    def playerContent(self, flag, id, vipFlags=None):
+        """id 是剧集数字 id。调 /play 拿签名 m3u8 + CloudFront Cookie，
+        不带 Cookie 播不了（403）。链接有时效，每次播放都现取。"""
+        ep_id = str(id or "").strip()
+        m = re.search(r"(\d+)", ep_id)
+        if m:
+            ep_id = m.group(1)
+        if not ep_id:
+            return {"parse": 1, "url": "", "header": self.headers}
+        if ep_id in self._play_cache:
+            return self._play_cache[ep_id]
+
+        data, cookie = self._api_get("/play/%s" % ep_id, need_cookies=True)
+        url = ""
+        if isinstance(data, dict):
+            url = str(data.get("url") or "").strip()
+        if url:
+            header = {
+                "User-Agent": self.headers["User-Agent"],
+                "Referer": self.site_url + "/",
+                "Origin": self.site_url,
+            }
+            if cookie:
+                header["Cookie"] = cookie
+            result = {"parse": 0, "url": url, "header": header}
+            self._play_cache[ep_id] = result
+            return result
+
+        # 兜底：让客户端自己试
+        return {"parse": 1,
+                "url": "%s/play/%s" % (self.api_hosts[0], ep_id),
+                "header": self.headers}
+
+    def isVideoFormat(self, url):
+        return bool(re.search(r"\.(m3u8|mp4|flv)(\?|$)", url or "", re.I))
+
+    def manualVideoCheck(self):
+        return True
+
+    def localProxy(self, param):
+        pass
+
+
+# ================= 合并入口（路由层） =================
+
+class Spider(_BaseSpider):
+    """合并源：红果短剧为主，红果黄剧为辅。"""
+
+    def init(self, extend=""):
+        self._hg = _HongguoSpider()
+        self._hj = _HuangjuSpider()
+        self._bind_proxy()
+        try:
+            self._hg.init(extend)
+        except Exception:
+            pass
+        try:
+            self._hj.init(extend)
+        except Exception:
+            pass
+
+    def _bind_proxy(self):
+        # 红果播放回退到壳代理时，需要壳的 getProxyUrl
+        try:
+            if hasattr(self, "getProxyUrl"):
+                self._hg.getProxyUrl = self.getProxyUrl
+        except Exception:
+            pass
+
+    def getName(self):
+        return "红果短剧"
+
+    def destroy(self):
+        try:
+            self._hg.destroy()
+        except Exception:
+            pass
+
+    def _prefix_items(self, items, prefix, tag=""):
+        out = []
+        for it in (items or []):
+            if not isinstance(it, dict):
+                continue
+            it = dict(it)
+            vid = str(it.get("vod_id") or "")
+            if vid and not vid.startswith(prefix):
+                it["vod_id"] = prefix + vid
+            if tag:
+                name = str(it.get("vod_name") or "")
+                if name and not name.startswith(tag):
+                    it["vod_name"] = tag + name
+            out.append(it)
+        return out
+
+    def _fix_detail(self, res, prefix):
+        # 给 vod_id 和播放 token 加来源前缀，playerContent 靠它路由
+        if not isinstance(res, dict):
+            return res
+        res = dict(res)
+        out = []
+        for vod in (res.get("list") or []):
+            if not isinstance(vod, dict):
+                continue
+            vod = dict(vod)
+            vid = str(vod.get("vod_id") or "")
+            if vid and not vid.startswith(prefix):
+                vod["vod_id"] = prefix + vid
+            play_url = str(vod.get("vod_play_url") or "")
+            if play_url:
+                groups = []
+                for grp in play_url.split("$$$"):
+                    eps = []
+                    for ep in grp.split("#"):
+                        if "$" in ep:
+                            name, token = ep.split("$", 1)
+                            if token and not token.startswith(prefix):
+                                token = prefix + token
+                            eps.append(name + "$" + token)
+                        else:
+                            eps.append(ep)
+                    groups.append("#".join(eps))
+                vod["vod_play_url"] = "$$$".join(groups)
+            out.append(vod)
+        res["list"] = out
+        return res
+
+    def homeContent(self, filter=False):
+        hg = self._hg.homeContent(filter)
+        hj = self._hj.homeContent(filter)
+        classes = []
+        filters = {}
+        for c in (hg.get("class") or []):
+            # 红果自己的“推荐”和播放器首页的推荐页重名了，去掉这一个
+            if str(c.get("type_id") or "") == "recommend":
+                continue
+            classes.append({"type_id": "hg::" + str(c.get("type_id") or ""),
+                            "type_name": str(c.get("type_name") or "")})
+        for c in (hj.get("class") or []):
+            name = str(c.get("type_name") or "")
+            if str(c.get("type_id") or "") == "all":
+                name = "红剧"
+            classes.append({"type_id": "hj::" + str(c.get("type_id") or ""),
+                            "type_name": name})
+        for k, v in (hg.get("filters") or {}).items():
+            if str(k) == "recommend":
+                continue
+            filters["hg::" + str(k)] = v
+        for k, v in (hj.get("filters") or {}).items():
+            filters["hj::" + str(k)] = v
+        return {"class": classes, "filters": filters, "list": []}
+
+    def homeVideoContent(self):
+        # 推荐只推红果短剧（hg::），不混红剧（hj::）
+        items = []
+        try:
+            r = self._hg.categoryContent("recommend", "1", False, None)
+            items.extend(self._prefix_items(r.get("list") or [], "hg::"))
+        except Exception:
+            pass
+        return {"list": items}
+
+    def categoryContent(self, tid, pg, filter=False, extend=None):
+        tid = str(tid or "")
+        if tid.startswith("hj::"):
+            res = self._hj.categoryContent("all", pg, filter, extend)
+            res = dict(res)
+            res["list"] = self._prefix_items(res.get("list") or [], "hj::")
+            return res
+        sub = tid[4:] if tid.startswith("hg::") else tid
+        res = self._hg.categoryContent(sub, pg, filter, extend)
+        res = dict(res)
+        res["list"] = self._prefix_items(res.get("list") or [], "hg::")
+        return res
+
+    def detailContent(self, ids):
+        vid = str(ids[0] if isinstance(ids, (list, tuple)) else ids)
+        if vid.startswith("hj::"):
+            return self._fix_detail(self._hj.detailContent([vid[4:]]), "hj::")
+        sub = vid[4:] if vid.startswith("hg::") else vid
+        return self._fix_detail(self._hg.detailContent([sub]), "hg::")
+
+    def playerContent(self, flag, id, vipFlags=None):
+        token = str(id or "")
+        if token.startswith("hj::"):
+            return self._hj.playerContent(flag, token[4:], vipFlags)
+        if token.startswith("hg::"):
+            self._bind_proxy()
+            return self._hg.playerContent(flag, token[4:], vipFlags)
+        # 无前缀：按 token 形状判断（hg-episode-v1: 是红果，否则当黄剧集 id）
+        if token.startswith("hg-episode-v1:"):
+            self._bind_proxy()
+            return self._hg.playerContent(flag, token, vipFlags)
+        return self._hj.playerContent(flag, token, vipFlags)
+
+    def searchContent(self, key, quick=False, pg="1"):
+        page = 1
+        try:
+            page = max(1, int(pg))
+        except Exception:
+            page = 1
+        items = []
+        pagecount = 1
+        try:
+            r = self._hg.searchContent(key, quick, pg)
+            items.extend(self._prefix_items(r.get("list") or [], "hg::"))
+            pagecount = max(pagecount, int(r.get("pagecount") or 1))
+        except Exception:
+            pass
+        try:
+            r = self._hj.searchContent(key, quick, pg)
+            items.extend(self._prefix_items(r.get("list") or [], "hj::"))
+            pagecount = max(pagecount, int(r.get("pagecount") or 1))
+        except Exception:
+            pass
+        return {"list": items, "page": page, "pagecount": pagecount}
+
+    def localProxy(self, param):
+        self._bind_proxy()
+        return self._hg.localProxy(param)
+
+    def proxy(self, param):
+        return self.localProxy(param)
+
+    def isVideoFormat(self, url):
+        try:
+            if self._hg.isVideoFormat(url):
+                return True
+        except Exception:
+            pass
+        try:
+            return bool(self._hj.isVideoFormat(url))
+        except Exception:
+            return False
+
+    def manualVideoCheck(self):
+        return False
